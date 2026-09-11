@@ -6,6 +6,20 @@
     justify-content: center;
 }
 
+#container > Label {
+    font-size: 12px;
+    color: var(--color-primary);
+    -unity-text-align: middle-center;
+    margin: var(--spacing-sm);
+    padding: 0;
+}
+
+ScrollView {
+    width: 100%;
+    flex-direction: row;
+    align-self: flex-start;
+}
+
 ScrollView > Button {
     height: 48px;
     width: 32px;
@@ -13,5 +27,3 @@ ScrollView > Button {
     font-size: 10px;
     -unity-text-align: middle-center;
 }
-
-ScrollView > Button .last { margin-right: 0; }
