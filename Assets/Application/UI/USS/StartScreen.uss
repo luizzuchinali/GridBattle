@@ -1,15 +1,21 @@
-#Logo {
+#container {
+    background-color: var(--color-bg);
+    flex-grow: 1;
+    flex-direction: column;
+}
+
+#logo {
     font-size: 48px;
     -unity-text-align: middle-center;
-    color: rgb(27, 27, 219);
+    color: var(--color-primary);
     flex-shrink: 0;
     flex-grow: 3;
 }
 
-#TapToPlayLabel {
+#tap-to-play-label {
     font-size: 26px;
     -unity-text-align: upper-center;
-    color: rgb(27, 27, 201);
+    color: var(--color-primary);
     flex-wrap: nowrap;
     flex-direction: column;
     flex-basis: auto;

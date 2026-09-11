@@ -29,14 +29,14 @@ namespace GridBattle
 
         private void ReloadCallback(PanelRenderer panelRenderer, VisualElement rootElement, int version)
         {
-            _tapToPlayElement = rootElement.Q<VisualElement>("TapToPlayLabel");
+            _tapToPlayElement = rootElement.Q<VisualElement>("tap-to-play-label");
             _tapToPlayElement.RegisterCallback<TransitionEndEvent, VisualElement>((_, target) =>
             {
                 target.ToggleInClassList("fade-out");
             }, _tapToPlayElement);
             _tapToPlayElement.schedule.Execute(() => _tapToPlayElement.AddToClassList("fade-out")).StartingIn(100);
             
-            _container = rootElement.Q<VisualElement>("Container");
+            _container = rootElement.Q<VisualElement>("container");
             _container.RegisterCallback<PointerUpEvent>(_ =>
             {
                 Debug.Log("Tapped!");

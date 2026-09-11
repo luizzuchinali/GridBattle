@@ -1,5 +1,13 @@
 :root {
     -unity-font-definition: url("project://database/Assets/Resources/Fonts & Materials/ThaleahFat_TTF.ttf");
+
+    /* Color Tokens */
+    --color-bg: rgb(27, 27, 27);
+    --color-primary: #ffcc00;
+
+    /* Spacing Tokens */
+    --spacing-sm: 4px;
+    --spacing-md: 8px;
 }
 
 .fade-out {
