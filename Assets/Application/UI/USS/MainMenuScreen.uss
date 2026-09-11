@@ -1,0 +1,12 @@
+#Container {
+    flex-grow: 1;
+    color: rgb(27, 27, 27);
+    background-color: rgb(0, 0, 0);
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+ScrollView {
+    background-color: red;
+}

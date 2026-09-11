@@ -1,0 +1,13 @@
+:root {
+    -unity-font-definition: url("project://database/Assets/Resources/Fonts & Materials/ThaleahFat_TTF.ttf");
+}
+
+.fade-out {
+    opacity: 0;
+}
+
+.fade-in {
+    opacity: 1;
+}
+
+
