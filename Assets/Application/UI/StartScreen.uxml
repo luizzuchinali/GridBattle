@@ -1,0 +1,8 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/Application/UI/Base.uss?fileID=7433441132597879392&amp;guid=df3f93ad36684ec88fd1170d69567475&amp;type=3#Base"/>
+    <Style src="project://database/Assets/Application/UI/StartScreen.uss?fileID=7433441132597879392&amp;guid=7f22e9b7e377e45fe8205c0e7399c178&amp;type=3#StartScreen"/>
+    <ui:VisualElement name="Container" style="flex-grow: 1; flex-direction: column; background-color: rgb(0, 0, 0);">
+        <ui:Label text="Logo" name="Logo"/>
+        <ui:Label text="Tap to play!" name="TapToPlayLabel"/>
+    </ui:VisualElement>
+</ui:UXML>

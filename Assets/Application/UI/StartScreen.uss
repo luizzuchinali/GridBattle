@@ -1,0 +1,20 @@
+#Logo {
+    font-size: 48px;
+    -unity-text-align: middle-center;
+    color: rgb(27, 27, 219);
+    flex-shrink: 0;
+    flex-grow: 3;
+}
+
+#TapToPlayLabel {
+    font-size: 26px;
+    -unity-text-align: upper-center;
+    color: rgb(27, 27, 201);
+    flex-wrap: nowrap;
+    flex-direction: column;
+    flex-basis: auto;
+    flex-grow: 1;
+    transition-duration: 0.5s;
+    transition-timing-function: ease-in-out;
+    transition-delay: 0.5s;
+}
