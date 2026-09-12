@@ -1,47 +1,22 @@
-using System;
 using GridBattle.Events;
-using UnityEngine;
 using UnityEngine.UIElements;
 
 namespace GridBattle
 {
-    [RequireComponent(typeof(PanelRenderer))]
-    public class StartScreen : MonoBehaviour
+    public class StartScreen : Screen
     {
-        private PanelRenderer _panelRenderer;
-
         private VisualElement _tapToPlayElement;
         private VisualElement _container;
 
-        private void Awake()
-        {
-            _panelRenderer = GetComponent<PanelRenderer>();
-        }
-
-        private void OnEnable()
-        {
-            _panelRenderer.RegisterUIReloadCallback(ReloadCallback);
-        }
-
-        private void OnDisable()
-        {
-            _panelRenderer.UnregisterUIReloadCallback(ReloadCallback);
-        }
-
-        private void ReloadCallback(PanelRenderer panelRenderer, VisualElement rootElement, int version)
+        protected override void ReloadUICallback(PanelRenderer panelRenderer, VisualElement rootElement, int version)
         {
             _tapToPlayElement = rootElement.Q<VisualElement>("tap-to-play-label");
-            _tapToPlayElement.RegisterCallback<TransitionEndEvent, VisualElement>((_, target) =>
-            {
-                target.ToggleInClassList("opacity-0");
-            }, _tapToPlayElement);
+            _tapToPlayElement.RegisterCallback<TransitionEndEvent, VisualElement>(
+                (_, target) => { target.ToggleInClassList("opacity-0"); }, _tapToPlayElement);
             _tapToPlayElement.schedule.Execute(() => _tapToPlayElement.AddToClassList("opacity-0")).StartingIn(100);
-            
+
             _container = rootElement.Q<VisualElement>("container");
-            _container.RegisterCallback<PointerUpEvent>(x =>
-            {
-                EventBus.Raise(new StartScreenTapEvent(x.position));
-            });
+            _container.RegisterCallback<PointerUpEvent>(x => { EventBus.Raise(new StartScreenTapEvent(x.position)); });
         }
     }
 }
