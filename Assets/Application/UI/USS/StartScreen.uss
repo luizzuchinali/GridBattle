@@ -1,9 +1,3 @@
-#container {
-    background-color: var(--color-bg);
-    flex-grow: 1;
-    flex-direction: column;
-}
-
 #logo {
     font-size: 48px;
     -unity-text-align: middle-center;

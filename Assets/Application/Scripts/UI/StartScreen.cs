@@ -1,4 +1,5 @@
 using System;
+using GridBattle.Events;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -32,14 +33,14 @@ namespace GridBattle
             _tapToPlayElement = rootElement.Q<VisualElement>("tap-to-play-label");
             _tapToPlayElement.RegisterCallback<TransitionEndEvent, VisualElement>((_, target) =>
             {
-                target.ToggleInClassList("fade-out");
+                target.ToggleInClassList("opacity-0");
             }, _tapToPlayElement);
-            _tapToPlayElement.schedule.Execute(() => _tapToPlayElement.AddToClassList("fade-out")).StartingIn(100);
+            _tapToPlayElement.schedule.Execute(() => _tapToPlayElement.AddToClassList("opacity-0")).StartingIn(100);
             
             _container = rootElement.Q<VisualElement>("container");
-            _container.RegisterCallback<PointerUpEvent>(_ =>
+            _container.RegisterCallback<PointerUpEvent>(x =>
             {
-                Debug.Log("Tapped!");
+                EventBus.Raise(new StartScreenTapEvent(x.position));
             });
         }
     }
