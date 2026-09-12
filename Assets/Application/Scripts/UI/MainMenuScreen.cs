@@ -22,11 +22,17 @@ namespace GridBattle
         protected override void ReloadUICallback(PanelRenderer panelRenderer, VisualElement rootElement, int version)
         {
             _container = rootElement.Q<VisualElement>("container");
+            _container.RegisterCallback<ClickEvent, VisualElement>((e, target) =>
+            {
+                target.ToggleInClassList("display-none");
+                target.ToggleInClassList("translate-right");
+                EventBus.Raise(new CharacterChoosenEvent());
+            }, _container);
         }
 
         private void OnStartScreenTap(StartScreenTapEvent e)
         {
-            _container.RemoveFromClassList("display-none");
+            _container.ToggleInClassList("display-none");
             _container.ToggleInClassList("translate-right");
         }
     }

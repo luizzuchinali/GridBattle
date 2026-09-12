@@ -17,6 +17,7 @@
     align-items: center;
     justify-content: center;
     transition-duration: 0.25s;
+    width: 216px;
 }
 
 .container > Label {

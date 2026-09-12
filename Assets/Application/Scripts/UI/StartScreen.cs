@@ -16,7 +16,12 @@ namespace GridBattle
             _tapToPlayElement.schedule.Execute(() => _tapToPlayElement.AddToClassList("opacity-0")).StartingIn(100);
 
             _container = rootElement.Q<VisualElement>("container");
-            _container.RegisterCallback<PointerUpEvent>(x => { EventBus.Raise(new StartScreenTapEvent(x.position)); });
+            _container.RegisterCallback<PointerUpEvent, VisualElement>((e, target) =>
+            {
+                target.ToggleInClassList("display-none");
+                target.ToggleInClassList("translate-right");
+                EventBus.Raise(new StartScreenTapEvent(e.position));
+            }, _container);
         }
     }
 }

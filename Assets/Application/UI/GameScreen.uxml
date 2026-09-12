@@ -1,3 +1,18 @@
 <ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <ui:VisualElement name="container" class="container" style="flex-grow: 1;"/>
+    <Style src="project://database/Assets/Application/UI/USS/GameScreen.uss?fileID=7433441132597879392&amp;guid=4a8140714b30dc142abf3c5a895989d6&amp;type=3#GameScreen"/>
+    <ui:VisualElement name="container" class="container display-none translate-right">
+        <ui:VisualElement name="xp-area">
+            <ui:ProgressBar value="22" title="my-progress" name="xp-bar"/>
+            <ui:Button text="trait" name="trait-button"/>
+        </ui:VisualElement>
+        <ui:VisualElement name="game-content" style="flex-grow: 1;"/>
+        <ui:VisualElement name="spell-area" style="flex-grow: 1;">
+            <ui:Button text="" parse-escape-sequences="false" emoji-fallback-support="false" enable-rich-text="false"/>
+            <ui:Button text="" name="" enable-rich-text="false" emoji-fallback-support="false"/>
+            <ui:Button text="" enable-rich-text="false" emoji-fallback-support="false"/>
+            <ui:Button text="" enable-rich-text="false" emoji-fallback-support="false"/>
+            <ui:Button text="" enable-rich-text="false" emoji-fallback-support="false"/>
+            <ui:Button text="" enable-rich-text="false" emoji-fallback-support="false"/>
+        </ui:VisualElement>
+    </ui:VisualElement>
 </ui:UXML>
