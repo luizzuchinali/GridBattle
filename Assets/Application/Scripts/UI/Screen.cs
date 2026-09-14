@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UIElements;
 
-namespace GridBattle
+namespace GridBattle.UI
 {
     [RequireComponent(typeof(PanelRenderer))]
     public abstract class Screen : MonoBehaviour

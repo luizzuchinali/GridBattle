@@ -1,7 +1,7 @@
-using GridBattle.Events;
+using GridBattle.UI.Events;
 using UnityEngine.UIElements;
 
-namespace GridBattle
+namespace GridBattle.UI
 {
     public class MainMenuScreen : Screen
     {

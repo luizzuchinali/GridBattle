@@ -1,8 +1,8 @@
-using GridBattle.Events;
+using GridBattle.UI.Events;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-namespace GridBattle
+namespace GridBattle.UI
 {
     [RequireComponent(typeof(PanelRenderer))]
     public class GameScreen : Screen

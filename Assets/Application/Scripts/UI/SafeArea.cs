@@ -40,10 +40,17 @@ namespace Application.Scripts.UI
             var safeAreaRightBottom = RuntimePanelUtils.ScreenToPanel(panel, new Vector2(Screen.width - safeArea.xMax, safeArea.yMin));
 
             // setting padding. but you can experiment with margings as well
-            style.paddingLeft = safeAreaLeftTop.x;
-            style.paddingTop = safeAreaLeftTop.y;
-            style.paddingRight = safeAreaRightBottom.x;
-            style.paddingBottom = safeAreaRightBottom.y;
+            if (safeAreaLeftTop.x != 0)
+                style.paddingLeft = safeAreaLeftTop.x;
+
+            if (safeAreaLeftTop.y != 0)
+                style.paddingTop = safeAreaLeftTop.y;
+            
+            if (safeAreaRightBottom.x != 0)
+                style.paddingRight = safeAreaRightBottom.x;
+            
+            if (safeAreaRightBottom.y != 0)
+                style.paddingBottom = safeAreaRightBottom.y;
         }
     }
 }

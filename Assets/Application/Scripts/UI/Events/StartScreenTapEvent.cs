@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace GridBattle.Events
+namespace GridBattle.UI.Events
 {
     public class StartScreenTapEvent
     {

@@ -1,4 +1,4 @@
-namespace GridBattle.Events
+namespace GridBattle.UI.Events
 {
     public class CharacterChoosenEvent
     {
