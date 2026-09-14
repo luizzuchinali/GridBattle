@@ -17,7 +17,7 @@
     align-items: center;
     justify-content: center;
     transition-duration: 0.25s;
-    width: 216px;
+    width: 100%;
 }
 
 .container > Label {
@@ -27,7 +27,6 @@
     margin: var(--spacing-sm);
     padding: 0;
 }
-
 
 .opacity-0 {
     opacity: 0;
