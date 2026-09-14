@@ -1,6 +1,6 @@
 <ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/Application/UI/USS/MainMenuScreen.uss?fileID=7433441132597879392&amp;guid=d277521352ca2443cb0ca7d3549b5673&amp;type=3#MainMenuScreen"/>
-    <ui:VisualElement name="container" class="container display-none translate-right">
+    <Application.Scripts.UI.SafeArea name="container" class="container display-none translate-right">
         <ui:Label text="Select a character"/>
         <ui:ScrollView mode="Horizontal" picking-mode="Position" enabled="true" horizontal-scroller-visibility="Hidden" vertical-scroller-visibility="Hidden" touch-scroll-type="Elastic">
             <ui:Button text="Char 1" name="character-1"/>
@@ -11,5 +11,5 @@
             <ui:Button text="Char 6" name="character-6"/>
             <ui:Button text="Char 7" name="character-7"/>
         </ui:ScrollView>
-    </ui:VisualElement>
+    </Application.Scripts.UI.SafeArea>
 </ui:UXML>
