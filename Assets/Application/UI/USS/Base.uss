@@ -43,3 +43,7 @@
 .translate-right {
     translate: 216px 0;
 }
+
+.translate-left {
+    translate: -216px 0;
+}

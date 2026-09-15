@@ -19,14 +19,22 @@ namespace GridBattle.UI.Controllers
 
         private void OnStartScreenTap(StartScreenTapEvent e)
         {
-            FindAnyObjectByType<StartScreenView>().Hide();
-            FindAnyObjectByType<MainMenuScreenView>().Show();
+            var screenTransitionView = FindAnyObjectByType<ScreenTransitionView>();
+            screenTransitionView.Transition(() =>
+            {
+                FindAnyObjectByType<StartScreenView>().Hide();
+                FindAnyObjectByType<MainMenuScreenView>().Show();
+            });
         }
 
         private void OnCharacterChoosen(CharacterChoosenEvent e)
         {
-            FindAnyObjectByType<MainMenuScreenView>().Hide();
-            FindAnyObjectByType<GameScreenView>().Show();
+            var screenTransitionView = FindAnyObjectByType<ScreenTransitionView>();
+            screenTransitionView.Transition(() =>
+            {
+                FindAnyObjectByType<MainMenuScreenView>().Hide();
+                FindAnyObjectByType<GameScreenView>().Show();
+            });
         }
     }
 }

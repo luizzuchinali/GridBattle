@@ -18,13 +18,11 @@ namespace GridBattle.UI
         public virtual void Show()
         {
             _container.ToggleInClassList("display-none");
-            _container.ToggleInClassList("translate-right");
         }
 
         public virtual void Hide()
         {
             _container.ToggleInClassList("display-none");
-            _container.ToggleInClassList("translate-right");
         }
 
         protected virtual void OnEnable()
@@ -41,6 +39,7 @@ namespace GridBattle.UI
         {
             _rootElement = rootElement;
             _container = rootElement.Q<VisualElement>("container");
+            
             OnUIReload(panelRenderer, rootElement);
         }
 
