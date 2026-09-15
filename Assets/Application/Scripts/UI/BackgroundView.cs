@@ -4,13 +4,13 @@ using UnityEngine.UIElements;
 
 namespace GridBattle.UI
 {
-    public class Background : View
+    public class BackgroundView : View
     {
-        protected override void ReloadUICallback(PanelRenderer panelRenderer, VisualElement rootElement, int version)
+        protected override void OnUIReload(PanelRenderer panelRenderer, VisualElement root)
         {
             panelRenderer.worldSpaceSize = new Vector2(UnityEngine.Device.Screen.width, UnityEngine.Device.Screen.height);
         }
-        
+
         protected override void Awake()
         {
             base.Awake();

@@ -6,16 +6,26 @@ namespace GridBattle.UI
     [RequireComponent(typeof(PanelRenderer))]
     public abstract class View : MonoBehaviour
     {
-        public PanelRenderer PanelRenderer { get; private set; }
+        protected PanelRenderer PanelRenderer;
+        private VisualElement _rootElement;
+        private VisualElement _container;
 
         protected virtual void Awake()
         {
             PanelRenderer = GetComponent<PanelRenderer>();
         }
 
-        public abstract void Show();
+        public virtual void Show()
+        {
+            _container.ToggleInClassList("display-none");
+            _container.ToggleInClassList("translate-right");
+        }
 
-        public abstract void Hide();
+        public virtual void Hide()
+        {
+            _container.ToggleInClassList("display-none");
+            _container.ToggleInClassList("translate-right");
+        }
 
         protected virtual void OnEnable()
         {
@@ -27,6 +37,13 @@ namespace GridBattle.UI
             PanelRenderer.UnregisterUIReloadCallback(ReloadUICallback);
         }
 
-        protected abstract void ReloadUICallback(PanelRenderer panelRenderer, VisualElement rootElement, int version);
+        private void ReloadUICallback(PanelRenderer panelRenderer, VisualElement rootElement, int version)
+        {
+            _rootElement = rootElement;
+            _container = rootElement.Q<VisualElement>("container");
+            OnUIReload(panelRenderer, rootElement);
+        }
+
+        protected abstract void OnUIReload(PanelRenderer panelRenderer, VisualElement root);
     }
 }
