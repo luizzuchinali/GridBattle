@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UIElements;
 
-namespace Application.Scripts.UI
+namespace GridBattle.UI
 {
     [UxmlElement]
     public partial class SafeArea : VisualElement
@@ -33,11 +33,11 @@ namespace Application.Scripts.UI
             }
 #endif
 
-            var safeArea = Screen.safeArea;
-            var screenHeight = (float)Screen.height;
+            var safeArea = UnityEngine.Screen.safeArea;
+            var screenHeight = (float)UnityEngine.Screen.height;
 
             var safeAreaLeftTop = RuntimePanelUtils.ScreenToPanel(panel, new Vector2(safeArea.xMin, screenHeight - safeArea.yMax));
-            var safeAreaRightBottom = RuntimePanelUtils.ScreenToPanel(panel, new Vector2(Screen.width - safeArea.xMax, safeArea.yMin));
+            var safeAreaRightBottom = RuntimePanelUtils.ScreenToPanel(panel, new Vector2(UnityEngine.Screen.width - safeArea.xMax, safeArea.yMin));
 
             // setting padding. but you can experiment with margings as well
             if (safeAreaLeftTop.x != 0)
