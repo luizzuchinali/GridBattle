@@ -1,3 +1,4 @@
+using GridBattle.Managers;
 using GridBattle.UI.Events;
 using UnityEngine;
 
@@ -35,6 +36,8 @@ namespace GridBattle.UI.Controllers
                 FindAnyObjectByType<MainMenuScreenView>().Hide();
                 FindAnyObjectByType<GameScreenView>().Show();
             });
+            
+            GameStateManager.StartRun(e.Character);
         }
     }
 }
