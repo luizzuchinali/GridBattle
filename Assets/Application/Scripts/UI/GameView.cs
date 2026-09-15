@@ -5,7 +5,7 @@ using UnityEngine.UIElements;
 namespace GridBattle.UI
 {
     [RequireComponent(typeof(PanelRenderer))]
-    public class GameScreen : Screen
+    public class GameView : View
     {
         private VisualElement _root;
         private VisualElement _container;

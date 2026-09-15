@@ -4,7 +4,7 @@ using UnityEngine.UIElements;
 namespace GridBattle.UI
 {
     [RequireComponent(typeof(PanelRenderer))]
-    public abstract class Screen : MonoBehaviour
+    public abstract class View : MonoBehaviour
     {
         public PanelRenderer PanelRenderer { get; private set; }
 
@@ -12,6 +12,10 @@ namespace GridBattle.UI
         {
             PanelRenderer = GetComponent<PanelRenderer>();
         }
+
+        public abstract void Show();
+
+        public abstract void Hide();
 
         protected virtual void OnEnable()
         {

@@ -3,7 +3,7 @@ using UnityEngine.UIElements;
 
 namespace GridBattle.UI
 {
-    public class StartScreen : Screen
+    public class StartView : View
     {
         private VisualElement _tapToPlayElement;
         private VisualElement _container;

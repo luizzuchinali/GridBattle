@@ -3,7 +3,7 @@ using UnityEngine.UIElements;
 
 namespace GridBattle.UI
 {
-    public class MainMenuScreen : Screen
+    public class MainMenuView : View
     {
         private VisualElement _container;
 

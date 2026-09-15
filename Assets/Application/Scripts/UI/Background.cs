@@ -4,7 +4,7 @@ using UnityEngine.UIElements;
 
 namespace GridBattle.UI
 {
-    public class Background : Screen
+    public class Background : View
     {
         protected override void ReloadUICallback(PanelRenderer panelRenderer, VisualElement rootElement, int version)
         {
