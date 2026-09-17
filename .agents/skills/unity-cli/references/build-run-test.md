@@ -263,7 +263,53 @@ Under `--format json` the same summary appears as a `retries` block, **absent en
 
 Three cases end early rather than doing something misleading. **Nothing failed** → the editor is not started and the run exits 0 with a warning, because an empty test filter is no filter at all and launching would run everything. **`--report-format junit` alone** → rejected up front (exit **2**): `--output` is then the JUnit report, and the failing set is read from NUnit, so ask for `--report-format nunit,junit`. **`--shard`** → rejected (exit **2**): the editor accepts one test filter and each option needs it, so to retry a shard, run that shard again with `--retries`.
 
-Options: `--mode EditMode|PlayMode`, `--filter <pattern>`, `--output <path>`, `--report-format nunit|junit|nunit,junit`, `--junit-output <path>`, `--shard <n/m>`, `--shard-inventory <path>`, `--retries <n>` (0-10), `--rerun-failed`, `--coverage`, `--coverage-output <path>`, `--coverage-options <options>`, `--editor-version <version>` (env `UNITY_EDITOR_VERSION`), `-e, --editor-path <path>`, `-a, --architecture <arch>`, `--allow-install`, `--timeout <seconds>` (env `UNITY_TEST_TIMEOUT`).
+#### Running only the tests a change affects (`--affected`)
+
+`--affected --since <ref>` runs only the test assemblies the change can reach, taken from `unity vcs affected`'s guid impact graph instead of a hand-written filter. `--since` defaults to `HEAD` (uncommitted work) and otherwise uses the revision's merge base with `HEAD`, like `vcs affected`.
+
+```bash
+unity test /path/to/MyProject                                   # seed the inventory: one full run
+unity test /path/to/MyProject --affected --since origin/main    # writes test-results.affected.xml
+unity test /path/to/MyProject --affected-compare --since origin/main
+```
+
+**Selection is an approximation, and every run says so.** The impact graph is a *lower bound*: Addressables groups, resource-folder lookups and assets loaded by path or name are real dependencies no static analysis finds. So this trades correctness for time, and the warning naming those classes is printed on every `--affected` run — human, tsv (on stderr) and as `lowerBound` plus `lowerBoundReason` in `--format json`.
+
+**It needs an inventory, for the same reason `--shard` does.** The editor's command line filters by test *full name* (`Namespace.Fixture.Method`), which carries no assembly, so resolving affected assemblies into runnable tests needs an NUnit3 report an earlier full run wrote. It reads `--output` (`test-results.xml` by default) and writes to a derived path — `test-results.affected.xml` — so a selective run can never overwrite the full-suite record it will read next time.
+
+**Anything it cannot prove runs the whole suite**, with a stable untranslated `reason` token in `--format json` for a pipeline to log. That happens for: a non-code change (`non-code-change` — the graph maps changed *code* to assemblies and has no edge from a prefab to the test that loads it, so a change touching any asset refuses, including one that also touches scripts), a moved assembly boundary (`assembly-boundary-changed`), a project using Addressables (`addressables`, read from both `Packages/manifest.json` and `Packages/packages-lock.json` so a transitive dependency counts, and an unreadable manifest or settings folder counts as using them), files changed outside the project (`outside-project-changes`), an empty diff (`no-changes`), a bad revision (`diff-failed`), no repository (`no-git-repository`), unreadable project input (`unreadable-input`, `changed-without-guid`), a missing or unattributable inventory (`no-inventory`, `unattributed-tests`), an inventory older than the change (`stale-inventory`), a change that edits a test source at all (`changed-test-source` — an inventory is keyed on assembly *names*, so a case added inside an existing test assembly is invisible to it, and selecting anyway would skip the very test the change adds while still exiting 0), a set too large for one test filter (`filter-unsendable`), and — deliberately — an empty selection (`nothing-selected`), because "no test is affected" is the largest claim a lower bound can fail to support. A refused run behaves exactly as if `--affected` had not been passed, so a `--filter` you also gave is still honoured.
+
+**Measure before you trust it.** `--affected-compare` runs *every* test, then reports what selection would have skipped and, from this run's own results, how many of those tests **failed** — the false-negative count, alongside the seconds selection would have saved. Both ride the `warnings` channel so they survive onto a failing run's envelope, which is the run most likely to have one. Use it for a while before switching to `--affected`.
+
+`--affected`, `--affected-compare`, `--shard` and `--rerun-failed` are mutually exclusive (exit **2**): each decides which tests run, and the editor accepts one test filter. `--since` without `--affected` or `--affected-compare` is a usage error too.
+
+Options: `--mode EditMode|PlayMode`, `--filter <pattern>`, `--output <path>`, `--report-format nunit|junit|nunit,junit`, `--junit-output <path>`, `--shard <n/m>`, `--shard-inventory <path>`, `--retries <n>` (0-10), `--rerun-failed`, `--affected`, `--affected-compare`, `--since <ref>`, `--coverage`, `--coverage-output <path>`, `--coverage-options <options>`, `--editor-version <version>` (env `UNITY_EDITOR_VERSION`), `-e, --editor-path <path>`, `-a, --architecture <arch>`, `--allow-install`, `--timeout <seconds>` (env `UNITY_TEST_TIMEOUT`).
+
+---
+
+### Watch — re-run affected tests on file change
+
+`unity watch test` is a thin loop around `unity test --affected`: it runs once immediately, then re-runs on every project file change, so the inner dev loop no longer means re-typing `unity test --affected` by hand after each edit.
+
+```bash
+unity watch test /path/to/MyProject
+unity watch test . --filter "MyNamespace.MyTests"
+unity watch test . --ignore "*.log" --ignore Recordings
+```
+
+**One run at a time, always.** A run in flight is always allowed to finish; changes that arrive while it is running only mark the next run pending, and a burst of them (a multi-file save, a branch switch) coalesces into exactly one follow-up run rather than one per file. Two Editor invocations against the same project can never overlap.
+
+**Ignored by default:** `Library/`, `Temp/`, `Logs/`, `Build/`, `obj/` — matched case-insensitively wherever they appear in the project tree, and no file watcher is even attached to a top-level directory that matches, so Unity's own import churn under `Library/` never reaches the CLI. `--ignore <pattern>` (repeatable) adds more file/directory glob patterns on top of that default set; there is no flag to remove a default entry.
+
+**Ctrl-C** while idle (between runs, waiting for the next change) exits cleanly with no Editor running. Ctrl-C while a run is in flight terminates the CLI and the spawned Editor together, the same as a plain `unity test` — never an orphaned Editor process either way.
+
+**Refuses to start** under `--non-interactive`, or when a `CI` environment variable is detected, since the loop has no exit condition of its own and would otherwise hang a job indefinitely.
+
+`unity watch test` deliberately exposes a narrower flag set than `unity test` itself — no `--shard`, `--coverage`, `--retries`, `--rerun-failed`, `--affected-compare`, or `--output`/`--report-format` (the report path is fixed internally, which is also what keeps a run's own report write from re-triggering itself). Reach for `unity test --affected` directly when you need those.
+
+Options: `--mode EditMode|PlayMode`, `--filter <pattern>`, `--editor-version <version>` (env `UNITY_EDITOR_VERSION`), `-e, --editor-path <path>`, `-a, --architecture <arch>`, `--allow-install`, `--timeout <seconds>`, `--ignore <pattern>` (repeatable).
+
+`unity watch build` (re-running `unity build` on change) is a documented follow-up, not yet implemented.
 
 ---
 
@@ -295,6 +341,9 @@ unity build /path/to/MyProject --profile "Windows Release" --output-path ./Build
 | `--target <target>` | Build target (required unless `--profile` is used). |
 | `--execute-method <method>` | Static C# method to invoke, e.g. `Builder.PerformBuild`. Optional: without it, the CLI uses Unity's built-in build. |
 | `--profile <profile>` | Build profile: a `.asset` path or a profile name in `Assets/Settings/Build Profiles` (Unity 6+; the profile defines the target). |
+| `--list-targets` | List every valid `--target` value — flagged zero-code (the built-in build works) or needing `--execute-method` / `--profile` — then exit. |
+| `--list-profiles` | List the project’s Build Profile assets (Unity 6+), then exit. |
+| `--create-profile <target>` | Create a Build Profile for a target and exit without building (Unity 6+); build with it afterwards via `--profile`. |
 | `--build-target-group <group>` | Forwarded to Unity as `-buildTargetGroup`. |
 | `-o, --output-path <path>` | Output path. With `--execute-method`, passed as `-buildOutput` (your method must honor it); otherwise the built-in build's destination (required). |
 | `-l, --log-file <path>` | Log file path. Default: `<project>/Logs/build-<target>-<timestamp>.log`. Streamed to stdout by default (see `--no-tail`). |
@@ -344,6 +393,72 @@ unity build /path/to/MyProject --target StandaloneOSX --execute-method Builder.B
 # {"type":"progress","command":"build","message":"Unity exited (code 0)"}
 # { "success": true, "command": "build", "data": { "target": "...", "logFile": "..." } }
 ```
+
+#### Discover targets, create profiles, launch the last build
+
+```bash
+# Every valid --target value, flagged zero-code (built-in build works) or needing --execute-method / --profile
+unity build /path/to/MyProject --list-targets --format json
+
+# The project’s Build Profile assets (Unity 6+) — the supported way to build partner or
+# package-provided platforms, such as Meta Quest, that are not in --target’s list
+unity build /path/to/MyProject --list-profiles --format json
+
+# Create a Build Profile for a target and exit without building (Unity 6000.0+), then build with it
+unity build /path/to/MyProject --create-profile WebGL
+unity build /path/to/MyProject --profile WebGL --output-path ./Build/web
+
+# Launch the project’s most recent recorded build without rebuilding (recorded = built with a known --output-path)
+unity build run /path/to/MyProject
+unity build run /path/to/MyProject --path ./Build/other/MyGame.exe   # a different recorded build
+```
+
+`--list-targets`, `--list-profiles` and `--create-profile` each do their job and exit — no build happens. A `--target` outside the classic catalog fails with `BUILD_INVALID_TARGET` and points at `--profile`. A successful `unity build` with a known output path — a built-in build (`--output-path` is required there) or a `--profile` / `--execute-method` build that passed `--output-path` — records that path together with the target, architecture and Editor version, and `build run` launches that recording: a desktop player natively, a WebGL build from a loopback-only local HTTP server that opens in the default browser. An `--execute-method` build without `--output-path` chooses its own destination inside the method, so it records nothing and leaves any earlier record in place; launch such a build with `build run --path <output>` instead. `build run` fails cleanly (exit 6) when no build has been recorded yet, when the recorded build’s platform cannot run on this OS, or when its output is gone.
+
+**Per-project defaults.** A committed `ProjectSettings/UnityCliConfig.json` declares `unity build` / `unity test` defaults (`build.target`, `build.outputPath`, `build.profile`, `build.timeout`, `test.mode`, `test.reportFormat`, `test.coverage`, `test.coverageOptions`, `test.timeout`) so they need not be repeated on every invocation; `unity config resolve <key> [project]` shows the resolved value and which layer supplied it. See [config-hub.md](config-hub.md).
+
+---
+
+### Unity Accelerator — shared asset-import cache
+
+The [Unity Accelerator](https://docs.unity3d.com/Manual/UnityAccelerator.html) is Unity's asset-import cache server: on import the Editor downloads a prebuilt artifact on a hash hit instead of re-importing. It pays off exactly where the CLI is used most — clean CI checkouts, ephemeral containers, branch switches, parallel agent worktrees.
+
+**Persist the endpoint once** with `unity config accelerator <host:port>` (see [config-hub.md](config-hub.md)), and `run`, `test` and `build` inject it automatically. Per-invocation control:
+
+| Flag | Description |
+|---|---|
+| `--accelerator <host:port>` | Endpoint for this invocation. Also via `UNITY_ACCELERATOR`. A bare host defaults to port `10080`. |
+| `--no-accelerator` | Ignore any configured Accelerator for this invocation. |
+
+**Both are scoped to `run`, `test` and `build`, and go after the command name.** They are deliberately not root globals: every other command would accept an endpoint it can never act on, then still fail as a usage error on a malformed value. `unity --accelerator … build` is an `unknown option` error (exit 2) — put the flag after the command instead.
+
+```bash
+# Uses the persisted endpoint automatically
+unity test /path/to/MyProject
+
+# One-shot override / opt-out
+unity build /path/to/MyProject --target StandaloneLinux64 --accelerator cache.example.com:10080
+unity test /path/to/MyProject --no-accelerator
+```
+
+When an endpoint resolves, the CLI appends `-EnableCacheServer -cacheServerEndpoint <host:port>` to the Editor argv and says so (`Using Unity Accelerator at … (source: settings).`). When nothing resolves, the argv is byte-identical to a CLI without this feature. `--no-accelerator` reports that it suppressed a configured endpoint, which is deliberately distinct from the silence of a machine that has none.
+
+**`unity run`, `unity test` and `unity build` inject. `unity open` does not** — interactive opens have their own argv builder and are a known follow-up; configure the Accelerator in Editor Preferences for interactive work in the meantime.
+
+**Reserved:** `-EnableCacheServer` and `-cacheServerEndpoint` are rejected if you forward them yourself (exit 6) — the CLI manages that pair. Matching is case-insensitive and covers the `--flag` and `-flag=value` spellings.
+
+**Everything else in the family stays forwardable**, and the injected pair is placed *before* your tail so Unity's last-wins parser lets your values win: `-cacheServerEnableImportResultCaching`, `-cacheServerNamespacePrefix`, `-cacheServerEnableDownload true|false`, `-cacheServerEnableUpload true|false`, `-cacheServerWaitForConnection <ms>`, `-cacheServerDownloadBatchSize <n>`, `-cacheServerUploadExistingImports`, `-cacheServerUploadAllRevisions`, `-cacheServerUploadExistingShaderCache`, and the `-disableShaderCacheRemote*` / `-disableTextureCacheRemote*` families (each with `…Download` / `…Upload` sub-variants).
+
+```bash
+unity test /path/to/MyProject -- \
+  -cacheServerEnableImportResultCaching \
+  -cacheServerNamespacePrefix "ci-6000.0" \
+  -cacheServerWaitForConnection 10000
+```
+
+**Import result caching is disabled by default from Unity 6.5 in new projects.** On a new 6.5+ project, connecting to an Accelerator is not by itself enough to get import-result reuse — pass `-cacheServerEnableImportResultCaching` or enable it in the project.
+
+**A configured endpoint can still be ignored.** Every `-cacheServer*` argument overrides *Editor Preferences*, not Project Settings; `ProjectSettings/EditorSettings.asset`'s `m_CacheServerMode` decides whether preferences are consulted at all (`0` = Use global settings, `1` = Enabled, `2` = Disabled). A project on mode `2` ignores the injected flags, and the CLI emits a warning (never a failure — the run proceeds). Mode `1` is not warned about: whether a project-pinned endpoint beats an injected one is unmeasured, and a false warning would be worse than none. Diagnose with `unity diagnose accelerator` (see [diagnostics-maintenance.md](diagnostics-maintenance.md)); full explanation in `apps/cli/docs/accelerator.md`.
 
 ---
 

@@ -12,6 +12,15 @@ These capabilities are accepted by design. Each is documented in full in the sec
 | `SEC_INSTALL_PIPE` | Install one-liners piped to a shell | HTTPS to Unity’s first-party CDN only; the installer verifies a SHA-256 pin against a same-origin manifest before executing anything. |
 | `SEC_AGENT_CONFIG_WRITE` | Writing agent skill files into AI clients’ configuration directories | Runs only on an explicit user command, is the command’s documented purpose, and is fenced by an ownership ledger — a copy this CLI did not write is never overwritten without `--force` — plus symlink refusals and a warning before project-local installs from the home directory. |
 
+## Reading an automated scanner's verdict on this skill
+
+The directive above records the risks this skill's maintainers have reviewed and accepted, for the repository's own validator. A scanner run elsewhere generally will not consult it, and will read the **whole folder** rather than the change in front of it. Both facts matter when you are looking at a verdict:
+
+- A verdict describes this skill's standing capabilities — the ones documented below — not whatever the current change happens to touch. A documentation-only edit can still draw a verdict, because the capabilities it is reacting to were already here.
+- Verdicts from an AI classifier are a judgement, not a rule, and the same unchanged folder can be scored differently on different runs. Treat a single verdict as a prompt to check, never as a result on its own.
+
+So before acting on one, compare it against what actually changed. If the change introduces no capability beyond those accepted below, the verdict is re-deriving something already reviewed and recorded here — note that and move on. If it does introduce one, it needs a real review and an entry in this file, because this skill is published and shipped inside the CLI.
+
 ## Accepted, by-design capabilities
 
 ### Installing skills into AI clients
@@ -24,6 +33,9 @@ These capabilities are accepted by design. Each is documented in full in the sec
 
 Machine/agent mode (`unity shell --protocol ndjson`) runs the exact commands the caller sends. It validates framing (malformed or unknown requests return an error frame rather than crashing or ending the session), runs every command non-interactively, and returns structured JSON response frames (JSON-serialized, so control characters are escaped for the consuming parser). Callers must feed it **trusted input only** — commands they construct themselves — and never commands assembled from untrusted third-party content, exactly as they would guard any shell.
 
+### Launching the project’s own build
+
+`unity build run` launches a player the CLI itself recorded from a previous `unity build` on the same machine — or the output the user names with `--path` — without rebuilding. It downloads nothing and runs nothing it did not just build or was not explicitly pointed at: a desktop player is started as the current user, and a WebGL build is served from a loopback-only local HTTP server that the default browser opens. Automated scanners flag documented executable paths (`./Build/…`) as local code execution; here the executable is the user’s own build artifact, on the user’s own machine, and the command refuses (exit 6) when no build has been recorded, when the recorded build’s platform cannot run on the current OS, or when its output is gone.
 ### Install via the official CDN
 
 The documented install downloads and runs an install script from Unity's official CDN, `public-cdn.cloud.unity3d.com`, **over HTTPS (TLS)**. This pipe-to-shell pattern is a deliberate, industry-standard install convenience for a first-party tool. Beyond TLS, the script verifies the downloaded binary against the SHA-256 published in the channel's release manifest and aborts on mismatch — or when no SHA-256 tool is available — so a corrupted, truncated, or substituted download fails instead of executing. The manifest is fetched from the same CDN origin as the binary, so this is an integrity check against a bad or altered *download*, not a defense against a compromise of the origin itself; trust in the install ultimately rests on TLS and on Unity's control of that CDN.

@@ -44,7 +44,60 @@ unity doctor --format json
 unity doctor --tail 50
 ```
 
-`unity doctor` reports real session state (matching `unity auth status`) and surfaces the resolved proxy URL, its source, and auth source. It also runs environment health checks and reports pass/warn per check (in every output format): whether the `unity` binary's directory is actually on `PATH` (the top post-install pitfall on Windows, where a new terminal is needed), whether multiple `unity` binaries shadow each other on `PATH`, whether Windows long-path support is enabled, and whether a git credential helper is configured (`git-credential-helper`: advisory for the git-token flows in `projects clone`/`create`/`link vcs`; the row is omitted on machines without git).
+`unity doctor` reports real session state (matching `unity auth status`) and surfaces the resolved proxy URL, its source, and auth source. It carries an **Accelerator** section alongside the Proxy one, reporting the resolved endpoint and its source and — when a project is in scope — that project's cache-server mode and pinned endpoint. Three states, mirroring Proxy: a table, a plain `No Unity Accelerator configured.` (the common case, not a fault), or `Accelerator state unknown` when the configuration could not be read. Nothing there is a *check*: whether the endpoint answers is `doctor --ci`'s question, because the default collector is synchronous and cannot make a network call. It also runs environment health checks and reports pass/warn per check (in every output format): whether the `unity` binary's directory is actually on `PATH` (the top post-install pitfall on Windows, where a new terminal is needed), whether multiple `unity` binaries shadow each other on `PATH`, whether Windows long-path support is enabled, and whether a git credential helper is configured (`git-credential-helper`: advisory for the git-token flows in `projects clone`/`create`/`link vcs`; the row is omitted on machines without git).
+
+A **"Third-party components"** section lists every open-source runtime dependency the binary bundles — the .NET runtime plus each direct NuGet package — with its version and SPDX license identifier, and points at `https://spdx.org/licenses/` for the full texts (not embedded, to keep the binary small). It's generated from the CLI's own build configuration, so it can never drift from what actually shipped, and it's informational only — never a pass/fail check.
+
+---
+
+### CI init — scaffold a working CI workflow
+
+`unity ci init` writes a committed CI workflow generated from the project. Use it instead of assembling the steps by hand — it wires up the CLI's own CI features in the right order and encodes the parts that are otherwise learned by trial and error.
+
+```bash
+# GitHub Actions -> .github/workflows/unity.yml (the default provider).
+# With no --project-path, it works on the directory you ran it from.
+unity ci init
+
+# GitLab CI -> .gitlab-ci.yml
+unity ci init --provider gitlab
+
+# Scope the workflow to a build target (validated like `unity build --target`)
+unity ci init --target Android
+
+# Review it before committing to anything
+unity ci init --dry-run
+
+# Another project; replace a workflow that is already there
+unity ci init --project-path ./MyProject --overwrite
+```
+
+The generated workflow installs the CLI, restores the editor download cache and the project's `Library/` folder, installs the editor version from `ProjectSettings/ProjectVersion.txt`, activates a license, runs `unity doctor --ci` as a preflight, runs the tests with a JUnit report, builds, uploads the report and the build, and returns the license seat in a teardown step that runs even when the job failed or was cancelled.
+
+What it derives from the project: the editor version (rejected unless it parses as a real Unity version, since it is interpolated into an install command on the runner), and the editor module the build target needs where that is unambiguous — `Android`, `iOS`, `tvOS`, `WebGL`, `WindowsStoreApps`, `VisionOS`, `Lumin`. The standalone desktop targets get no module, because each has il2cpp / mono / server variants and picking one from the target alone would be a guess; asking for `StandaloneOSX` or `StandaloneWindows64` warns that the install step needs a `--module` you choose.
+
+Secrets are referenced by name only. The command never reads a credential and the generated file never contains one — it expects `UNITY_SERVICE_ACCOUNT_ID`, `UNITY_SERVICE_ACCOUNT_SECRET`, and `UNITY_LICENSE_SERIAL` to exist as repository secrets, and reports which ones to add after it writes.
+
+Two things about licensing that the workflow states in comments, because they surprise people: service-account auth covers Unity *services*, not the editor licence, and `unity license activate --personal` is rejected outright for a service account. The generated step therefore activates from a serial, and ships the floating-server and offline-`.ulf` alternatives as commented blocks beside it.
+
+The project rides `--project-path`, like `list`, `status`, `mcp configure`, `pipeline install` and `collaboration` — not a positional operand as on `build` / `test` / `cache key`. It takes a path, not a registry project name, and defaults to the current directory, so the common case is a bare `unity ci init` from the project root.
+
+**Interactive vs scripted.** On a real terminal, anything you didn't pass is asked for: a picker for the provider, one for the build target, and one for how many parallel jobs to split the tests across (all three open on their default, so Enter accepts), plus a confirm before replacing a workflow that already exists. A flag always wins over its prompt, so `--provider gitlab --target Android --shards 4` asks nothing.
+
+Nothing prompts when any one of these holds — `--non-interactive` (or `UNITY_NON_INTERACTIVE`), a machine `--format` (`json`, `ndjson`, `tsv`), `--format github`, or a redirected stdout. In that case the unpassed values take their defaults (`github`, `StandaloneLinux64`, no sharding) and an existing workflow is an exit-2 error naming `--overwrite` rather than a question. That means a CI job or a script gets identical behaviour whether or not it happens to be attached to a terminal.
+
+**Splitting the suite: `--shards <n>`.** Off by default, and offered by the picker on a terminal. Accepts 2 to 64 — `1` is rejected rather than generating a one-leg matrix, so there is no flag spelling for "no sharding"; omit it instead. More shards than tests is safe, because `unity test --shard` reports an empty slice and skips the editor instead of quietly running the whole suite.
+
+```bash
+unity ci init --shards 4
+unity ci init --provider gitlab --shards 8
+```
+
+Two things the generated matrix handles that a hand-written one usually does not. `unity test --shard N/M` splits the suite using an NUnit report from an *earlier* run, because the Editor cannot enumerate tests without running them — so a cold pipeline has nothing to split. Rather than fail, one shard runs the whole suite to write that inventory while the rest stand down: the first run is green and costs exactly one full suite. And a *stale* inventory is the dangerous case, since a test added after it was written would belong to no shard and run nowhere — green, and not running the new test. So the cached inventory is bound to a hash of every `.cs`, `.asmdef`, `.asmref` and `packages-lock.json` in the repository, and any change to them re-seeds the suite in full. (`unity cache key` deliberately ignores script changes, which is right for a `Library/` cache and wrong for this, so the inventory gets its own key.)
+
+The trade: a run that touches C# pays for one full unsharded suite, and a run that does not — assets, scenes, shaders, config, a retry, a scheduled build — is split `n` ways. Never slower than the unsharded workflow, and never under-tested. The build gets its own job, since inside the matrix it would run once per shard and burn `n` licence seats; both providers aggregate the per-shard JUnit reports themselves, so there is no merge step.
+
+`--dry-run` prints the workflow to stdout and nothing else, so it pipes into a file or a diff. `--format json` reports the written paths in `data.paths`, plus the resolved provider, editor version, build target, and module. Exit 2 on an unknown `--provider`, an invalid `--target`, an existing workflow file without `--overwrite`, or a stray positional argument; exit 6 when the directory isn't a Unity project or its editor version can't be read. Templates are embedded in the binary, so this works offline and always matches the CLI it ships with.
 
 ---
 
@@ -73,6 +126,8 @@ Exit codes distinguish the two kinds of bad news, so a workflow can retry only w
 
 A `6` outranks a `7` when both occur, so a real blocker is never reported as retryable.
 
+`--ci` also probes the configured Unity Accelerator, so a CI agent learns the cache server is down in seconds instead of discovering it as an unexplained twenty-minute import. **This check never blocks, in any arm** — an Accelerator is an accelerator, so an unreachable one is a `warn` (`ACCELERATOR_UNREACHABLE`, classified retryable) and a machine with none configured is an `info` row (`ACCELERATOR_NOT_CONFIGURED`). A project that does not use an Accelerator can never have its preflight failed by it. The probe targets the endpoint the CLI would hand to the Editor (the resolver's answer), not the project's own pinned endpoint.
+
 Every check carries a machine-readable `code` (`LICENSE_NONE`, `EDITOR_NOT_INSTALLED`, `DISK_SPACE_LOW`, `NETWORK_UNREACHABLE`, …) plus a remediation `hint`. In `--format json` the per-check results stay in `data` even on failure, with one coded entry per failure in `errors`. Output is redacted and carries no tokens and no absolute user paths, so it is safe to paste into a public CI log.
 
 `--ci` is always explicit — it is never inferred from `CI=true`, because a report that silently changed shape and exit code on a runner would be a trap. Note that the CLI already defaults to `--format tsv` whenever stdout is redirected, which in CI it usually is; that output leads with a `verdict` row.
@@ -93,6 +148,27 @@ Reports the resolved proxy and where it came from, PAC configuration, CA bundle,
 
 ---
 
+### Diagnose accelerator — Unity Accelerator diagnostic report
+
+```bash
+# Resolved endpoint, project cache-server settings, and whether the endpoint answers
+unity diagnose accelerator
+
+# Machine-readable
+unity diagnose accelerator --json
+```
+
+A working Accelerator and a broken one produce identical output apart from wall-clock time. This is the command that tells them apart. It reports four sections:
+
+- **Resolved configuration** — the endpoint and its source (`env` / `settings` / `none`), and whether the Accelerator was disabled. This command does not accept `--accelerator` or `--no-accelerator` (both are scoped to `run` / `test` / `build`), so it reports what the env var and the persisted setting resolve to — the endpoint any command would start from, before a one-shot override.
+- **Environment variables** — `UNITY_ACCELERATOR` by **presence only**, never by value (a host and port is infrastructure detail a support paste should not carry). The character length is included, enough to tell "set" from "set to empty".
+- **Project cache server** — the project's `m_CacheServerMode` (as Unity's own inspector labels it) and `m_CacheServerEndpoint`, and whether they agree with the resolved endpoint. There is no "void case": a project's cache-server mode never makes an injected endpoint moot — command-line flags always win — so the report states a mismatch as a fact without claiming which side the Editor uses.
+- **Reachability** — a raw TCP connect with a 5-second timeout, reporting elapsed time and a familiar error code on failure (`ENOTFOUND`, `ECONNREFUSED`, `ETIMEDOUT`, …). A successful connect proves the port is reachable, **not** that an import will get a cache hit, and the report says so.
+
+**An unreachable endpoint is a reported row, not a command failure** — the command exits `0` having successfully diagnosed a broken endpoint. `--format json` emits the standard envelope; every other format writes the plaintext report raw to stdout so it survives a pipe or a CI log. `--quiet` is honoured. Full explanation of the mechanism: `apps/cli/docs/accelerator.md`.
+
+---
+
 ### Environment
 
 ```bash
@@ -101,6 +177,25 @@ unity env --format json
 
 # Returns: user data path, editor install path, download cache path, config path, CLI version, resolved proxy
 ```
+
+---
+
+### Version — machine-readable version object
+
+```bash
+# Bare version string (backward compatible, unchanged)
+unity --version
+
+# Structured version object
+unity version --format json
+
+# The --version flag also honors an explicit format set before it
+unity --format json --version
+```
+
+`unity version` reports the CLI version, release channel (`stable`, `beta`, …), commit, platform, architecture, and runtime — the same version fact `env` and `doctor` carry, as one parseable object. It honors `--format` (`human`, `json`, `tsv`, `ndjson`); human output is the bare version string.
+
+A bare `unity --version` still prints only the version string, so scripts that parse it are unaffected. The `--version` flag switches to the structured object only when an explicit machine format is given *before* it (`unity --json --version`, `unity --format json --version`, or `UNITY_FORMAT=json unity --version`) — the flag terminates parsing, so a trailing format after `--version` is not seen. For order-independent machine output, prefer the `unity version` subcommand.
 
 ---
 
@@ -188,6 +283,8 @@ unity analytics opt-out
 Consent is stored in the shared Hub privacy preferences, so opting out in the CLI also opts out in Hub, and vice versa. When opted **in**, the CLI records which commands run (registered command names only — never your arguments, paths, or project names), editor uninstalls, project open/create (editor version and template id only), CLI self-update/uninstall outcomes, `unity shell` and `unity mcp` session usage, and `unity doctor` / `unity bug` results. When opted out (the default), no events are sent.
 
 Separately from analytics, the CLI reports **anonymous crashes and errors** via Sentry to help fix bugs (no IP address or hostname; home-directory paths and token-like values scrubbed before send), aligned with the Unity Hub. Opting in to analytics additionally attaches an anonymized machine id so crash-free-user rates can be computed; opted-out users stay fully anonymous. Set `UNITY_NO_CRASH_REPORT` to disable crash reporting entirely.
+
+Separately again, every run — including one that never sees the consent prompt (CI, an agent, a machine `--format`) — sends one anonymous `cli telemetry` usage ping, so total CLI usage can be counted regardless of the analytics opt-in state. It is not a measure of who opted in and carries no user, machine, or session identifier (a fresh random id per invocation, never persisted) and no consent state — just which Unity tool sent it, the CLI version, and whether the run looks like CI. Set `UNITY_NO_CLI_INVOKED_TELEMETRY=1` to disable it. `unity analytics status` discloses it alongside the opt-in state.
 
 ---
 
@@ -300,7 +397,11 @@ unity self-update --rollback
 - **Linux AppImage** — updates in place: downloads the new `.AppImage` artifact, verifies its checksum against the release manifest, and atomically replaces the AppImage you launched (`--rollback` restores the previous one). The embedded zsync update info is preserved, so external updaters (AppImageUpdate, Gear Lever) keep working.
 - **Package-manager install** — points you at the owning manager instead of replacing the binary. The `.deb` and `.rpm` packages are published to Unity's apt and rpm repositories on every beta and GA release (rpm packages are GPG-signed), so a package-managed install stays current through the system package manager: `sudo apt update && sudo apt upgrade unity-cli` on Debian/Ubuntu, `sudo dnf upgrade unity-cli` on Fedora/RHEL.
 
+Downloads go through the CLI’s regular download engine: an interrupted download (a dropped connection, a closed lid, a Ctrl-C) resumes from where it left off on the next `unity self-update`, and a Brotli-compressed artifact is preferred when the release publishes one — verified against its own checksum and again after decompression. A release with no compressed artifact for your platform falls back to the raw download.
+
 `--check`, `--changelog`, and `--dry-run` work everywhere. The background "update available" notice is package-manager-aware: when the release manifest says your install's package manager already carries the new version, the notice suggests that manager's exact upgrade command instead of `unity self-update`; installs whose manager doesn't carry the release yet stay quiet.
+
+The same background check also warns when a self-installed `unity` and a Homebrew-managed one are **both** on `PATH` — a state where `which unity` keeps resolving to the self-installed copy while `brew upgrade` updates the other, so the two silently drift apart. The notice points at `unity self-uninstall -y` to remove the self-installed copy so Homebrew is the only one managing updates going forward.
 
 ---
 

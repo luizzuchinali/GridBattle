@@ -214,10 +214,10 @@ unity install 6000.0.47f1 --module windows-mono --module android
 unity install 6000.0.47f1 --changeset abc123def456
 
 # Include child modules
-unity install 6000.0.47f1 --cm
+unity install 6000.0.47f1 --child-modules
 
 # Exclude child modules
-unity install 6000.0.47f1 --no-cm
+unity install 6000.0.47f1 --no-child-modules
 
 # Install and accept EULAs automatically (CI)
 unity install 6000.0.47f1 --yes --accept-eula
@@ -225,15 +225,16 @@ unity install 6000.0.47f1 --yes --accept-eula
 # Force reinstall even if already present
 unity install 6000.0.47f1 --force
 
-# Resume an interrupted download (also recovers orphaned partials left by a crash or kill)
+# Resume an interrupted download — editor installer or module — (also recovers orphaned partials left by a crash or kill)
 unity install 6000.0.47f1 --resume
 
 # Dry-run: show what would be installed without doing it
 unity install 6000.0.47f1 --dry-run --format json
 
 # List the editor's available modules and exit without installing
-# (a drop-in alias for `unity modules list <version>`)
-unity install 6000.0.47f1 --list-components --format json
+# (a drop-in alias for `unity modules list <version>`; the old --list-components spelling
+# still works as a hidden alias, matching the -m/--module terminology used everywhere else)
+unity install 6000.0.47f1 --list-modules --format json
 
 # Space-separated module values after a single -m are equivalent to repeating -m
 unity install 6000.0.47f1 -m android ios          # space-separated
@@ -247,7 +248,7 @@ unity install 6000.0.47f1 -m android -m ios       # repeated flag (same effect)
 unity install 6000.0.47f1 --no-elevate --yes --accept-eula
 ```
 
-When installing an editor with several modules, a failed module no longer aborts the whole batch — `unity install` (and `unity install-modules`) continue with the remaining items and exit non-zero if any failed. Each editor and module is listed as installed (✓), failed (✗), or pending (·); the NDJSON `result` frame carries the same breakdown as an `items` array (each entry has `uid`, `name`, `kind`, `status`), so scripts can tell exactly which modules succeeded even on a non-zero exit.
+A transient editor or module download failure (a dropped connection, a truncated transfer) is retried with the same bounded policy `install-modules` already uses (two attempts by default; `UNITY_INSTALL_RETRIES` sets the count for both commands, and the `--retries` flag exists on `install-modules` only — `unity install` has no such flag) before the install fails. When installing an editor with several modules, a failed module no longer aborts the whole batch — `unity install` (and `unity install-modules`) continue with the remaining items and exit non-zero if any failed. Each editor and module is listed as installed (✓), failed (✗), or pending (·); the NDJSON `result` frame carries the same breakdown as an `items` array (each entry has `uid`, `name`, `kind`, `status`), so scripts can tell exactly which modules succeeded even on a non-zero exit.
 
 **NDJSON progress frames** for `unity install` and `unity install-modules` include a `phase: 'download' | 'install'` field so scripts can switch to an indeterminate spinner during the install phase (which is genuinely indeterminate — NSIS on Windows only reports success/failure). During the install phase, `pct` is locked at 50 and only jumps to 100 on completion. Module download/install progress is nested under the parent editor via `parentItemUid`, so consumers see one editor group with its modules rather than one group per module.
 
@@ -277,7 +278,7 @@ unity modules list 6000.0.47f1 --format json
 unity modules list 6000.0.47f1 --architecture arm64 --format json
 ```
 
-`unity modules list` honors `--format ndjson` (empty results emit a clean, empty NDJSON stream).
+`unity modules list` honors `--format ndjson` (empty results emit a clean, empty NDJSON stream). The last column is `Aliases` — the alternate module names `-m`/`--module` accepts for that row; under `--format json` it's the `aliases` field (renamed from the old `downloaderName`).
 
 ### install-modules
 
@@ -292,10 +293,10 @@ unity install-modules --editor-version 6000.0.47f1 --module android --module ios
 unity install-modules --editor-version 6000.0.47f1 --all --yes
 
 # Include child modules (default behaviour)
-unity install-modules --editor-version 6000.0.47f1 --module android --cm
+unity install-modules --editor-version 6000.0.47f1 --module android --child-modules
 
 # Exclude child modules
-unity install-modules --editor-version 6000.0.47f1 --module android --no-cm
+unity install-modules --editor-version 6000.0.47f1 --module android --no-child-modules
 
 # Accept EULAs and dry-run
 unity install-modules --editor-version 6000.0.47f1 --all --accept-eula --dry-run
@@ -320,6 +321,8 @@ unity install-modules --editor-version 6000.0.47f1 --module android --no-elevate
 A module whose download or validation fails intermittently — common for large modules such as Android SDK/NDK and OpenJDK — is retried automatically (up to twice with exponential backoff by default) instead of failing the whole run; already-installed modules are never re-downloaded, and retry attempts surface in both human and `--format ndjson` output.
 
 `--module android ios` (space-separated values after a single `--module`) and `--module android --module ios` (repeated flag) are equivalent — both install all listed modules.
+
+`--child-modules` / `--no-child-modules` is the primary spelling on both `install` and `install-modules`, matching `unity editors module add`; the old `--cm` / `--no-cm` shorts keep working as hidden aliases.
 
 Module discovery works for editors registered via `unity editors add <path>` (located editors), not just editors installed by the Hub.
 
