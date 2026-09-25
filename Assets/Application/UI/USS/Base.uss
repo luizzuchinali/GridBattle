@@ -6,8 +6,12 @@
     --color-primary: #ffcc00;
 
     /* Spacing Tokens */
-    --spacing-sm: 4px;
-    --spacing-md: 8px;
+    --spacing-sm: 2px;
+    --spacing-md: 4px;
+}
+
+.spacing-sm {
+    min-width: var(--spacing-sm);
 }
 
 .container {

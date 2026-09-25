@@ -8,10 +8,15 @@
         <ui:VisualElement name="game-content" style="flex-grow: 1;"/>
         <ui:VisualElement name="spell-area" style="flex-grow: 1;">
             <ui:Button text="" parse-escape-sequences="false" emoji-fallback-support="false" enable-rich-text="false"/>
-            <ui:Button text="" name="" enable-rich-text="false" emoji-fallback-support="false"/>
+            <ui:VisualElement class="spacing-sm"/>
             <ui:Button text="" enable-rich-text="false" emoji-fallback-support="false"/>
+            <ui:VisualElement class="spacing-sm"/>
             <ui:Button text="" enable-rich-text="false" emoji-fallback-support="false"/>
+            <ui:VisualElement class="spacing-sm"/>
             <ui:Button text="" enable-rich-text="false" emoji-fallback-support="false"/>
+            <ui:VisualElement class="spacing-sm"/>
+            <ui:Button text="" enable-rich-text="false" emoji-fallback-support="false"/>
+            <ui:VisualElement class="spacing-sm"/>
             <ui:Button text="" enable-rich-text="false" emoji-fallback-support="false"/>
         </ui:VisualElement>
     </gb:SafeArea>
