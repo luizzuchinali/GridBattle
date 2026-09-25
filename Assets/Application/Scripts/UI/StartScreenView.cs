@@ -5,6 +5,8 @@ namespace GridBattle.UI
 {
     public class StartScreenView : View
     {
+        protected override UIScreen? Screen => UIScreen.Start;
+
         protected override void OnUIReload(PanelRenderer panelRenderer, VisualElement root)
         {
             var tapToPlayElement = root.Q<VisualElement>("tap-to-play-label");

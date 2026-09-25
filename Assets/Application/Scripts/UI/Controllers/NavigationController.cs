@@ -4,8 +4,18 @@ using UnityEngine;
 
 namespace GridBattle.UI.Controllers
 {
+    using GridBattle.UI;
     public class NavigationController : MonoBehaviour
     {
+        [SerializeField]
+        private UIScreen currentScreen = UIScreen.Start;
+
+        /// <summary>
+        /// Tela atual do fluxo. Serializado no GameObject, então sobrevive ao
+        /// domain reload durante o Play Mode e é reaplicado pelas Views no reload da UI.
+        /// </summary>
+        public UIScreen CurrentScreen => currentScreen;
+
         public void OnEnable()
         {
             EventBus.Subscribe<StartScreenTapEvent>(OnStartScreenTap);
@@ -23,6 +33,7 @@ namespace GridBattle.UI.Controllers
             var screenTransitionView = FindAnyObjectByType<ScreenTransitionView>();
             screenTransitionView.Transition(() =>
             {
+                currentScreen = UIScreen.MainMenu;
                 FindAnyObjectByType<StartScreenView>().Hide();
                 FindAnyObjectByType<MainMenuScreenView>().Show();
             });
@@ -33,6 +44,7 @@ namespace GridBattle.UI.Controllers
             var screenTransitionView = FindAnyObjectByType<ScreenTransitionView>();
             screenTransitionView.Transition(() =>
             {
+                currentScreen = UIScreen.Game;
                 FindAnyObjectByType<MainMenuScreenView>().Hide();
                 FindAnyObjectByType<GameScreenView>().Show();
             });

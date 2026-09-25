@@ -6,6 +6,8 @@ namespace GridBattle.UI
     [RequireComponent(typeof(PanelRenderer))]
     public class GameScreenView : View
     {
+        protected override UIScreen? Screen => UIScreen.Game;
+
         protected override void OnUIReload(PanelRenderer panelRenderer, VisualElement root)
         {
         }

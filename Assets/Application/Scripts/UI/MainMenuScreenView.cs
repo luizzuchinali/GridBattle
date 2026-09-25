@@ -5,6 +5,8 @@ namespace GridBattle.UI
 {
     public class MainMenuScreenView : View
     {
+        protected override UIScreen? Screen => UIScreen.MainMenu;
+
         private VisualElement _container;
 
         protected override void OnUIReload(PanelRenderer panelRenderer, VisualElement root)

@@ -1,3 +1,4 @@
+using GridBattle.UI.Controllers;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -9,6 +10,12 @@ namespace GridBattle.UI
         protected PanelRenderer PanelRenderer;
         private VisualElement _rootElement;
         private VisualElement _container;
+
+        /// <summary>
+        /// Qual tela esta view representa. Telas têm a visibilidade controlada pelo
+        /// NavigationController; overlays/views auxiliares retornam null (sempre visíveis).
+        /// </summary>
+        protected virtual UIScreen? Screen => null;
 
         protected virtual void Awake()
         {
@@ -39,8 +46,22 @@ namespace GridBattle.UI
         {
             _rootElement = rootElement;
             _container = rootElement.Q<VisualElement>("container");
-            
+
+            ApplyPersistedVisibility();
             OnUIReload(panelRenderer, rootElement);
+        }
+
+        private void ApplyPersistedVisibility()
+        {
+            if (Screen == null || _container == null)
+                return;
+
+            var navigationController = FindAnyObjectByType<NavigationController>();
+            if (navigationController == null)
+                return;
+
+            var shouldShow = navigationController.CurrentScreen == Screen;
+            _container.EnableInClassList("display-none", !shouldShow);
         }
 
         protected abstract void OnUIReload(PanelRenderer panelRenderer, VisualElement root);
