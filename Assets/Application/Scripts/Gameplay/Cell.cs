@@ -1,4 +1,6 @@
+using System;
 using GridBattle.Gameplay.Entities;
+using GridBattle.Gameplay.Entities.Interfaces;
 using GridBattle.Managers;
 using JetBrains.Annotations;
 using LitMotion;
@@ -19,7 +21,7 @@ namespace GridBattle.Gameplay
         public static readonly Vector2Int Size = new Vector2Int(32, 48);
 
         [CanBeNull]
-        private GridEntity _childEntity = null;
+        private GridEntity _content = null;
 
         public bool Selected { get; set; } = false;
 
@@ -33,12 +35,22 @@ namespace GridBattle.Gameplay
             selectionRenderer.enabled = Selected;
         }
 
-        public void SetChildEntity(GridEntity entity)
+        private void HandleContentLifeChanged(int life)
+        {
+            Debug.Log($"{gameObject.name} content life: {life}");
+        }
+
+        public void SetContent(GridEntity entity)
         {
             Assert.IsNotNull(entity, "Entity is null!");
-            _childEntity = entity;
+            _content = entity;
             entity.transform.SetParent(transform);
             entity.transform.localPosition = new Vector3(0, 8, 0) / GameConfigManager.Ppu;
+
+            if (_content.TryGetComponent(out IDamageReceiver receiver))
+            {
+                receiver.OnLifeChanged += HandleContentLifeChanged;
+            }
         }
 
         public void OnPointerClick(PointerEventData eventData)

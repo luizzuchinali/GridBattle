@@ -1,7 +1,11 @@
+using System;
+
 namespace GridBattle.Gameplay.Entities.Interfaces
 {
     public interface IDamageReceiver
     {
-        public void ReceiveDamage(int damage);
+        void ReceiveDamage(int damage);
+
+        Action<int> OnLifeChanged { get; set; }
     }
 }

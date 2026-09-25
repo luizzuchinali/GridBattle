@@ -279,6 +279,28 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: HealthBorder
+      rect:
+        serializedVersion: 2
+        x: 3
+        y: 58
+        width: 26
+        height: 5
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fdf2ea5b7b2f2724cab1a9ad71d58996
+      internalID: 1926808143
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     customData: 
     physicsShape: []
@@ -301,9 +323,9 @@ TextureImporter:
       BoardSpriteSheet_3: -5271520919673253528
       BoardSpriteSheet_4: -3712145555542149566
       BoardSpriteSheet_5: 6955983552795730313
-      BoardSpriteSheet_6: 6475527617543185802
       BoardSpriteSheet_7: -8795657922660537772
       BoardSpriteSheet_8: -1822668964
+      HealthBorder: 6475527617543185802
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

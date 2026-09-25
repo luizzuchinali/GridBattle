@@ -19,9 +19,10 @@ namespace GridBattle.Gameplay
 
         [SerializeField]
         [CanBeNull]
-        public GridEntity debugEntityPrefab;
+        public PlayerCharacter debugEntityPrefab;
 
         private Cell[,] _cells;
+        public PlayerCharacter PlayerCharacter { get; private set; }
 
         public static float Ppu => GameConfigManager.Ppu;
 
@@ -42,16 +43,12 @@ namespace GridBattle.Gameplay
 
             _cells = new Cell[gridSize.x, gridSize.y];
 
-            // passo de cada célula: tamanho + 2 pixels de espaçamento (par, mantém centros alinhados ao pixel)
             var pitchX = (Cell.Size.x + 2) / Ppu;
             var pitchY = (Cell.Size.y + 2) / Ppu;
 
-            // origem deslocada para que o centro do grid fique no transform (meio de todas as cells)
             var originX = -(gridSize.x - 1) * pitchX / 2f;
             var originY = (gridSize.y - 1) * pitchY / 2f;
 
-            // compensa o pivot do sprite: bounds.center é 0 se pivot centralizado,
-            // (size/2) se pivot no canto, etc.
             var spriteBounds = cellPrefab.GetComponent<SpriteRenderer>().sprite.bounds;
             var pivotOffset = new Vector3(spriteBounds.center.x, spriteBounds.center.y, 0);
 
@@ -85,7 +82,8 @@ namespace GridBattle.Gameplay
                         worldSpace = false
                     }
                 );
-                cell.SetChildEntity(debugInstance);
+                cell.SetContent(debugInstance);
+                PlayerCharacter = debugInstance;
             }
         }
     }
