@@ -1,8 +1,9 @@
-using System;
+using GridBattle.Gameplay.Entities;
+using GridBattle.Managers;
+using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.Assertions;
-using UnityEngine.Rendering.Universal;
-using UnityEngine.Serialization;
+using UnityEngine.EventSystems;
 
 namespace GridBattle.Gameplay
 {
@@ -16,12 +17,13 @@ namespace GridBattle.Gameplay
         [SerializeField]
         private Cell cellPrefab;
 
+        [SerializeField]
+        [CanBeNull]
+        public GridEntity debugEntityPrefab;
+
         private Cell[,] _cells;
 
-        public float Ppu { get; private set; }
-        private int _refResX;
-        private int _refResY;
-
+        public static float Ppu => GameConfigManager.Ppu;
 
         private void Awake()
         {
@@ -31,11 +33,6 @@ namespace GridBattle.Gameplay
 
         public void InitializeGrid()
         {
-            var pixelPerfectCamera = Camera.allCameras[0].GetComponent<PixelPerfectCamera>();
-            Ppu = pixelPerfectCamera.assetsPPU;
-            _refResX = pixelPerfectCamera.refResolutionX;
-            _refResY = pixelPerfectCamera.refResolutionY;
-
             var cells = FindObjectsByType<Cell>();
             foreach (var cell in cells)
             {
@@ -76,6 +73,19 @@ namespace GridBattle.Gameplay
                     instance.gameObject.name = $"Cell_{x}_{y}";
                     _cells[x, y] = instance;
                 }
+            }
+
+            if (debugEntityPrefab != null)
+            {
+                var cell = _cells[2, 2];
+                var debugInstance = Instantiate(debugEntityPrefab, new Vector3(0, 0, 0), Quaternion.identity,
+                    new InstantiateParameters
+                    {
+                        parent = cell.transform,
+                        worldSpace = false
+                    }
+                );
+                cell.SetChildEntity(debugInstance);
             }
         }
     }
