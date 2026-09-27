@@ -6,6 +6,13 @@ namespace GridBattle.Gameplay.Entities.Interfaces
     {
         void ReceiveDamage(int damage);
 
-        Action<int> OnLifeChanged { get; set; }
+        Action<DamageReceiveData> OnHpChanged { get; set; }
+    }
+
+    public struct DamageReceiveData
+    {
+        public int Damage;
+        public int CurrentHp;
+        public int MaxHp;
     }
 }

@@ -7,16 +7,24 @@ namespace GridBattle.Gameplay.Entities
     public class Character : GridEntity, IDamageReceiver
     {
         [SerializeField]
-        private int life = 100;
+        private int current = 100;
 
-        public int Life => life;
+        [SerializeField]
+        private int maxHp = 100;
 
-        public Action<int> OnLifeChanged { get; set; }
+        public int Current => current;
+
+        public Action<DamageReceiveData> OnHpChanged { get; set; }
 
         public void ReceiveDamage(int damage)
         {
-            life -= damage;
-            OnLifeChanged?.Invoke(life);
+            current -= damage;
+            OnHpChanged?.Invoke(new DamageReceiveData
+            {
+                Damage = damage,
+                CurrentHp = Current,
+                MaxHp = maxHp,
+            });
         }
     }
 }

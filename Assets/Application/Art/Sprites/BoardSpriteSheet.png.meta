@@ -288,7 +288,7 @@ TextureImporter:
         width: 26
         height: 5
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -297,6 +297,28 @@ TextureImporter:
       bones: []
       spriteID: fdf2ea5b7b2f2724cab1a9ad71d58996
       internalID: 1926808143
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: InternalHpBar
+      rect:
+        serializedVersion: 2
+        x: 4
+        y: 53
+        width: 1
+        height: 3
+      alignment: 4
+      pivot: {x: 0, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b69ddab335fcfa149a21f79c5ec54b61
+      internalID: 1255394180
       vertices: []
       indices: 
       edges: []
@@ -326,6 +348,7 @@ TextureImporter:
       BoardSpriteSheet_7: -8795657922660537772
       BoardSpriteSheet_8: -1822668964
       HealthBorder: 6475527617543185802
+      InternalHpBar: 1255394180
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
