@@ -60,7 +60,7 @@ namespace GridBattle.Gameplay
 
             damageText.gameObject.SetActive(true);
             var start = new Vector3(0, 0.23f, 0);
-            var end = new Vector3(Random.Range(-0.25f, 0.25f), 0.5f, 0);
+            var end = new Vector3(Random.Range(-0.25f, 0.25f), 0.4f, 0);
             var apex = new Vector3((start.x + end.x) / 2, Mathf.Max(start.y, end.y) + damageTextArcHeight, 0);
             LMotion.Create(0f, 1f, damageTextDuration)
                 .WithEase(Ease.OutQuad)
