@@ -21,6 +21,8 @@
     flex-grow: 1;
     margin-right: var(--spacing-sm);
     margin-left: var(--spacing-sm);
+    width: 134px;
+    height: 32px;
 }
 
 #xp-area #unity-progress-bar {
@@ -28,13 +30,22 @@
 }
 
 #xp-area #unity-progress-bar > VisualElement {
-
 }
 
 #xp-area > Button {
     font-size: var(--font-size);
     width: 32px;
     margin: 0;
+    border-width: 0;
+    border-radius: 0;
+    padding: 0;
+    background-color: transparent;
+    background-image: url("project://database/Assets/Application/Art/Sprites/UI.png?fileID=7843416716369364892&guid=62a3f1345f5495642b6ab1f188fd400c&type=3#UI_7");
+    -unity-background-scale-mode: scale-and-crop;
+}
+
+#xp-area > Button:active {
+    background-image: url("project://database/Assets/Application/Art/Sprites/UI.png?fileID=-6595680761151332689&guid=62a3f1345f5495642b6ab1f188fd400c&type=3#UI_8");
 }
 
 #game-content {
@@ -55,4 +66,13 @@
     width: 32px;
     margin: 0;
     padding: 0;
+    border-width: 0;
+    border-radius: 0;
+    background-image: url("project://database/Assets/Application/Art/Sprites/UI.png?fileID=7843416716369364892&guid=62a3f1345f5495642b6ab1f188fd400c&type=3#UI_7");
+    -unity-background-scale-mode: scale-and-crop;
+    background-color: transparent;
+}
+
+#spell-area > Button:active {
+    background-image: url("project://database/Assets/Application/Art/Sprites/UI.png?fileID=-6595680761151332689&guid=62a3f1345f5495642b6ab1f188fd400c&type=3#UI_8");
 }
