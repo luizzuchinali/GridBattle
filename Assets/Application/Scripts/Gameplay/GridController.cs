@@ -4,22 +4,21 @@ using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.EventSystems;
+using UnityEngine.Serialization;
 
 namespace GridBattle.Gameplay
 {
     [ExecuteAlways]
     public class GridController : MonoBehaviour
     {
-        [Header("Grid Settings")]
-        [SerializeField]
+        [Header("Grid Settings")] [SerializeField]
         private Vector2Int gridSize = new Vector2Int(6, 6);
 
-        [SerializeField]
-        private Cell cellPrefab;
+        [SerializeField] private Cell cellPrefab;
 
-        [SerializeField]
-        [CanBeNull]
-        public PlayerCharacter debugEntityPrefab;
+        [SerializeField] [CanBeNull] public PlayerCharacter debugEntityPrefab;
+
+        [SerializeField] [CanBeNull] public Enemy[] debugEnemyEntityPrefabs;
 
         private Cell[,] _cells;
         public PlayerCharacter PlayerCharacter { get; private set; }
@@ -84,6 +83,31 @@ namespace GridBattle.Gameplay
                 );
                 cell.SetContent(debugInstance);
                 PlayerCharacter = debugInstance;
+            }
+
+            if (debugEnemyEntityPrefabs != null)
+            {
+                var length = debugEnemyEntityPrefabs.Length;
+                for (int i = 0; i < length; i++)
+                {
+                    foreach (var cell in _cells)
+                    {
+                        if (cell.HasContent)
+                            continue;
+
+                        var debugEnemyEntityPrefab = debugEnemyEntityPrefabs[i];
+                        var debugInstance = Instantiate(debugEnemyEntityPrefab, new Vector3(0, 0, 0),
+                            Quaternion.identity,
+                            new InstantiateParameters
+                            {
+                                parent = cell.transform,
+                                worldSpace = false
+                            }
+                        );
+                        cell.SetContent(debugInstance);
+                        break;
+                    }
+                }
             }
         }
     }

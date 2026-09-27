@@ -14,14 +14,11 @@ namespace GridBattle.Gameplay
     [ExecuteAlways]
     public class Cell : MonoBehaviour, IPointerClickHandler, IPointerDownHandler, IPointerUpHandler
     {
-        [Header("Settings")]
-        [SerializeField]
-        private SpriteRenderer selectionRenderer;
+        [Header("Settings")] [SerializeField] private SpriteRenderer selectionRenderer;
 
         public static readonly Vector2Int Size = new Vector2Int(32, 48);
 
-        [CanBeNull]
-        private GridEntity _content = null;
+        [CanBeNull] private GridEntity _content = null;
 
         public bool Selected { get; set; } = false;
 
@@ -52,6 +49,9 @@ namespace GridBattle.Gameplay
                 receiver.OnLifeChanged += HandleContentLifeChanged;
             }
         }
+
+        public bool HasContent => 
+            _content != null;
 
         public void OnPointerClick(PointerEventData eventData)
         {
