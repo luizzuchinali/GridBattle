@@ -20,6 +20,7 @@ namespace GridBattle.UI.Controllers
         {
             EventBus.Subscribe<StartScreenTapEvent>(OnStartScreenTap);
             EventBus.Subscribe<CharacterChoosenEvent>(OnCharacterChoosen);
+            ApplyScreenVisibility();
         }
 
         public void OnDisable()
@@ -28,14 +29,31 @@ namespace GridBattle.UI.Controllers
             EventBus.Unsubscribe<CharacterChoosenEvent>(OnCharacterChoosen);
         }
 
+        /// <summary>
+        /// Responsabilidade central de visibilidade: todas as views de tela que não
+        /// correspondem à tela atual ficam com display-none. Views auxiliares
+        /// (overlays, transições) controlam a própria visibilidade e são ignoradas.
+        /// </summary>
+        public void ApplyScreenVisibility()
+        {
+            foreach (var view in FindObjectsByType<View>())
+            {
+                if (!view.IsScreenView) continue;
+
+                if (view.BelongsToScreen(CurrentScreen))
+                    view.Show();
+                else
+                    view.Hide();
+            }
+        }
+
         private void OnStartScreenTap(StartScreenTapEvent e)
         {
             var screenTransitionView = FindAnyObjectByType<ScreenTransitionView>();
             screenTransitionView.Transition(() =>
             {
                 currentScreen = UIScreen.MainMenu;
-                FindAnyObjectByType<StartScreenView>().Hide();
-                FindAnyObjectByType<MainMenuScreenView>().Show();
+                ApplyScreenVisibility();
             });
         }
 
@@ -45,10 +63,9 @@ namespace GridBattle.UI.Controllers
             screenTransitionView.Transition(() =>
             {
                 currentScreen = UIScreen.Game;
-                FindAnyObjectByType<MainMenuScreenView>().Hide();
-                FindAnyObjectByType<GameScreenView>().Show();
+                ApplyScreenVisibility();
             });
-            
+
             GameStateManager.StartRun(e.Character);
         }
     }

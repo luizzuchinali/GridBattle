@@ -24,12 +24,28 @@ namespace GridBattle.UI
 
         public virtual void Show()
         {
-            _container.ToggleInClassList("display-none");
+            _container?.EnableInClassList("display-none", false);
         }
 
         public virtual void Hide()
         {
-            _container.ToggleInClassList("display-none");
+            _container?.EnableInClassList("display-none", true);
+        }
+
+        /// <summary>
+        /// Indica se esta view representa uma tela (visibilidade controlada pelo
+        /// NavigationController). Overlays/views auxiliares retornam false e
+        /// controlam a própria visibilidade.
+        /// </summary>
+        public bool IsScreenView => Screen != null;
+
+        /// <summary>
+        /// Indica se esta view pertence à tela informada. Views auxiliares
+        /// (Screen == null) nunca pertencem a uma tela específica.
+        /// </summary>
+        public bool BelongsToScreen(UIScreen screen)
+        {
+            return Screen != null && Screen == screen;
         }
 
         protected virtual void OnEnable()
@@ -47,21 +63,19 @@ namespace GridBattle.UI
             _rootElement = rootElement;
             _container = rootElement.Q<VisualElement>("container");
 
-            ApplyPersistedVisibility();
+            RequestVisibilityApply();
             OnUIReload(panelRenderer, rootElement);
         }
 
-        private void ApplyPersistedVisibility()
+        /// <summary>
+        /// A visibilidade é responsabilidade do NavigationController. Após um reload
+        /// da UI (quando o container volta a nascer visível), o controller decide
+        /// novamente o estado de todas as views.
+        /// </summary>
+        private void RequestVisibilityApply()
         {
-            if (Screen == null || _container == null)
-                return;
-
             var navigationController = FindAnyObjectByType<NavigationController>();
-            if (navigationController == null)
-                return;
-
-            var shouldShow = navigationController.CurrentScreen == Screen;
-            _container.EnableInClassList("display-none", !shouldShow);
+            navigationController?.ApplyScreenVisibility();
         }
 
         protected abstract void OnUIReload(PanelRenderer panelRenderer, VisualElement root);
