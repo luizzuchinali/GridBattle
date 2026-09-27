@@ -14,7 +14,6 @@ using Random = UnityEngine.Random;
 namespace GridBattle.Gameplay
 {
     [RequireComponent(typeof(SpriteRenderer))]
-    [ExecuteAlways]
     public class Cell : MonoBehaviour, IPointerClickHandler, IPointerDownHandler, IPointerUpHandler
     {
         [Header("Settings")]

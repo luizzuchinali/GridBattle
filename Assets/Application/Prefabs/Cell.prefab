@@ -89,7 +89,7 @@ SpriteRenderer:
   m_Size: {x: 1, y: 1.5}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_SpriteSortPoint: 0
   m_BlendShapeWeights: []
 --- !u!1 &2577074814517288215
@@ -338,7 +338,7 @@ SpriteRenderer:
   m_SortingOrder: 2
   m_MaskInteraction: 0
   m_Sprite: {fileID: 7448113381798972013, guid: 62a3f1345f5495642b6ab1f188fd400c, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.4339623, g: 0.4339623, b: 0.4339623, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -362,7 +362,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GridBattle.Gameplay.CellContentHealthBar
   hpSpriteRenderer: {fileID: 1262635048536076904}
   hpInternalSpriteRenderer: {fileID: 7115243921454414655}
-  hpMaxScale: 22
+  hpMaxScale: 20
 --- !u!1 &3156679708852697588
 GameObject:
   m_ObjectHideFlags: 0
@@ -662,8 +662,8 @@ Transform:
   m_GameObject: {fileID: 5378312957179541418}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.11, y: 0, z: 0}
-  m_LocalScale: {x: 22, y: 1, z: 1}
+  m_LocalPosition: {x: -0.1, y: 0, z: 0}
+  m_LocalScale: {x: 20, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6719709892017731647}
@@ -715,10 +715,10 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 3
   m_MaskInteraction: 0
   m_Sprite: {fileID: 850006343, guid: 62a3f1345f5495642b6ab1f188fd400c, type: 3}
-  m_Color: {r: 0.8679245, g: 0.61000353, b: 0.61000353, a: 1}
+  m_Color: {r: 0.990566, g: 0.19157171, b: 0.19157171, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
