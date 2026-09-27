@@ -41,7 +41,9 @@
               "type": "file-explorer",
               "state": {
                 "sortOrder": "alphabetical",
-                "autoReveal": false
+                "autoReveal": false,
+                "showSearch": false,
+                "searchQuery": ""
               },
               "icon": "lucide-folder-closed",
               "title": "Explorador de arquivos"
@@ -184,17 +186,18 @@
   },
   "active": "d31be8652752a03b",
   "lastOpenFiles": [
-    "planos/plano_implementacao_gdd.md",
+    "design/ideias_traits_itens.md",
+    "design/talentos.md",
+    "_index_.md",
+    "GDD.md",
     "analise/analise_melhoria.md",
+    "analise/racional_refatoracao.md",
+    "projeto",
+    "planos/plano_implementacao_gdd.md",
     "planos/plano_progressao.md",
     "planos/plano_entidades.md",
-    "GDD.md",
-    "_index_.md",
-    "design/talentos.md",
-    "design/ideias_traits_itens.md",
     "planos/plano_refatoracao.md",
     "Drawing 2026-07-13 08.52.29.excalidraw.md",
-    "projeto",
     "Drawing 2026-07-13 00.38.43.excalidraw.md",
     "projeto/New Project_tasks/ssa.md",
     "projeto/New Project_tasks/new-task.md",
@@ -209,7 +212,6 @@
     "Planos/plano_refatoracao.md",
     "Planos/plano_progressao.md",
     "Planos/plano_entidades.md",
-    "analise/racional_refatoracao.md",
     "analise",
     "Analise/racional_refatoracao.md",
     "Analise/analise_melhoria.md",
@@ -217,7 +219,6 @@
     "Projeto/Grid Battle_tasks",
     "Projeto",
     "Planos/refactor_plan.md",
-    "Planos/progression_plan.md",
     "Planos",
     "Design"
   ]

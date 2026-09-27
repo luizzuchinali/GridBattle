@@ -27,6 +27,9 @@ namespace GridBattle.Gameplay
         [SerializeField]
         private TextMeshPro damageText;
 
+        [SerializeField]
+        private Vector3 contentPosition;
+
         [Header("Damage Text Animation")]
         [SerializeField]
         private float damageTextArcHeight = 0.15f;
@@ -34,7 +37,7 @@ namespace GridBattle.Gameplay
         [SerializeField]
         private float damageTextDuration = 0.4f;
 
-        public static readonly Vector2Int Size = new Vector2Int(32, 48);
+        public static readonly Vector2Int Size = new Vector2Int(32, 46);
 
         [CanBeNull]
         private GridEntity _content = null;
@@ -79,7 +82,7 @@ namespace GridBattle.Gameplay
             Assert.IsNotNull(entity, "Entity is null!");
             _content = entity;
             entity.transform.SetParent(transform);
-            entity.transform.localPosition = new Vector3(0, 8, 0) / GameConfigManager.Ppu;
+            entity.transform.localPosition = contentPosition;
 
             if (_content.TryGetComponent(out IDamageReceiver receiver))
             {

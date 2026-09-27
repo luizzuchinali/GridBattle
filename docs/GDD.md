@@ -3,6 +3,7 @@ tags:
   - design
   - gdd
 created: 2026-07-12
+updated: 2026-09-27
 ---
 ## Grid Battle (TEMP)
 
@@ -11,11 +12,12 @@ created: 2026-07-12
 | **Título**                   | Grid Battle         |
 | **Gênero**                   | RPG, Survive        |
 | **Plataforma(s)**            | Mobile e PC         |
-| **Engine**                   | Godot               |
+| **Engine**                   | Unity               |
 | **Classificação indicativa** | Livre               |
 | **Autor(es)**                | Zuchinali Softworks |
 
 ---
+
 ## 1. Visão Geral
 
 ### 1.1 Logline
@@ -24,8 +26,10 @@ Um RPG/Survivor em turnos onde cada ação do jogador importa para que ele consi
 
 ### 1.2 Sinopse
 
-O jogador poderá selecionar dentre X classes para controlar dentro de um sistema de #grid, #classe determina as variações de quais ações o jogador poderá realizar e seus #trait's. A cada nível que o jogador receber, irá receber um ponto de trait para escolher na arvore de #trait. Os #trait serão responsáveis por modificar características, modificar comportamentos do jogo, liberar #skill de uso ativo e também influenciar nos #item possíveis de serem dropados. Os #item são consumíveis de uso único, podendo ser poções, buffs ou **itens ativos** (como granadas, bombas e arremessáveis) com efeito próprio de uso único.
+O jogador poderá selecionar dentre X classes para controlar dentro de um sistema de #grid. A #classe determina as variações de quais ações o jogador poderá realizar e seus #trait's. A cada nível que o jogador receber, irá receber um ponto de trait para escolher na árvore de #trait. Os #trait serão responsáveis por modificar características, modificar comportamentos do jogo, liberar #skill de uso ativo e também influenciar nos #item possíveis de serem dropados. Os #item são consumíveis de uso único, podendo ser poções, buffs, antídotos e etc., sempre com efeito imediato ou temporário sobre o personagem.
+
 ### 1.3 Pillars de Design
+
 [3 a 5 princípios que guiam todas as decisões de design. Ex.: "Decisões sobre sorte", "Cada partida é única".]
 
 1. Cada ação do jogador importa
@@ -70,47 +74,43 @@ O jogador poderá selecionar dentre X classes para controlar dentro de um sistem
 
 ### 2.4 Mecânicas Secundárias
 
+> **Será revisto no futuro.** A ideia inicial é deixar o jogo base funcionando antes de implementar mais coisas acima desta camada. O que segue abaixo é a direção atual, sujeita a revisão.
+
 #### Mecânica 3: Skills Ativas
 - **Descrição:** Cada classe possui um conjunto de skills ativas adquiridas via traits. Skills são ações especiais com cooldown, área de efeito (shape), dano (se ofensivas) e outros parâmetros. Diferem de itens por serem reutilizáveis (cooldown) e vinculadas ao personagem.
-- **Entrada do jogador:** Toque em botão de skill na HUD → seleção de alvo (similar ao sistema de itens).
+- **Entrada do jogador:** Toque em botão de skill na HUD → seleção de alvo.
 - **Feedback visual/sonoro:** Animação própria da skill, efeito de área no grid, partículas, som de ativação.
 - **Interação com outras mecânicas:** Skills podem ter sinergia com traits (ex.: um trait que reduz cooldown de skills de fogo). Skills compartilham o mesmo sistema de seleção de alvo dos itens.
 
-#### Mecânica 4: Itens Consumíveis vs Itens Ativos
-- **Descrição:** Itens são divididos em duas categorias:
-  1. **Consumíveis:** Poções de cura, buffs temporários, antídotos — uso imediato ou com seleção de alvo, efeito único.
-  2. **Itens Ativos:** Itens de uso único com efeito próprio no grid (ex.: granada, bomba de fumaça, adaga de arremesso), usando a mesma mecânica de área/dano das skills, mas sem vínculo com a classe. Ao usar, o item é consumido.
-- **Entrada do jogador:** Toque no slot de item → seleção de alvo (se aplicável).
-- **Feedback visual/sonoro:** Mesmo sistema de prévia de área dos itens; animação de consumo ao usar.
-- **Interação com outras mecânicas:** Traits podem desbloquear itens ativos específicos na pool de drop. Skills de classe podem ser mais poderosas que itens ativos, mas têm cooldown.
-[Sistemas complementares que não são o foco, mas enriquecem a experiência.]
-
-- ...
+#### Mecânica 4: Itens Consumíveis
+- **Descrição:** Itens são exclusivamente consumíveis de uso único: poções de cura, buffs temporários, antídotos e afins — uso imediato ou com seleção de alvo, efeito único sobre o personagem. Itens de efeito ativo no grid (arremessáveis, granadas, bombas) não fazem mais parte do design; efeitos desse tipo pertencem somente às skills.
+- **Entrada do jogador:** Toque no slot de item → uso imediato ou seleção de alvo (se aplicável).
+- **Feedback visual/sonoro:** Indicador de efeito no personagem (cura, buff, status removido); animação de consumo ao usar.
+- **Interação com outras mecânicas:** Traits influenciam quais itens podem ser dropados. Itens complementam a sobrevivência sem substituir as skills de combate.
 
 ### 2.5 Progressão
 
+> **Será revisto no futuro.** As regras abaixo descrevem a direção desejada da progressão; os detalhes finais (valores, parâmetros e formato das skills/itens) serão revisados quando o jogo base estiver funcionando.
 
 ### 2.5.1 Skills e Níveis
 
-- **Skills de Classe:** São definidas pela `ClassDefinition` e desbloqueadas progressivamente via traits. Cada skill possui:
+- **Skills de Classe:** São definidas pela classe do personagem e desbloqueadas progressivamente via traits. Cada skill possui:
   - **Nome e descrição**
+  - **Tipo** (ofensiva, defensiva ou utilitária)
   - **Dano** (se ofensiva) — valor fixo
   - **Área de efeito** (shape: CIRCLE, CROSS, LINEAR, CONE, ARC, PERPENDICULAR)
-  - **Tamanho da área** (ímpat, 1-9)
+  - **Tamanho da área** (ímpar, 1-9)
   - **Alcance** (distância Manhattan do jogador para selecionar alvo)
   - **Cooldown** (em ações do jogador — número de turnos que precisa esperar entre usos)
   - **Ícone**
 
-- **Itens Ativos:** São `ItemBase` de uso único com efeito próprio no grid (ex.: granada, bomba de fumaça, adaga de arremesso). Não replicam uma skill de classe — são itens consumíveis independentes. Usam a mesma estrutura de `AreaEffectItemBase` e `DamageAreaEffectItem` já existente no código.
-
-- **Sistema de cooldown:** Cada skill ativa tem um contador de cooldown que decrementa a cada ação do jogador (movimento ou ataque). Skills não podem ser usadas enquanto `cooldown_remaining > 0`.
+- **Sistema de cooldown:** Cada skill ativa tem um contador de cooldown que decrementa a cada ação do jogador (movimento ou ataque). Skills não podem ser usadas enquanto o cooldown não zera.
 
 ### 2.5.2 Progressão de Conteúdo
 
-- **Spawn por nível:** A tabela de spawn (`SpawnEntry`) filtra inimigos por `min_level`/`max_level`. Conforme o jogador sobe de nível, inimigos mais fortes aparecem.
-- **Itens por nível:** Itens têm `min_level`; entram na pool de drop apenas quando o jogador atinge o nível mínimo.
-- **Traits por nível:** Traits têm `required_level`; O jogador ganha um ponto de trait podendo após receber o ponto, entrar em uma tela de escolha dos traits. Essa tela mostra todos os traits em ordem de requerimentos e etc. NÃO DEVE MOSTRAR DE MANEIRA ALEATÓRIA OS TRAITS NO LEVEL UP.
-[Como o jogador evolui ao longo do jogo — níveis, XP, unlocks, dificuldade.]
+- **Spawn por nível:** A tabela de spawn filtra inimigos por nível mínimo/máximo. Conforme o jogador sobe de nível, inimigos mais fortes aparecem.
+- **Itens por nível:** Itens têm nível mínimo; entram na pool de drop apenas quando o jogador atinge o nível mínimo.
+- **Traits por nível:** Traits têm nível requerido; o jogador ganha um ponto de trait e, após recebê-lo, entra em uma tela de escolha dos traits. Essa tela mostra todos os traits em ordem de requerimentos etc. NÃO DEVE MOSTRAR DE MANEIRA ALEATÓRIA OS TRAITS NO LEVEL UP.
 
 - **Sistema de progressão:** XP e níveis, árvore de traits e skills por classe
 - **Curva de dificuldade:** ...
@@ -134,6 +134,8 @@ O jogador poderá selecionar dentre X classes para controlar dentro de um sistem
 - **Descrição:** ...
 - **Motivação:** ...
 - **Habilidades iniciais:** ...
+
+> Skills de classe e slots de skill fazem parte do escopo "Será revisto no futuro".
 
 - **Skills de classe:** Cada classe começa com 1-2 skills básicas (ex.: Guerreiro começa com "Golpe" — dano em área frontal). Novas skills são desbloqueadas via traits.
 - **Slots de skill:** O personagem pode carregar até N skills ativas por vez, selecionadas na tela de classe antes da run (ou durante, via traits).
@@ -189,11 +191,13 @@ O jogador poderá selecionar dentre X classes para controlar dentro de um sistem
 
 ## 6. Skills e Itens
 
+> **Será revisto no futuro.** A prioridade atual é o jogo base funcionando. Skills e itens detalhados abaixo representam a direção inicial e serão reavaliados antes da implementação completa.
+
 ### 6.1 Definição de Skill
 
 **Skill** é uma ação ativa do personagem, vinculada à classe ou a traits adquiridos. Toda skill tem:
 
-- **Tipo:** `OFFENSIVE` (causa dano), `DEFENSIVE` (escudo/cura/buff), `UTILITY` (teleporte, troca, etc.)
+- **Tipo:** Ofensiva (causa dano), Defensiva (escudo/cura/buff), Utilitária (teleporte, troca etc.)
 - **Área de efeito:** Define a forma geométrica do efeito no grid (CIRCLE, CROSS, LINEAR, PERPENDICULAR, ARC, CONE).
 - **Tamanho da área:** Ímpar, de 1 a 9.
 - **Alcance:** Distância Manhattan máxima para seleção do alvo.
@@ -204,12 +208,9 @@ Skills são **reutilizáveis** — após o cooldown, podem ser usadas novamente.
 
 ### 6.2 Definição de Item
 
-**Item** é um recurso consumível de uso único. Dividido em:
+**Item** é um recurso consumível de uso único: poções, buffs, antídotos e similares — efeito imediato (cura, buff temporário, remoção de status) sobre o personagem. Não existem itens ativos de combate no grid; efeitos desse tipo pertencem exclusivamente às skills.
 
-- **Consumível:** Poções, buffs, antídotos — efeito imediato (cura, buff temporário).
-- **Item Ativo:** Item de uso único com efeito próprio no grid (ex.: granada, bomba de fumaça), com área, dano e alcance definidos por ele mesmo — não é uma skill de classe e é consumido ao usar.
-
-Ambos entram na pool de drop via `possible_items` (base) + `trait_sheet.get_unlocked_items()` (desbloqueados por traits).
+Itens entram na pool de drop a partir de uma lista base da run, somada aos itens desbloqueados por traits.
 
 ### 6.3 Tabela de Skills por Classe
 
@@ -234,17 +235,6 @@ Ambos entram na pool de drop via `possible_items` (base) + `trait_sheet.get_unlo
 | Adaga Envenenada | OFENSIVA | 7 | LINEAR | 3 | 4 | 2 | Mãos Ligeiras |
 | Linha Venenosa | OFENSIVA | 9 | LINEAR | 5 | 5 | 3 | Mestre do Veneno |
 
-### 6.4 Itens Ativos
-
-Efeitos de combate também existem como **itens ativos** (itens consumíveis com efeito próprio no grid). Exemplos já implementados:
-
-- **Granada** (`grenade.tres`): Dano em área, uso único.
-- **Bola de Fogo** (`fireball.tres`): 10 de dano em área CIRCLE size 3, uso único.
-- **Bomba de Fumaça** (`smoke_bomb.tres`): 5 de dano em área, uso único.
-- **Adaga de Arremesso** (`throwing_dagger.tres`): Dano à distância, uso único.
-
-A diferença é que a skill de classe é reutilizável (cooldown) e vinculada ao personagem, enquanto o item ativo é consumido. Itens ativos podem ser dropados por inimigos ou encontrados em baús, permitindo ao jogador ter acesso temporário a efeitos poderosos mesmo sem ter o trait correspondente.
-
 ---
 ## 7. Monetização (se aplicável)
 
@@ -256,8 +246,8 @@ A diferença é que a skill de classe é reutilizável (cooldown) e vinculada ao
 ## 8. Plataforma Técnica
 
 ### 8.1 Especificações
-- **Engine:** ...
-- **Renderização:** [OpenGL, Vulkan, GL Compatibility...]
+- **Engine:** Unity
+- **Renderização:** [URP, Built-in...]
 - **Resolução alvo:** ...
 - **Orientação:** [Retrato / Paisagem]
 - **FPS alvo:** ...
@@ -307,6 +297,8 @@ A diferença é que a skill de classe é reutilizável (cooldown) e vinculada ao
 ### 11.2 Escopo (Out of Scope)
 [O que NÃO será feito nesta versão. Ajuda a controlar feature creep.]
 
+- Itens ativos (arremessáveis, granadas, bombas) — removidos do design; itens são somente consumíveis.
+- Skills e itens detalhados — serão revistos no futuro, após o jogo base funcionar.
 - ...
 
 ---
@@ -327,5 +319,4 @@ A diferença é que a skill de classe é reutilizável (cooldown) e vinculada ao
 | Grid  | Tabuleiro de células onde ocorre o combate                                                                                        | #grid  |
 | Trait | São mecânicas obtidas a cada nível ganho pelo jogador, eles alteram características, liberam skills, desbloqueiam itens e modificam mecânicas de jogo. | #trait |
 | Skill | Ação ativa do personagem, vinculada à classe ou a traits. Possui área de efeito, dano, alcance e cooldown. Pode ser reutilizada. | #skill |
-| Item  | Consumível de uso único. Divide-se em consumíveis (poções, buffs) e itens ativos (efeito próprio de combate, ex.: granadas). | #item  |
-| Item Ativo | Item consumível de uso único com efeito próprio de combate no grid (ex.: granada, bomba de fumaça), independente das skills de classe. | #item |
+| Item  | Consumível de uso único (poções, buffs, antídotos etc.) com efeito imediato ou temporário sobre o personagem. Não existem itens ativos de combate. | #item |

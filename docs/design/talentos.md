@@ -3,6 +3,7 @@ tags:
   - design
   - classes
   - trait
+  - ignorar
 created: 2026-07-12
 aliases:
   - Catálogo de Traits

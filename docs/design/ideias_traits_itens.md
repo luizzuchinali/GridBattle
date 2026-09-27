@@ -4,6 +4,7 @@ tags:
   - ideias
   - trait
   - item
+  - "#ignorar"
 created: 2026-07-12
 aliases:
   - Ideias de Traits e Itens
