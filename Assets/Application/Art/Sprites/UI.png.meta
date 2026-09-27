@@ -81,7 +81,7 @@ TextureImporter:
   compressionQuality: 50
   spriteMode: 2
   spriteExtrude: 1
-  spriteMeshType: 1
+  spriteMeshType: 0
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 100
@@ -477,6 +477,28 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: UI_1
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 207
+        width: 40
+        height: 32
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 19, y: 15, z: 19, w: 15}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 65d7ed76fe4e4c7409896bf99abc78b1
+      internalID: 846991392
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     customData: 
     physicsShape: []
@@ -497,6 +519,7 @@ TextureImporter:
       MenuIcon: 9094600903545770030
       TreeIcon: -178838057
       UI_0: -1557013538026691241
+      UI_1: 846991392
       UI_10: 8391660652416901024
       UI_2: 1080825480604336155
       UI_3: -9136572144232859775
