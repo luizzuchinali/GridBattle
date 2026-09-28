@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 6891746510026831241}
   - component: {fileID: 4272138908314439574}
   - component: {fileID: 3592354906464498638}
+  - component: {fileID: 3976140956964917280}
   m_Layer: 0
   m_Name: Goblin
   m_TagString: Untagged
@@ -45,7 +46,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7dd3b96670354c6c870b0c447d38b8ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GridBattle.Gameplay.Entities.Enemy
-  life: 100
+  current: 100
+  maxHp: 100
 --- !u!212 &3592354906464498638
 SpriteRenderer:
   serializedVersion: 3
@@ -106,3 +108,25 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
   m_BlendShapeWeights: []
+--- !u!95 &3976140956964917280
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6397075157288302065}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 54150efc98e73ae44a39d3819b6ee262, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
