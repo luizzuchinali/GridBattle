@@ -17,7 +17,7 @@ namespace GridBattle.Editor
 
             if (GUILayout.Button("Reset grid"))
             {
-                controller.InitializeGrid();
+                controller.InitializeGrid(controller.debugEntityPrefab);
             }
         }
     }

@@ -66,7 +66,7 @@ namespace GridBattle.UI.Controllers
                 ApplyScreenVisibility();
             });
 
-            GameStateManager.StartRun(e.Character);
+            GameStateManager.Instance.StartRun(e.Character);
         }
     }
 }

@@ -9,14 +9,19 @@ namespace GridBattle.Gameplay
     [ExecuteAlways]
     public class GridController : MonoBehaviour
     {
-        [Header("Grid Settings")] [SerializeField]
+        [Header("Grid Settings")]
+        [SerializeField]
         private Vector2Int gridSize = new Vector2Int(6, 6);
 
-        [SerializeField] private Cell cellPrefab;
+        [SerializeField]
+        private Cell cellPrefab;
 
-        [SerializeField] [CanBeNull] public PlayerCharacter debugEntityPrefab;
+        [SerializeField]
+        [CanBeNull]
+        public PlayerCharacter debugEntityPrefab;
 
-        [SerializeField] [CanBeNull] public Enemy[] debugEnemyEntityPrefabs;
+        [SerializeField]
+        public Enemy[] enemyEntityPrefabs;
 
         private Cell[,] _cells;
         public PlayerCharacter PlayerCharacter { get; private set; }
@@ -26,10 +31,12 @@ namespace GridBattle.Gameplay
         private void Awake()
         {
             Assert.IsNotNull(cellPrefab, "Cell prefab is not set!");
-            InitializeGrid();
+#if UNITY_EDITOR
+            InitializeGrid(debugEntityPrefab);
+#endif
         }
 
-        public void InitializeGrid()
+        public void InitializeGrid(PlayerCharacter playerCharacterPrefab)
         {
             var cells = FindObjectsByType<Cell>();
             foreach (var cell in cells)
@@ -69,42 +76,29 @@ namespace GridBattle.Gameplay
                 }
             }
 
-            if (debugEntityPrefab != null)
-            {
-                var cell = _cells[2, 2];
-                var debugInstance = Instantiate(debugEntityPrefab, new Vector3(0, 0, 0), Quaternion.identity,
-                    new InstantiateParameters
-                    {
-                        parent = cell.transform,
-                        worldSpace = false
-                    }
-                );
-                cell.SetContent(debugInstance);
-                PlayerCharacter = debugInstance;
-            }
+            var playerCharacterInstance = Instantiate(playerCharacterPrefab, new Vector3(0, 0, 0), Quaternion.identity);
+            _cells[2, 2].SetContent(playerCharacterInstance);
+            PlayerCharacter = playerCharacterInstance;
 
-            if (debugEnemyEntityPrefabs != null)
+            var length = enemyEntityPrefabs.Length;
+            for (int i = 0; i < length; i++)
             {
-                var length = debugEnemyEntityPrefabs.Length;
-                for (int i = 0; i < length; i++)
+                foreach (var cell in _cells)
                 {
-                    foreach (var cell in _cells)
-                    {
-                        if (cell.HasContent)
-                            continue;
+                    if (cell.HasContent)
+                        continue;
 
-                        var debugEnemyEntityPrefab = debugEnemyEntityPrefabs[i];
-                        var debugInstance = Instantiate(debugEnemyEntityPrefab, new Vector3(0, 0, 0),
-                            Quaternion.identity,
-                            new InstantiateParameters
-                            {
-                                parent = cell.transform,
-                                worldSpace = false
-                            }
-                        );
-                        cell.SetContent(debugInstance);
-                        break;
-                    }
+                    var debugEnemyEntityPrefab = enemyEntityPrefabs[i];
+                    var debugInstance = Instantiate(debugEnemyEntityPrefab, new Vector3(0, 0, 0),
+                        Quaternion.identity,
+                        new InstantiateParameters
+                        {
+                            parent = cell.transform,
+                            worldSpace = false
+                        }
+                    );
+                    cell.SetContent(debugInstance);
+                    break;
                 }
             }
         }
