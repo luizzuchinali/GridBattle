@@ -1,4 +1,6 @@
+using System;
 using GridBattle.Gameplay.Entities;
+using GridBattle.Gameplay.Events;
 using GridBattle.Managers;
 using JetBrains.Annotations;
 using UnityEngine;
@@ -24,7 +26,6 @@ namespace GridBattle.Gameplay
         public Enemy[] enemyEntityPrefabs;
 
         private Cell[,] _cells;
-        public PlayerCharacter PlayerCharacter { get; private set; }
 
         public static float Ppu => GameConfigManager.Ppu;
 
@@ -72,13 +73,15 @@ namespace GridBattle.Gameplay
                         worldSpace = false
                     });
                     instance.gameObject.name = $"Cell_{x}_{y}";
+                    instance.GridPosition = new Vector2Int(x, y);
                     _cells[x, y] = instance;
                 }
             }
 
             var playerCharacterInstance = Instantiate(playerCharacterPrefab, new Vector3(0, 0, 0), Quaternion.identity);
             _cells[2, 2].SetContent(playerCharacterInstance);
-            PlayerCharacter = playerCharacterInstance;
+            EventBus.Raise(new PlayerCharacterSpawnEvent { GridPosition = new Vector2Int(2, 2) });
+
 
             var length = enemyEntityPrefabs.Length;
             for (int i = 0; i < length; i++)
@@ -101,6 +104,24 @@ namespace GridBattle.Gameplay
                     break;
                 }
             }
+        }
+
+        public bool IsFreePosition(Vector2Int position)
+        {
+            return !_cells[position.x, position.y].HasContent;
+        }
+
+        public void Move(Vector2Int currentPos, Vector2Int targetPos)
+        {
+            if (currentPos == targetPos)
+                return;
+
+            if (!IsFreePosition(targetPos))
+                throw new InvalidOperationException("Target position is not free");
+
+            var content = _cells[currentPos.x, currentPos.y].GetContent();
+            _cells[currentPos.x, currentPos.y].RemoveContent();
+            _cells[targetPos.x, targetPos.y].SetContent(content);
         }
     }
 }

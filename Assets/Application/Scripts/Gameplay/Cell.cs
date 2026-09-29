@@ -1,3 +1,4 @@
+using System;
 using GridBattle.Gameplay.Entities;
 using GridBattle.Gameplay.Entities.Interfaces;
 using GridBattle.Gameplay.Events;
@@ -41,6 +42,7 @@ namespace GridBattle.Gameplay
         private GridEntity _content;
 
         public bool Selected { get; set; } = false;
+        public Vector2Int GridPosition { get; set; }
 
         private void Awake()
         {
@@ -75,14 +77,16 @@ namespace GridBattle.Gameplay
 
         public void SetContent(GridEntity entity)
         {
-            RemoveContent();
+            if (_content != null)
+                throw new InvalidOperationException("Cell already has content");
 
             Assert.IsNotNull(entity, "Entity is null!");
             _content = entity;
+            entity.transform.localScale = Vector3.one;
             entity.transform.SetParent(transform);
             entity.transform.localPosition = contentPosition;
 
-            if (_content.TryGetComponent(out IDamageReceiver receiver))
+            if (_content is IDamageReceiver receiver)
             {
                 receiver.OnHpChanged += HandleContentHpChanged;
                 cellContentHealthBar?.Show();
@@ -99,17 +103,16 @@ namespace GridBattle.Gameplay
         public void RemoveContent()
         {
             if (_content == null) return;
-            if (_content.TryGetComponent(out IDamageReceiver receiver))
+            if (_content is IDamageReceiver receiver)
             {
                 receiver.OnHpChanged -= HandleContentHpChanged;
-                cellContentHealthBar?.Hide();
             }
 
             _content = null;
+            cellContentHealthBar?.Hide();
         }
 
-        public bool HasContent =>
-            _content != null;
+        public bool HasContent => _content != null;
 
         public void OnPointerClick(PointerEventData eventData)
         {
@@ -124,12 +127,6 @@ namespace GridBattle.Gameplay
                     .WithEase(Ease.InOutBounce)
                     .Bind(x => transform.localScale = x))
                 .Run();
-
-            // if (_content == null) return;
-            // if (_content.TryGetComponent(out IDamageReceiver receiver))
-            // {
-            //     receiver.ReceiveDamage(10);
-            // }
 
             EventBus.Raise(new CellTapEvent
             {
