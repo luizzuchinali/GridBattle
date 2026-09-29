@@ -85,6 +85,7 @@ namespace GridBattle.Gameplay
             entity.transform.localScale = Vector3.one;
             entity.transform.SetParent(transform);
             entity.transform.localPosition = contentPosition;
+            entity.CurrentGridPos = GridPosition;
 
             if (_content is IDamageReceiver receiver)
             {

@@ -6,16 +6,14 @@ using UnityEngine;
 namespace GridBattle.Gameplay
 {
     [RequireComponent(typeof(PlayerCharacter))]
-    public class PlayerCharacterController : MonoBehaviour
+    public class PlayerCharacterController : CharacterController
     {
         private PlayerCharacter _playerCharacter;
         private GridController _gridController;
-        private Vector2Int _currentPlayerGridPosition;
 
         private void Awake()
         {
             EventBus.Subscribe<CellTapEvent>(OnCellTap);
-            EventBus.Subscribe<PlayerCharacterSpawnEvent>(OnPlayerCharacterSpawn);
 
             _playerCharacter = GetComponent<PlayerCharacter>();
             _gridController = FindAnyObjectByType<GridController>();
@@ -24,31 +22,24 @@ namespace GridBattle.Gameplay
         private void OnDestroy()
         {
             EventBus.Unsubscribe<CellTapEvent>(OnCellTap);
-            EventBus.Unsubscribe<PlayerCharacterSpawnEvent>(OnPlayerCharacterSpawn);
-        }
-
-        private void OnPlayerCharacterSpawn(PlayerCharacterSpawnEvent @event)
-        {
-            _currentPlayerGridPosition = @event.GridPosition;
         }
 
         private void OnCellTap(CellTapEvent @event)
         {
             if (!@event.Cell.HasContent)
             {
-                _gridController.Move(_currentPlayerGridPosition, @event.Cell.GridPosition);
-                _currentPlayerGridPosition = @event.Cell.GridPosition;
+                if (!_playerCharacter.CanWalk(@event.Cell.GridPosition)) return;
+
+                _gridController.Move(_playerCharacter.CurrentGridPos, @event.Cell.GridPosition);
+                _playerCharacter.CurrentGridPos = @event.Cell.GridPosition;
             }
             else
             {
                 var target = @event.Cell.GetContent();
-                switch (target)
-                {
-                    case PlayerCharacter: return;
-                    case IDamageReceiver receiver:
-                        receiver.ReceiveDamage(10);
-                        break;
-                }
+                if (target is PlayerCharacter) return;
+                if (!_playerCharacter.IsInAttackRange(@event.Cell.GridPosition)) return;
+                if(target is IDamageReceiver receiver)
+                    _playerCharacter.Attack(receiver);
             }
         }
     }

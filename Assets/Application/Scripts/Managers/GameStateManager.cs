@@ -29,7 +29,6 @@ namespace GridBattle.Managers
         public void StartRun(ECharacter character)
         {
             FindAnyObjectByType<GridController>().InitializeGrid(_playerCharacterPrefabs[character]);
-            Debug.Log($"Character choosen {character}");
         }
     }
 }

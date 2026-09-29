@@ -80,8 +80,6 @@ namespace GridBattle.Gameplay
 
             var playerCharacterInstance = Instantiate(playerCharacterPrefab, new Vector3(0, 0, 0), Quaternion.identity);
             _cells[2, 2].SetContent(playerCharacterInstance);
-            EventBus.Raise(new PlayerCharacterSpawnEvent { GridPosition = new Vector2Int(2, 2) });
-
 
             var length = enemyEntityPrefabs.Length;
             for (int i = 0; i < length; i++)
@@ -91,8 +89,8 @@ namespace GridBattle.Gameplay
                     if (cell.HasContent)
                         continue;
 
-                    var debugEnemyEntityPrefab = enemyEntityPrefabs[i];
-                    var debugInstance = Instantiate(debugEnemyEntityPrefab, new Vector3(0, 0, 0),
+                    var enemyEntityPrefab = enemyEntityPrefabs[i];
+                    var enemyInstance = Instantiate(enemyEntityPrefab, new Vector3(0, 0, 0),
                         Quaternion.identity,
                         new InstantiateParameters
                         {
@@ -100,7 +98,7 @@ namespace GridBattle.Gameplay
                             worldSpace = false
                         }
                     );
-                    cell.SetContent(debugInstance);
+                    cell.SetContent(enemyInstance);
                     break;
                 }
             }
