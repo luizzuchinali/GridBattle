@@ -1,13 +1,20 @@
-ScrollView {
+#character-selection {
     width: 100%;
+    max-height: 46px;
     flex-direction: row;
-    align-self: flex-start;
+    justify-content: center;
+    align-items: center;
 }
 
-ScrollView > Button {
-    height: 48px;
+#character-selection > Button {
+    height: 46px;
     width: 32px;
+    margin: 0;
     margin-right: var(--spacing-sm);
-    font-size: 10px;
     -unity-text-align: middle-center;
+    border-width: 0;
+    background-color: transparent;
+    align-items: center;
+    justify-content: center;
+    background-image: url("project://database/Assets/Application/Art/Sprites/UI.png?fileID=82707731993968007&guid=62a3f1345f5495642b6ab1f188fd400c&type=3#GridCell")
 }

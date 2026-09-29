@@ -2,14 +2,16 @@
     <Style src="project://database/Assets/Application/UI/USS/MainMenuScreen.uss?fileID=7433441132597879392&amp;guid=d277521352ca2443cb0ca7d3549b5673&amp;type=3#MainMenuScreen"/>
     <gb:SafeArea name="container" class="container">
         <ui:Label text="Select a character"/>
-        <ui:ScrollView mode="Horizontal" picking-mode="Position" enabled="true" horizontal-scroller-visibility="Hidden" vertical-scroller-visibility="Hidden" touch-scroll-type="Elastic">
-            <ui:Button text="Char 1" name="character-1"/>
-            <ui:Button text="Char 2" name="character-2"/>
-            <ui:Button text="Char 3" name="character-3"/>
-            <ui:Button text="Char 4" name="character-4"/>
-            <ui:Button text="Char 5" name="character-5"/>
-            <ui:Button text="Char 6" name="character-6"/>
-            <ui:Button text="Char 7" name="character-7"/>
-        </ui:ScrollView>
+        <ui:VisualElement name="character-selection" style="flex-grow: 1;">
+            <ui:Button text="" name="knight-btn" style="padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0;">
+                <ui:VisualElement name="knight-image" style="flex-grow: 1; width: 25px; height: 30px; max-width: 25px; max-height: 30px; min-width: 25px; min-height: 30px;"/>
+            </ui:Button>
+            <ui:Button text="" name="mage-btn">
+                <ui:VisualElement name="mage-image" style="flex-grow: 1; width: 25px; height: 30px; max-width: 25px; max-height: 30px; min-width: 25px; min-height: 30px;"/>
+            </ui:Button>
+            <ui:Button text="" name="rogue-btn">
+                <ui:VisualElement name="rogue-image" style="flex-grow: 1; width: 25px; height: 30px; max-width: 25px; max-height: 30px; min-width: 25px; min-height: 30px;"/>
+            </ui:Button>
+        </ui:VisualElement>
     </gb:SafeArea>
 </ui:UXML>

@@ -2,13 +2,13 @@
     <Style src="project://database/Assets/Application/UI/USS/GameScreen.uss?fileID=7433441132597879392&amp;guid=4a8140714b30dc142abf3c5a895989d6&amp;type=3#GameScreen"/>
     <gb:SafeArea name="container" picking-mode="Ignore" class="container">
         <ui:VisualElement name="xp-area" picking-mode="Ignore">
-            <ui:Button name="menu-button" icon-image="project://database/Assets/Application/Art/Sprites/UI.png?fileID=9094600903545770030&amp;guid=62a3f1345f5495642b6ab1f188fd400c&amp;type=3#Menu"/>
+            <ui:Button name="menu-button" icon-image="project://database/Assets/Application/Art/Sprites/UI.png?fileID=9094600903545770030&amp;guid=62a3f1345f5495642b6ab1f188fd400c&amp;type=3#MenuIcon"/>
             <ui:VisualElement name="xp-bar">
                 <ui:Image source="project://database/Assets/Application/Art/Sprites/UI.png?fileID=1080825480604336155&amp;guid=62a3f1345f5495642b6ab1f188fd400c&amp;type=3#UI_2" style="width: 100%; height: 100%; flex-direction: row; align-items: center; justify-content: center;">
                     <ui:Image source="project://database/Assets/Application/Art/Sprites/UI.png?fileID=-9136572144232859775&amp;guid=62a3f1345f5495642b6ab1f188fd400c&amp;type=3#UI_3" style="width: 112px; height: 12px;"/>
                 </ui:Image>
             </ui:VisualElement>
-            <ui:Button name="trait-button" icon-image="project://database/Assets/Application/Art/Sprites/UI.png?fileID=-178838057&amp;guid=62a3f1345f5495642b6ab1f188fd400c&amp;type=3#Tree"/>
+            <ui:Button name="trait-button" icon-image="project://database/Assets/Application/Art/Sprites/UI.png?fileID=-178838057&amp;guid=62a3f1345f5495642b6ab1f188fd400c&amp;type=3#TreeIcon"/>
         </ui:VisualElement>
         <ui:VisualElement name="game-content" picking-mode="Ignore" style="flex-grow: 1;"/>
         <ui:VisualElement name="spell-area" picking-mode="Ignore" style="flex-grow: 1;">
