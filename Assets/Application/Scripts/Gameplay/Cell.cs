@@ -1,6 +1,6 @@
-using System;
 using GridBattle.Gameplay.Entities;
 using GridBattle.Gameplay.Entities.Interfaces;
+using GridBattle.Gameplay.Events;
 using GridBattle.Managers;
 using JetBrains.Annotations;
 using LitMotion;
@@ -35,10 +35,10 @@ namespace GridBattle.Gameplay
         [SerializeField]
         private float damageTextDuration = 0.4f;
 
-        public static readonly Vector2Int Size = new Vector2Int(32, 46);
+        public static readonly Vector2Int Size = new(32, 46);
 
         [CanBeNull]
-        private GridEntity _content = null;
+        private GridEntity _content;
 
         public bool Selected { get; set; } = false;
 
@@ -93,6 +93,9 @@ namespace GridBattle.Gameplay
             }
         }
 
+        [CanBeNull]
+        public GridEntity GetContent() => _content;
+
         public void RemoveContent()
         {
             if (_content == null) return;
@@ -122,11 +125,16 @@ namespace GridBattle.Gameplay
                     .Bind(x => transform.localScale = x))
                 .Run();
 
-            if (_content == null) return;
-            if (_content.TryGetComponent(out IDamageReceiver receiver))
+            // if (_content == null) return;
+            // if (_content.TryGetComponent(out IDamageReceiver receiver))
+            // {
+            //     receiver.ReceiveDamage(10);
+            // }
+
+            EventBus.Raise(new CellTapEvent
             {
-                receiver.ReceiveDamage(10);
-            }
+                Cell = this
+            });
         }
 
         public void OnPointerDown(PointerEventData eventData)

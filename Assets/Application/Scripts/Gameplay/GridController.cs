@@ -3,8 +3,6 @@ using GridBattle.Managers;
 using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.Assertions;
-using UnityEngine.EventSystems;
-using UnityEngine.Serialization;
 
 namespace GridBattle.Gameplay
 {
