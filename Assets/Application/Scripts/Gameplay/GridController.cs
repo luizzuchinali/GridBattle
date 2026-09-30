@@ -79,7 +79,8 @@ namespace GridBattle.Gameplay
                 }
             }
 
-            var playerCharacterInstance = Instantiate(playerCharacterPrefab, new Vector3(0, 0, 0), Quaternion.identity);
+            var playerCharacterInstance = InstantiatePrefabLinked(playerCharacterPrefab);
+            playerCharacterInstance.transform.SetPositionAndRotation(new Vector3(0, 0, 0), Quaternion.identity);
             _cells[2, 2].SetContent(playerCharacterInstance);
 
             var length = enemyEntityPrefabs.Length;
@@ -91,18 +92,25 @@ namespace GridBattle.Gameplay
                         continue;
 
                     var enemyEntityPrefab = enemyEntityPrefabs[i];
-                    var enemyInstance = Instantiate(enemyEntityPrefab, new Vector3(0, 0, 0),
-                        Quaternion.identity,
-                        new InstantiateParameters
-                        {
-                            parent = cell.transform,
-                            worldSpace = false
-                        }
-                    );
+                    var enemyInstance = InstantiatePrefabLinked(enemyEntityPrefab);
+                    enemyInstance.transform.SetParent(cell.transform, false);
                     cell.SetContent(enemyInstance);
                     break;
                 }
             }
+        }
+
+        /// <summary>
+        /// No editor, instancia linkada ao prefab para que os clones reflitam
+        /// mudanças no prefab
+        /// </summary>
+        private static T InstantiatePrefabLinked<T>(T prefab) where T : Component
+        {
+#if UNITY_EDITOR
+            if (!Application.isPlaying)
+                return (T)UnityEditor.PrefabUtility.InstantiatePrefab(prefab);
+#endif
+            return Instantiate(prefab);
         }
 
         public void MoveEntity(GridEntity entity, Vector2Int targetPos)

@@ -81,6 +81,12 @@ os inimigos executam uma ação**. Uma "ação" é um dos seguintes:
     (move o conteúdo da célula + atualiza `CurrentGridPos`).
 
 > [!note]
+> No editor, `InitializeGrid` instancia os entities **linkados ao prefab**
+> (`PrefabUtility.InstantiatePrefab`), então clones na cena refletem mudanças
+> no prefab (configs, atributos) automaticamente. Em runtime, usa
+> `Instantiate` normal.
+
+> [!note]
 > Distância no grid usa `Vector2Int.Distance` (euclidiana). Com
 > `walkDistance = 1` apenas os 4 vizinhos ortogonais são alcançáveis — as
 > diagonais (≈ 1,41) ficam fora de alcance. Trocar para Chebyshev (diagonais

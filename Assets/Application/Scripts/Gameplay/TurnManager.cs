@@ -18,7 +18,7 @@ namespace GridBattle.Gameplay
 
         private void OnPlayerAction(PlayerActionEvent _)
         {
-            var enemies = FindObjectsByType<EnemyController>(FindObjectsInactive.Exclude, FindObjectsSortMode.None);
+            var enemies = FindObjectsByType<EnemyController>(FindObjectsInactive.Exclude);
             foreach (var enemy in enemies)
             {
                 enemy.Act();
