@@ -8,6 +8,7 @@
                     <ui:VisualElement name="xp-bar-progress" style="background-image: url(&quot;project://database/Assets/Application/Art/Sprites/UI.png?fileID=8160775752198118580&amp;guid=62a3f1345f5495642b6ab1f188fd400c&amp;type=3#XpBarProgress&quot;); width: 110px; height: 10px; align-self: center; justify-content: flex-end; position: absolute; left: 12px; top: 11px; -unity-slice-type: sliced; background-position-x: left 0; background-position-y: top 0; -unity-background-scale-mode: stretch-to-fill; background-repeat: no-repeat no-repeat; -unity-slice-left: 0; -unity-slice-top: 0; -unity-slice-right: 0; -unity-slice-bottom: 0;"/>
                     <ui:Image source="project://database/Assets/Application/Art/Sprites/UI.png?fileID=-9136572144232859775&amp;guid=62a3f1345f5495642b6ab1f188fd400c&amp;type=3#UI_3" name="xp-bar-detail-2" style="width: 112px; height: 12px;"/>
                 </ui:Image>
+                <ui:Label text="XP" name="current-level" style="position: absolute; top: 8px; left: 106px; height: 8px; width: 15px; color: rgb(220, 178, 101); font-size: 12px; -unity-text-outline-width: 0; -unity-text-align: middle-center; align-items: center; white-space: normal; align-content: center; justify-content: center; align-self: center;"/>
             </ui:VisualElement>
             <ui:Button name="trait-button" icon-image="project://database/Assets/Application/Art/Sprites/UI.png?fileID=-178838057&amp;guid=62a3f1345f5495642b6ab1f188fd400c&amp;type=3#TreeIcon"/>
         </ui:VisualElement>

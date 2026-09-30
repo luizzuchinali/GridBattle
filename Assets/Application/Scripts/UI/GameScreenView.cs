@@ -12,6 +12,7 @@ namespace GridBattle.UI
         private const float XpBarMaxWidth = 110f;
 
         private VisualElement _xpBarProgress;
+        private Label _currentLevelLabel;
 
         protected override UIScreen? Screen => UIScreen.Game;
 
@@ -33,6 +34,7 @@ namespace GridBattle.UI
             menuButton.RegisterCallback<PointerUpEvent>(_ => { EventBus.Raise(new MenuOpenedEvent()); });
 
             _xpBarProgress = root.Q<VisualElement>("xp-bar-progress");
+            _currentLevelLabel = root.Q<Label>("current-level");
             UpdateXpBarFromPlayer();
         }
 
@@ -42,8 +44,8 @@ namespace GridBattle.UI
         }
 
         /// <summary>
-        /// Restaura o estado da barra após um reload da UI, lendo o estado
-        /// atual do PlayerCharacter.
+        /// Restaura o estado da barra e do nível após um reload da UI, lendo o
+        /// estado atual do PlayerCharacter.
         /// </summary>
         private void UpdateXpBarFromPlayer()
         {
@@ -57,7 +59,8 @@ namespace GridBattle.UI
 
         /// <summary>
         /// Converte o progresso de XP (current / toNextLevel) em % e aplica na
-        /// largura da barra (0 a XpBarMaxWidth px).
+        /// largura da barra (0 a XpBarMaxWidth px). Atualiza também o label
+        /// #current-level com o nível atual.
         /// </summary>
         private void UpdateXpBar(int level, int currentXp, int xpToNextLevel)
         {
@@ -66,6 +69,9 @@ namespace GridBattle.UI
 
             var progress = Mathf.Clamp01((float)currentXp / xpToNextLevel);
             _xpBarProgress.style.width = progress * XpBarMaxWidth;
+
+            if (_currentLevelLabel != null)
+                _currentLevelLabel.text = level.ToString();
         }
     }
 }

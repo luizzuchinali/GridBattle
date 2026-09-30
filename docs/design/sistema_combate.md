@@ -333,6 +333,7 @@ inimigo morre (Character.Die)
                   → GameScreenView.OnXpChanged
                       → progresso % = CurrentXp / XpToNextLevel
                       → largura do "xp-bar-progress" = % * 110px
+                      → texto do label "current-level" = Level
 ```
 
 - **O XP só entra na conta quando as células chegam à barra** — a barra
