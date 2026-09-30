@@ -1,3 +1,5 @@
+using GridBattle.Gameplay.Entities;
+using GridBattle.Gameplay.Events;
 using GridBattle.Managers;
 using GridBattle.UI.Events;
 using UnityEngine;
@@ -20,6 +22,7 @@ namespace GridBattle.UI.Controllers
         {
             EventBus.Subscribe<StartScreenTapEvent>(OnStartScreenTap);
             EventBus.Subscribe<CharacterChoosenEvent>(OnCharacterChoosen);
+            EventBus.Subscribe<CharacterDiedEvent>(OnCharacterDied);
             ApplyScreenVisibility();
         }
 
@@ -27,6 +30,7 @@ namespace GridBattle.UI.Controllers
         {
             EventBus.Unsubscribe<StartScreenTapEvent>(OnStartScreenTap);
             EventBus.Unsubscribe<CharacterChoosenEvent>(OnCharacterChoosen);
+            EventBus.Unsubscribe<CharacterDiedEvent>(OnCharacterDied);
         }
 
         /// <summary>
@@ -67,6 +71,18 @@ namespace GridBattle.UI.Controllers
             });
 
             GameStateManager.Instance.StartRun(e.Character);
+        }
+
+        private void OnCharacterDied(CharacterDiedEvent e)
+        {
+            if (e.Character is not PlayerCharacter) return;
+
+            var screenTransitionView = FindAnyObjectByType<ScreenTransitionView>();
+            screenTransitionView.Transition(() =>
+            {
+                currentScreen = UIScreen.MainMenu;
+                ApplyScreenVisibility();
+            });
         }
     }
 }

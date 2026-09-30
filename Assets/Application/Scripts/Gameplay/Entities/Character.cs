@@ -1,5 +1,7 @@
 using System;
 using GridBattle.Gameplay.Entities.Interfaces;
+using GridBattle.Gameplay.Events;
+using GridBattle.Gameplay.Rules;
 using UnityEngine;
 
 namespace GridBattle.Gameplay.Entities
@@ -19,13 +21,17 @@ namespace GridBattle.Gameplay.Entities
         protected int attackDistance = 1;
 
         public int Current => current;
+        public int MaxHp => maxHp;
         public int WalkDistance => walkDistance;
         public int AttackDistance => attackDistance;
+        public bool IsDead => current <= 0;
 
         public Action<DamageReceiveData> OnHpChanged { get; set; }
 
         public void ReceiveDamage(int damage)
         {
+            if (IsDead) return;
+
             current -= damage;
             OnHpChanged?.Invoke(new DamageReceiveData
             {
@@ -33,11 +39,24 @@ namespace GridBattle.Gameplay.Entities
                 CurrentHp = Current,
                 MaxHp = maxHp,
             });
+
+            if (IsDead)
+                Die();
+        }
+
+        protected virtual void Die()
+        {
+            var cell = GetComponentInParent<Cell>();
+            if (cell != null && cell.GetContent() == this)
+                cell.RemoveContent();
+
+            EventBus.Raise(new CharacterDiedEvent(this));
+            Destroy(gameObject);
         }
 
         public bool CanWalk(Vector2Int targetPos)
         {
-            return Vector2Int.Distance(targetPos, CurrentGridPos) <= WalkDistance;
+            return GridRules.IsInWalkRange(CurrentGridPos, targetPos, WalkDistance);
         }
 
         public void Attack(IDamageReceiver target)
@@ -47,7 +66,7 @@ namespace GridBattle.Gameplay.Entities
 
         public bool IsInAttackRange(Vector2Int targetPosition)
         {
-            return Vector2Int.Distance(targetPosition, CurrentGridPos) <= AttackDistance;
+            return GridRules.IsInAttackRange(CurrentGridPos, targetPosition, AttackDistance);
         }
     }
 }

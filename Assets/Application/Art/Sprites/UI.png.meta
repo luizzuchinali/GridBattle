@@ -368,28 +368,6 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: UI_10
-      rect:
-        serializedVersion: 2
-        x: 100
-        y: 265
-        width: 82
-        height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 0af9ee607ea257470800000000000000
-      internalID: 8391660652416901024
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
       name: MenuIcon
       rect:
         serializedVersion: 2
@@ -499,6 +477,28 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: GridCellHighlight
+      rect:
+        serializedVersion: 2
+        x: 147
+        y: 301
+        width: 34
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 14cb0271cfa81ae409986ef0f7cfa28f
+      internalID: 120779126
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     customData: 
     physicsShape: []
@@ -514,6 +514,7 @@ TextureImporter:
       entries: []
     nameFileIdTable:
       GridCell: 82707731993968007
+      GridCellHighlight: 120779126
       HpBar: 7448113381798972013
       HpBarProgress: 850006343
       MenuIcon: 9094600903545770030

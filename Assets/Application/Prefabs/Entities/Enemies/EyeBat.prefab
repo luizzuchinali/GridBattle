@@ -48,6 +48,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GridBattle.Gameplay.Entities.Enemy
   current: 100
   maxHp: 100
+  walkDistance: 1
+  attackDistance: 1
 --- !u!212 &7218256405943224327
 SpriteRenderer:
   serializedVersion: 3
@@ -95,7 +97,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 99
   m_MaskInteraction: 0
   m_Sprite: {fileID: 574073971, guid: 2fdad3188ff58ad499e2f7940baf39ec, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}

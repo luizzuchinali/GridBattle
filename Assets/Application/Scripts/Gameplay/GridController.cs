@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using GridBattle.Gameplay.Entities;
 using GridBattle.Gameplay.Events;
 using GridBattle.Managers;
@@ -104,9 +105,20 @@ namespace GridBattle.Gameplay
             }
         }
 
+        public bool IsValidPosition(Vector2Int position)
+        {
+            return position.x >= 0 && position.x < gridSize.x &&
+                   position.y >= 0 && position.y < gridSize.y;
+        }
+
         public bool IsFreePosition(Vector2Int position)
         {
             return !_cells[position.x, position.y].HasContent;
+        }
+
+        public GridEntity GetContent(Vector2Int position)
+        {
+            return _cells[position.x, position.y].GetContent();
         }
 
         public void Move(Vector2Int currentPos, Vector2Int targetPos)
@@ -120,6 +132,22 @@ namespace GridBattle.Gameplay
             var content = _cells[currentPos.x, currentPos.y].GetContent();
             _cells[currentPos.x, currentPos.y].RemoveContent();
             _cells[targetPos.x, targetPos.y].SetContent(content);
+        }
+
+        public void HighlightCells(Dictionary<Vector2Int, ECellHighlightType> highlightInfos)
+        {
+            foreach (var cell in _cells)
+            {
+                if (highlightInfos.TryGetValue(cell.GridPosition, out var highlightType))
+                {
+                    cell.Highlighted = true;
+                    cell.HighlightType = highlightType;
+                }
+                else
+                {
+                    cell.Highlighted = false;
+                }
+            }
         }
     }
 }

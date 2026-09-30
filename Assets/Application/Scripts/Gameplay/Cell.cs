@@ -13,6 +13,12 @@ using Random = UnityEngine.Random;
 
 namespace GridBattle.Gameplay
 {
+    public enum ECellHighlightType
+    {
+        Attack,
+        Walk
+    }
+
     [RequireComponent(typeof(SpriteRenderer))]
     public class Cell : MonoBehaviour, IPointerClickHandler, IPointerDownHandler, IPointerUpHandler
     {
@@ -22,6 +28,15 @@ namespace GridBattle.Gameplay
 
         [SerializeField]
         private CellContentHealthBar cellContentHealthBar;
+
+        [SerializeField]
+        private SpriteRenderer highlightRenderer;
+
+        [SerializeField]
+        private Color walkHighlightColor;
+
+        [SerializeField]
+        private Color attackHighlightColor;
 
         [SerializeField]
         private TextMeshPro damageText;
@@ -42,6 +57,9 @@ namespace GridBattle.Gameplay
         private GridEntity _content;
 
         public bool Selected { get; set; } = false;
+        public bool Highlighted { get; set; } = false;
+        public ECellHighlightType HighlightType { get; set; } = ECellHighlightType.Walk;
+
         public Vector2Int GridPosition { get; set; }
 
         private void Awake()
@@ -55,6 +73,9 @@ namespace GridBattle.Gameplay
         private void Update()
         {
             selectionRenderer.enabled = Selected;
+            highlightRenderer.enabled = Highlighted;
+            highlightRenderer.color =
+                HighlightType == ECellHighlightType.Walk ? walkHighlightColor : attackHighlightColor;
         }
 
         private void HandleContentHpChanged(DamageReceiveData data)
