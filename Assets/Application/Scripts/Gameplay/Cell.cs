@@ -111,6 +111,8 @@ namespace GridBattle.Gameplay
             if (_content is IDamageReceiver receiver)
             {
                 receiver.OnHpChanged += HandleContentHpChanged;
+                var hpInfo = receiver.GetHpInfo();
+                cellContentHealthBar.UpdateHp(hpInfo.CurrentHp, hpInfo.MaxHp);
                 cellContentHealthBar?.Show();
             }
             else

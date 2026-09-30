@@ -477,6 +477,28 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: XpVFX
+      rect:
+        serializedVersion: 2
+        x: 40
+        y: 328
+        width: 8
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: eb45e59b25ee2584e8f8fa23084d8b3d
+      internalID: 1957544802
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     customData: 
     physicsShape: []
@@ -503,13 +525,13 @@ TextureImporter:
       UI_2: 1080825480604336155
       UI_3: -9136572144232859775
       UI_4: 8586885197115800619
-      UI_5: -2016691001
       UI_7: 7843416716369364892
       UI_7_Inner: 7843416716369364893
       UI_8: -6595680761151332689
       UI_9: -273060469431498887
       XpBarProgress: 8160775752198118580
       XpBarProgressMiddle: 339205429
+      XpVFX: -2016691001
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

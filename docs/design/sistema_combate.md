@@ -320,23 +320,37 @@ runtime e reseta a cada nova run (o character é recriado pelo
 
 ```
 inimigo morre (Character.Die)
+  → desocupa a célula
   → CharacterDiedEvent
-      → PlayerCharacter.OnCharacterDied
+      → XpVfxController.OnCharacterDied
           → lê EnemyConfig.XpReward do inimigo morto
-          → soma em CurrentXp (level ups em cadeia, se acumular)
-          → EventBus.Raise(PlayerXpChangedEvent { Level, CurrentXp, XpToNextLevel })
-              → GameScreenView.OnXpChanged
-                  → progresso % = CurrentXp / XpToNextLevel
-                  → largura do "xp-bar-progress" = % * 110px
+          → N = teto(XpReward / 5) células de XP (sprite XpVFX)
+          → cada célula voa em arco (LitMotion) da posição do inimigo
+            até a barra de XP, com stagger de 0,08s
+          → ao chegar, cada célula remove-se e chama
+            PlayerCharacter.GainXp(fração de XP)
+              → EventBus.Raise(PlayerXpChangedEvent { Level, CurrentXp, XpToNextLevel })
+                  → GameScreenView.OnXpChanged
+                      → progresso % = CurrentXp / XpToNextLevel
+                      → largura do "xp-bar-progress" = % * 110px
 ```
 
+- **O XP só entra na conta quando as células chegam à barra** — a barra
+  cresce célula a célula, não de uma vez na morte. Há um delay de ~0,6s
+  (mais stagger) entre a morte e o XP efetivo.
+- Divisão das células: `N = ceil(XpReward / 5)`; o resto da divisão é
+  distribuído 1 a 1 nas primeiras células (ex.: 12 XP → 3 células de 4;
+  15 XP → 3 células de 5). O jogador nunca perde XP no arredondamento.
+- As células são elementos da **UI** (UI Toolkit, absolute-positioned no
+  root do painel), convertidos de world-space via
+  `RuntimePanelUtils.CameraTransformWorldToPanel` — não são sprites no mundo.
 - A comunicação **jogo → UI é sempre via EventBus** (`PlayerXpChangedEvent`);
   a UI nunca lê estado de gameplay em tempo real — só ao recarregar a tela
   (`GameScreenView.OnUIReload` restaura o estado atual do `PlayerCharacter`
   para redrawing da barra).
 - O inimigo morto já desocupou a célula antes do XP ser concedido (a ordem
   do `Die()` garante isso).
-- Player morto não ganha XP (guard `IsDead`).
+- Player morto não ganha XP (guard `IsDead` no `GainXp`).
 
 ### Limiar de XP
 
@@ -397,4 +411,5 @@ Sempre que o `PlayerCharacterController.Update` roda, o grid é re-pintado via
 | **Facções/alianças** | checagem de facção dentro de `GridRules.IsAttackTarget` |
 | **Distância em diagonais** | trocar a métrica em `GridRules.IsInWalkRange`/`IsInAttackRange` |
 | **Pacing/animar turnos** | substituir a iteração síncrona do `TurnManager` por coroutine, sem mudar `EnemyController` |
+| **Ajustar o VFX de XP** | campos serializados no `XpVfxController` (sprite, duração do voo, stagger, altura do arco, tamanho da célula, XP por célula) |
 | **Status/DoTs** (veneno etc.) | tickar a cada `PlayerActionEvent` (ver [[ideias_traits_itens]]) |

@@ -23,6 +23,9 @@ namespace GridBattle.Gameplay.Entities
         public IReadOnlyList<Skills.SkillDefinition> Skills => config != null ? config.Skills : Array.Empty<Skills.SkillDefinition>();
         public bool IsDead => current <= 0;
 
+        public (int CurrentHp, int MaxHp) GetHpInfo() => (current, MaxHp);
+
+
         public Action<DamageReceiveData> OnHpChanged { get; set; }
 
         private void Awake()

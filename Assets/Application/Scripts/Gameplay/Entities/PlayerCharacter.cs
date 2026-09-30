@@ -31,25 +31,16 @@ namespace GridBattle.Gameplay.Entities
             }
         }
 
-        private void OnEnable()
+        /// <summary>
+        /// Ganho de XP. Chamado pelo XpVfxController quando cada célula de XP
+        /// chega à barra (não diretamente na morte do inimigo). Emite
+        /// PlayerXpChangedEvent para a UI.
+        /// </summary>
+        public void GainXp(int amount)
         {
-            EventBus.Subscribe<CharacterDiedEvent>(OnCharacterDied);
-        }
+            if (IsDead || amount <= 0) return;
 
-        private void OnDisable()
-        {
-            EventBus.Unsubscribe<CharacterDiedEvent>(OnCharacterDied);
-        }
-
-        private void OnCharacterDied(CharacterDiedEvent e)
-        {
-            if (IsDead) return;
-            if (e.Character is not Enemy enemy) return;
-
-            var enemyConfig = enemy.Config as EnemyConfig;
-            if (enemyConfig == null) return;
-
-            CurrentXp += enemyConfig.XpReward;
+            CurrentXp += amount;
 
             while (CurrentXp >= XpToNextLevel)
             {
