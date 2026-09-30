@@ -36,8 +36,7 @@ namespace GridBattle.Gameplay
             {
                 if (!GridRules.CanWalkTo(_gridController, _playerCharacter, @event.Cell.GridPosition)) return;
 
-                _gridController.Move(_playerCharacter.CurrentGridPos, @event.Cell.GridPosition);
-                _playerCharacter.CurrentGridPos = @event.Cell.GridPosition;
+                _gridController.MoveEntity(_playerCharacter, @event.Cell.GridPosition);
             }
             else
             {
@@ -47,6 +46,8 @@ namespace GridBattle.Gameplay
                 if (target is IDamageReceiver receiver)
                     _playerCharacter.Attack(receiver);
             }
+
+            EventBus.Raise<PlayerActionEvent>();
         }
     }
 }

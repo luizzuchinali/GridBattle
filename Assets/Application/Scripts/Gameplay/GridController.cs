@@ -105,6 +105,12 @@ namespace GridBattle.Gameplay
             }
         }
 
+        public void MoveEntity(GridEntity entity, Vector2Int targetPos)
+        {
+            Move(entity.CurrentGridPos, targetPos);
+            entity.CurrentGridPos = targetPos;
+        }
+
         public bool IsValidPosition(Vector2Int position)
         {
             return position.x >= 0 && position.x < gridSize.x &&

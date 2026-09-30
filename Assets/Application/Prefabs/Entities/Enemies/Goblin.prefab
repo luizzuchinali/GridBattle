@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 4272138908314439574}
   - component: {fileID: 3592354906464498638}
   - component: {fileID: 3976140956964917280}
+  - component: {fileID: 6878870589373471156}
   m_Layer: 0
   m_Name: Goblin
   m_TagString: Untagged
@@ -132,3 +133,15 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &6878870589373471156
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6397075157288302065}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 63443eabdb2e4635aa84f63ca14e9063, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GridBattle.Gameplay.EnemyController
