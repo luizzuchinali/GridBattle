@@ -1,12 +1,7 @@
+using GridBattle.Gameplay.Entities;
+
 namespace GridBattle.UI.Events
 {
-    public enum ECharacter
-    {
-        Warrior,
-        Mage,
-        Rogue
-    }
-    
     public class CharacterChoosenEvent
     {
         public ECharacter Character { get; private set; }

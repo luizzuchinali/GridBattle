@@ -1,3 +1,4 @@
+using GridBattle.Gameplay.Entities;
 using GridBattle.UI.Events;
 using UnityEngine.UIElements;
 

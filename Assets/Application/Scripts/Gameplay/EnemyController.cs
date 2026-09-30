@@ -31,11 +31,19 @@ namespace GridBattle.Gameplay
         }
 
         /// <summary>
-        /// Ação específica do tipo de inimigo (skills etc.). Sobrescrever nas
-        /// subclasses; retornar true indica que a ação do turno foi consumida.
+        /// Ação específica do tipo de inimigo: consome as skills definidas no
+        /// config do character (a lógica vive nas SkillDefinitions, não aqui).
+        /// Sobrescrever nas subclasses para comportamentos manuais. Retornar
+        /// true indica que a ação do turno foi consumida.
         /// </summary>
         protected virtual bool TrySpecialAction()
         {
+            foreach (var skill in _enemy.Skills)
+            {
+                if (_enemy.TryUseSkill(_gridController, skill, _player.CurrentGridPos))
+                    return true;
+            }
+
             return false;
         }
 

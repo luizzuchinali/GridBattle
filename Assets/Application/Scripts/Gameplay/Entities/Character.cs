@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using GridBattle.Gameplay.Entities.Interfaces;
 using GridBattle.Gameplay.Events;
 using GridBattle.Gameplay.Rules;
@@ -9,24 +10,26 @@ namespace GridBattle.Gameplay.Entities
     public class Character : GridEntity, IDamageReceiver, IWalker, IAttacker
     {
         [SerializeField]
+        private CharacterConfig config;
+
         private int current = 100;
 
-        [SerializeField]
-        private int maxHp = 100;
-
-        [SerializeField]
-        protected int walkDistance = 1;
-
-        [SerializeField]
-        protected int attackDistance = 1;
-
+        public CharacterConfig Config => config;
         public int Current => current;
-        public int MaxHp => maxHp;
-        public int WalkDistance => walkDistance;
-        public int AttackDistance => attackDistance;
+        public int MaxHp => config != null ? config.MaxHp : 100;
+        public int WalkDistance => config != null ? config.WalkDistance : 1;
+        public int AttackDistance => config != null ? config.AttackDistance : 1;
+        public int BasicAttackDamage => config != null ? config.BasicAttackDamage : 10;
+        public IReadOnlyList<Skills.SkillDefinition> Skills => config != null ? config.Skills : Array.Empty<Skills.SkillDefinition>();
         public bool IsDead => current <= 0;
 
         public Action<DamageReceiveData> OnHpChanged { get; set; }
+
+        private void Awake()
+        {
+            if (config != null)
+                current = config.MaxHp;
+        }
 
         public void ReceiveDamage(int damage)
         {
@@ -37,11 +40,38 @@ namespace GridBattle.Gameplay.Entities
             {
                 Damage = damage,
                 CurrentHp = Current,
-                MaxHp = maxHp,
+                MaxHp = MaxHp,
             });
 
             if (IsDead)
                 Die();
+        }
+
+        /// <summary>
+        /// Ponto único de execução de skills: valida via a própria SkillDefinition
+        /// e executa o efeito. Controllers apenas encaminham a chamada.
+        /// </summary>
+        public bool TryUseSkill(GridController grid, Skills.SkillDefinition skill, Vector2Int targetPos)
+        {
+            if (IsDead || skill == null) return false;
+            if (!skill.CanUse(this, grid, targetPos)) return false;
+
+            return skill.Execute(this, grid, targetPos);
+        }
+
+        public bool CanWalk(Vector2Int targetPos)
+        {
+            return GridRules.IsInWalkRange(CurrentGridPos, targetPos, WalkDistance);
+        }
+
+        public void Attack(IDamageReceiver target)
+        {
+            target.ReceiveDamage(BasicAttackDamage);
+        }
+
+        public bool IsInAttackRange(Vector2Int targetPosition)
+        {
+            return GridRules.IsInAttackRange(CurrentGridPos, targetPosition, AttackDistance);
         }
 
         protected virtual void Die()
@@ -52,21 +82,6 @@ namespace GridBattle.Gameplay.Entities
 
             EventBus.Raise(new CharacterDiedEvent(this));
             Destroy(gameObject);
-        }
-
-        public bool CanWalk(Vector2Int targetPos)
-        {
-            return GridRules.IsInWalkRange(CurrentGridPos, targetPos, WalkDistance);
-        }
-
-        public void Attack(IDamageReceiver target)
-        {
-            target.ReceiveDamage(10);
-        }
-
-        public bool IsInAttackRange(Vector2Int targetPosition)
-        {
-            return GridRules.IsInAttackRange(CurrentGridPos, targetPosition, AttackDistance);
         }
     }
 }

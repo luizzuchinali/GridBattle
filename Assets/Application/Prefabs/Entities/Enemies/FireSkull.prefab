@@ -47,10 +47,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7dd3b96670354c6c870b0c447d38b8ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GridBattle.Gameplay.Entities.Enemy
-  current: 100
-  maxHp: 100
-  walkDistance: 1
-  attackDistance: 1
+  config: {fileID: 11400000, guid: 299df325a4fe80e4ea2a5343841a0105, type: 2}
 --- !u!212 &1365958890473112313
 SpriteRenderer:
   serializedVersion: 3

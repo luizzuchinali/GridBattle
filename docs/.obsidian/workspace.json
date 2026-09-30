@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "GDD.md",
+                "file": "design/sistema_combate.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "GDD"
+              "title": "sistema_combate"
             }
           }
         ]
@@ -186,10 +186,11 @@
   },
   "active": "d31be8652752a03b",
   "lastOpenFiles": [
+    "GDD.md",
+    "design/sistema_combate.md",
     "design/ideias_traits_itens.md",
     "design/talentos.md",
     "_index_.md",
-    "GDD.md",
     "analise/analise_melhoria.md",
     "analise/racional_refatoracao.md",
     "projeto",

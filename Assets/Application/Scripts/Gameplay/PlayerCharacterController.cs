@@ -49,5 +49,17 @@ namespace GridBattle.Gameplay
 
             EventBus.Raise<PlayerActionEvent>();
         }
+
+        /// <summary>
+        /// Rota para uso de skill (a ser chamada pela UI). A validação e o
+        /// efeito vivem na SkillDefinition / PlayerCharacter, não aqui.
+        /// </summary>
+        public bool TryUseSkill(Entities.Skills.SkillDefinition skill, Vector2Int targetPos)
+        {
+            if (!_playerCharacter.TryUseSkill(_gridController, skill, targetPos)) return false;
+
+            EventBus.Raise<PlayerActionEvent>();
+            return true;
+        }
     }
 }
