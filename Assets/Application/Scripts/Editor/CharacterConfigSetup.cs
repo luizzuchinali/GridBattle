@@ -32,6 +32,19 @@ namespace GridBattle.EditorTools
                 { "EyeBat", (25, 5, 2) },
             };
 
+        private static readonly Dictionary<string, int> EnemyXpRewards =
+            new()
+            {
+                { "Goblin", 10 },
+                { "Rat", 8 },
+                { "Slime", 12 },
+                { "FireSkull", 15 },
+                { "EyeBat", 8 },
+            };
+
+        private const int PlayerBaseXpToLevelUp = 50;
+        private const int PlayerXpToLevelUpGrowthPerLevel = 25;
+
         private static List<string> SetupPlayer(string prefabName, ECharacter characterClass)
         {
             var results = new List<string>();
@@ -51,9 +64,11 @@ namespace GridBattle.EditorTools
             so.FindProperty("maxHp").intValue = stats.maxHp;
             so.FindProperty("basicAttackDamage").intValue = stats.attackDamage;
             so.FindProperty("walkDistance").intValue = stats.walkDistance;
+            so.FindProperty("baseXpToLevelUp").intValue = PlayerBaseXpToLevelUp;
+            so.FindProperty("xpToLevelUpGrowthPerLevel").intValue = PlayerXpToLevelUpGrowthPerLevel;
             so.ApplyModifiedPropertiesWithoutUndo();
             results.Add(
-                $"{assetPath}: class = {characterClass}, maxHp = {stats.maxHp}, basicAttackDamage = {stats.attackDamage}, walkDistance = {stats.walkDistance}");
+                $"{assetPath}: class = {characterClass}, maxHp = {stats.maxHp}, basicAttackDamage = {stats.attackDamage}, walkDistance = {stats.walkDistance}, baseXpToLevelUp = {PlayerBaseXpToLevelUp}, xpToLevelUpGrowthPerLevel = {PlayerXpToLevelUpGrowthPerLevel}");
 
             results.AddRange(AssignToPrefab($"Assets/Application/Prefabs/Entities/PlayerCharacters/{prefabName}.prefab", asset));
             return results;
@@ -63,11 +78,18 @@ namespace GridBattle.EditorTools
         {
             var results = new List<string>();
             var assetPath = $"{EnemiesRoot}/{prefabName}.asset";
-            var asset = AssetDatabase.LoadAssetAtPath<CharacterConfig>(assetPath);
+            var asset = AssetDatabase.LoadAssetAtPath<EnemyConfig>(assetPath);
+
+            // Migração: assets antigos eram CharacterConfig puro.
+            if (asset == null && AssetDatabase.LoadAssetAtPath<CharacterConfig>(assetPath) != null)
+            {
+                AssetDatabase.DeleteAsset(assetPath);
+                results.Add($"{assetPath}: old CharacterConfig deleted");
+            }
 
             if (asset == null)
             {
-                asset = ScriptableObject.CreateInstance<CharacterConfig>();
+                asset = ScriptableObject.CreateInstance<EnemyConfig>();
                 AssetDatabase.CreateAsset(asset, assetPath);
                 results.Add($"{assetPath}: created");
             }
@@ -77,9 +99,10 @@ namespace GridBattle.EditorTools
             so.FindProperty("maxHp").intValue = stats.maxHp;
             so.FindProperty("basicAttackDamage").intValue = stats.attackDamage;
             so.FindProperty("walkDistance").intValue = stats.walkDistance;
+            so.FindProperty("xpReward").intValue = EnemyXpRewards[prefabName];
             so.ApplyModifiedPropertiesWithoutUndo();
             results.Add(
-                $"{assetPath}: maxHp = {stats.maxHp}, basicAttackDamage = {stats.attackDamage}, walkDistance = {stats.walkDistance}");
+                $"{assetPath}: maxHp = {stats.maxHp}, basicAttackDamage = {stats.attackDamage}, walkDistance = {stats.walkDistance}, xpReward = {EnemyXpRewards[prefabName]}");
 
             results.AddRange(AssignToPrefab($"Assets/Application/Prefabs/Entities/Enemies/{prefabName}.prefab", asset));
             return results;

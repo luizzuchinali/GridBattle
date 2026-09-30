@@ -30,8 +30,9 @@ Ver também: [[talentos]], [[ideias_traits_itens]], [[plano_progressao]].
 7. [Sistema de turnos](#sistema-de-turnos)
 8. [IA dos inimigos](#ia-dos-inimigos)
 9. [Morte e fim de run](#morte-e-fim-de-run)
-10. [Highlights visuais](#highlights-visuais)
-11. [Pontos de extensão](#pontos-de-extensão)
+10. [XP e level up](#xp-e-level-up)
+11. [Highlights visuais](#highlights-visuais)
+12. [Pontos de extensão](#pontos-de-extensão)
 
 ---
 
@@ -101,7 +102,12 @@ CharacterConfig (SO)
 └── skills: List<SkillDefinition>
 
 PlayerCharacterConfig : CharacterConfig (SO)
-└── characterClass: ECharacter        ← exclusivo do player
+├── characterClass: ECharacter        ← exclusivo do player
+├── baseXpToLevelUp
+└── xpToLevelUpGrowthPerLevel
+
+EnemyConfig : CharacterConfig (SO)
+└── xpReward                          ← exclusivo do inimigo
 ```
 
 - `Character` (base) referencia um `CharacterConfig` (campo `config`):
@@ -119,7 +125,7 @@ PlayerCharacterConfig : CharacterConfig (SO)
   - `Players/Knight.asset` (Warrior), `Players/Mage.asset`,
     `Players/Rogue.asset` — `PlayerCharacterConfig`;
   - `Enemies/Goblin.asset`, `Rat.asset`, `Slime.asset`, `FireSkull.asset`,
-    `EyeBat.asset` — `CharacterConfig`.
+    `EyeBat.asset` — `EnemyConfig`.
 
 > [!note] Balanceamento inicial
 > Para dar vantagem ao jogador no início da run, os **players têm ataque
@@ -142,15 +148,15 @@ Espelho de `Assets/Application/Settings/Characters/` (aplicados por
 | Mage | Mage | 80 | 15 | 1 |
 | Rogue | Rogue | 90 | 15 | 1 |
 
-#### Inimigos — `CharacterConfig`
+#### Inimigos — `EnemyConfig`
 
-| Inimigo | HP | Ataque básico | Alcance de andar |
-|---|---|---|---|
-| Goblin | 30 | 5 | 1 |
-| Rat | 20 | 5 | 2 |
-| Slime | 40 | 5 | 1 |
-| FireSkull | 25 | 7 | 1 |
-| EyeBat | 25 | 5 | 2 |
+| Inimigo | HP | Ataque básico | Alcance de andar | XP |
+|---|---|---|---|---|
+| Goblin | 30 | 5 | 1 | 10 |
+| Rat | 20 | 5 | 2 | 8 |
+| Slime | 40 | 5 | 1 | 12 |
+| FireSkull | 25 | 7 | 1 | 15 |
+| EyeBat | 25 | 5 | 2 | 8 |
 
 Diretrizes de leitura da tabela:
 
@@ -298,6 +304,66 @@ A lógica é genérica em `Character` (`Die()`, `protected virtual`):
   adicional (guard `if (IsDead) return;`), não usa skill (`TryUseSkill`
   também guarda) e não age no turno.
 
+## XP e level up
+
+O `PlayerCharacter` acumula XP ao longo da run; o estado (nível, XP) é de
+runtime e reseta a cada nova run (o character é recriado pelo
+`InitializeGrid`).
+
+### Fluxo
+
+```
+inimigo morre (Character.Die)
+  → CharacterDiedEvent
+      → PlayerCharacter.OnCharacterDied
+          → lê EnemyConfig.XpReward do inimigo morto
+          → soma em CurrentXp (level ups em cadeia, se acumular)
+          → EventBus.Raise(PlayerXpChangedEvent { Level, CurrentXp, XpToNextLevel })
+              → GameScreenView.OnXpChanged
+                  → progresso % = CurrentXp / XpToNextLevel
+                  → largura do "xp-bar-progress" = % * 110px
+```
+
+- A comunicação **jogo → UI é sempre via EventBus** (`PlayerXpChangedEvent`);
+  a UI nunca lê estado de gameplay em tempo real — só ao recarregar a tela
+  (`GameScreenView.OnUIReload` restaura o estado atual do `PlayerCharacter`
+  para redrawing da barra).
+- O inimigo morto já desocupou a célula antes do XP ser concedido (a ordem
+  do `Die()` garante isso).
+- Player morto não ganha XP (guard `IsDead`).
+
+### Limiar de XP
+
+Configurado em `PlayerCharacterConfig`:
+
+- `baseXpToLevelUp` = **50** — XP para ir do nível 1 ao 2.
+- `xpToLevelUpGrowthPerLevel` = **25** — acréscimo no limiar a cada nível
+  atingido.
+
+Fórmula: `XpToNextLevel(level) = baseXpToLevelUp + (level − 1) × growth`.
+
+| Nível atual | XP para o próximo |
+|---|---|
+| 1 | 50 |
+| 2 | 75 |
+| 3 | 100 |
+| 4 | 125 |
+
+XP excedente é **carregado** para o próximo limiar (não descartado), com
+level ups em cadeia quando um inimigo valioso fecha a conta.
+
+### Recompensa de XP por inimigo
+
+Configurado em `EnemyConfig.XpReward`:
+
+| Inimigo | XP |
+|---|---|
+| Goblin | 10 |
+| Rat | 8 |
+| Slime | 12 |
+| FireSkull | 15 |
+| EyeBat | 8 |
+
 ## Highlights visuais
 
 Sempre que o `PlayerCharacterController.Update` roda, o grid é re-pintado via
@@ -320,6 +386,8 @@ Sempre que o `PlayerCharacterController.Update` roda, o grid é re-pintado via
 | **Novo tipo de inimigo** | novo prefab `Enemy` + `CharacterConfig` próprio; comportamento exclusivo via skills no config ou subclasse de `EnemyController` |
 | **Atributos de classe** (stats por Warrior/Mage/Rogue) | valores diferentes por `PlayerCharacterConfig` asset; efeitos de classe como skills/triggers futuros |
 | **Skills do jogador na UI** | botões chamam `PlayerCharacterController.TryUseSkill(skill, targetPos)` |
+| **Efeitos de level up** | assinar `PlayerXpChangedEvent` (ex.: curar, escolher trait — ver [[plano_progressao]]) |
+| **XP por fonte extra** (itens, eventos) | chamar o mesmo caminho do `PlayerCharacter` e emitir `PlayerXpChangedEvent` |
 | **Facções/alianças** | checagem de facção dentro de `GridRules.IsAttackTarget` |
 | **Distância em diagonais** | trocar a métrica em `GridRules.IsInWalkRange`/`IsInAttackRange` |
 | **Pacing/animar turnos** | substituir a iteração síncrona do `TurnManager` por coroutine, sem mudar `EnemyController` |
