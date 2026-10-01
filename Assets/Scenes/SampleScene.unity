@@ -4375,7 +4375,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5731cdced1b84512843395949704b96c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GridBattle.Gameplay.TurnManager
-  enemyPacing: 0
+  enemyPacing: 1
+  enemyStagger: 0.08
+  speedUpMultiplier: 2
 --- !u!1 &277446316
 GameObject:
   m_ObjectHideFlags: 0

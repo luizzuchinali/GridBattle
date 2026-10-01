@@ -7,6 +7,9 @@ namespace GridBattle.Gameplay.Entities
         public int Level { get; private set; } = 1;
         public int CurrentXp { get; private set; }
 
+        // The screen changes as soon as the player dies.
+        protected override bool PlaysDeathEffect => false;
+
         public PlayerCharacterConfig PlayerConfig => Config as PlayerCharacterConfig;
 
         /// <summary>

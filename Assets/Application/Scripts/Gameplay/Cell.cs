@@ -51,10 +51,28 @@ namespace GridBattle.Gameplay
         [SerializeField]
         private float damageTextDuration = 0.4f;
 
+        [Header("Highlight Animation")]
+        [SerializeField]
+        [Min(0f)]
+        [Tooltip("Delay between consecutive highlights appearing together, in seconds.")]
+        private float highlightStagger = 0.025f;
+
+        [SerializeField]
+        [Min(0.01f)]
+        private float highlightFadeDuration = 0.06f;
+
+        private static int _lastRiseFrame = -1;
+        private static int _riseCount;
+
+        private bool _wasHighlighted;
+        private float _highlightStart;
+
         public static readonly Vector2Int Size = new(32, 46);
 
         [CanBeNull]
         private GridEntity _content;
+
+        private MotionHandle _scaleHandle;
 
         public bool Selected { get; set; } = false;
         public bool Highlighted { get; set; } = false;
@@ -73,9 +91,39 @@ namespace GridBattle.Gameplay
         private void Update()
         {
             selectionRenderer.enabled = Selected;
-            highlightRenderer.enabled = Highlighted;
-            highlightRenderer.color =
-                HighlightType == ECellHighlightType.Walk ? walkHighlightColor : attackHighlightColor;
+            UpdateHighlight();
+        }
+
+        /// <summary>
+        /// Visual only: highlights appearing in the same frame fade in one after
+        /// another. The Highlighted flag itself (rules) is untouched.
+        /// </summary>
+        private void UpdateHighlight()
+        {
+            if (!Highlighted)
+            {
+                _wasHighlighted = false;
+                highlightRenderer.enabled = false;
+                return;
+            }
+
+            if (!_wasHighlighted)
+            {
+                _wasHighlighted = true;
+                if (Time.frameCount != _lastRiseFrame)
+                {
+                    _lastRiseFrame = Time.frameCount;
+                    _riseCount = 0;
+                }
+
+                _highlightStart = Time.time + _riseCount++ * highlightStagger;
+            }
+
+            var alpha = Mathf.Clamp01((Time.time - _highlightStart) / highlightFadeDuration);
+            var color = HighlightType == ECellHighlightType.Walk ? walkHighlightColor : attackHighlightColor;
+            color.a *= alpha;
+            highlightRenderer.color = color;
+            highlightRenderer.enabled = Time.time >= _highlightStart;
         }
 
         private void HandleContentHpChanged(DamageReceiveData data)
@@ -138,20 +186,41 @@ namespace GridBattle.Gameplay
 
         public bool HasContent => _content != null;
 
-        public void OnPointerClick(PointerEventData eventData)
+        /// <summary>
+        /// Short scale pulse on arrival of an entity, sized in pixels (never a
+        /// fractional factor of the sprite).
+        /// </summary>
+        public void PlayArrivalPulse(float pixels, float duration)
         {
-            var end = Vector3.one - Vector3.one * 4 / GameConfigManager.Ppu;
+            PlayScalePulse(pixels, duration, Ease.OutQuad, Ease.InQuad);
+        }
+
+        /// <summary>
+        /// Feedback for a tap that did not become an action; called by whoever
+        /// rejected the tap.
+        /// </summary>
+        public void PlayRejectFeedback()
+        {
+            PlayScalePulse(4f, 0.1f, Ease.InOutBounce, Ease.InOutBounce);
+        }
+
+        private void PlayScalePulse(float pixels, float duration, Ease inEase, Ease outEase)
+        {
+            if (_scaleHandle.IsActive())
+                _scaleHandle.Cancel();
+
             var start = Vector3.one;
-            LSequence.Create()
-                .Append(LMotion.Create(start, end, 0.1f)
-                    .WithEase(Ease.InOutBounce)
+            var end = Vector3.one - Vector3.one * pixels / GameConfigManager.Ppu;
+            _scaleHandle = LSequence.Create()
+                .Append(LMotion.Create(start, end, duration).WithEase(inEase)
                     .Bind(x => transform.localScale = x))
-                .Append(LMotion
-                    .Create(end, start, 0.1f)
-                    .WithEase(Ease.InOutBounce)
+                .Append(LMotion.Create(end, start, duration).WithEase(outEase)
                     .Bind(x => transform.localScale = x))
                 .Run();
+        }
 
+        public void OnPointerClick(PointerEventData eventData)
+        {
             EventBus.Raise(new CellTapEvent
             {
                 Cell = this

@@ -1,6 +1,8 @@
+using System;
 using System.Collections.Generic;
 using System.Threading;
 using GridBattle.Gameplay.Entities;
+using GridBattle.Managers;
 using LitMotion;
 using UnityEngine;
 
@@ -9,8 +11,8 @@ namespace GridBattle.Gameplay.Movement
     /// <summary>
     /// Visual side of grid movement. The logical move (cell occupancy and
     /// CurrentGridPos) happens immediately; this only animates the entity from
-    /// where it was to its new cell with small hops, and tells whether any
-    /// movement is still playing.
+    /// where it was to its new cell (hop or flip, see GridMovementSettings), and
+    /// tells whether any movement is still playing.
     /// </summary>
     public sealed class GridMovementAnimator
     {
@@ -27,11 +29,19 @@ namespace GridBattle.Gameplay.Movement
         }
 
         /// <summary>
+        /// Divides every animation duration (1 = normal speed). Reset it when the
+        /// speed-up ends.
+        /// </summary>
+        public float SpeedMultiplier { get; set; } = 1f;
+
+        /// <summary>
         /// Animates <paramref name="entity"/>, already parented to its new cell,
         /// from <paramref name="fromWorld"/> to its current local position.
+        /// <paramref name="onArrived"/> runs when the movement completes (also
+        /// when it is interrupted by a new movement of the same entity).
         /// </summary>
         public void Animate(GridEntity entity, Vector3 fromWorld, Vector2Int fromCell, Vector2Int toCell,
-            GridMovementSettings settings)
+            GridMovementSettings settings, Action onArrived = null)
         {
             Stop(entity);
             if (settings == null || !Application.isPlaying) return;
@@ -41,21 +51,96 @@ namespace GridBattle.Gameplay.Movement
             var start = target.parent != null ? target.parent.InverseTransformPoint(fromWorld) : fromWorld;
             if (start == end) return;
 
-            var distance = Vector2Int.Distance(fromCell, toCell);
+            var speed = Mathf.Max(0.01f, SpeedMultiplier);
+            var handle = settings.Style == EMovementStyle.Flip
+                ? CreateFlip(target, start, end, settings, speed, onArrived)
+                : CreateHop(target, start, end, Vector2Int.Distance(fromCell, toCell), settings, speed, onArrived);
+
+            _motions[entity] = handle.AddTo(entity.gameObject);
+        }
+
+        private static MotionHandle CreateHop(Transform target, Vector3 start, Vector3 end, float distance,
+            GridMovementSettings settings, float speed, Action onArrived)
+        {
             var hops = Mathf.Max(1, Mathf.RoundToInt(distance * settings.HopsPerCell));
             var hopHeight = settings.HopHeight;
+            var hopsDuration = hops * settings.HopDuration / speed;
+            var squashDuration = settings.LandingSquash > 0f ? settings.LandingSquashDuration / speed : 0f;
+            var squashY = 1f - settings.LandingSquash / GameConfigManager.Ppu;
+            var total = hopsDuration + squashDuration;
 
             target.localPosition = start;
-            var handle = LMotion.Create(0f, 1f, hops * settings.HopDuration)
-                .WithOnComplete(() => target.localPosition = end)
-                .Bind(progress =>
+            return LMotion.Create(0f, 1f, total)
+                .WithOnComplete(() =>
                 {
-                    var arc = Mathf.Abs(Mathf.Sin(Mathf.PI * hops * progress)) * hopHeight;
-                    target.localPosition = Vector3.Lerp(start, end, progress) + Vector3.up * arc;
+                    Normalize(target, end);
+                    onArrived?.Invoke();
                 })
-                .AddTo(entity.gameObject);
+                .Bind(t =>
+                {
+                    var time = t * total;
+                    if (time < hopsDuration)
+                    {
+                        var progress = EaseUtility.Evaluate(time / hopsDuration, settings.HopEase);
+                        var arc = Mathf.Abs(Mathf.Sin(Mathf.PI * hops * time / hopsDuration)) * hopHeight;
+                        target.localPosition = Vector3.Lerp(start, end, progress) + Vector3.up * arc;
+                        target.localScale = Vector3.one;
+                    }
+                    else
+                    {
+                        // Landing: flatten and recover (V shape) at the destination.
+                        var k = (time - hopsDuration) / squashDuration;
+                        target.localPosition = end;
+                        target.localScale = new Vector3(1f, Mathf.Lerp(1f, squashY, 1f - Mathf.Abs(2f * k - 1f)), 1f);
+                    }
+                });
+        }
 
-            _motions[entity] = handle;
+        private static MotionHandle CreateFlip(Transform target, Vector3 start, Vector3 end,
+            GridMovementSettings settings, float speed, Action onArrived)
+        {
+            var close = settings.FlipCloseDuration / speed;
+            var open = settings.FlipOpenDuration / speed;
+            var total = close + open;
+            var overshoot = settings.FlipOvershoot;
+            var steps = settings.ScaleSteps;
+
+            target.localPosition = start;
+            return LMotion.Create(0f, 1f, total)
+                .WithOnComplete(() =>
+                {
+                    Normalize(target, end);
+                    onArrived?.Invoke();
+                })
+                .Bind(t =>
+                {
+                    var time = t * total;
+                    float scaleX;
+                    if (time < close)
+                    {
+                        scaleX = 1f - EaseUtility.Evaluate(time / close, settings.FlipCloseEase);
+                        target.localPosition = start;
+                    }
+                    else
+                    {
+                        // 0 -> 1 + overshoot -> 1: the first 70% opens, the rest settles.
+                        var k = EaseUtility.Evaluate((time - close) / open, settings.FlipOpenEase);
+                        scaleX = k < 0.7f
+                            ? k / 0.7f * (1f + overshoot)
+                            : Mathf.Lerp(1f + overshoot, 1f, (k - 0.7f) / 0.3f);
+                        target.localPosition = end;
+                    }
+
+                    if (steps > 0)
+                        scaleX = Mathf.Round(scaleX * steps) / steps;
+                    target.localScale = new Vector3(scaleX, 1f, 1f);
+                });
+        }
+
+        private static void Normalize(Transform target, Vector3 end)
+        {
+            target.localPosition = end;
+            target.localScale = Vector3.one;
         }
 
         /// <summary>Completes once no entity is moving (immediately if none is).</summary>

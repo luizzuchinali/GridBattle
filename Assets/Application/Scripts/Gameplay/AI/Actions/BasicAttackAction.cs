@@ -16,7 +16,10 @@ namespace GridBattle.Gameplay.AI.Actions
                 return false;
 
             if (context.Target is IDamageReceiver receiver)
+            {
+                context.Grid.PlayAttackAnimation(context.Self, context.Target.CurrentGridPos);
                 context.Self.Attack(receiver);
+            }
             return true;
         }
     }

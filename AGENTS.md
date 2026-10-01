@@ -83,7 +83,7 @@ O namespace segue a pasta: `GridBattle.<Pasta>[.<Subpasta>]`.
 | `Editor/` | `GridBattle.Editor` | `GridControllerEditor` (botão **Reset grid**) |
 | `Managers/` | `GridBattle.Managers` | `GameStateManager` (início de run, lista de personagens jogáveis), `TurnManager` (vez do jogador × inimigos, espera as animações), `GameConfigManager` (PPU, FPS mobile) |
 | `Gameplay/` | `GridBattle.Gameplay` | `GridController` (tabuleiro + spawn + movimento), `Cell`, `CellContentHealthBar`, `EncounterConfig`, `ETurnOwner` |
-| `Gameplay/Movement/` | `GridBattle.Gameplay.Movement` | `GridMovementAnimator` (pulos ao trocar de célula), `GridMovementSettings` |
+| `Gameplay/Movement/` | `GridBattle.Gameplay.Movement` | `GridMovementAnimator` (Hop/Flip ao trocar de célula), `GridEffectsAnimator` (lunge, acerto, morte), `GridMovementSettings` |
 | `Gameplay/Entities/` | `GridBattle.Gameplay.Entities` | `GridEntity` → `Character` → `PlayerCharacter` / `Enemy`; `CharacterView`, `CharacterFactory`, `ECharacter` |
 | `Gameplay/Entities/Configs/` | `GridBattle.Gameplay.Entities` ⚠️ | `CharacterConfig` (abstrato), `EnemyConfig`, `PlayerCharacterConfig` — **exceção**: namespace não inclui `Configs` |
 | `Gameplay/Entities/Interfaces/` | `…Entities.Interfaces` | `IDamageReceiver`, `IAttacker`, `IWalker` |
@@ -138,12 +138,13 @@ Turno
     → PlayerActionEvent → TurnManager: TurnChangedEvent(Enemies) (highlights somem, toques ignorados)
         → espera o movimento do jogador
         → EnemyController.Act() de cada inimigo → EnemyConfig.Behavior.TakeTurn → EnemyActions em ordem
-          (Sequential: espera o movimento de cada inimigo; Simultaneous: todos e espera ao final)
+          (ordem: distância ao player, depois y, x. Staggered (padrão): intervalo `enemyStagger` sem esperar; Sequential: espera cada animação; Simultaneous: todos e espera ao final.
+          Toque durante a vez dos inimigos = animações 2x até a vez voltar)
         → TurnChangedEvent(Player)
   nova run (GridInitializedEvent): abandona a vez dos inimigos pendente e volta para o jogador
 
 Morte
-  Character.Die → desocupa célula → CharacterDiedEvent → Destroy
+  Character.Die → desocupa célula → CharacterDiedEvent → Destroy (inimigo: após flash+fade via GridController.PlayDeathAnimation)
     → player: GameFlowController → Navigator.Replace(MainMenuScreenView)
     → inimigo: XpRewardSystem → XpRewardDroppedEvent
         → XpOrbsVfx anima orbs até a barra → Collect(pacote)
@@ -272,7 +273,7 @@ Menu
 | Nova skill | Subclasse de `SkillDefinition` (+ `[CreateAssetMenu]`), asset, e referencie em `CharacterConfig.skills`. |
 | Novo encontro | Novo `EncounterConfig`; a ordem da lista é a ordem de spawn. |
 | Reação visual de personagem | `CharacterView`. |
-| Ajustar pulos do movimento | `Settings/Movement/GridMovementSettings.asset` (pulos por célula, altura, duração); vazio no `GridController` = movimento instantâneo. Ritmo dos inimigos (`Sequential`/`Simultaneous`) no `TurnManager` do GameObject `Grid`. |
+| Ajustar movimento | `Settings/Movement/GridMovementSettings.asset` (`style` Hop/Flip, parâmetros de hop, flip quantizado e pulso de chegada); vazio no `GridController` = movimento instantâneo. Ritmo dos inimigos (`Sequential`/`Simultaneous`) no `TurnManager` do GameObject `Grid`. |
 | Ajustar orbs de XP | `Settings/Vfx/XpOrbsVfxSettings.asset`; XP por orb em `XpRewardSystem.xpPerPacket`. |
 | Nova tela/modal | UXML + USS em `UI/Screens/<Nome>/`; `ViewController` em `Scripts/UI/Screens`; `Create > ZS > UI > View Definition` (controlador, camada, modo, transição). Instantiate: basta a camada existir. LayerSource: GameObject com `PanelRenderer` (o UXML) + `UILayer` (`sourceView`) listado em `UIRoot.layers`. Navegue a partir do `GameFlowController`. |
 | Nova página interna | `<zsnav:PageHost name="...">` no UXML da tela; `Context.GetPageNavigator("...").Push(definição)`. |
@@ -285,10 +286,14 @@ Menu
   mudam na hora; só o transform anima. Regras e IA nunca devem depender da
   posição visual. Quem precisar esperar animações usa
   `GridController.WaitForMovementsAsync`.
-- **Ordem dos inimigos não é determinística.** `TurnManager` usa
-  `FindObjectsByType` sem ordenação; a ordem muda entre runs e altera o
-  resultado quando dois inimigos disputam a mesma célula. Mudar isso é mudança
-  de mecânica.
+- **Ordem dos inimigos** é determinística (distância ao player, y, x) no
+  `TurnManager`; mudar isso é mudança de mecânica.
+- **Animações:** o flip é quantizado (`scaleSteps`) para não gerar colunas de
+  pixel irregulares; `Stop`/conclusão devem normalizar posição e scale. Ataque,
+  acerto e morte passam por `GridEffectsAnimator` e entram em
+  `WaitForMovementsAsync`; chame `PlayAttackAnimation` **antes** de aplicar o
+  dano (a reação do alvo cai no impacto). O Destroy de inimigo morto é
+  adiado, então ele continua na cena por ~150 ms (já fora da célula).
 - **`GridController` é `[ExecuteAlways]`** e refaz o grid no `Awake` também
   em edit mode (com `debugPlayerConfig`). Por isso a cena guarda células e
   personagens “assados” e o diff da cena fica grande após um **Reset grid**.
@@ -325,6 +330,27 @@ pela CLI `unity` (pacote `com.unity.pipeline`):
 ## Histórico de refatorações
 
 Registre aqui toda mudança estrutural (mais recente primeiro).
+
+### 2026-10-01 — Game feel, Fases 2–4
+- `TurnManager`: ordem determinística, pacing `Staggered` (padrão, também no
+  asset da cena), speed-up por toque (`GridController.AnimationSpeed`).
+- `Cell`: highlights com fade escalonado (só visual).
+- `GridEffectsAnimator` + `GridController.PlayAttackAnimation/PlayHitAnimation/
+  PlayDeathAnimation`; `WaitForMovementsAsync` cobre movimento e efeitos.
+  `Character.Die` adia o Destroy de inimigos (`PlaysDeathEffect`).
+- Hit stop não implementado (fora do escopo); sem áudio no projeto, nenhum gancho
+  de som foi criado.
+
+### 2026-10-01 — Game feel do movimento, Fase 1 (`docs/planos/plano_game_feel_movimento.md`)
+- `GridMovementSettings` ganhou `EMovementStyle` (Hop/Flip) e parâmetros de
+  hop (ease, squash na aterrissagem), flip (fechar/abrir, overshoot,
+  `scaleSteps` para quantizar o scale) e pulso de chegada. `GridMovementAnimator`
+  despacha por estilo, expõe `SpeedMultiplier` e `onArrived`; ao completar/ser
+  interrompido sempre normaliza posição e `localScale`.
+- `Cell`: `PlayArrivalPulse` (chamado por `GridController.Move` ao chegar) e
+  `PlayRejectFeedback` (o `PlayerCharacterController` chama em toques
+  rejeitados); o toque válido não faz mais squash.
+- Pendente: avaliar Hop × Flip jogando; Fases 2–4 do plano.
 
 ### 2026-09-30 — Animação de movimento e turnos com espera (mudança de mecânica pedida)
 - `GridMovementAnimator` + `GridMovementSettings` (`Gameplay/Movement`): ao

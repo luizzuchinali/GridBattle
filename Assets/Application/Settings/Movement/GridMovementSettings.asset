@@ -12,6 +12,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d02f46f43ceb2c48bb39753396855b4, type: 3}
   m_Name: GridMovementSettings
   m_EditorClassIdentifier: Assembly-CSharp::GridBattle.Gameplay.Movement.GridMovementSettings
-  hopsPerCell: 2
-  hopHeight: 0.04
+  style: 1
+  hopsPerCell: 1
+  hopHeight: 0.1
   hopDuration: 0.12
+  hopEase: 3
+  landingSquash: 2
+  landingSquashDuration: 0.06
+  flipCloseDuration: 0.07
+  flipOpenDuration: 0.09
+  flipOvershoot: 0.1
+  scaleSteps: 4
+  flipCloseEase: 0
+  flipOpenEase: 5
+  arrivalPulsePixels: 2
+  arrivalPulseDuration: 0.08
+  lungePixels: 5
+  lungeDuration: 0.15
+  hitFlashColor: {r: 1, g: 0.3, b: 0.3, a: 1}
+  hitFlashDuration: 0.1
+  hitRecoilPixels: 2
+  deathDuration: 0.15

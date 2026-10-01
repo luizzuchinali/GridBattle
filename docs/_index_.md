@@ -28,6 +28,7 @@ Bem-vindo ao vault Obsidian do projeto **grid_battle**. Este vault organiza toda
 - [[plano_progressao]] — XP, níveis, classes e árvore de traits
 - [[plano_entidades]] — Novas entidades: baú, armadilha, muro
 - [[plano_implementacao_gdd]] — Implementação do GDD: Skills + melhorias
+- [[plano_game_feel_movimento]] — Game feel: movimento (Hop/Flip), ritmo do turno, ataque/acerto/morte
 
 ### Design
 

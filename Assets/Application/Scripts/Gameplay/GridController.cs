@@ -44,6 +44,7 @@ namespace GridBattle.Gameplay
         private GridMovementSettings movementSettings;
 
         private readonly GridMovementAnimator _movementAnimator = new();
+        private readonly GridEffectsAnimator _effectsAnimator = new();
         private Cell[,] _cells;
 
         public static float Ppu => GameConfigManager.Ppu;
@@ -51,14 +52,43 @@ namespace GridBattle.Gameplay
         [CanBeNull]
         public PlayerCharacterConfig DebugPlayerConfig => debugPlayerConfig;
 
-        /// <summary>Whether any entity is still playing its movement animation.</summary>
-        public bool IsAnimatingMovement => _movementAnimator.IsAnimating;
+        /// <summary>Whether any entity is still playing a movement or combat animation.</summary>
+        public bool IsAnimatingMovement => _movementAnimator.IsAnimating || _effectsAnimator.IsAnimating;
 
-        /// <summary>Completes when every movement animation has finished.</summary>
-        public Awaitable WaitForMovementsAsync(CancellationToken cancellationToken)
+        /// <summary>Completes when every movement, attack, hit and death animation has finished.</summary>
+        public async Awaitable WaitForMovementsAsync(CancellationToken cancellationToken)
         {
-            return _movementAnimator.WaitAsync(cancellationToken);
+            while (IsAnimatingMovement)
+                await Awaitable.NextFrameAsync(cancellationToken);
         }
+
+        /// <summary>Divides the duration of every grid animation (1 = normal speed).</summary>
+        public float AnimationSpeed
+        {
+            get => _movementAnimator.SpeedMultiplier;
+            set
+            {
+                _movementAnimator.SpeedMultiplier = value;
+                _effectsAnimator.SpeedMultiplier = value;
+            }
+        }
+
+        /// <summary>
+        /// Attack lunge toward <paramref name="targetPos"/>. Call before applying
+        /// the damage so the target's hit reaction lands on the impact.
+        /// </summary>
+        public void PlayAttackAnimation(GridEntity attacker, Vector2Int targetPos)
+        {
+            if (attacker == null || !IsValidPosition(targetPos)) return;
+
+            var targetCell = _cells[targetPos.x, targetPos.y];
+            var direction = targetCell.transform.position - attacker.transform.position;
+            _effectsAnimator.PlayAttack(attacker, targetCell.GetContent(), direction, movementSettings);
+        }
+
+        public void PlayHitAnimation(GridEntity entity) => _effectsAnimator.PlayHit(entity, movementSettings);
+
+        public void PlayDeathAnimation(GridEntity entity) => _effectsAnimator.PlayDeath(entity, movementSettings);
 
         private void Awake()
         {
@@ -193,8 +223,15 @@ namespace GridBattle.Gameplay
             var content = _cells[currentPos.x, currentPos.y].GetContent();
             var fromWorld = content.transform.position;
             _cells[currentPos.x, currentPos.y].RemoveContent();
-            _cells[targetPos.x, targetPos.y].SetContent(content);
-            _movementAnimator.Animate(content, fromWorld, currentPos, targetPos, movementSettings);
+            var targetCell = _cells[targetPos.x, targetPos.y];
+            targetCell.SetContent(content);
+            _movementAnimator.Animate(content, fromWorld, currentPos, targetPos, movementSettings,
+                () =>
+                {
+                    if (targetCell != null && movementSettings != null)
+                        targetCell.PlayArrivalPulse(movementSettings.ArrivalPulsePixels,
+                            movementSettings.ArrivalPulseDuration);
+                });
         }
 
         public void HighlightCells(Dictionary<Vector2Int, ECellHighlightType> highlightInfos)

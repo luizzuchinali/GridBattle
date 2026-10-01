@@ -47,21 +47,36 @@ namespace GridBattle.Gameplay.Controllers
 
         private void OnCellTap(CellTapEvent @event)
         {
-            if (!_isMyTurn) return;
+            if (!_isMyTurn)
+            {
+                @event.Cell.PlayRejectFeedback();
+                return;
+            }
 
             if (!@event.Cell.HasContent)
             {
-                if (!GridRules.CanWalkTo(Grid, Owner, @event.Cell.GridPosition)) return;
+                if (!GridRules.CanWalkTo(Grid, Owner, @event.Cell.GridPosition))
+                {
+                    @event.Cell.PlayRejectFeedback();
+                    return;
+                }
 
                 Grid.MoveEntity(Owner, @event.Cell.GridPosition);
             }
             else
             {
-                if (!GridRules.IsAttackTarget(Grid, Owner, @event.Cell.GridPosition)) return;
+                if (!GridRules.IsAttackTarget(Grid, Owner, @event.Cell.GridPosition))
+                {
+                    @event.Cell.PlayRejectFeedback();
+                    return;
+                }
 
                 var target = @event.Cell.GetContent();
                 if (target is IDamageReceiver receiver)
+                {
+                    Grid.PlayAttackAnimation(Owner, @event.Cell.GridPosition);
                     Owner.Attack(receiver);
+                }
             }
 
             EventBus.Raise<PlayerActionEvent>();

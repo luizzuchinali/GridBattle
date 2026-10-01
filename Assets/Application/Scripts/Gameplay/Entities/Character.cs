@@ -72,6 +72,8 @@ namespace GridBattle.Gameplay.Entities
 
             if (IsDead)
                 Die();
+            else if (GetComponentInParent<GridController>() is { } grid)
+                grid.PlayHitAnimation(this);
         }
 
         /// <summary>
@@ -101,14 +103,24 @@ namespace GridBattle.Gameplay.Entities
             return GridRules.IsInAttackRange(CurrentGridPos, targetPosition, AttackDistance);
         }
 
+        /// <summary>
+        /// Whether dying plays a short visual effect before the object is destroyed.
+        /// </summary>
+        protected virtual bool PlaysDeathEffect => true;
+
         protected virtual void Die()
         {
+            var grid = GetComponentInParent<GridController>();
             var cell = GetComponentInParent<Cell>();
             if (cell != null && cell.GetContent() == this)
                 cell.RemoveContent();
 
             EventBus.Raise(new CharacterDiedEvent(this));
-            Destroy(gameObject);
+
+            if (PlaysDeathEffect && grid != null)
+                grid.PlayDeathAnimation(this);
+            else
+                Destroy(gameObject);
         }
     }
 }

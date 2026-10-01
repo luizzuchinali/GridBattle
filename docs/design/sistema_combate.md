@@ -292,27 +292,31 @@ tap em célula
 
 ```
 PlayerActionEvent
-  → para cada EnemyController da cena (ordem arbitrária):
+  → para cada EnemyController da cena (mais próximo do player primeiro):
       → enemy.Act()
 ```
 
 - **Cada ação do jogador = 1 rodada completa dos inimigos.**
 - **A vez é explícita** (`ETurnOwner`, `TurnChangedEvent`): após a ação, a vez
   passa aos inimigos; o jogador não age e não vê highlights até ela voltar.
-- O `TurnManager` espera o movimento do jogador, executa os inimigos na ordem
-  (no modo `Sequential`, cada um espera o movimento do anterior; no
-  `Simultaneous`, todos agem e espera-se o fim de todos) e devolve a vez.
+- O `TurnManager` espera as animações do jogador, executa os inimigos e devolve
+  a vez. Ritmo (`EEnemyTurnPacing`): `Staggered` (padrão: cada inimigo age
+  `enemyStagger` s depois do anterior, sem esperar a animação), `Sequential`
+  (cada um espera a animação do anterior) e `Simultaneous` (todos agem de uma
+  vez). Em todos, espera-se o fim de todas as animações ao final.
+- **Ordem dos inimigos determinística:** distância ao player (menor primeiro),
+  desempate por `y` e depois `x`.
+- **Acelerar:** um toque durante a vez dos inimigos aplica
+  `speedUpMultiplier` (2x) às animações e ao stagger até a vez voltar ao
+  player (sem `Time.timeScale`).
 - **Movimento:** a ocupação das células e o `CurrentGridPos` mudam na hora; só
-  o visual anima (pequenos pulos até o centro da célula nova,
-  `GridMovementSettings`). As regras nunca dependem da posição visual.
+  o visual anima (`GridMovementSettings`: estilo `Hop` ou `Flip`, pulso na
+  célula de chegada). As regras nunca dependem da posição visual.
+- **Ataque:** lunge do atacante em direção ao alvo (~150 ms); o dano é
+  imediato, mas a reação do alvo (flash e recuo) cai no ponto de impacto.
+- Highlights de células que aparecem juntas entram em fade escalonado (visual).
 - Nova run (`GridInitializedEvent`) volta para a vez do jogador.
 
-> [!warning] Ordem dos inimigos não é determinística
-> `FindObjectsByType` sem ordenação devolve os inimigos numa ordem que depende
-> dos IDs alocados pelo Unity — ela **muda de uma run para outra**. Quando dois
-> inimigos disputam a mesma célula, o resultado do turno varia. Se o design
-> pedir turnos reproduzíveis, ordenar explicitamente no `TurnManager` (ex.:
-> ordem de spawn ou posição no grid).
 - Ação inválida do jogador não levanta o evento → não há turno inimigo.
 - Movimento e ataque do jogador **e** uso de skills consomem o turno.
 
@@ -362,7 +366,7 @@ A lógica é genérica em `Character` (`Die()`, `protected virtual`):
 2. `Die()`:
    - desocupa a célula (`GetComponentInParent<Cell>().RemoveContent()`);
    - levanta `CharacterDiedEvent(this)`;
-   - `Destroy(gameObject)`.
+   - inimigo: efeito curto de flash + fade (~150 ms) e então `Destroy`; player: `Destroy` imediato.
 3. Reações assinam `CharacterDiedEvent`:
    - **Player morre** → `GameFlowController` encerra a run: `Navigator.Replace`
      de volta para o **menu de escolha de personagem**
