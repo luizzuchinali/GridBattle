@@ -1,6 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using GridBattle.Gameplay.Entities;
+using GridBattle.Gameplay.Events;
+using GridBattle.Gameplay.Movement;
 using GridBattle.Managers;
 using JetBrains.Annotations;
 using UnityEngine;
@@ -35,12 +38,27 @@ namespace GridBattle.Gameplay
         [Tooltip("Character used when the grid is initialized from the editor, without going through the menu.")]
         private PlayerCharacterConfig debugPlayerConfig;
 
+        [Header("Movement")]
+        [SerializeField]
+        [Tooltip("Hop animation used when entities change cells. Empty = instant.")]
+        private GridMovementSettings movementSettings;
+
+        private readonly GridMovementAnimator _movementAnimator = new();
         private Cell[,] _cells;
 
         public static float Ppu => GameConfigManager.Ppu;
 
         [CanBeNull]
         public PlayerCharacterConfig DebugPlayerConfig => debugPlayerConfig;
+
+        /// <summary>Whether any entity is still playing its movement animation.</summary>
+        public bool IsAnimatingMovement => _movementAnimator.IsAnimating;
+
+        /// <summary>Completes when every movement animation has finished.</summary>
+        public Awaitable WaitForMovementsAsync(CancellationToken cancellationToken)
+        {
+            return _movementAnimator.WaitAsync(cancellationToken);
+        }
 
         private void Awake()
         {
@@ -55,6 +73,7 @@ namespace GridBattle.Gameplay
             BuildCells();
             SpawnPlayer(playerConfig);
             SpawnEncounter();
+            EventBus.Raise(new GridInitializedEvent());
         }
 
         private void BuildCells()
@@ -172,8 +191,10 @@ namespace GridBattle.Gameplay
                 throw new InvalidOperationException("Target position is not free");
 
             var content = _cells[currentPos.x, currentPos.y].GetContent();
+            var fromWorld = content.transform.position;
             _cells[currentPos.x, currentPos.y].RemoveContent();
             _cells[targetPos.x, targetPos.y].SetContent(content);
+            _movementAnimator.Animate(content, fromWorld, currentPos, targetPos, movementSettings);
         }
 
         public void HighlightCells(Dictionary<Vector2Int, ECellHighlightType> highlightInfos)

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using GridBattle.Gameplay.Entities;
 using GridBattle.Gameplay.Entities.Interfaces;
 using GridBattle.Gameplay.Entities.Skills;
@@ -10,24 +11,44 @@ namespace GridBattle.Gameplay.Controllers
     [RequireComponent(typeof(PlayerCharacter))]
     public class PlayerCharacterController : CharacterControllerBase<PlayerCharacter>
     {
+        private static readonly Dictionary<Vector2Int, ECellHighlightType> NoHighlights = new();
+
+        private bool _isMyTurn = true;
+
         protected override void Awake()
         {
             base.Awake();
             EventBus.Subscribe<CellTapEvent>(OnCellTap);
+            EventBus.Subscribe<TurnChangedEvent>(OnTurnChanged);
         }
 
         private void OnDestroy()
         {
             EventBus.Unsubscribe<CellTapEvent>(OnCellTap);
+            EventBus.Unsubscribe<TurnChangedEvent>(OnTurnChanged);
         }
 
         private void Update()
         {
+            if (!_isMyTurn) return;
+
             Grid.HighlightCells(GridRules.GetHighlightInfos(Grid, Owner));
+        }
+
+        /// <summary>
+        /// The player only acts, and only sees highlights, on its own turn.
+        /// </summary>
+        private void OnTurnChanged(TurnChangedEvent e)
+        {
+            _isMyTurn = e.IsPlayerTurn;
+            if (!_isMyTurn)
+                Grid.HighlightCells(NoHighlights);
         }
 
         private void OnCellTap(CellTapEvent @event)
         {
+            if (!_isMyTurn) return;
+
             if (!@event.Cell.HasContent)
             {
                 if (!GridRules.CanWalkTo(Grid, Owner, @event.Cell.GridPosition)) return;
@@ -52,6 +73,7 @@ namespace GridBattle.Gameplay.Controllers
         /// </summary>
         public bool TryUseSkill(SkillDefinition skill, Vector2Int targetPos)
         {
+            if (!_isMyTurn) return false;
             if (!Owner.TryUseSkill(Grid, skill, targetPos)) return false;
 
             EventBus.Raise<PlayerActionEvent>();

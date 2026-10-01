@@ -297,8 +297,15 @@ PlayerActionEvent
 ```
 
 - **Cada ação do jogador = 1 rodada completa dos inimigos.**
-- Inimigos agem de forma **síncrona e sequencial** (sem delays); animações e
-  pacing visual podem ser adicionados depois sem mudar as regras.
+- **A vez é explícita** (`ETurnOwner`, `TurnChangedEvent`): após a ação, a vez
+  passa aos inimigos; o jogador não age e não vê highlights até ela voltar.
+- O `TurnManager` espera o movimento do jogador, executa os inimigos na ordem
+  (no modo `Sequential`, cada um espera o movimento do anterior; no
+  `Simultaneous`, todos agem e espera-se o fim de todos) e devolve a vez.
+- **Movimento:** a ocupação das células e o `CurrentGridPos` mudam na hora; só
+  o visual anima (pequenos pulos até o centro da célula nova,
+  `GridMovementSettings`). As regras nunca dependem da posição visual.
+- Nova run (`GridInitializedEvent`) volta para a vez do jogador.
 
 > [!warning] Ordem dos inimigos não é determinística
 > `FindObjectsByType` sem ordenação devolve os inimigos numa ordem que depende
@@ -492,6 +499,6 @@ Sempre que o `PlayerCharacterController.Update` roda, o grid é re-pintado via
 | **XP por fonte extra** (itens, eventos) | chamar `PlayerCharacter.GainXp`; para entrega animada, emitir `XpRewardDroppedEvent` com os pacotes |
 | **Facções/alianças** | checagem de facção dentro de `GridRules.IsAttackTarget` |
 | **Distância em diagonais** | trocar a métrica em `GridRules.IsInWalkRange`/`IsInAttackRange` |
-| **Pacing/animar turnos** | substituir a iteração síncrona do `TurnManager` por coroutine, sem mudar `EnemyController` |
+| **Pacing/animar turnos** | `TurnManager.enemyPacing` e `GridMovementSettings`; novas animações que devam segurar o turno entram no mesmo esquema de espera do `GridController.WaitForMovementsAsync` |
 | **Ajustar o VFX de XP** | asset `XpOrbsVfxSettings` (sprite, tamanho, duração do voo, stagger, altura do arco, easing); XP por orb em `XpRewardSystem.xpPerPacket` |
 | **Status/DoTs** (veneno etc.) | tickar a cada `PlayerActionEvent` (ver [[ideias_traits_itens]]) |

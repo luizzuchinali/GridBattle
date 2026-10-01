@@ -49,7 +49,8 @@ Assets/
 │   │   ├── AI/ChaseAndAttack.asset                         EnemyBehavior padrão
 │   │   ├── AI/Actions/*.asset                              EnemyActions (UseSkills, BasicAttack, ChaseTarget)
 │   │   ├── Encounters/DefaultEncounter.asset               EncounterConfig usado pelo grid
-│   │   └── Vfx/XpOrbsVfxSettings.asset                     ajustes visuais dos orbs de XP
+│   │   ├── Vfx/XpOrbsVfxSettings.asset                     ajustes visuais dos orbs de XP
+│   │   └── Movement/GridMovementSettings.asset             pulos do movimento no grid (quantidade, altura, duração)
 │   ├── UI/                         ← UI Toolkit organizada por feature
 │   │   ├── Theme/                                          GridBattle.tss (tema dos PanelSettings), Tokens.uss, Base.uss, Components.uss
 │   │   ├── Settings/                                       PanelSettings, WorldPanelSettings, PanelTextSettings
@@ -80,8 +81,9 @@ O namespace segue a pasta: `GridBattle.<Pasta>[.<Subpasta>]`.
 |---|---|---|
 | `/` | `GridBattle` | `EventBus` (pub/sub estático) |
 | `Editor/` | `GridBattle.Editor` | `GridControllerEditor` (botão **Reset grid**) |
-| `Managers/` | `GridBattle.Managers` | `GameStateManager` (início de run, lista de personagens jogáveis), `TurnManager` (rodada dos inimigos), `GameConfigManager` (PPU, FPS mobile) |
-| `Gameplay/` | `GridBattle.Gameplay` | `GridController` (tabuleiro + spawn), `Cell`, `CellContentHealthBar`, `EncounterConfig` |
+| `Managers/` | `GridBattle.Managers` | `GameStateManager` (início de run, lista de personagens jogáveis), `TurnManager` (vez do jogador × inimigos, espera as animações), `GameConfigManager` (PPU, FPS mobile) |
+| `Gameplay/` | `GridBattle.Gameplay` | `GridController` (tabuleiro + spawn + movimento), `Cell`, `CellContentHealthBar`, `EncounterConfig`, `ETurnOwner` |
+| `Gameplay/Movement/` | `GridBattle.Gameplay.Movement` | `GridMovementAnimator` (pulos ao trocar de célula), `GridMovementSettings` |
 | `Gameplay/Entities/` | `GridBattle.Gameplay.Entities` | `GridEntity` → `Character` → `PlayerCharacter` / `Enemy`; `CharacterView`, `CharacterFactory`, `ECharacter` |
 | `Gameplay/Entities/Configs/` | `GridBattle.Gameplay.Entities` ⚠️ | `CharacterConfig` (abstrato), `EnemyConfig`, `PlayerCharacterConfig` — **exceção**: namespace não inclui `Configs` |
 | `Gameplay/Entities/Interfaces/` | `…Entities.Interfaces` | `IDamageReceiver`, `IAttacker`, `IWalker` |
@@ -130,9 +132,15 @@ Escolha de classe (MainMenuScreenController)
               → CharacterFactory.Spawn(inimigo) para cada EnemyConfig do EncounterConfig
 
 Turno
+  vez do jogador (TurnChangedEvent Player): highlights visíveis, toques aceitos
   Cell (clique) → CellTapEvent → PlayerCharacterController (andar/atacar via GridRules)
-    → PlayerActionEvent → TurnManager → EnemyController.Act() de cada inimigo
-        → EnemyConfig.Behavior.TakeTurn(EnemyTurnContext) → EnemyActions em ordem
+    → GridController.MoveEntity: ocupação/CurrentGridPos mudam na hora; GridMovementAnimator anima os pulos
+    → PlayerActionEvent → TurnManager: TurnChangedEvent(Enemies) (highlights somem, toques ignorados)
+        → espera o movimento do jogador
+        → EnemyController.Act() de cada inimigo → EnemyConfig.Behavior.TakeTurn → EnemyActions em ordem
+          (Sequential: espera o movimento de cada inimigo; Simultaneous: todos e espera ao final)
+        → TurnChangedEvent(Player)
+  nova run (GridInitializedEvent): abandona a vez dos inimigos pendente e volta para o jogador
 
 Morte
   Character.Die → desocupa célula → CharacterDiedEvent → Destroy
@@ -264,6 +272,7 @@ Menu
 | Nova skill | Subclasse de `SkillDefinition` (+ `[CreateAssetMenu]`), asset, e referencie em `CharacterConfig.skills`. |
 | Novo encontro | Novo `EncounterConfig`; a ordem da lista é a ordem de spawn. |
 | Reação visual de personagem | `CharacterView`. |
+| Ajustar pulos do movimento | `Settings/Movement/GridMovementSettings.asset` (pulos por célula, altura, duração); vazio no `GridController` = movimento instantâneo. Ritmo dos inimigos (`Sequential`/`Simultaneous`) no `TurnManager` do GameObject `Grid`. |
 | Ajustar orbs de XP | `Settings/Vfx/XpOrbsVfxSettings.asset`; XP por orb em `XpRewardSystem.xpPerPacket`. |
 | Nova tela/modal | UXML + USS em `UI/Screens/<Nome>/`; `ViewController` em `Scripts/UI/Screens`; `Create > ZS > UI > View Definition` (controlador, camada, modo, transição). Instantiate: basta a camada existir. LayerSource: GameObject com `PanelRenderer` (o UXML) + `UILayer` (`sourceView`) listado em `UIRoot.layers`. Navegue a partir do `GameFlowController`. |
 | Nova página interna | `<zsnav:PageHost name="...">` no UXML da tela; `Context.GetPageNavigator("...").Push(definição)`. |
@@ -272,6 +281,10 @@ Menu
 
 ## Cuidados
 
+- **Lógica imediata, visual atrasado.** Ao mover, célula e `CurrentGridPos`
+  mudam na hora; só o transform anima. Regras e IA nunca devem depender da
+  posição visual. Quem precisar esperar animações usa
+  `GridController.WaitForMovementsAsync`.
 - **Ordem dos inimigos não é determinística.** `TurnManager` usa
   `FindObjectsByType` sem ordenação; a ordem muda entre runs e altera o
   resultado quando dois inimigos disputam a mesma célula. Mudar isso é mudança
@@ -312,6 +325,20 @@ pela CLI `unity` (pacote `com.unity.pipeline`):
 ## Histórico de refatorações
 
 Registre aqui toda mudança estrutural (mais recente primeiro).
+
+### 2026-09-30 — Animação de movimento e turnos com espera (mudança de mecânica pedida)
+- `GridMovementAnimator` + `GridMovementSettings` (`Gameplay/Movement`): ao
+  trocar de célula, o entity dá pequenos pulos (LitMotion) até o centro da
+  célula nova. Integrado em `GridController.Move`; a lógica continua imediata.
+- `TurnManager` passou a controlar a vez (`ETurnOwner`, `TurnChangedEvent`):
+  após a ação do jogador, espera o movimento dele, executa os inimigos
+  (aguardando os movimentos; `EEnemyTurnPacing` Sequential/Simultaneous) e
+  devolve a vez. `GridController` emite `GridInitializedEvent` ao iniciar uma
+  run (reseta a vez).
+- `PlayerCharacterController` só aceita toques/skills e só mostra highlights na
+  vez do jogador.
+- Verificado: mesma sequência lógica de partida (posições, HP, mortes, XP) do
+  código anterior; pulos, bloqueio de input e highlights confirmados em Play Mode.
 
 ### 2026-09-30 — `ZS.UI` somente com PanelRenderer
 - Removido o suporte a `UIDocument` (depreciado): `UILayer` agora exige
