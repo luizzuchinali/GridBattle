@@ -2,8 +2,13 @@ using GridBattle.Gameplay.Controllers;
 using GridBattle.Gameplay.Events;
 using UnityEngine;
 
-namespace GridBattle.Gameplay
+namespace GridBattle.Managers
 {
+    /// <summary>
+    /// Turn flow: every action consumed by the player (PlayerActionEvent)
+    /// triggers one full round of enemy turns. Enemy order comes from an
+    /// unsorted FindObjectsByType, so it can change between runs.
+    /// </summary>
     public class TurnManager : MonoBehaviour
     {
         private void Awake()

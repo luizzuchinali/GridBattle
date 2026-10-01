@@ -287,7 +287,7 @@ tap em célula
 
 ## Sistema de turnos
 
-`TurnManager` (MonoBehaviour na cena, no GameObject do Grid) assina
+`TurnManager` (`GridBattle.Managers`, MonoBehaviour no GameObject do Grid) assina
 `PlayerActionEvent`:
 
 ```
