@@ -1,0 +1,11 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:zsnav="ZS.UI.Navigation" editor-extension-mode="False">
+    <Style src="Sample.uss"/>
+    <Style src="../../../Runtime/Styles/ZSTransitions.uss"/>
+    <ui:VisualElement class="sample-dialog">
+        <ui:Label name="message" text="Are you sure?" class="sample-text"/>
+        <ui:VisualElement class="sample-row">
+            <ui:Button name="yes" text="Yes" class="sample-button"/>
+            <ui:Button name="no" text="No" class="sample-button"/>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

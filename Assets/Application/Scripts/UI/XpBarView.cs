@@ -10,7 +10,7 @@ namespace GridBattle.UI
     /// </summary>
     public sealed class XpBarView
     {
-        // Measurements from GameScreenView.uxml: the frame (xp-bar-detail-2) is 112px
+        // Measurements from GameScreen.uss: the frame (xp-bar-detail-2) is 112px
         // and the progress (xp-bar-progress) takes up to 110px, with a 1px border on
         // each side.
         private const float FrameWidth = 112f;

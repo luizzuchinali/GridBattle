@@ -1,0 +1,11 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:zsnav="ZS.UI.Navigation" editor-extension-mode="False">
+    <Style src="Sample.uss"/>
+    <Style src="../../../Runtime/Styles/ZSTransitions.uss"/>
+    <ui:VisualElement class="sample-screen zs-fade">
+        <ui:Label text="ZS.UI Navigation" class="sample-title"/>
+        <ui:Button name="details" text="Push details (with args)" class="sample-button"/>
+        <ui:Button name="settings" text="Settings (pages)" class="sample-button"/>
+        <ui:Button name="confirm" text="Confirm modal (result)" class="sample-button"/>
+        <ui:Label name="result" text="-" class="sample-text"/>
+    </ui:VisualElement>
+</ui:UXML>

@@ -1,0 +1,60 @@
+/*
+ * Reusable components.
+ *
+ * Rules that override Unity's default Button theme are scoped under
+ * #container (the root of every view) so their specificity beats the theme's
+ * pseudo-state rules (:hover, :active, :focus).
+ */
+
+/* Square 32px slot button (HUD buttons, skill slots). */
+#container .slot-button {
+    font-size: var(--font-size-hud);
+    width: 32px;
+    margin: 0;
+    padding: 0;
+    border-width: 0;
+    border-radius: 0;
+    background-color: transparent;
+    background-image: var(--skin-slot);
+    -unity-background-scale-mode: scale-and-crop;
+}
+
+#container .slot-button:active {
+    background-image: var(--skin-slot-pressed);
+}
+
+/* Character portrait button (main menu). */
+#container .portrait-button {
+    height: 46px;
+    width: 32px;
+    margin: 0;
+    margin-right: var(--spacing-sm);
+    -unity-text-align: middle-center;
+    border-width: 0;
+    background-color: transparent;
+    align-items: center;
+    justify-content: center;
+    background-image: var(--skin-grid-cell);
+}
+
+#container .portrait-button--flush {
+    padding: 0;
+}
+
+.portrait-image {
+    flex-grow: 1;
+    width: 25px;
+    height: 30px;
+    min-width: 25px;
+    max-width: 25px;
+    min-height: 30px;
+    max-height: 30px;
+}
+
+/* Framed panel (overlays). */
+.panel-frame {
+    background-image: var(--skin-panel);
+    background-size: 100% 100%;
+    width: 200px;
+    height: 226px;
+}

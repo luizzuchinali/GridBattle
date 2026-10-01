@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 911f3ae46822d5e49be4efe50cb95816, type: 3}
+  m_Name: ScreenCoverView
+  m_EditorClassIdentifier: ZS.UI::ZS.UI.Navigation.ViewDefinition
+  visualTree: {fileID: 9197481963319205126, guid: 943c9ecf1bcb044699e1b7170d1b927b, type: 3}
+  styleSheets: []
+  controllerType: 
+  layer: {fileID: 11400000, guid: 0fdc7ea86cf615e479333d6a2bc9ae0e, type: 2}
+  mountMode: 1
+  transition: {fileID: 0}
+  useBackdrop: 1
+  backdropColor: {r: 0, g: 0, b: 0, a: 0.5}
+  closeOnBackdropClick: 1
+  closeOnBack: 1

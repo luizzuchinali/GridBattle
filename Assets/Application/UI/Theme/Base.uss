@@ -1,0 +1,38 @@
+/*
+ * Base styles shared by every panel (imported by GridBattle.tss).
+ */
+:root {
+    -unity-font-definition: url("project://database/Assets/Resources/Fonts & Materials/ThaleahFat_TTF.ttf");
+}
+
+/* Full-screen root of each view (the element named "container"). */
+.container {
+    flex-grow: 1;
+    background-color: var(--color-bg);
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition-duration: var(--transition-screen);
+    width: 100%;
+}
+
+.container > Label {
+    font-size: var(--font-size-body);
+    color: var(--color-primary);
+    -unity-text-align: middle-center;
+    margin: var(--spacing-sm);
+    padding: 0;
+}
+
+/* Utilities */
+.spacing-sm {
+    min-width: var(--spacing-sm);
+}
+
+.opacity-0 {
+    opacity: 0;
+}
+
+.display-none {
+    display: none;
+}

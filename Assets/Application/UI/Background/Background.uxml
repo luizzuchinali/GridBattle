@@ -1,0 +1,4 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/Application/UI/Background/Background.uss?fileID=7433441132597879392&amp;guid=36b6d998984d4cc9a0b2b081da18bc94&amp;type=3#Background"/>
+    <ui:VisualElement class="container background" picking-mode="Ignore"/>
+</ui:UXML>

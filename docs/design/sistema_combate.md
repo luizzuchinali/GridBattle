@@ -357,9 +357,9 @@ A lógica é genérica em `Character` (`Die()`, `protected virtual`):
    - levanta `CharacterDiedEvent(this)`;
    - `Destroy(gameObject)`.
 3. Reações assinam `CharacterDiedEvent`:
-   - **Player morre** → `NavigationController` encerra a run: transição de
-     tela de volta para o **menu de escolha de personagem**
-     (`UIScreen.MainMenu`). Nova run recria o grid do zero via
+   - **Player morre** → `GameFlowController` encerra a run: `Navigator.Replace`
+     de volta para o **menu de escolha de personagem**
+     (`MainMenuScreenView`). Nova run recria o grid do zero via
      `InitializeGrid`.
    - **Inimigo morre** → apenas desocupa a célula; nenhum evento de navegação.
 - `ReceiveDamage` é **idempotente pós-morte**: personagem morto não toma dano
@@ -388,7 +388,7 @@ inimigo morre (Character.Die)
           → XpPacket.Split: N = teto(XpReward / xpPerPacket) pacotes,
             cada um com o progresso da barra após creditá-lo
           → EventBus.Raise(XpRewardDroppedEvent { Origin, Packets, Collect })
-              → XpOrbsVfx (no GameObject da GameScreenView)  ← apresentação
+              → XpOrbsVfx (no GameObject GameScreenLayer)  ← apresentação
                   → MarkPresented(): assume a entrega
                   → cada pacote vira um orb (UI Toolkit) que voa em arco
                     (LitMotion) da posição do inimigo até o ponto da barra
@@ -397,7 +397,7 @@ inimigo morre (Character.Die)
           → se ninguém assumiu a entrega: Collect de todos na hora
   Collect(pacote) → PlayerCharacter.GainXp(pacote.Amount)
       → EventBus.Raise(PlayerXpChangedEvent { Level, CurrentXp, XpToNextLevel })
-          → GameScreenView.OnXpChanged → XpBarView.SetState
+          → GameScreenController.OnXpChanged → XpBarView.SetState
               → largura do "xp-bar-progress" = progresso * 110px
               → texto do label "current-level" = Level
 ```
@@ -422,7 +422,7 @@ inimigo morre (Character.Die)
 - A comunicação **jogo → UI é sempre via EventBus** (`PlayerXpChangedEvent`,
   `XpRewardDroppedEvent`). Um `PlayerCharacter` recém-criado emite
   `PlayerXpChangedEvent` no `Initialize`, então a barra começa cada run
-  zerada. `GameScreenView.OnUIReload` restaura o estado ao recarregar a UI.
+  zerada. `GameScreenController.OnBind` restaura o estado ao recarregar a UI.
 - O inimigo morto já desocupou a célula antes do XP ser concedido (a ordem
   do `Die()` garante isso).
 - Player morto não ganha XP (guard `IsDead` no `GainXp`).

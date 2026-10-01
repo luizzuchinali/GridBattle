@@ -1,0 +1,8 @@
+/* Cover positions: parked off-screen right (before) and left (after). */
+.translate-right {
+    translate: var(--cover-offset-right) 0;
+}
+
+.translate-left {
+    translate: var(--cover-offset-left) 0;
+}

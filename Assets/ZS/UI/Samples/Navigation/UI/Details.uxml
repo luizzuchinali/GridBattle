@@ -1,0 +1,8 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:zsnav="ZS.UI.Navigation" editor-extension-mode="False">
+    <Style src="Sample.uss"/>
+    <Style src="../../../Runtime/Styles/ZSTransitions.uss"/>
+    <ui:VisualElement class="sample-screen zs-fade">
+        <ui:Label name="title" text="Details" class="sample-title"/>
+        <ui:Button name="back" text="Back" class="sample-button"/>
+    </ui:VisualElement>
+</ui:UXML>

@@ -1,0 +1,8 @@
+#character-selection {
+    width: 100%;
+    max-height: 46px;
+    flex-grow: 1;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}

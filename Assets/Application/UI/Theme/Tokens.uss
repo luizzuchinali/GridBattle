@@ -1,0 +1,33 @@
+/*
+ * Design tokens: the only place for colors, spacing, typography, timing and
+ * skin sprites. Styles reference them through var(--token).
+ */
+:root {
+    /* Colors */
+    --color-bg: rgb(27, 27, 27);
+    --color-primary: #ffcc00;
+    --color-xp-level: rgb(220, 178, 101);
+    --color-overlay-dim: rgba(0, 0, 0, 0.7);
+
+    /* Spacing */
+    --spacing-sm: 2px;
+    --spacing-md: 4px;
+
+    /* Typography */
+    --font-size-hud: 10px;
+    --font-size-body: 12px;
+
+    /* Timing */
+    --transition-screen: 0.25s;
+
+    /* Screen cover offset: reference screen width (216px) */
+    --cover-offset-right: 216px;
+    --cover-offset-left: -216px;
+
+    /* Skins (UI.png sprites) */
+    --skin-slot: url("project://database/Assets/Application/Art/Sprites/UI.png?fileID=7843416716369364892&guid=62a3f1345f5495642b6ab1f188fd400c&type=3#UI_7");
+    --skin-slot-pressed: url("project://database/Assets/Application/Art/Sprites/UI.png?fileID=-6595680761151332689&guid=62a3f1345f5495642b6ab1f188fd400c&type=3#UI_8");
+    --skin-grid-cell: url("project://database/Assets/Application/Art/Sprites/UI.png?fileID=82707731993968007&guid=62a3f1345f5495642b6ab1f188fd400c&type=3#GridCell");
+    --skin-panel: url("project://database/Assets/Application/Art/Sprites/UI.png?fileID=846991392&guid=62a3f1345f5495642b6ab1f188fd400c&type=3#UI_1");
+    --skin-xp-bar-progress: url("project://database/Assets/Application/Art/Sprites/UI.png?fileID=8160775752198118580&guid=62a3f1345f5495642b6ab1f188fd400c&type=3#XpBarProgress");
+}

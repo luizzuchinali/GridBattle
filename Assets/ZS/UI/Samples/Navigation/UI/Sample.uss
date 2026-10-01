@@ -1,0 +1,64 @@
+.sample-screen {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    padding: 24px;
+    align-items: center;
+    justify-content: center;
+    background-color: rgb(32, 36, 48);
+}
+
+.sample-title {
+    font-size: 28px;
+    color: rgb(240, 240, 240);
+    -unity-font-style: bold;
+    margin-bottom: 16px;
+}
+
+.sample-text {
+    font-size: 18px;
+    color: rgb(200, 200, 200);
+    margin: 8px;
+}
+
+.sample-button {
+    min-width: 220px;
+    height: 44px;
+    font-size: 18px;
+    margin: 6px;
+}
+
+.sample-row {
+    flex-direction: row;
+}
+
+.sample-pages {
+    flex-grow: 1;
+    width: 100%;
+    margin: 12px;
+}
+
+.sample-page {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    align-items: center;
+    justify-content: center;
+    background-color: rgb(48, 54, 70);
+    border-radius: 8px;
+}
+
+.sample-dialog {
+    position: absolute;
+    left: 15%;
+    right: 15%;
+    top: 35%;
+    padding: 20px;
+    align-items: center;
+    background-color: rgb(60, 66, 84);
+    border-radius: 12px;
+}

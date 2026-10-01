@@ -1,0 +1,14 @@
+#container {
+    background-color: var(--color-overlay-dim);
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+/* Tapping this element (outside the panel) closes the overlay. */
+#overlay-background {
+    flex-grow: 1;
+    align-items: center;
+    flex-direction: row;
+    justify-content: space-between;
+    align-self: center;
+}

@@ -1,0 +1,18 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:zs="ZS.UI" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/Application/UI/Screens/MainMenu/MainMenuScreen.uss?fileID=7433441132597879392&amp;guid=d277521352ca2443cb0ca7d3549b5673&amp;type=3#MainMenuScreen"/>
+    <!-- Element names below are animated by CharacterButtonsAnim (Animator paths): keep names and hierarchy. -->
+    <zs:SafeArea name="container" class="container">
+        <ui:Label text="Select a character"/>
+        <ui:VisualElement name="character-selection">
+            <ui:Button text="" name="knight-btn" class="portrait-button portrait-button--flush">
+                <ui:VisualElement name="knight-image" class="portrait-image"/>
+            </ui:Button>
+            <ui:Button text="" name="mage-btn" class="portrait-button">
+                <ui:VisualElement name="mage-image" class="portrait-image"/>
+            </ui:Button>
+            <ui:Button text="" name="rogue-btn" class="portrait-button">
+                <ui:VisualElement name="rogue-image" class="portrait-image"/>
+            </ui:Button>
+        </ui:VisualElement>
+    </zs:SafeArea>
+</ui:UXML>

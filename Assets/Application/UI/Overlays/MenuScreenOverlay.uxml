@@ -1,8 +1,0 @@
-<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:gb="GridBattle.UI" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <Style src="project://database/Assets/Application/UI/USS/Overlays/MenuScreenOverlay.uss?fileID=7433441132597879392&amp;guid=0468dc7bbe1b413c82365134706ea72f&amp;type=3#MenuScreenOverlay"/>
-    <gb:SafeArea name="container" picking-mode="Ignore" class="container">
-        <ui:VisualElement name="overlay-background" style="flex-grow: 1; align-items: center; flex-direction: row; justify-content: space-between; align-self: center;">
-            <ui:VisualElement name="panel" style="background-image: url(&quot;project://database/Assets/Application/Art/Sprites/UI.png?fileID=846991392&amp;guid=62a3f1345f5495642b6ab1f188fd400c&amp;type=3#UI_1&quot;); background-size: 100% 100%; width: 200px; height: 226px;"/>
-        </ui:VisualElement>
-    </gb:SafeArea>
-</ui:UXML>

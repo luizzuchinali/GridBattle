@@ -1,8 +1,10 @@
 using System;
 using GridBattle.Gameplay.Events;
+using GridBattle.UI.Screens;
 using LitMotion;
 using UnityEngine;
 using UnityEngine.UIElements;
+using ZS.UI.Navigation;
 
 namespace GridBattle.UI.Vfx
 {
@@ -13,18 +15,18 @@ namespace GridBattle.UI.Vfx
     /// removed and the packet is credited. How much XP and to whom is decided by
     /// XpRewardSystem; this is only presentation and delivery timing.
     /// </summary>
-    [RequireComponent(typeof(GameScreenView))]
+    [RequireComponent(typeof(UILayer))]
     public class XpOrbsVfx : MonoBehaviour
     {
         [SerializeField]
         private XpOrbsVfxSettings settings;
 
-        private GameScreenView _gameScreen;
+        private UIRoot _uiRoot;
         private Camera _camera;
 
         private void Awake()
         {
-            _gameScreen = GetComponent<GameScreenView>();
+            _uiRoot = GetComponentInParent<UIRoot>();
         }
 
         private void OnEnable()
@@ -40,9 +42,10 @@ namespace GridBattle.UI.Vfx
         private void OnXpRewardDropped(XpRewardDroppedEvent e)
         {
             if (e.IsPresented || settings == null) return;
+            if (_uiRoot == null || !_uiRoot.TryGetController(out GameScreenController gameScreen)) return;
 
-            var layer = _gameScreen.EffectsLayer;
-            var xpBar = _gameScreen.XpBar;
+            var layer = gameScreen.EffectsLayer;
+            var xpBar = gameScreen.XpBar;
             if (layer?.panel == null || xpBar == null || !xpBar.TryGetTrack(out var track)) return;
 
             if (_camera == null)

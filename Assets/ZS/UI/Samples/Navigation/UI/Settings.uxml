@@ -1,0 +1,13 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:zsnav="ZS.UI.Navigation" editor-extension-mode="False">
+    <Style src="Sample.uss"/>
+    <Style src="../../../Runtime/Styles/ZSTransitions.uss"/>
+    <ui:VisualElement class="sample-screen zs-fade">
+        <ui:Label text="Settings" class="sample-title"/>
+        <ui:VisualElement class="sample-row">
+            <ui:Button name="general" text="General" class="sample-button"/>
+            <ui:Button name="audio" text="Audio" class="sample-button"/>
+        </ui:VisualElement>
+        <zsnav:PageHost name="pages" class="sample-pages"/>
+        <ui:Button name="back" text="Back" class="sample-button"/>
+    </ui:VisualElement>
+</ui:UXML>

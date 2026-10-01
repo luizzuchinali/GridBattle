@@ -1,0 +1,7 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:zsnav="ZS.UI.Navigation" editor-extension-mode="False">
+    <Style src="Sample.uss"/>
+    <Style src="../../../Runtime/Styles/ZSTransitions.uss"/>
+    <ui:VisualElement class="sample-page zs-fade">
+        <ui:Label text="General page" class="sample-text"/>
+    </ui:VisualElement>
+</ui:UXML>

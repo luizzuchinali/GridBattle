@@ -1,0 +1,33 @@
+/*
+ * Optional helpers for UssClassTransition. Import this file in your theme
+ * (TSS) or a view's UXML, add .zs-fade/.zs-slide to the view root and use the
+ * modifier classes as enter/exit classes.
+ */
+.zs-fade {
+    transition-property: opacity;
+    transition-duration: 0.2s;
+    transition-timing-function: ease-out-cubic;
+}
+
+.zs-fade--hidden {
+    opacity: 0;
+}
+
+.zs-slide {
+    transition-property: translate, opacity;
+    transition-duration: 0.25s;
+    transition-timing-function: ease-out-cubic;
+}
+
+.zs-slide--right {
+    translate: 100% 0;
+}
+
+.zs-slide--left {
+    translate: -100% 0;
+}
+
+.zs-modal-backdrop {
+    transition-property: opacity;
+    transition-duration: 0.15s;
+}
