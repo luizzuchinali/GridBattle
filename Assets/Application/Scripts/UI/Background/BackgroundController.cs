@@ -27,8 +27,8 @@ namespace GridBattle.UI.Background
 
         protected override void OnBind(VisualElement root)
         {
-            if (Context.Layer.TryGetComponent(out PanelRenderer panelRenderer))
-                panelRenderer.worldSpaceSize = new Vector2(UnityEngine.Device.Screen.width, UnityEngine.Device.Screen.height);
+            Context.Layer.PanelRenderer.worldSpaceSize =
+                new Vector2(UnityEngine.Device.Screen.width, UnityEngine.Device.Screen.height);
         }
 
         private void OnCharacterChoosen(CharacterChoosenEvent e)

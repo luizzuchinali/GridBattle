@@ -10,7 +10,7 @@ namespace ZS.UI.Navigation
 
         /// <summary>
         /// The view is the layer's own panel content (the UXML set on the layer's
-        /// PanelRenderer/UIDocument). One instance per layer, created with the
+        /// PanelRenderer). One instance per layer, created with the
         /// UIRoot. Keeps the exact element hierarchy, so it suits views animated by
         /// an Animator and gives edit-time preview of the panel.
         /// </summary>

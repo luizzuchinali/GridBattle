@@ -188,6 +188,13 @@ Menu
 
 ### UI — navegação (`ZS.UI`)
 
+- **Somente `PanelRenderer`.** `UIDocument` está depreciado e não é suportado
+  pelo `ZS.UI`; o `UILayer` exige um `PanelRenderer` no mesmo GameObject.
+- **Poucas camadas, por função** (fundo, telas, modais, transição), não uma
+  por tela: cada `PanelSettings` distinto é um painel (layout, estilo e eventos
+  próprios) e cada `PanelRenderer` é um renderer na ordenação. Views escondidas
+  (`display: none`) não custam layout nem desenho. Telas novas devem usar
+  `Instantiate` numa camada compartilhada.
 - **Toda tela, modal ou página é um `ViewDefinition` (asset) + um
   `ViewController` (C# puro, `[Preserve]`)**, ao lado do seu UXML. Não crie
   MonoBehaviour por tela.
@@ -306,10 +313,15 @@ pela CLI `unity` (pacote `com.unity.pipeline`):
 
 Registre aqui toda mudança estrutural (mais recente primeiro).
 
+### 2026-09-30 — `ZS.UI` somente com PanelRenderer
+- Removido o suporte a `UIDocument` (depreciado): `UILayer` agora exige
+  `PanelRenderer` (`[RequireComponent]`) e expõe `UILayer.PanelRenderer`.
+- Cena de exemplo refeita com `PanelRenderer`.
+
 ### 2026-09-30 — Framework de navegação `ZS.UI` e reorganização de USS/UXML
 - **Novo framework `Assets/ZS/UI`** (asmdefs `ZS.UI`, `ZS.UI.Editor`,
   `ZS.UI.Tests`, `ZS.UI.Samples`; namespace `ZS.*`, sem dependência do jogo):
-  `UIRoot`, `UILayer` (PanelRenderer/UIDocument), `UILayerDefinition`,
+  `UIRoot`, `UILayer` (somente PanelRenderer), `UILayerDefinition`,
   `ViewDefinition`, `ViewController`, `ModalController<T>`, `Navigator` (pilha,
   modais, voltar, política de concorrência), `PageHost`/`PageNavigator`,
   transições (`CoverTransition`, `UssClassTransition`), `SafeArea` (movido do
