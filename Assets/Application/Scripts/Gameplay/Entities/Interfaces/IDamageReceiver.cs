@@ -7,7 +7,7 @@ namespace GridBattle.Gameplay.Entities.Interfaces
         void ReceiveDamage(int damage);
 
         (int CurrentHp, int MaxHp) GetHpInfo();
-        Action<DamageReceiveData> OnHpChanged { get; set; }
+        event Action<DamageReceiveData> OnHpChanged;
     }
 
     public struct DamageReceiveData

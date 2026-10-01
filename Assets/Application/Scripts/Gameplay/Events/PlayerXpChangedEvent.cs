@@ -1,8 +1,8 @@
 namespace GridBattle.Gameplay.Events
 {
     /// <summary>
-    /// Emitido sempre que o XP do PlayerCharacter muda (ganho de XP ou level up).
-    /// Consumido pela UI (barra de XP).
+    /// Raised whenever the PlayerCharacter's XP changes (XP gain or level up).
+    /// Consumed by the UI (XP bar).
     /// </summary>
     public class PlayerXpChangedEvent
     {

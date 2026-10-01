@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using GridBattle.Gameplay.Entities;
-using GridBattle.Gameplay.Events;
 using GridBattle.Managers;
 using JetBrains.Annotations;
 using UnityEngine;
@@ -9,9 +8,16 @@ using UnityEngine.Assertions;
 
 namespace GridBattle.Gameplay
 {
+    /// <summary>
+    /// Owns the board: creates the cells, places the player and the encounter's
+    /// enemies (via CharacterFactory) and centralizes occupancy queries and
+    /// moves.
+    /// </summary>
     [ExecuteAlways]
     public class GridController : MonoBehaviour
     {
+        private static readonly Vector2Int PlayerSpawnPosition = new(2, 2);
+
         [Header("Grid Settings")]
         [SerializeField]
         private Vector2Int gridSize = new Vector2Int(6, 6);
@@ -19,26 +25,39 @@ namespace GridBattle.Gameplay
         [SerializeField]
         private Cell cellPrefab;
 
+        [Header("Spawn")]
         [SerializeField]
-        [CanBeNull]
-        public PlayerCharacter debugEntityPrefab;
+        [Tooltip("Enemies placed when the grid is initialized.")]
+        private EncounterConfig encounter;
 
         [SerializeField]
-        public Enemy[] enemyEntityPrefabs;
+        [CanBeNull]
+        [Tooltip("Character used when the grid is initialized from the editor, without going through the menu.")]
+        private PlayerCharacterConfig debugPlayerConfig;
 
         private Cell[,] _cells;
 
         public static float Ppu => GameConfigManager.Ppu;
 
+        [CanBeNull]
+        public PlayerCharacterConfig DebugPlayerConfig => debugPlayerConfig;
+
         private void Awake()
         {
             Assert.IsNotNull(cellPrefab, "Cell prefab is not set!");
 #if UNITY_EDITOR
-            InitializeGrid(debugEntityPrefab);
+            InitializeGrid(debugPlayerConfig);
 #endif
         }
 
-        public void InitializeGrid(PlayerCharacter playerCharacterPrefab)
+        public void InitializeGrid([CanBeNull] PlayerCharacterConfig playerConfig)
+        {
+            BuildCells();
+            SpawnPlayer(playerConfig);
+            SpawnEncounter();
+        }
+
+        private void BuildCells()
         {
             var cells = FindObjectsByType<Cell>();
             foreach (var cell in cells)
@@ -78,39 +97,48 @@ namespace GridBattle.Gameplay
                     _cells[x, y] = instance;
                 }
             }
+        }
 
-            var playerCharacterInstance = InstantiatePrefabLinked(playerCharacterPrefab);
-            playerCharacterInstance.transform.SetPositionAndRotation(new Vector3(0, 0, 0), Quaternion.identity);
-            _cells[2, 2].SetContent(playerCharacterInstance);
+        private void SpawnPlayer([CanBeNull] PlayerCharacterConfig playerConfig)
+        {
+            if (playerConfig == null) return;
 
-            var length = enemyEntityPrefabs.Length;
-            for (int i = 0; i < length; i++)
+            var player = CharacterFactory.Spawn(playerConfig);
+            if (player == null) return;
+
+            player.transform.SetPositionAndRotation(Vector3.zero, Quaternion.identity);
+            _cells[PlayerSpawnPosition.x, PlayerSpawnPosition.y].SetContent(player);
+        }
+
+        private void SpawnEncounter()
+        {
+            if (encounter == null) return;
+
+            foreach (var enemyConfig in encounter.Enemies)
             {
-                foreach (var cell in _cells)
-                {
-                    if (cell.HasContent)
-                        continue;
+                if (enemyConfig == null) continue;
 
-                    var enemyEntityPrefab = enemyEntityPrefabs[i];
-                    var enemyInstance = InstantiatePrefabLinked(enemyEntityPrefab);
-                    enemyInstance.transform.SetParent(cell.transform, false);
-                    cell.SetContent(enemyInstance);
-                    break;
-                }
+                var cell = FindFirstFreeCell();
+                if (cell == null) return;
+
+                var enemy = CharacterFactory.Spawn(enemyConfig);
+                if (enemy == null) continue;
+
+                enemy.transform.SetParent(cell.transform, false);
+                cell.SetContent(enemy);
             }
         }
 
-        /// <summary>
-        /// No editor, instancia linkada ao prefab para que os clones reflitam
-        /// mudanças no prefab
-        /// </summary>
-        private static T InstantiatePrefabLinked<T>(T prefab) where T : Component
+        [CanBeNull]
+        private Cell FindFirstFreeCell()
         {
-#if UNITY_EDITOR
-            if (!Application.isPlaying)
-                return (T)UnityEditor.PrefabUtility.InstantiatePrefab(prefab);
-#endif
-            return Instantiate(prefab);
+            foreach (var cell in _cells)
+            {
+                if (!cell.HasContent)
+                    return cell;
+            }
+
+            return null;
         }
 
         public void MoveEntity(GridEntity entity, Vector2Int targetPos)

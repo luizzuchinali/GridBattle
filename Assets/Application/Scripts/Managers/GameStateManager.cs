@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using GridBattle.Gameplay;
 using GridBattle.Gameplay.Entities;
-using GridBattle.UI.Events;
 using UnityEngine;
 
 namespace GridBattle.Managers
@@ -9,7 +8,8 @@ namespace GridBattle.Managers
     public class GameStateManager : MonoBehaviour
     {
         [SerializeField]
-        private Dictionary<ECharacter, PlayerCharacter> _playerCharacterPrefabs;
+        [Tooltip("Playable characters. The class chosen in the menu is resolved through each config's CharacterClass.")]
+        private List<PlayerCharacterConfig> playableCharacters = new();
 
         private static GameStateManager _instance;
         public static GameStateManager Instance => _instance;
@@ -28,7 +28,14 @@ namespace GridBattle.Managers
 
         public void StartRun(ECharacter character)
         {
-            FindAnyObjectByType<GridController>().InitializeGrid(_playerCharacterPrefabs[character]);
+            var playerConfig = playableCharacters.Find(config => config != null && config.CharacterClass == character);
+            if (playerConfig == null)
+            {
+                Debug.LogError($"No PlayerCharacterConfig with class {character} in {name}.", this);
+                return;
+            }
+
+            FindAnyObjectByType<GridController>().InitializeGrid(playerConfig);
         }
     }
 }

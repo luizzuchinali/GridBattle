@@ -12,9 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79aab3d122fc9a54184cb0b84d518416, type: 3}
   m_Name: Rat
   m_EditorClassIdentifier: Assembly-CSharp::GridBattle.Gameplay.Entities.EnemyConfig
+  sprite: {fileID: -788100283, guid: 2fdad3188ff58ad499e2f7940baf39ec, type: 3}
+  animatorController: {fileID: 9100000, guid: aba49b3ff362cbe4c8c0d77124b3edb3, type: 2}
   maxHp: 20
   walkDistance: 2
   attackDistance: 1
   basicAttackDamage: 5
   skills: []
+  prefab: {fileID: 2069839144374370989, guid: 4cf13f1910da4e14296e096a872f8cf2, type: 3}
+  behavior: {fileID: 11400000, guid: bfaaa7d80498e5e47ac0a7a9815afae7, type: 2}
   xpReward: 8

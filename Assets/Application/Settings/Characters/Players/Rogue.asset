@@ -12,9 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e7f604e158106f469724d865979731e, type: 3}
   m_Name: Rogue
   m_EditorClassIdentifier: Assembly-CSharp::GridBattle.Gameplay.Entities.PlayerCharacterConfig
+  sprite: {fileID: -594443160, guid: 2fdad3188ff58ad499e2f7940baf39ec, type: 3}
+  animatorController: {fileID: 9100000, guid: 721e6857049d8754b98733c23b06d3f8, type: 2}
   maxHp: 90
   walkDistance: 1
   attackDistance: 1
   basicAttackDamage: 15
   skills: []
+  prefab: {fileID: 1427551736305951215, guid: 967c67956658ad84eade02cf2c3c6628, type: 3}
   characterClass: 2
+  baseXpToLevelUp: 50
+  xpToLevelUpGrowthPerLevel: 25

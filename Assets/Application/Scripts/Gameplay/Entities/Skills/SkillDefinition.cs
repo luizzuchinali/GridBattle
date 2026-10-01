@@ -2,7 +2,11 @@ using UnityEngine;
 
 namespace GridBattle.Gameplay.Entities.Skills
 {
-    public class SkillDefinition : ScriptableObject
+    /// <summary>
+    /// Base class for skills. Each concrete skill is a subclass (with its own
+    /// [CreateAssetMenu]) referenced in the CharacterConfig skill list.
+    /// </summary>
+    public abstract class SkillDefinition : ScriptableObject
     {
         [SerializeField]
         private string skillName;
@@ -15,21 +19,15 @@ namespace GridBattle.Gameplay.Entities.Skills
         public string Description => description;
 
         /// <summary>
-        /// Indica se o caster pode usar esta skill no alvo, dadas as regras do
-        /// grid. Implementar nas subclasses de cada skill.
+        /// Whether the caster can use this skill on the target, given the grid
+        /// rules.
         /// </summary>
-        public virtual bool CanUse(Character caster, GridController grid, Vector2Int targetPos)
-        {
-            return false;
-        }
+        public abstract bool CanUse(Character caster, GridController grid, Vector2Int targetPos);
 
         /// <summary>
-        /// Executa o efeito da skill. Retornar true significa que o turno foi
-        /// consumido.
+        /// Executes the skill effect. Returning true means the turn was
+        /// consumed.
         /// </summary>
-        public virtual bool Execute(Character caster, GridController grid, Vector2Int targetPos)
-        {
-            return false;
-        }
+        public abstract bool Execute(Character caster, GridController grid, Vector2Int targetPos);
     }
 }

@@ -1,5 +1,4 @@
 using GridBattle.Gameplay.Events;
-using UnityEngine;
 
 namespace GridBattle.Gameplay.Entities
 {
@@ -11,30 +10,29 @@ namespace GridBattle.Gameplay.Entities
         public PlayerCharacterConfig PlayerConfig => Config as PlayerCharacterConfig;
 
         /// <summary>
-        /// Informação exclusiva de PlayerCharacters: a classe escolhida no menu.
-        /// Enemies não possuem classe.
+        /// PlayerCharacter-only information: the class chosen in the menu.
+        /// Enemies have no class.
         /// </summary>
         public ECharacter Class => PlayerConfig != null ? PlayerConfig.CharacterClass : default;
 
         /// <summary>
-        /// Limiar de XP para o próximo nível: base + crescimento por nível,
-        /// ambos configurados no PlayerCharacterConfig.
+        /// XP threshold for the next level, following the curve configured in
+        /// PlayerCharacterConfig.
         /// </summary>
-        public int XpToNextLevel
-        {
-            get
-            {
-                if (PlayerConfig == null) return int.MaxValue;
+        public int XpToNextLevel => PlayerConfig != null ? PlayerConfig.GetXpToNextLevel(Level) : int.MaxValue;
 
-                return PlayerConfig.BaseXpToLevelUp +
-                       (Level - 1) * PlayerConfig.XpToLevelUpGrowthPerLevel;
-            }
+        public override void Initialize(CharacterConfig characterConfig)
+        {
+            base.Initialize(characterConfig);
+
+            // New character = new progression. Notifies the UI so it doesn't keep the
+            // XP bar state from a previous run.
+            EventBus.Raise(new PlayerXpChangedEvent(Level, CurrentXp, XpToNextLevel));
         }
 
         /// <summary>
-        /// Ganho de XP. Chamado pelo XpVfxController quando cada célula de XP
-        /// chega à barra (não diretamente na morte do inimigo). Emite
-        /// PlayerXpChangedEvent para a UI.
+        /// XP gain. Called by XpRewardSystem as each XP packet is delivered
+        /// (not directly when the enemy dies). Raises PlayerXpChangedEvent for the UI.
         /// </summary>
         public void GainXp(int amount)
         {

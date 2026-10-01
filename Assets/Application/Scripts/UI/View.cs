@@ -12,10 +12,15 @@ namespace GridBattle.UI
         private VisualElement _container;
 
         /// <summary>
-        /// Qual tela esta view representa. Telas têm a visibilidade controlada pelo
-        /// NavigationController; overlays/views auxiliares retornam null (sempre visíveis).
+        /// Which screen this view represents. Screens have their visibility controlled
+        /// by NavigationController; overlays/auxiliary views return null (always visible).
         /// </summary>
         protected virtual UIScreen? Screen => null;
+
+        /// <summary>
+        /// Root of this view's panel (null until the UI loads).
+        /// </summary>
+        protected VisualElement Root => _rootElement;
 
         protected virtual void Awake()
         {
@@ -33,15 +38,15 @@ namespace GridBattle.UI
         }
 
         /// <summary>
-        /// Indica se esta view representa uma tela (visibilidade controlada pelo
-        /// NavigationController). Overlays/views auxiliares retornam false e
-        /// controlam a própria visibilidade.
+        /// Whether this view represents a screen (visibility controlled by
+        /// NavigationController). Overlays/auxiliary views return false and
+        /// control their own visibility.
         /// </summary>
         public bool IsScreenView => Screen != null;
 
         /// <summary>
-        /// Indica se esta view pertence à tela informada. Views auxiliares
-        /// (Screen == null) nunca pertencem a uma tela específica.
+        /// Whether this view belongs to the given screen. Auxiliary views
+        /// (Screen == null) never belong to a specific screen.
         /// </summary>
         public bool BelongsToScreen(UIScreen screen)
         {
@@ -68,9 +73,9 @@ namespace GridBattle.UI
         }
 
         /// <summary>
-        /// A visibilidade é responsabilidade do NavigationController. Após um reload
-        /// da UI (quando o container volta a nascer visível), o controller decide
-        /// novamente o estado de todas as views.
+        /// Visibility is NavigationController's responsibility. After a UI reload
+        /// (when the container is recreated visible), the controller decides the
+        /// state of all views again.
         /// </summary>
         private void RequestVisibilityApply()
         {

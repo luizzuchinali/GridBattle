@@ -4,7 +4,7 @@ tags:
   - combate
   - sistemas
 created: 2026-09-29
-updated: 2026-09-29
+updated: 2026-09-30
 aliases:
   - Sistema de Combate
   - Turnos
@@ -58,15 +58,22 @@ os inimigos executam uma ação**. Uma "ação" é um dos seguintes:
 
 > [!important]
 > **Lógica não vive em controllers.** Os controllers (`PlayerCharacterController`,
-> `EnemyController`) são apenas **roteadores**: leem input, perguntam ao
+> `EnemyController`, base `CharacterControllerBase<T>`) são apenas
+> **roteadores**: leem input (ou a IA configurada), perguntam ao
 > character/grid se a ação é válida e executam via métodos do character e do
-> `GridController`. Atributos, classe e skills pertencem aos characters e aos
-> objetos de configuração.
+> `GridController`. Atributos, classe, skills, visual e IA pertencem aos
+> objetos de configuração (ScriptableObjects).
 
 ## Grid e células
 
-- O `GridController` é dono do estado: matriz `Cell[,]`, `gridSize`, spawn do
-  player e dos inimigos em `InitializeGrid`.
+- O `GridController` é dono do estado: matriz `Cell[,]`, `gridSize` e o spawn
+  em `InitializeGrid(playerConfig)`:
+  - player na célula (2, 2), a partir de um `PlayerCharacterConfig`;
+  - inimigos do `EncounterConfig` (asset), na ordem da lista, cada um na
+    primeira célula livre da varredura do grid;
+  - no editor, o grid é iniciado com o `debugPlayerConfig` (botão
+    **Reset grid** no inspector refaz o grid).
+- A criação de personagens é centralizada em `CharacterFactory.Spawn(config)`.
 - Cada `Cell` tem:
   - `GridPosition` (`Vector2Int`) — coordenada lógica;
   - `HasContent` / `GetContent()` / `SetContent()` / `RemoveContent()` — o
@@ -81,10 +88,10 @@ os inimigos executam uma ação**. Uma "ação" é um dos seguintes:
     (move o conteúdo da célula + atualiza `CurrentGridPos`).
 
 > [!note]
-> No editor, `InitializeGrid` instancia os entities **linkados ao prefab**
-> (`PrefabUtility.InstantiatePrefab`), então clones na cena refletem mudanças
-> no prefab (configs, atributos) automaticamente. Em runtime, usa
-> `Instantiate` normal.
+> No editor (fora do Play Mode), o `CharacterFactory` instancia os entities
+> **linkados ao prefab-template** (`PrefabUtility.InstantiatePrefab`) e
+> registra o config aplicado como override, então os clones na cena refletem
+> mudanças no template. Em runtime, usa `Instantiate` normal.
 
 > [!note]
 > Distância no grid usa `Vector2Int.Distance` (euclidiana). Com
@@ -94,57 +101,84 @@ os inimigos executam uma ação**. Uma "ação" é um dos seguintes:
 
 ## Configuração de personagens
 
-Cada character tem um **objeto de configuração** (ScriptableObject) que dita
-seus atributos, conteúdo e comportamentos disponíveis. Os attributes do
-`Character` **não são mais campos serializados no prefab** — tudo vem do
-config.
+Cada character é definido por um **objeto de configuração** (ScriptableObject)
+que dita **tudo** o que o diferencia: visual, atributos, skills e, no caso de
+inimigos, a IA e a recompensa. Não existe mais um prefab por personagem:
+todos compartilham um **prefab-template** e recebem o config no spawn
+(`CharacterFactory`).
 
 ```
-CharacterConfig (SO)
-├── maxHp
-├── walkDistance
-├── attackDistance
-├── basicAttackDamage
+CharacterConfig (SO, abstrato)
+├── sprite, animatorController        ← visual (aplicado pelo CharacterView)
+├── maxHp, walkDistance, attackDistance, basicAttackDamage
 └── skills: List<SkillDefinition>
 
-PlayerCharacterConfig : CharacterConfig (SO)
+PlayerCharacterConfig : CharacterConfig    (Create > GridBattle > Characters)
+├── prefab: PlayerCharacter           ← template compartilhado
 ├── characterClass: ECharacter        ← exclusivo do player
 ├── baseXpToLevelUp
-└── xpToLevelUpGrowthPerLevel
+├── xpToLevelUpGrowthPerLevel
+└── GetXpToNextLevel(level)           ← curva de XP
 
-EnemyConfig : CharacterConfig (SO)
+EnemyConfig : CharacterConfig              (Create > GridBattle > Characters)
+├── prefab: Enemy                     ← template compartilhado
+├── behavior: EnemyBehavior           ← IA (ver "IA dos inimigos")
 └── xpReward                          ← exclusivo do inimigo
 ```
 
-- `Character` (base) referencia um `CharacterConfig` (campo `config`):
-  `MaxHp`, `WalkDistance`, `AttackDistance`, `BasicAttackDamage` e `Skills`
-  são lidos dele. `current` (HP) é estado de runtime, inicializado com
-  `config.MaxHp` no `Awake`. O ataque básico usa
-  `Character.Attack(target)` → `target.ReceiveDamage(BasicAttackDamage)`.
+Prefabs-template em `Assets/Application/Prefabs/Entities/`:
+
+```
+Character.prefab          SpriteRenderer + Animator + CharacterView (base)
+├── Enemy.prefab          (variant) + Enemy + EnemyController
+└── PlayerCharacter.prefab (variant) + PlayerCharacter + PlayerCharacterController
+```
+
+- `Character.Initialize(config)` aplica o config: atributos, HP cheio, nome
+  do GameObject e visual (`CharacterView.Apply` define sprite e
+  `RuntimeAnimatorController`). `Awake` continua inicializando o HP para
+  characters colocados à mão na cena com um config atribuído.
+- O ataque básico usa `Character.Attack(target)` →
+  `target.ReceiveDamage(BasicAttackDamage)`. `OnHpChanged` é um `event`.
 - **`PlayerCharacter`** tem informações extras que `Enemy` não tem:
   - `PlayerConfig` (acesso tipado ao `PlayerCharacterConfig`);
   - `Class` (`ECharacter`: Warrior/Mage/Rogue) — **somente PlayerCharacters
     possuem classe**.
-- **`Enemy`** herda apenas o `Character` base — sem classe; o comportamento
-  por tipo de inimigo vem do config (atributos + skills).
-- Assets vivos em `Assets/Application/Settings/Characters/`:
-  - `Players/Knight.asset` (Warrior), `Players/Mage.asset`,
-    `Players/Rogue.asset` — `PlayerCharacterConfig`;
-  - `Enemies/Goblin.asset`, `Rat.asset`, `Slime.asset`, `FireSkull.asset`,
-    `EyeBat.asset` — `EnemyConfig`.
+- **`Enemy`** expõe `EnemyConfig` (acesso tipado); sem classe.
+- A classe escolhida no menu é resolvida pelo `GameStateManager`, que tem a
+  lista `playableCharacters` e procura o config cujo `CharacterClass` bate.
+- Assets vivos em `Assets/Application/Settings/`:
+  - `Characters/Players/Knight.asset` (Warrior), `Mage.asset`, `Rogue.asset`
+    — `PlayerCharacterConfig`;
+  - `Characters/Enemies/Goblin.asset`, `Rat.asset`, `Slime.asset`,
+    `FireSkull.asset`, `EyeBat.asset` — `EnemyConfig`;
+  - `AI/ChaseAndAttack.asset` + `AI/Actions/*.asset` — IA padrão dos inimigos;
+  - `Encounters/DefaultEncounter.asset` — inimigos do grid;
+  - `Vfx/XpOrbsVfxSettings.asset` — ajustes visuais dos orbs de XP.
+
+### Criando um personagem novo
+
+- **Inimigo:** `Create > GridBattle > Characters > Enemy Config`; preencher
+  sprite, animator, atributos, `prefab = Enemy.prefab`, `behavior` (ex.:
+  `ChaseAndAttack`) e `xpReward`; adicionar o asset a um `EncounterConfig`.
+  Nenhum prefab novo.
+- **Personagem jogável:** `Create > GridBattle > Characters > Player Character
+  Config`; `prefab = PlayerCharacter.prefab`; adicionar à lista
+  `playableCharacters` do `GameStateManager`.
+- Só crie um prefab próprio (variant do template) se o personagem precisar de
+  componentes extras.
 
 > [!note] Balanceamento inicial
 > Para dar vantagem ao jogador no início da run, os **players têm ataque
 > básico 15** e os **inimigos 5–7**. HP e mobilidade variam por personagem
-> conforme a tabela abaixo. Os valores moram no
-> `CharacterConfigSetup.cs` (ferramenta de editor) e são aplicados aos
-> assets — **alterar sempre em pares** (script ↔ documento). Ajustes devem
-> acompanhar o design de progressão ([[plano_progressao]]).
+> conforme a tabela abaixo. Os valores moram nos próprios assets de config —
+> ao alterar, atualize também este documento. Ajustes devem acompanhar o
+> design de progressão ([[plano_progressao]]).
 
 ### Valores atuais das settings
 
-Espelho de `Assets/Application/Settings/Characters/` (aplicados por
-`CharacterConfigSetup.cs`). `attackDistance = 1` para todos.
+Espelho de `Assets/Application/Settings/Characters/`. `attackDistance = 1`
+para todos.
 
 #### Players — `PlayerCharacterConfig`
 
@@ -172,8 +206,6 @@ Diretrizes de leitura da tabela:
 - **FireSkull** — o mais perigoso dos comuns (ataque maior).
 - **Mage** — a classe mais frágil do jogador (HP menor); compensará com
   skills de área quando implementadas (ver [[talentos]]).
-- Ferramenta de setup: `Assets/Application/Scripts/Editor/CharacterConfigSetup.cs`
-  (cria os assets e atribui aos prefabs).
 
 > [!note]
 > `ECharacter` vive em `GridBattle.Gameplay.Entities` (domínio de gameplay).
@@ -182,9 +214,10 @@ Diretrizes de leitura da tabela:
 
 ## Skills
 
-Skills são **objetos de dados** (`SkillDefinition`, ScriptableObject), nunca
-código dentro de controllers. Cada skill concreta é uma subclasse de
-`SkillDefinition` com `CanUse`/`Execute`:
+Skills são **objetos de dados** (`SkillDefinition`, ScriptableObject
+abstrato), nunca código dentro de controllers. Cada skill concreta é uma
+subclasse de `SkillDefinition` (com seu `[CreateAssetMenu]`) que implementa
+`CanUse`/`Execute`:
 
 - `SkillDefinition.CanUse(caster, grid, targetPos)` — valida usando as
   regras do grid (deve combinar com `GridRules`).
@@ -200,8 +233,8 @@ A execução é **do character**, não do controller:
   disponíveis é **data**, editável por asset.
 - `PlayerCharacterController.TryUseSkill(skill, targetPos)` — rota para a UI
   futura: delega ao character e, se consumiu, levanta `PlayerActionEvent`.
-- `EnemyController.TrySpecialAction()` — itera as skills do config do inimigo
-  e tenta usá-las contra a posição do player.
+- Inimigos usam skills pela ação de IA `UseSkillsAction`, que itera as skills
+  do config do inimigo e tenta usá-las contra a posição do player.
 
 > [!important]
 > Criar uma skill nova = criar uma subclasse de `SkillDefinition` + um asset
@@ -220,6 +253,7 @@ characters e grid. É uma classe estática com funções puras:
 | `CanWalkTo(grid, character, target)` | posição válida **e** livre **e** em alcance |
 | `IsAttackTarget(grid, attacker, target)` | alvo válido: um `IDamageReceiver` que **não** é o próprio atacante, em alcance de ataque |
 | `GetHighlightInfos(grid, character)` | dicionário de highlights (Walk/Attack) para a área do character |
+| `FindStepToward(grid, character, target)` | passo guloso de um turno: a célula alcançável mais perto do alvo (ou null se nenhuma aproxima) |
 
 Regras de negócio derivadas:
 
@@ -265,31 +299,53 @@ PlayerActionEvent
 - **Cada ação do jogador = 1 rodada completa dos inimigos.**
 - Inimigos agem de forma **síncrona e sequencial** (sem delays); animações e
   pacing visual podem ser adicionados depois sem mudar as regras.
+
+> [!warning] Ordem dos inimigos não é determinística
+> `FindObjectsByType` sem ordenação devolve os inimigos numa ordem que depende
+> dos IDs alocados pelo Unity — ela **muda de uma run para outra**. Quando dois
+> inimigos disputam a mesma célula, o resultado do turno varia. Se o design
+> pedir turnos reproduzíveis, ordenar explicitamente no `TurnManager` (ex.:
+> ordem de spawn ou posição no grid).
 - Ação inválida do jogador não levanta o evento → não há turno inimigo.
 - Movimento e ataque do jogador **e** uso de skills consomem o turno.
 
 ## IA dos inimigos
 
-`EnemyController` (componente dos prefabs de inimigo) executa a ação do
-turno nesta ordem de prioridade:
+A IA é **dado, não código de controller**. O `EnemyController` (componente
+do template `Enemy.prefab`) só resolve o alvo e delega o turno ao
+`EnemyBehavior` do config:
 
-1. **Guard:** inimigo morto não age.
-2. **Ação especial** — `TrySpecialAction()` tenta as skills do config do
-   inimigo via `Enemy.TryUseSkill`. Subclasses podem sobrescrever para
-   comportamentos manuais exclusivos do tipo. Retornar `true` significa
-   "ação consumida".
-3. **Atacar** — se `GridRules.IsAttackTarget(grid, enemy, playerPos)`,
-   ataca o `PlayerCharacter` (`IDamageReceiver`).
-4. **Andar em direção ao player** — `FindBestStep` varre toda a área de
-   `WalkDistance`, filtra por `GridRules.CanWalkTo` e escolhe a célula
-   candidata **com menor distância até o player**. Sem caminho que aproxime,
-   fica parado (passa o turno).
+```
+EnemyController.Act()
+  → guard: inimigo morto não age; sem player, não age
+  → config.Behavior.TakeTurn(EnemyTurnContext { Self, Grid, Target })
+      → tenta cada EnemyAction em ordem; a primeira que retornar true
+        consome o turno
+```
+
+- `EnemyBehavior` (SO, `Create > GridBattle > AI > Enemy Behavior`) — lista
+  ordenada de `EnemyAction`. Pode ser compartilhado por vários inimigos.
+- `EnemyAction` (SO abstrato) — `TryExecute(in EnemyTurnContext)`. Ações são
+  **assets sem estado de runtime** (o mesmo asset serve a todos os inimigos).
+- Ações disponíveis (`Create > GridBattle > AI > Actions`):
+
+| Ação | Asset | Comportamento |
+|---|---|---|
+| `UseSkillsAction` | `UseSkills` | tenta as skills do config contra a posição do player (`Enemy.TryUseSkill`) |
+| `BasicAttackAction` | `BasicAttack` | se `GridRules.IsAttackTarget(grid, enemy, playerPos)`, ataca o player |
+| `ChaseTargetAction` | `ChaseTarget` | anda o passo de `GridRules.FindStepToward`; sem passo que aproxime, não consome o turno |
+
+- Comportamento padrão de todos os inimigos atuais: `ChaseAndAttack` =
+  `UseSkills` → `BasicAttack` → `ChaseTarget` (a mesma prioridade da IA
+  original).
+- `EnemyConfig` sem `behavior` = inimigo que não age.
 
 > [!tip]
 > A IA de passo é **gananciosa por um turno** (one-step greedy): ela não
-> planeja rotas (pathfinding A*). Se o design pedir contornar obstáculos,
-> planejar rotas multi-turno ou coordenar grupos, a mudança fica dentro de
-> `FindBestStep`/`GridRules` sem afetar os controllers.
+> planeja rotas (pathfinding A*). Comportamentos novos (fugir, manter
+> distância, curar aliados, patrulhar) entram como novas subclasses de
+> `EnemyAction` combinadas em outros `EnemyBehavior` — sem tocar no
+> `EnemyController`.
 
 ## Morte e fim de run
 
@@ -318,37 +374,55 @@ runtime e reseta a cada nova run (o character é recriado pelo
 
 ### Fluxo
 
+A regra (quanto XP, para quem, em quantos pacotes) e a apresentação (orbs
+voando até a barra) são componentes separados, cada um no seu GameObject —
+nenhum deles vive no Grid.
+
 ```
 inimigo morre (Character.Die)
   → desocupa a célula
   → CharacterDiedEvent
-      → XpVfxController.OnCharacterDied
+      → XpRewardSystem (GameObject próprio)          ← regra
           → lê EnemyConfig.XpReward do inimigo morto
-          → N = teto(XpReward / 5) células de XP (sprite XpVFX)
-          → cada célula voa em arco (LitMotion) da posição do inimigo
-            até a barra de XP, com stagger de 0,08s
-          → ao chegar, cada célula remove-se e chama
-            PlayerCharacter.GainXp(fração de XP)
-              → EventBus.Raise(PlayerXpChangedEvent { Level, CurrentXp, XpToNextLevel })
-                  → GameScreenView.OnXpChanged
-                      → progresso % = CurrentXp / XpToNextLevel
-                      → largura do "xp-bar-progress" = % * 110px
-                      → texto do label "current-level" = Level
+          → resolve o PlayerCharacter atual
+          → XpPacket.Split: N = teto(XpReward / xpPerPacket) pacotes,
+            cada um com o progresso da barra após creditá-lo
+          → EventBus.Raise(XpRewardDroppedEvent { Origin, Packets, Collect })
+              → XpOrbsVfx (no GameObject da GameScreenView)  ← apresentação
+                  → MarkPresented(): assume a entrega
+                  → cada pacote vira um orb (UI Toolkit) que voa em arco
+                    (LitMotion) da posição do inimigo até o ponto da barra
+                    (XpBarView.TryGetTrack), com stagger
+                  → ao chegar: remove o orb e chama Collect(pacote)
+          → se ninguém assumiu a entrega: Collect de todos na hora
+  Collect(pacote) → PlayerCharacter.GainXp(pacote.Amount)
+      → EventBus.Raise(PlayerXpChangedEvent { Level, CurrentXp, XpToNextLevel })
+          → GameScreenView.OnXpChanged → XpBarView.SetState
+              → largura do "xp-bar-progress" = progresso * 110px
+              → texto do label "current-level" = Level
 ```
 
-- **O XP só entra na conta quando as células chegam à barra** — a barra
-  cresce célula a célula, não de uma vez na morte. Há um delay de ~0,6s
-  (mais stagger) entre a morte e o XP efetivo.
-- Divisão das células: `N = ceil(XpReward / 5)`; o resto da divisão é
-  distribuído 1 a 1 nas primeiras células (ex.: 12 XP → 3 células de 4;
-  15 XP → 3 células de 5). O jogador nunca perde XP no arredondamento.
-- As células são elementos da **UI** (UI Toolkit, absolute-positioned no
-  root do painel), convertidos de world-space via
+- **O XP só entra na conta quando os orbs chegam à barra**: a barra cresce
+  orb a orb, não de uma vez na morte. Há um delay de ~0,6s (mais stagger)
+  entre a morte e o XP efetivo.
+- Divisão dos pacotes (`XpPacket.Split`): `N = ceil(XpReward / xpPerPacket)`
+  (padrão 5, no `XpRewardSystem`); o resto da divisão é distribuído 1 a 1 nos
+  primeiros pacotes (ex.: 12 XP → 3 pacotes de 4; 15 XP → 3 pacotes de 5). O
+  jogador nunca perde XP no arredondamento.
+- Os orbs são elementos da **UI** (UI Toolkit, absolute-positioned no root do
+  painel da GameScreen), convertidos de world-space via
   `RuntimePanelUtils.CameraTransformWorldToPanel` — não são sprites no mundo.
-- A comunicação **jogo → UI é sempre via EventBus** (`PlayerXpChangedEvent`);
-  a UI nunca lê estado de gameplay em tempo real — só ao recarregar a tela
-  (`GameScreenView.OnUIReload` restaura o estado atual do `PlayerCharacter`
-  para redrawing da barra).
+- Ajustes visuais (sprite, tamanho, duração, stagger, arco, easing) ficam no
+  asset `XpOrbsVfxSettings` e podem ser alterados em Play Mode.
+- `XpBarView` é o único lugar que conhece os elementos e as medidas da barra
+  (`xp-bar-progress`, `xp-bar-detail-2`, `current-level`, 110px/112px).
+- Gameplay não depende da UI: sem apresentação disponível (painel não
+  carregado, sem câmera, sem settings), o `XpRewardSystem` credita o XP
+  imediatamente em vez de perdê-lo.
+- A comunicação **jogo → UI é sempre via EventBus** (`PlayerXpChangedEvent`,
+  `XpRewardDroppedEvent`). Um `PlayerCharacter` recém-criado emite
+  `PlayerXpChangedEvent` no `Initialize`, então a barra começa cada run
+  zerada. `GameScreenView.OnUIReload` restaura o estado ao recarregar a UI.
 - O inimigo morto já desocupou a célula antes do XP ser concedido (a ordem
   do `Die()` garante isso).
 - Player morto não ganha XP (guard `IsDead` no `GainXp`).
@@ -361,7 +435,8 @@ Configurado em `PlayerCharacterConfig`:
 - `xpToLevelUpGrowthPerLevel` = **25** — acréscimo no limiar a cada nível
   atingido.
 
-Fórmula: `XpToNextLevel(level) = baseXpToLevelUp + (level − 1) × growth`.
+Fórmula (`PlayerCharacterConfig.GetXpToNextLevel`):
+`XpToNextLevel(level) = baseXpToLevelUp + (level − 1) × growth`.
 
 | Nível atual | XP para o próximo |
 |---|---|
@@ -404,13 +479,19 @@ Sempre que o `PlayerCharacterController.Update` roda, o grid é re-pintado via
 | Extensão | Onde plugar |
 |---|---|
 | **Skill nova (player ou inimigo)** | subclasse de `SkillDefinition` + asset `.asset` + referência no `CharacterConfig`/`PlayerCharacterConfig` — sem tocar em controllers |
-| **Novo tipo de inimigo** | novo prefab `Enemy` + `CharacterConfig` próprio; comportamento exclusivo via skills no config ou subclasse de `EnemyController` |
+| **Novo inimigo** | asset `EnemyConfig` (sprite, animator, atributos, `behavior`, `xpReward`, `prefab = Enemy.prefab`) + entrada num `EncounterConfig` — sem prefab novo |
+| **Novo personagem jogável** | asset `PlayerCharacterConfig` (`prefab = PlayerCharacter.prefab`) + entrada em `GameStateManager.playableCharacters` |
+| **Comportamento de inimigo novo** | subclasse de `EnemyAction` + asset; combinar ações num `EnemyBehavior` e referenciar no `EnemyConfig` |
+| **Encontros / tabelas de spawn** | novos assets `EncounterConfig`; critérios de escolha (nível etc.) entram em quem decide qual encontro passar ao `GridController` |
+| **Componentes extras num personagem** | prefab variant de `Enemy.prefab`/`PlayerCharacter.prefab` referenciado no `prefab` do config |
+| **Reações visuais** (dano, ataque, morte) | `CharacterView` |
+| **Animações compartilhadas** | `AnimatorOverrideController` no `animatorController` do config (sobre um controller base comum) |
 | **Atributos de classe** (stats por Warrior/Mage/Rogue) | valores diferentes por `PlayerCharacterConfig` asset; efeitos de classe como skills/triggers futuros |
 | **Skills do jogador na UI** | botões chamam `PlayerCharacterController.TryUseSkill(skill, targetPos)` |
 | **Efeitos de level up** | assinar `PlayerXpChangedEvent` (ex.: curar, escolher trait — ver [[plano_progressao]]) |
-| **XP por fonte extra** (itens, eventos) | chamar o mesmo caminho do `PlayerCharacter` e emitir `PlayerXpChangedEvent` |
+| **XP por fonte extra** (itens, eventos) | chamar `PlayerCharacter.GainXp`; para entrega animada, emitir `XpRewardDroppedEvent` com os pacotes |
 | **Facções/alianças** | checagem de facção dentro de `GridRules.IsAttackTarget` |
 | **Distância em diagonais** | trocar a métrica em `GridRules.IsInWalkRange`/`IsInAttackRange` |
 | **Pacing/animar turnos** | substituir a iteração síncrona do `TurnManager` por coroutine, sem mudar `EnemyController` |
-| **Ajustar o VFX de XP** | campos serializados no `XpVfxController` (sprite, duração do voo, stagger, altura do arco, tamanho da célula, XP por célula) |
+| **Ajustar o VFX de XP** | asset `XpOrbsVfxSettings` (sprite, tamanho, duração do voo, stagger, altura do arco, easing); XP por orb em `XpRewardSystem.xpPerPacket` |
 | **Status/DoTs** (veneno etc.) | tickar a cada `PlayerActionEvent` (ver [[ideias_traits_itens]]) |

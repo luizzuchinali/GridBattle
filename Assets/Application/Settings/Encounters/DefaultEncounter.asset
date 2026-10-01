@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4c97a7cf23843d449f8abf118831193, type: 3}
+  m_Name: DefaultEncounter
+  m_EditorClassIdentifier: Assembly-CSharp::GridBattle.Gameplay.EncounterConfig
+  enemies:
+  - {fileID: 11400000, guid: 08e10715f32fb0f478aaa947e80e4690, type: 2}
+  - {fileID: 11400000, guid: 299df325a4fe80e4ea2a5343841a0105, type: 2}
+  - {fileID: 11400000, guid: 94550f4d9ee2ac94e8f28edb5d682ede, type: 2}
+  - {fileID: 11400000, guid: e61374142aec0a942ae1367641c0fba2, type: 2}
+  - {fileID: 11400000, guid: 67393b615f5b4214fa59f6354351e42f, type: 2}

@@ -1,4 +1,4 @@
-using GridBattle.Gameplay.Entities;
+using GridBattle.Gameplay.Controllers;
 using GridBattle.Gameplay.Events;
 using UnityEngine;
 

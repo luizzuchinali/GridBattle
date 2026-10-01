@@ -1,44 +1,68 @@
 using System;
 using System.Collections.Generic;
 using GridBattle.Gameplay.Entities.Interfaces;
+using GridBattle.Gameplay.Entities.Skills;
 using GridBattle.Gameplay.Events;
 using GridBattle.Gameplay.Rules;
 using UnityEngine;
 
 namespace GridBattle.Gameplay.Entities
 {
+    /// <summary>
+    /// A grid character (player or enemy). Everything that sets one character
+    /// apart from another (attributes, skills and visuals) comes from its
+    /// <see cref="CharacterConfig"/>: all characters share the same prefab template
+    /// and receive their config on spawn (see <see cref="CharacterFactory"/>).
+    /// </summary>
     public class Character : GridEntity, IDamageReceiver, IWalker, IAttacker
     {
         [SerializeField]
+        [Tooltip("Set by CharacterFactory on spawn. Only needs to be assigned manually for characters placed directly in the scene.")]
         private CharacterConfig config;
 
-        private int current = 100;
+        private int _currentHp = 100;
 
         public CharacterConfig Config => config;
-        public int Current => current;
+        public int Current => _currentHp;
         public int MaxHp => config != null ? config.MaxHp : 100;
         public int WalkDistance => config != null ? config.WalkDistance : 1;
         public int AttackDistance => config != null ? config.AttackDistance : 1;
         public int BasicAttackDamage => config != null ? config.BasicAttackDamage : 10;
-        public IReadOnlyList<Skills.SkillDefinition> Skills => config != null ? config.Skills : Array.Empty<Skills.SkillDefinition>();
-        public bool IsDead => current <= 0;
+        public IReadOnlyList<SkillDefinition> Skills => config != null ? config.Skills : Array.Empty<SkillDefinition>();
+        public bool IsDead => _currentHp <= 0;
 
-        public (int CurrentHp, int MaxHp) GetHpInfo() => (current, MaxHp);
+        public (int CurrentHp, int MaxHp) GetHpInfo() => (_currentHp, MaxHp);
 
-
-        public Action<DamageReceiveData> OnHpChanged { get; set; }
+        public event Action<DamageReceiveData> OnHpChanged;
 
         private void Awake()
         {
             if (config != null)
-                current = config.MaxHp;
+                _currentHp = config.MaxHp;
+        }
+
+        /// <summary>
+        /// Applies the config to a freshly instantiated character: attributes, full HP
+        /// and visuals (<see cref="CharacterView"/>).
+        /// </summary>
+        public virtual void Initialize(CharacterConfig characterConfig)
+        {
+            if (characterConfig == null)
+                throw new ArgumentNullException(nameof(characterConfig));
+
+            config = characterConfig;
+            _currentHp = config.MaxHp;
+            gameObject.name = config.name;
+
+            if (TryGetComponent(out CharacterView view))
+                view.Apply(config);
         }
 
         public void ReceiveDamage(int damage)
         {
             if (IsDead) return;
 
-            current -= damage;
+            _currentHp -= damage;
             OnHpChanged?.Invoke(new DamageReceiveData
             {
                 Damage = damage,
@@ -51,10 +75,10 @@ namespace GridBattle.Gameplay.Entities
         }
 
         /// <summary>
-        /// Ponto único de execução de skills: valida via a própria SkillDefinition
-        /// e executa o efeito. Controllers apenas encaminham a chamada.
+        /// Single entry point for skill execution: validates through the SkillDefinition
+        /// itself and executes the effect. Controllers and AI actions only forward the call.
         /// </summary>
-        public bool TryUseSkill(GridController grid, Skills.SkillDefinition skill, Vector2Int targetPos)
+        public bool TryUseSkill(GridController grid, SkillDefinition skill, Vector2Int targetPos)
         {
             if (IsDead || skill == null) return false;
             if (!skill.CanUse(this, grid, targetPos)) return false;

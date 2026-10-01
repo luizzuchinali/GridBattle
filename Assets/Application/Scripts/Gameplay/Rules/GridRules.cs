@@ -33,6 +33,38 @@ namespace GridBattle.Gameplay.Rules
             return content is IDamageReceiver && content != attacker;
         }
 
+        /// <summary>
+        /// Greedy one-turn step: among the reachable cells
+        /// (<see cref="CanWalkTo"/>), the one closest to
+        /// <paramref name="targetPos"/>. Returns null if none brings the character
+        /// closer to the target. Does not plan multi-turn routes.
+        /// </summary>
+        public static Vector2Int? FindStepToward(GridController grid, Character character, Vector2Int targetPos)
+        {
+            Vector2Int? bestStep = null;
+            var bestDistance = Vector2Int.Distance(character.CurrentGridPos, targetPos);
+            var range = character.WalkDistance;
+
+            for (var x = -range; x <= range; x++)
+            {
+                for (var y = -range; y <= range; y++)
+                {
+                    if (x == 0 && y == 0) continue;
+
+                    var candidate = character.CurrentGridPos + new Vector2Int(x, y);
+                    if (!CanWalkTo(grid, character, candidate)) continue;
+
+                    var distance = Vector2Int.Distance(candidate, targetPos);
+                    if (distance >= bestDistance) continue;
+
+                    bestDistance = distance;
+                    bestStep = candidate;
+                }
+            }
+
+            return bestStep;
+        }
+
         public static Dictionary<Vector2Int, ECellHighlightType> GetHighlightInfos(
             GridController grid, Character character)
         {

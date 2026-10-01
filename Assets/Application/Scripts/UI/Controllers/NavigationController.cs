@@ -13,8 +13,8 @@ namespace GridBattle.UI.Controllers
         private UIScreen currentScreen = UIScreen.Start;
 
         /// <summary>
-        /// Tela atual do fluxo. Serializado no GameObject, então sobrevive ao
-        /// domain reload durante o Play Mode e é reaplicado pelas Views no reload da UI.
+        /// Current screen of the flow. Serialized on the GameObject, so it survives
+        /// domain reloads during Play Mode and is reapplied by the Views on UI reload.
         /// </summary>
         public UIScreen CurrentScreen => currentScreen;
 
@@ -34,9 +34,9 @@ namespace GridBattle.UI.Controllers
         }
 
         /// <summary>
-        /// Responsabilidade central de visibilidade: todas as views de tela que não
-        /// correspondem à tela atual ficam com display-none. Views auxiliares
-        /// (overlays, transições) controlam a própria visibilidade e são ignoradas.
+        /// Central visibility responsibility: every screen view that doesn't match the
+        /// current screen gets display-none. Auxiliary views (overlays, transitions)
+        /// control their own visibility and are ignored.
         /// </summary>
         public void ApplyScreenVisibility()
         {
