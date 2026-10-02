@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "design/sistema_combate.md",
+                "file": "design/proposta_conteudo_classes_skills_estados_talentos.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "sistema_combate"
+              "title": "proposta_conteudo_classes_skills_estados_talentos"
             }
           }
         ]
@@ -187,10 +187,14 @@
   "active": "d31be8652752a03b",
   "lastOpenFiles": [
     "GDD.md",
-    "design/sistema_combate.md",
-    "design/ideias_traits_itens.md",
+    "design/prototipo_ondas.py",
+    "design/proposta_conteudo_classes_skills_estados_talentos.md",
+    "sed2AGUw6",
     "design/talentos.md",
+    "design/ideias_traits_itens.md",
     "_index_.md",
+    "planos/plano_game_feel_movimento.md",
+    "design/sistema_combate.md",
     "analise/analise_melhoria.md",
     "analise/racional_refatoracao.md",
     "projeto",
@@ -215,12 +219,7 @@
     "Planos/plano_entidades.md",
     "analise",
     "Analise/racional_refatoracao.md",
-    "Analise/analise_melhoria.md",
-    "Projeto/Grid Battle.md",
     "Projeto/Grid Battle_tasks",
-    "Projeto",
-    "Planos/refactor_plan.md",
-    "Planos",
-    "Design"
+    "Projeto"
   ]
 }

@@ -24,11 +24,11 @@ namespace GridBattle.Gameplay.Entities
 
         public CharacterConfig Config => config;
         public int Current => _currentHp;
-        public int MaxHp => config != null ? config.MaxHp : 100;
-        public int WalkDistance => config != null ? config.WalkDistance : 1;
-        public int AttackDistance => config != null ? config.AttackDistance : 1;
-        public int BasicAttackDamage => config != null ? config.BasicAttackDamage : 10;
-        public IReadOnlyList<SkillDefinition> Skills => config != null ? config.Skills : Array.Empty<SkillDefinition>();
+        public int MaxHp => config.MaxHp;
+        public int WalkDistance => config.WalkDistance;
+        public int AttackDistance => config.AttackDistance;
+        public int BasicAttackDamage => config.BasicAttackDamage;
+        public IReadOnlyList<SkillDefinition> Skills => config.Skills;
         public bool IsDead => _currentHp <= 0;
 
         public (int CurrentHp, int MaxHp) GetHpInfo() => (_currentHp, MaxHp);
