@@ -1,24 +1,20 @@
 {
   "main": {
-    "id": "654c68c5db705ddc",
+    "id": "ab158005d65ee506",
     "type": "split",
     "children": [
       {
-        "id": "41161e2b6f279393",
+        "id": "e157f50e9595f5c9",
         "type": "tabs",
         "children": [
           {
-            "id": "d31be8652752a03b",
+            "id": "9c6fffdf45ed52d1",
             "type": "leaf",
             "state": {
-              "type": "markdown",
-              "state": {
-                "file": "GDD.md",
-                "mode": "source",
-                "source": false
-              },
+              "type": "empty",
+              "state": {},
               "icon": "lucide-file",
-              "title": "GDD"
+              "title": "Nova aba"
             }
           }
         ]
@@ -27,15 +23,15 @@
     "direction": "vertical"
   },
   "left": {
-    "id": "37b5be061ddb14b8",
+    "id": "d69c5fa06f60e758",
     "type": "split",
     "children": [
       {
-        "id": "29b4b234c10d0d5a",
+        "id": "4b9db5018856b90d",
         "type": "tabs",
         "children": [
           {
-            "id": "0a86c625115eed19",
+            "id": "01d60a70bfd53ee1",
             "type": "leaf",
             "state": {
               "type": "file-explorer",
@@ -50,7 +46,7 @@
             }
           },
           {
-            "id": "417d54ebc01d2ae2",
+            "id": "3a0a0b574c932bf1",
             "type": "leaf",
             "state": {
               "type": "search",
@@ -67,11 +63,14 @@
             }
           },
           {
-            "id": "188e3264fe30906c",
+            "id": "b098665b40c79ffe",
             "type": "leaf",
             "state": {
               "type": "bookmarks",
-              "state": {},
+              "state": {
+                "showSearch": false,
+                "searchQuery": ""
+              },
               "icon": "lucide-bookmark",
               "title": "Marcadores"
             }
@@ -80,18 +79,18 @@
       }
     ],
     "direction": "horizontal",
-    "width": 283.5
+    "width": 300
   },
   "right": {
-    "id": "93e0639505b5e59c",
+    "id": "3e68f0e4c9cca97a",
     "type": "split",
     "children": [
       {
-        "id": "10a07f26b113c1bf",
+        "id": "41981c51de93b319",
         "type": "tabs",
         "children": [
           {
-            "id": "890a7f1c890459a6",
+            "id": "8385a075cd6e7fc8",
             "type": "leaf",
             "state": {
               "type": "backlink",
@@ -109,7 +108,7 @@
             }
           },
           {
-            "id": "f034df061d9e57c8",
+            "id": "8034f52a4cf93288",
             "type": "leaf",
             "state": {
               "type": "outgoing-link",
@@ -122,7 +121,7 @@
             }
           },
           {
-            "id": "feb612bcc6480728",
+            "id": "a141ffec3935364b",
             "type": "leaf",
             "state": {
               "type": "tag",
@@ -137,7 +136,7 @@
             }
           },
           {
-            "id": "3e10cd930d250959",
+            "id": "6970cbb4158e0c21",
             "type": "leaf",
             "state": {
               "type": "all-properties",
@@ -151,7 +150,7 @@
             }
           },
           {
-            "id": "8e45fa25e4771812",
+            "id": "d8d43ba020200eff",
             "type": "leaf",
             "state": {
               "type": "outline",
@@ -179,47 +178,9 @@
       "daily-notes:Abrir a nota de hoje": false,
       "templates:Inserir modelo": false,
       "command-palette:Abrir paleta de comandos": false,
-      "bases:Criar nova base": false,
-      "obsidian-excalidraw-plugin:New drawing": false,
-      "project-manager:Project manager": false
+      "bases:Criar nova base": false
     }
   },
-  "active": "d31be8652752a03b",
-  "lastOpenFiles": [
-    "design/proposta_conteudo_classes_skills_estados_talentos.md",
-    "design/sistema_combate.md",
-    "design/talentos.md",
-    "projeto",
-    "GDD.md",
-    "design/prototipo_ondas.py",
-    "sed2AGUw6",
-    "design/ideias_traits_itens.md",
-    "_index_.md",
-    "planos/plano_game_feel_movimento.md",
-    "analise/analise_melhoria.md",
-    "analise/racional_refatoracao.md",
-    "planos/plano_implementacao_gdd.md",
-    "planos/plano_progressao.md",
-    "planos/plano_entidades.md",
-    "planos/plano_refatoracao.md",
-    "Drawing 2026-07-13 08.52.29.excalidraw.md",
-    "Drawing 2026-07-13 00.38.43.excalidraw.md",
-    "projeto/New Project_tasks/ssa.md",
-    "projeto/New Project_tasks/new-task.md",
-    "projeto/New Project.md",
-    "projeto/New Project_tasks",
-    "projeto/Grid Battle_tasks",
-    "projeto/Grid Battle.md",
-    "planos",
-    "design",
-    "Design/ideias_traits_itens.md",
-    "Design/talentos.md",
-    "Planos/plano_refatoracao.md",
-    "Planos/plano_progressao.md",
-    "Planos/plano_entidades.md",
-    "analise",
-    "Analise/racional_refatoracao.md",
-    "Projeto/Grid Battle_tasks",
-    "Projeto"
-  ]
+  "active": "9c6fffdf45ed52d1",
+  "lastOpenFiles": []
 }

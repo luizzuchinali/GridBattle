@@ -9,7 +9,7 @@ aliases:
   - Proposta de conteúdo
   - Análise de classes, estados e talentos
 ---
-
+	
 # Proposta de conteúdo: classes, skills, estados, talentos, inimigos e ondas
 
 > **Status: rascunho para revisão. Nada aqui está decidido.** Este arquivo reúne análise e propostas feitas enquanto o autor estava ausente. O [[GDD]] não foi alterado por este material. Os ❓ pendentes do GDD (reaplicação e acúmulo de estados, remoção antecipada, estados ao mudar de onda, atributos nos inimigos) **não foram resolvidos**: a seção 12 só traz sugestões para discutir quando o autor voltar.
@@ -102,11 +102,11 @@ Talentos acumulados na variante B: 6 (onda 10), 13 (onda 20), 19 (onda 30), 25 (
 
 Para que talentos e estados sejam dados (e não código novo a cada talento), vale descrevê-los com uma gramática simples:
 
-| Elemento | Opções |
-|---|---|
-| **Gatilho** | início do turno do portador; fim do turno do portador; ao causar dano; ao receber dano; ao matar; ao morrer; ao subir de nível; ao iniciar a onda; ao usar skill; ao aplicar um estado |
-| **Condição** (opcional) | vida abaixo/acima de X%; alvo com estado Y; primeiro ataque da onda; alvo é elite ou chefe; entidade já agiu na onda |
-| **Ação** | modificar atributo (+/−, % ou fixo); curar; causar dano; aplicar estado; remover estado; gerar escudo; deslocar entidade; alterar cooldown; conceder reroll ou opção de talento |
+| Elemento                | Opções                                                                                                                                                                                 |
+| ----------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Gatilho**             | início do turno do portador; fim do turno do portador; ao causar dano; ao receber dano; ao matar; ao morrer; ao subir de nível; ao iniciar a onda; ao usar skill; ao aplicar um estado |
+| **Condição** (opcional) | vida abaixo/acima de X%; alvo com estado Y; primeiro ataque da onda; alvo é elite ou chefe; entidade já agiu na onda                                                                   |
+| **Ação**                | modificar atributo (+/−, % ou fixo); curar; causar dano; aplicar estado; remover estado; gerar escudo; deslocar entidade; alterar cooldown; conceder reroll ou opção de talento        |
 
 Exemplos: Espinhos = (ao receber dano) → causar dano ao atacante. Roubo de vida = (ao causar dano) → curar uma fração. Regeneração = (início do turno) → curar. Fúria = (vida abaixo de 50%) → aplicar estado Fúria.
 
@@ -150,28 +150,27 @@ Proposta de política padrão: **duração** para a maioria dos estados (reaplic
 
 ### 4.2 Catálogo proposto
 
-| Estado | Efeito | Tipo | Acúmulo | Tags | Exemplos de origem |
-|---|---|---|---|---|---|
-| Fraquejado | Dano causado −50% | Debuff | Duração | `#controle` | Grito de Guerra, Quebra-escudo |
-| Vulnerável | Dano recebido por ataques +50% | Debuff | Duração | `#dano` | Marcar presa, Quebra-gelo |
-| Quebrado | Defesa −20% (em valor percentual) | Debuff | Duração | `#defesa` | Quebra-escudo |
-| Lento | Alcance de movimento −1 (mínimo 0) | Debuff | Duração | `#gelo` `#controle` | Nova de Gelo, Geada |
-| Enraizado | Não anda, ainda ataca | Controle | Duração | `#gelo` `#controle` | Congelar, teia da Aranha |
-| Atordoado | Perde a ação do turno | Controle | Não acumula | `#raio` `#controle` | Tempestade Elétrica, Golpe Sísmico |
-| Queimado | Dano fixo no início do turno | DoT | Duração | `#fogo` | Bola de Fogo |
-| Envenenado | Dano no início do turno por pilha | DoT | Intensidade (teto 5) | `#veneno` | Adaga Envenenada |
-| Sangrando | Dano ao andar (por célula) | DoT | Duração | `#dano` | Lâminas |
-| Marcado | Próximo ataque do marcador causa crítico | Debuff | Não acumula | `#marcado` `#crítico` | Marca da Presa |
-| Provocado | Deve atacar quem provocou, se puder | Controle | Não acumula | `#controle` | Provocar |
-| Cegado | Alcance de ataque e de skills −1 | Debuff | Duração | `#controle` | Bomba de Fumaça |
-| Silenciado | Não pode usar skills | Controle | Não acumula | `#controle` | Bruxa, Necromante |
-| Protegido | Escudo que absorve X de dano | Buff | Soma até o teto | `#escudo` | Postura de Ferro, Barreira Arcana |
-| Espinhos | Devolve parte do dano recebido ao atacante | Buff | Duração | `#espinhos` `#defesa` | Armadura de Espinhos |
-| Regeneração | Cura no início do turno | HoT | Duração | `#cura` | Tenacidade |
-| Fúria | Dano causado +30%, defesa −20% | Buff | Duração | `#dano` | Fúria |
-| Acelerado | Alcance de movimento +1 | Buff | Duração | `#mobilidade` | Sombra Veloz |
-| Concentrado | Próxima skill: dano +50% | Buff | Não acumula | `#skill` | Concentração |
-| Furtivo | Próximo ataque causa crítico garantido | Buff | Não acumula | `#crítico` `#mobilidade` | Passo Sombrio |
+| Estado      | Efeito                                     | Tipo     | Acúmulo              | Tags                     | Exemplos de origem                 |
+| ----------- | ------------------------------------------ | -------- | -------------------- | ------------------------ | ---------------------------------- |
+| Fraquejado  | Dano causado −50%                          | Debuff   | Duração              | `#controle`              | Grito de Guerra, Quebra-escudo     |
+| Vulnerável  | Dano recebido por ataques +50%             | Debuff   | Duração              | `#dano`                  | Marcar presa, Quebra-gelo          |
+| Quebrado    | Defesa −20% (em valor percentual)          | Debuff   | Duração              | `#defesa`                | Quebra-escudo                      |
+| Lento       | Alcance de movimento −1 (mínimo 0)         | Debuff   | Duração              | `#gelo` `#controle`      | Nova de Gelo, Geada                |
+| Enraizado   | Não anda, ainda ataca                      | Controle | Duração              | `#gelo` `#controle`      | Congelar, teia da Aranha           |
+| Atordoado   | Perde a ação do turno                      | Controle | Não acumula          | `#raio` `#controle`      | Tempestade Elétrica, Golpe Sísmico |
+| Queimado    | Dano fixo no início do turno               | DoT      | Duração              | `#fogo`                  | Bola de Fogo                       |
+| Envenenado  | Dano no início do turno por pilha          | DoT      | Intensidade (teto 5) | `#veneno`                | Adaga Envenenada                   |
+| Sangrando   | Dano ao andar (por célula)                 | DoT      | Duração              | `#dano`                  | Lâminas                            |
+| Marcado     | Próximo ataque do marcador causa crítico   | Debuff   | Não acumula          | `#marcado` `#crítico`    | Marca da Presa                     |
+| Cegado      | Alcance de ataque e de skills −1           | Debuff   | Duração              | `#controle`              | Bomba de Fumaça                    |
+| Silenciado  | Não pode usar skills                       | Controle | Não acumula          | `#controle`              | Bruxa, Necromante                  |
+| Protegido   | Escudo que absorve X de dano               | Buff     | Soma até o teto      | `#escudo`                | Postura de Ferro, Barreira Arcana  |
+| Espinhos    | Devolve parte do dano recebido ao atacante | Buff     | Duração              | `#espinhos` `#defesa`    | Armadura de Espinhos               |
+| Regeneração | Cura no início do turno                    | HoT      | Duração              | `#cura`                  | Tenacidade                         |
+| Fúria       | Dano causado +30%, defesa −20%             | Buff     | Duração              | `#dano`                  | Fúria                              |
+| Acelerado   | Alcance de movimento +1                    | Buff     | Duração              | `#mobilidade`            | Sombra Veloz                       |
+| Concentrado | Próxima skill: dano +50%                   | Buff     | Não acumula          | `#skill`                 | Concentração                       |
+| Furtivo     | Próximo ataque causa crítico garantido     | Buff     | Não acumula          | `#crítico` `#mobilidade` | Passo Sombrio                      |
 
 Valores são sugestões. Escudo, regeneração e espinhos devem usar % da vida máxima ou do dano recebido (e não valores fixos) para acompanhar a escala.
 
@@ -405,27 +404,26 @@ Notas:
 
 ### 7.5 Compartilhados (disponíveis para as três classes)
 
-| Talento | Efeito | Tags |
-|---|---|---|
-| Vitalidade ×3 | Vida máxima +10% por nível | `#defesa` |
-| Força Bruta ×3 | Dano básico +10% por nível | `#dano` |
-| Precisão Letal ×3 | Chance de crítico +5 pontos percentuais por nível | `#crítico` |
-| Resiliência ×3 | Defesa +8 por nível | `#defesa` |
-| Perfuração ×2 | Penetração de defesa +15% por nível | `#dano` |
-| Estudo ×2 | Bônus de dano de skills +10% por nível | `#skill` |
-| Regeneração Leve | Regeneração: 2% da vida máxima no início do turno | `#cura` |
-| Sede de Vida | Roubo de vida de 5% do dano causado | `#roubo_de_vida` |
-| Armadura Reativa | Espinhos de 10% do dano recebido | `#espinhos` |
-| Segundo Fôlego | Ao subir de nível, ganha Protegido (20% da vida máx., 3 turnos) | `#escudo` |
-| Fôlego de Batalha | Ao iniciar a onda, ganha Protegido (10% da vida máx., 2 turnos) | `#escudo` |
-| Disciplina | −1 de cooldown em todas as skills (mínimo 1) | `#cooldown` |
-| Foco Inicial | A primeira skill de cada onda recebe Concentrado (+50% de dano) | `#skill` |
-| Pressa | Acelerado no primeiro turno de cada onda | `#mobilidade` |
-| Caçador de Elites | +25% de dano contra elites e chefes | `#dano` |
-| Executor | Desbloqueia Golpe Fatal (só Guerreiro e Ladino) | `#execução` |
-| Colecionador de Opções | +1 opção em cada oferta de talento (única) | progressão |
-| Sorte do Aventureiro | +2 rerolls na run | progressão |
-| Lista Negra | +2 banimentos na run | progressão |
+| Talento                | Efeito                                                          | Tags             |
+| ---------------------- | --------------------------------------------------------------- | ---------------- |
+| Vitalidade ×3          | Vida máxima +10% por nível                                      | `#defesa`        |
+| Força Bruta ×3         | Dano básico +10% por nível                                      | `#dano`          |
+| Precisão Letal ×3      | Chance de crítico +5 pontos percentuais por nível               | `#crítico`       |
+| Resiliência ×3         | Defesa +8 por nível                                             | `#defesa`        |
+| Perfuração ×2          | Penetração de defesa +15% por nível                             | `#dano`          |
+| Estudo ×2              | Bônus de dano de skills +10% por nível                          | `#skill`         |
+| Regeneração Leve       | Regeneração: 2% da vida máxima no início do turno               | `#cura`          |
+| Sede de Vida           | Roubo de vida de 5% do dano causado                             | `#roubo_de_vida` |
+| Armadura Reativa       | Espinhos de 10% do dano recebido                                | `#espinhos`      |
+| Segundo Fôlego         | Ao subir de nível, ganha Protegido (20% da vida máx., 3 turnos) | `#escudo`        |
+| Fôlego de Batalha      | Ao iniciar a onda, ganha Protegido (10% da vida máx., 2 turnos) | `#escudo`        |
+| Disciplina             | −1 de cooldown em todas as skills (mínimo 1)                    | `#cooldown`      |
+| Foco Inicial           | A primeira skill de cada onda recebe Concentrado (+50% de dano) | `#skill`         |
+| Pressa                 | Acelerado no primeiro turno de cada onda                        | `#mobilidade`    |
+| Executor               | Desbloqueia Golpe Fatal (só Guerreiro e Ladino)                 | `#execução`      |
+| Colecionador de Opções | +1 opção em cada oferta de talento (única)                      | progressão       |
+| Sorte do Aventureiro   | +2 rerolls na run                                               | progressão       |
+| Lista Negra            | +2 banimentos na run                                            | progressão       |
 
 Os três últimos mexem na **configuração da run**, e não em atributos de personagem. Isso respeita a decisão do GDD (a configuração é da run, mas estados e talentos podem influenciá-la).
 

@@ -3,7 +3,7 @@ tags:
   - design
   - gdd
 created: 2026-07-12
-updated: 2026-10-01
+updated: 2026-10-03
 ---
 ## Grid Battle (TEMP)
 
@@ -26,7 +26,7 @@ Um RPG/Survivor em turnos onde cada ação do jogador importa para que ele consi
 
 ### 1.2 Sinopse
 
-O jogador poderá selecionar dentre X classes para controlar dentro de um sistema de #grid. A #classe determina as variações de quais ações o jogador poderá realizar e seus #trait's. A cada nível que o jogador receber, irá receber um ponto de trait para escolher na árvore de #trait. Os #trait serão responsáveis por modificar características, modificar comportamentos do jogo, liberar #skill de uso ativo.
+O jogador poderá selecionar dentre X classes para controlar dentro de um sistema de #grid. A #classe determina as variações de quais ações o jogador poderá realizar e seus #trait's. A run é um mapa de nós: o jogador escolhe o caminho, enfrenta batalhas no grid e, a cada batalha vencida, sobe um nível e escolhe um trait entre as ofertas da classe. Os #trait serão responsáveis por modificar características, modificar comportamentos do jogo, liberar #skill de uso ativo.
 
 ### 1.3 Pillars de Design
 
@@ -48,28 +48,30 @@ O jogador poderá selecionar dentre X classes para controlar dentro de um sistem
 
 ### 2.1 Core Loop
 
-Run infinita, sem condição de vitória: a run é uma sequência de ondas cada vez mais difíceis e termina com a morte do jogador. O foco é a construção de build ao longo da run.
+Run finita em um mapa de nós, no estilo de Slay the Spire: o jogador escolhe o caminho, enfrenta batalhas no grid e termina a run derrotando o chefe final ou morrendo. O foco é a construção de build ao longo da run.
 
 ```
-Iniciar onda (inimigos no grid)
-  → Agir por turnos (mover / atacar / usar skill)
-  → Derrotar inimigos → ganhar XP
-  → Subir de nível → recupera vida → o jogo oferece 3 talentos da classe
-  → Escolher 1 (ou usar reroll / banir / pular)
-  → A build evolui e muda a forma de jogar com a classe
-  → Limpar a onda (ou esgotar o limite de turnos) → próxima onda, mais difícil, sem pausa
-  → A dificuldade cresce até superar a build
-  → Morte → resumo da build + onda alcançada (recorde) → nova run (outra classe ou outro caminho)
+Iniciar a run (classe + seed) → mapa de nós
+  → Escolher o próximo nó
+      • Batalha → combate em grid por turnos (mover / atacar / usar skill)
+          → vencer a batalha → subir de nível → o jogo oferece 3 talentos da classe
+          → escolher 1 (ou usar reroll / banir / pular)
+          → a build evolui e muda a forma de jogar com a classe
+      • Nó sem luta (cura, talento com custo, consumível…) → efeito do nó
+  → A vida do jogador persiste entre os nós
+  → Repetir até o nó do chefe final
+  → Chefe final derrotado → vitória
+  → Morte em qualquer batalha → fim da run (resumo da build + nível de batalha alcançado) → nova run (outra classe ou outro caminho)
 ```
 
 ### 2.2 Objetivo do Jogador
 
-O objetivo é montar builds diferentes com as árvores de talento de cada classe e descobrir até que onda cada uma consegue chegar.
+O objetivo é montar builds diferentes com as árvores de talento de cada classe e levá-las até o fim do mapa, derrotando o chefe final.
 
-- **Curto prazo:** limpar a onda atual e escolher o próximo talento.
-- **Médio prazo:** formar uma build coerente, com sinergia entre os talentos oferecidos.
-- **Longo prazo:** chegar à maior onda possível com cada classe e cada build, explorando caminhos diferentes das árvores.
-- **Métrica de sucesso:** onda alcançada, com recorde por classe.
+- **Curto prazo:** vencer a batalha atual e escolher o próximo talento ou o próximo nó.
+- **Médio prazo:** formar uma build coerente, com sinergia entre os talentos oferecidos, e decidir a rota no mapa (quando lutar, quando curar).
+- **Longo prazo:** vencer a run com cada classe e cada build, explorando caminhos diferentes das árvores.
+- **Métrica de sucesso:** vitória e nível de batalha alcançado, registrados por classe. ❓ Detalhes do registro (recordes, dificuldades adicionais).
 
 ### 2.3 Mecânicas Principais
 
@@ -77,34 +79,87 @@ O objetivo é montar builds diferentes com as árvores de talento de cada classe
 - **Descrição:** O combate acontece num grid de células, com no máximo uma entidade por célula. Cada ação consumida pelo jogador (mover, atacar ou usar skill) é seguida por uma rodada de ações de todos os inimigos. Ações inválidas não consomem o turno. Jogador e inimigos seguem as mesmas regras de alcance e ocupação.
 - **Entrada do jogador:** Toque em uma célula (andar ou atacar, conforme o conteúdo e o alcance).
 - **Feedback visual/sonoro:** Células destacadas para andar e para atacar, animações de movimento e de ataque, texto de dano flutuante.
-- **Interação com outras mecânicas:** Inimigos derrotados dão XP, que alimenta a escolha de talentos. Skills e talentos alteram alcance, dano e comportamento das ações.
+- **Interação com outras mecânicas:** Vencer a batalha concede o nível e a escolha de talentos (os inimigos não dão XP). Skills e talentos alteram alcance, dano e comportamento das ações.
+- **Sem telegrafia (decisão de design):** os inimigos não anunciam onde vão atacar. O jogo se mantém como está: o impacto vem principalmente da build do jogador, e não de esquivar de golpes. A variedade entre batalhas vem de outras fontes (papéis dos inimigos, personalidade do grid e inimigos que cobram a build; ver Mecânicas 4, 5 e 6).
 
-#### Mecânica 2: Ondas e Escalonamento
-- **Descrição:** A run é uma sequência infinita de ondas. Cada onda é um conjunto de inimigos no grid; ao limpá-la, a próxima começa, mais difícil: inimigos mais fortes e/ou mais numerosos e, em algumas ondas, mecânicas específicas, como elites e chefes. A dificuldade sobe por onda e deve, em algum ponto, superar qualquer build. A onda alcançada é a métrica de sucesso e vira recorde por classe.
-- **Ondas especiais:** algumas ondas trazem elites ou chefes com mecânicas próprias, que exigem que o jogador adapte a build e o posicionamento. ❓ Frequência (por exemplo, a cada N ondas), quais mecânicas e quais recompensas.
-- **Fim da onda:** a próxima onda chega quando o jogador elimina todos os inimigos **ou** quando passa tempo demais na onda atual (limite de turnos). A segunda condição impede que uma build "enrole" o jogo indefinidamente: a nova onda chega mesmo que ainda haja inimigos vivos. O limite inicial é de **50 turnos do jogador** por onda; o valor será verificado e ajustado durante o desenvolvimento.
-- **Entre ondas:** não há pausa, cura nem salvamento. A próxima onda começa em sequência, e a recuperação de vida vem do level up (ver Mecânica 3).
-- **Geração de ondas:** as ondas não são escritas à mão; um algoritmo as formula de acordo com o número da onda. Entradas: a *seed* da run, o número da onda e a pool de inimigos do jogo. Saída: quais inimigos entram e em que quantidade. A quantidade é definida pela força de cada inimigo em relação à força esperada para aquele número de onda (inimigos mais fortes entram em ondas mais altas, e os mais fracos aparecem em maior número). A mesma *seed* com o mesmo número de onda gera sempre a mesma onda, o que torna a run totalmente reproduzível (para debug). *Seeds* diferentes geram ondas diferentes, para que o jogador não sinta repetição entre runs. A mesma *seed* governa todos os aspectos aleatórios da run (ondas, ofertas de talento, rerolls e demais sorteios): com a mesma *seed* e as mesmas ações do jogador, a run se repete por completo.
-- **Em aberto (geração de ondas):** ❓ função da força esperada por onda, ❓ força de cada inimigo, ❓ regras da pool por onda (onda mínima/máxima de cada inimigo), ❓ regras de elites e chefes e ❓ limite de inimigos pela capacidade do grid.
-- **Entrada do jogador:** Nenhuma direta; a próxima onda começa ao limpar a atual ou ao esgotar o limite de turnos.
-- **Feedback visual/sonoro:** Indicação da onda atual na HUD, aviso visível do limite de turnos restante e transição entre ondas.
-- **Interação com outras mecânicas:** Cada onda derrotada alimenta o XP e, portanto, a escolha de talentos. A escalada de dificuldade é o que testa a build.
+#### Mecânica 2: Mapa, Nós e Batalhas
+- **Descrição:** A run é um mapa de nós, como em Slay the Spire. O jogador escolhe o próximo nó entre os disponíveis; ao escolher um nó de batalha, entra no combate no grid. Os inimigos ficam mais fortes conforme o jogador avança no mapa, e a run termina com o chefe final. ❓ Formato exato do mapa (andares, ramificações e número de caminhos).
+- **Run finita:** a run tem um número fixo de nós e termina na vitória (chefe final derrotado) ou na morte. Exemplo, não é valor final: um mapa de cerca de 30 nós, com uma pool de cerca de 50 talentos por classe. A pool pode ser maior que o número de escolhas de uma run, então cada run usa só uma parte dela. ❓ Número de nós e duração da run.
+- **Nível de batalha:** cada batalha vencida concede um nível. O nível de batalha é a posição do jogador na árvore de batalhas e define a dificuldade dos inimigos. Não existe XP: os inimigos não dão XP. Como o poder do jogador depende só de quantos talentos ele escolheu, a dificuldade pode ser balanceada simplesmente pelo nível de batalha.
+- **Tipos de nó (exemplos):**
+  - **Batalha:** combate no grid. Vencer concede o nível e a escolha de um talento.
+  - **Cura:** recupera a vida do jogador.
+  - **Talento:** oferece a escolha de um talento sem precisar lutar, mas **tem um custo**. ❓ Qual custo (por exemplo, vida, um consumível ou uma penalidade temporária).
+  - **Consumível:** concede um item de uso único.
+  - ❓ Outros tipos (por exemplo, elite, evento, chefe) e a distribuição deles no mapa.
+- **Sem luta, sem talento:** o jogador só ganha talento vencendo batalhas ou pelo nó de talento, que tem custo. Os nós de cura e de consumível não exigem limite por andar: quem evita as batalhas chega ao chefe sem talentos e perde.
+- **Vida entre batalhas:** a vida do jogador persiste entre os nós. Ela só é recuperada por nós de cura (e por efeitos que a build conceda). Não há cura automática ao vencer uma batalha.
+- **Fim da batalha:** a batalha termina quando todos os inimigos são eliminados. Não há limite de turnos: um jogador que enrola indefinidamente simplesmente não vence. Se builds de muita cura tornarem isso um problema, avaliar um debuff que cresce com o tempo na batalha. ❓ A rever só se acontecer na prática.
+- **Derrota:** a morte em qualquer batalha encerra a run.
+- **Direções para a variedade das batalhas:** para que as batalhas não sejam sempre "correr atrás do jogador e bater", a variedade vem de três mecânicas: papéis dos inimigos (Mecânica 4), personalidade do grid (Mecânica 5) e inimigos que cobram a build (Mecânica 6).
+- **Prévia do nó:** antes de escolher o nó, o jogador vê o tipo do nó e, nas batalhas, os papéis dos inimigos e o terreno do grid. Não vê a lista exata de inimigos.
+- **Geração das batalhas:** as batalhas e o mapa não são escritos à mão; um algoritmo os formula de acordo com o nível de batalha. Entradas: a *seed* da run, o nível de batalha e a pool de inimigos do jogo. Saída: quais inimigos entram e em que quantidade. A quantidade é definida pela força de cada inimigo em relação à força esperada para aquele nível (inimigos mais fortes entram em níveis mais altos, e os mais fracos aparecem em maior número). A mesma *seed* gera sempre o mesmo mapa e as mesmas batalhas, o que torna a run totalmente reproduzível (para debug). *Seeds* diferentes geram runs diferentes, para que o jogador não sinta repetição entre runs. A mesma *seed* governa todos os aspectos aleatórios da run (mapa, batalhas, ofertas de talento, rerolls e demais sorteios): com a mesma *seed* e as mesmas ações do jogador, a run se repete por completo.
+- **Em aberto (geração):** ❓ função da força esperada por nível de batalha, ❓ força de cada inimigo, ❓ regras da pool por nível (nível mínimo/máximo de cada inimigo), ❓ regras de elites e chefes e ❓ limite de inimigos pela capacidade do grid.
+- **Entrada do jogador:** Escolha de nó no mapa; dentro da batalha, as ações da Mecânica 1.
+- **Feedback visual/sonoro:** Mapa com os tipos de nó e o caminho percorrido, indicação do nível de batalha na HUD e transição entre mapa e batalha.
+- **Interação com outras mecânicas:** Cada batalha vencida concede um nível e a escolha de talentos. A dificuldade crescente por nível de batalha é o que testa a build, e a vida persistente faz o mapa pedir decisões de rota.
 
-#### Mecânica 3: Level Up e Escolha de Talentos (build adaptativa)
-- **Descrição:** A cada nível, o jogo oferece 3 talentos sorteados entre os que a classe escolhida pode pegar naquele momento (pré-requisitos cumpridos). O jogador escolhe 1. A build nasce da adaptação ao que aparece, e não de um plano fechado desde o início. O sorteio é ponderado por sinergia: talentos ligados aos já escolhidos têm mais chance de aparecer, para que as builds tendam a se formar sem serem garantidas. Detalhes do sorteio (por exemplo, evitar repetição excessiva ou proteção contra azar) ❓ a definir.
+#### Mecânica 3: Nível de Batalha e Escolha de Talentos (build adaptativa)
+- **Descrição:** A cada batalha vencida, o jogador sobe um nível e o jogo oferece 3 talentos sorteados entre os que a classe escolhida pode pegar naquele momento (pré-requisitos cumpridos). O jogador escolhe 1. A build nasce da adaptação ao que aparece, e não de um plano fechado desde o início. O sorteio é ponderado por sinergia: talentos ligados aos já escolhidos têm mais chance de aparecer, para que as builds tendam a se formar sem serem garantidas. Detalhes do sorteio (por exemplo, evitar repetição excessiva ou proteção contra azar) ❓ a definir.
 - **Configuração da escolha de talentos:** o número de opções oferecidas (base: 3), de rerolls e de banimentos são configurações da run, não características de classe. Estados ativos podem alterá-las (por exemplo, um estado que concede mais rerolls). ❓ Quantidades base.
-- **Recuperação de vida:** ao subir de nível, o jogador recupera vida. É a principal fonte de recuperação durante a run, o que liga o ritmo de XP à sobrevivência. A porcentagem de cura é configurável; o valor inicial é de **100%** da vida máxima, a ser ajustado durante o desenvolvimento.
+- **Recuperação de vida:** subir de nível não recupera vida. A vida persiste entre as batalhas e se recupera nos nós de cura do mapa (ver Mecânica 2).
 - **Ferramentas do jogador:** o RNG deve ser controlável pelo jogador (pilar 3). Para isso, o jogador pode **rerrolar** a oferta, **banir** um talento da pool e **pular** a oferta. Custo de uso ❓ a definir. Possibilidade em avaliação: recarregar essas ferramentas assistindo a anúncio recompensado, de forma gratuita para quem comprar a remoção de anúncios (ver seção 7).
-- **Fora do escopo desta mecânica:** escolha livre periódica na árvore inteira (descartada). A *seed* da run existe apenas para debug e reprodução de cenários e governa todos os sorteios da run, incluindo as ofertas de talento e a geração de ondas (ver Mecânica 2); não é exposta ao jogador.
-- **Entrada do jogador:** Tela de escolha ao subir de nível, com as 3 opções e as ferramentas. Toque para escolher.
+- **Fora do escopo desta mecânica:** escolha livre periódica na árvore inteira (descartada). A *seed* da run existe apenas para debug e reprodução de cenários e governa todos os sorteios da run, incluindo as ofertas de talento, o mapa e as batalhas (ver Mecânica 2); não é exposta ao jogador.
+- **Entrada do jogador:** Tela de escolha ao vencer uma batalha (e no nó de talento), com as 3 opções e as ferramentas. Toque para escolher.
 - **Feedback visual/sonoro:** Destaque nos talentos que combinam com a build atual; efeito visual de aquisição.
-- **Interação com outras mecânicas:** Talentos concedem estados (que alteram atributos, comportamentos e regras do jogo) e liberam skills ativas. As ondas escalam a dificuldade para testar a build.
+- **Interação com outras mecânicas:** Talentos concedem estados (que alteram atributos, comportamentos e regras do jogo) e liberam skills ativas. As batalhas, cada vez mais difíceis, testam a build.
+
+#### Mecânica 4: Papéis dos Inimigos
+- **Descrição:** Cada inimigo tem um papel que define como ele se comporta, em vez de todos correrem atrás do jogador e atacarem. Hoje todos os inimigos (Goblin, Rat, Slime, FireSkull e EyeBat) seguem o mesmo comportamento de perseguir e atacar, e só diferem em números. Com papéis distintos, o jogador passa a decidir quem enfrentar primeiro e como se posicionar, e o ataque básico no inimigo mais próximo deixa de ser sempre a melhor jogada. Os inimigos seguem as mesmas regras de turno, alcance e ocupação do jogador (Mecânica 1) e não telegrafam ataques.
+- **Papéis (exemplos, a refinar):**
+  - **Corpo a corpo:** persegue o jogador e ataca (o comportamento atual).
+  - **Enxame:** frágil, rápido e em quantidade.
+  - **Atirador:** ataca à distância e tenta manter a distância do jogador.
+  - **Suporte:** cura ou fortalece aliados, o que o torna um alvo prioritário.
+  - **Invocador:** cria novos inimigos ao longo da batalha.
+  - **Controlador:** aplica estados negativos ao jogador (por exemplo, Fraquejado ou impedir o movimento).
+  - ❓ Lista final de papéis e de inimigos de cada papel.
+- **Composição das batalhas:** o algoritmo de geração (Mecânica 2) monta as batalhas combinando papéis, e não só inimigos soltos. ❓ Regras de composição (por exemplo, nunca uma batalha só de atiradores, limite de controladores por batalha).
+- **Entrada do jogador:** Nenhuma direta; o jogador reage ao comportamento dos inimigos pelas ações da Mecânica 1.
+- **Feedback visual/sonoro:** Ícone ou marca visual do papel sobre o inimigo; a prévia do nó mostra os papéis presentes.
+- **Interação com outras mecânicas:** Controladores e suportes aplicam estados (ver 3.1). Alcance, área e controle do jogador passam a ter valor para alcançar atiradores e suportes que ficam atrás. A prévia do nó revela os papéis para o jogador planejar a rota.
+
+#### Mecânica 5: Personalidade do Grid
+- **Descrição:** O grid de cada batalha pode ter elementos de terreno que mudam o posicionamento e o valor das skills. Em vez de um tabuleiro vazio, cada batalha tem seu formato. Por exemplo, obstáculos criam corredores onde skills de área ficam muito fortes, e células de perigo obrigam o jogador a decidir onde vale a pena ficar.
+- **Elementos de terreno (exemplos, a refinar):**
+  - **Obstáculo:** célula bloqueada, que ninguém ocupa nem atravessa.
+  - **Célula de perigo:** quem estiver nela sofre dano ou recebe um estado negativo (por exemplo, fogo, veneno ou gelo).
+  - **Célula de bônus:** quem estiver nela recebe um estado benéfico.
+  - ❓ Lista final de elementos, se bloqueiam alcance e área de skills, quando o efeito é aplicado, e se afetam jogador e inimigos da mesma forma (a direção inicial é que sim, coerente com a regra de que jogador e inimigos seguem as mesmas regras).
+- **Geração:** o terreno de cada batalha é gerado pela *seed* e pelo nível de batalha, junto com a composição dos inimigos. ❓ Regras de geração (quantidade e posições, garantir que o grid continue jogável e que o jogador e os inimigos tenham espaço para entrar).
+- **Entrada do jogador:** Toque nas células (andar ou atacar) como na Mecânica 1; o terreno limita ou altera as opções.
+- **Feedback visual/sonoro:** Visual distinto para cada tipo de célula e indicação clara do efeito antes de entrar nela.
+- **Interação com outras mecânicas:** Células de perigo e de bônus aplicam estados (ver 3.1). O terreno reduz as células livres e interage com o limite de inimigos pela capacidade do grid (Mecânica 2). A prévia do nó mostra o terreno da batalha.
+
+#### Mecânica 6: Inimigos que Cobram a Build
+- **Descrição:** Alguns inimigos exigem uma resposta específica da build e não podem ser resolvidos só com o ataque básico. Cada um testa uma parte da build, e uma build de uma coisa só será testada em algum momento, o que incentiva o jogador a diversificar os talentos. Um jogador experiente sabe quais inimigos podem aparecer e escolhe os talentos para lidar com eles em um momento futuro da run; assim, o conhecimento do jogo vira vantagem estratégica.
+- **Exemplos (a refinar):**
+  - **Blindado:** defesa alta; pede penetração de defesa ou dano que ignore defesa (por exemplo, dano ao longo do tempo).
+  - **Regenerante:** recupera vida; pede dano concentrado (burst).
+  - **Enxame:** muitos inimigos frágeis; pede skills de área.
+  - **Rápido:** alcance de movimento alto; pede controle (por exemplo, impedir o movimento).
+  - **Espinhoso:** devolve parte do dano recebido; pede skills à distância ou dano ao longo do tempo.
+  - ❓ Lista final, frequência com que aparecem e se isso se liga a elites e chefes.
+- **Como são definidos:** pelos atributos e estados do inimigo (ver 3.1), o que permite criar essas respostas obrigatórias combinando os mesmos blocos do sistema de estados. ❓ Quais atributos e estados valem para os inimigos.
+- **Entrada do jogador:** Nenhuma direta; a escolha acontece na tela de talentos (Mecânica 3) e na rota do mapa (Mecânica 2).
+- **Feedback visual/sonoro:** Indicação visível das características do inimigo (por exemplo, ícone de blindado ou de regenerante), para que o jogador leia o que ele exige.
+- **Interação com outras mecânicas:** A prévia do nó mostra os papéis dos inimigos, o que informa a escolha de rota. A pool de inimigos possíveis é parte do conhecimento do jogador para escolher talentos (Mecânica 3). O Glossário do jogo (2.7) registra os inimigos já enfrentados. ❓ Se o sorteio de talentos deve considerar os inimigos que o jogador já viu na run.
 
 ### 2.4 Mecânicas Secundárias
 
 > **Será revisto no futuro.** A ideia inicial é deixar o jogo base funcionando antes de implementar mais coisas acima desta camada. O que segue abaixo é a direção atual, sujeita a revisão.
 
-#### Mecânica 4: Skills Ativas
+#### Mecânica 7: Skills Ativas
 - **Descrição:** Cada classe possui um conjunto de skills ativas adquiridas via traits. Skills são ações especiais com cooldown, área de efeito (shape), dano (se ofensivas) e outros parâmetros. São reutilizáveis (cooldown) e vinculadas ao personagem.
 - **Entrada do jogador:** Toque em botão de skill na HUD → seleção de alvo.
 - **Feedback visual/sonoro:** Animação própria da skill, efeito de área no grid, partículas, som de ativação.
@@ -130,12 +185,12 @@ O objetivo é montar builds diferentes com as árvores de talento de cada classe
 
 ### 2.5.2 Progressão de Conteúdo
 
-- **Spawn por onda:** A tabela de spawn filtra inimigos por onda mínima/máxima. Conforme as ondas avançam, inimigos mais fortes aparecem.
+- **Spawn por nível de batalha:** A tabela de spawn filtra inimigos por nível de batalha mínimo/máximo. Conforme o nível de batalha sobe, inimigos mais fortes aparecem.
 - **Traits por nível:** Traits têm nível requerido e pré-requisitos. Ao subir de nível, o jogador vê 3 traits sorteados entre os disponíveis para a classe, com peso maior para os que têm sinergia com a build atual (ver Mecânica 3 em 2.3).
 
-- **Sistema de progressão:** XP e níveis, árvore de traits e skills por classe
-- **Curva de dificuldade:** sobe a cada onda, sem teto, até superar a build do jogador. ❓ Valores e ritmo a definir.
-- **Unlocks:** Traits desbloqueiam skills ativas (que entram no repertório do personagem). O avanço das ondas introduz inimigos mais fortes.
+- **Sistema de progressão:** nível de batalha (um nível por batalha vencida, sem XP), árvore de traits e skills por classe
+- **Curva de dificuldade:** sobe a cada nível de batalha ao longo do mapa, até o chefe final. ❓ Valores e ritmo a definir.
+- **Unlocks:** Traits desbloqueiam skills ativas (que entram no repertório do personagem). O avanço no mapa introduz inimigos mais fortes.
 
 ### 2.6 Economia
 [Recursos, moedas, custos, recompensas.]
@@ -144,6 +199,16 @@ O objetivo é montar builds diferentes com as árvores de talento de cada classe
 |---------|--------|-----|
 | [Moeda] | [Drop de inimigos] | [Comprar upgrades] |
 | ... | ... | ... |
+
+### 2.7 Glossário do Jogo
+
+> Não confundir com o glossário de termos da seção 13 deste documento. Este é um recurso dentro do jogo.
+
+- **Descrição:** o jogo tem um glossário que o jogador preenche conforme joga. Ele registra o que o jogador já descobriu, e o que ainda não descobriu aparece escondido. Também serve de referência para o jogador experiente planejar a build (ver Mecânica 6 em 2.3).
+- **Seção de classes:** mostra as classes já liberadas. Em cada classe aparecem os talentos que o jogador já escolheu em algum momento do jogo. Os talentos que nunca foram escolhidos aparecem como "?".
+- **Seção de inimigos:** mostra todos os inimigos que o jogador já enfrentou. De cada um é possível ver os atributos, as skills e como o tipo de inimigo age (seu papel e comportamento).
+- **Persistência:** o glossário vale entre runs. O que foi descoberto fica registrado no perfil do jogador, e não só na run atual.
+- ❓ O que conta como descoberto para um talento (apenas escolhido, ou também apenas oferecido), se os inimigos ainda não enfrentados aparecem como "?" na lista, se as informações de cada inimigo são reveladas por etapas (por exemplo, mais detalhes depois de enfrentá-lo mais vezes), quais valores de atributo são exibidos (base ou escalados pelo nível de batalha) e onde o glossário fica no menu (ver 4.3).
 
 ---
 
@@ -221,15 +286,22 @@ Turno global 3: Jogador joga
 
 Exemplo inverso: um inimigo aplica um debuff de 2 turnos no jogador durante a jogada dele no turno global 1. O turno do jogador nesse turno global já terminou, então a contagem começa no turno 2: o debuff afeta as jogadas do jogador nos turnos globais 2 e 3.
 
-❓ Reaplicação e acúmulo do mesmo estado, remoção antecipada, e o que acontece com os estados ao mudar de onda.
+❓ Reaplicação e acúmulo do mesmo estado, remoção antecipada, e o que acontece com os estados ao mudar de batalha.
 
-Fora do conjunto por enquanto: esquiva, ganho de XP, cura do level up como atributo (ela é uma configuração global do jogo, ver Mecânica 3 em 2.3) e tamanho da área das skills.
+Fora do conjunto por enquanto: esquiva e tamanho da área das skills.
 
 ### 3.2 Personagem do Jogador
 - **Nome:** ...
 - **Descrição:** ...
 - **Motivação:** ...
 - **Habilidades iniciais:** ...
+- **Classes disponíveis:** apenas uma classe está aberta desde o início; as outras duas são liberadas jogando.
+  - **Guerreiro (Knight):** disponível desde o início.
+  - **Mago (Mage):** liberado ao vencer 15 batalhas.
+  - **Ladino (Rogue):** liberado ao vencer 30 batalhas.
+  - Só contam batalhas vencidas (nós de cura, talento e consumível não entram na contagem).
+  - A contagem é acumulada entre runs (soma de todas as batalhas vencidas em todas as runs) e fica guardada no perfil do jogador (8.1).
+  - ❓ Se batalhas vencidas em runs que terminam em derrota contam (sugestão: sim, para o progresso nunca ser perdido) e como avisar o jogador da nova classe liberada (sugestão: tela de fim de run).
 
 > Skills de classe e slots de skill fazem parte do escopo "Será revisto no futuro".
 
@@ -239,6 +311,8 @@ Fora do conjunto por enquanto: esquiva, ganho de XP, cura do level up como atrib
 ### 3.3 NPCs / Inimigos
 [Liste tipos de inimigos, bosses e NPCs relevantes.]
 
+Papéis e comportamentos dos inimigos: ver Mecânica 4. Inimigos que exigem resposta da build: ver Mecânica 6 em 2.3.
+
 | Nome | Tipo | Comportamento | Dificuldade |
 |------|------|---------------|-------------|
 | ... | Inimigo comum | ... | Fácil |
@@ -247,7 +321,7 @@ Fora do conjunto por enquanto: esquiva, ganho de XP, cura do level up como atrib
 ### 3.4 Mundo / Cenário
 - **Ambientação:** ...
 - **Estética:** ...
-- **Estrutura de fases/mundo:** [linear, aberto, procedural, fases fixas...]
+- **Estrutura de fases/mundo:** mapa de nós ramificado e gerado por seed, com batalhas no grid (ver Mecânica 2 em 2.3).
 
 ---
 
@@ -328,9 +402,15 @@ Skills são **reutilizáveis** — após o cooldown, podem ser usadas novamente.
 ---
 ## 7. Monetização (se aplicável)
 
-- **Modelo:** [Premium, F2P, Ad-supported, IAP]
-- **Conteúdo pago:** ...
-- **Ética de monetização:** [princípios para evitar pay-to-win, etc.]
+Definição mínima: anúncios e compra de remoção de anúncios.
+
+- **Modelo:** anúncios mais uma compra para removê-los. ❓ Se o modelo é o mesmo no PC e no mobile.
+- **Anúncios forçados:** aparecem de tempos em tempos no meio da run, em pausas naturais, como ao sair de uma batalha e depois de escolher o novo talento. Nunca durante uma batalha em andamento. ❓ Quais outros momentos de transição.
+- **Rampa de frequência:** no início (as primeiras X vezes) os anúncios aparecem com frequência baixa, para dar tempo de o jogador gostar do jogo e não ser atrapalhado. Depois de um tempo, passam à frequência normal, a cada X nós. ❓ Valores de X, duração da fase inicial e se a contagem é por nós, por batalhas vencidas ou por tempo (em avaliação: contar por batalhas e impor um tempo mínimo entre anúncios, porque os nós de cura e de consumível são instantâneos).
+- **Anúncio recompensado (opcional):** recarrega as ferramentas de oferta de talento (reroll, banimento e pular; ver Mecânica 3 em 2.3). ❓ Limite de recargas.
+- **Remoção de anúncios:** compra que remove os anúncios forçados e recarrega as ferramentas de oferta de talento sem precisar assistir a anúncio (ver Mecânica 3). ❓ Preço e se qualquer compra também remove os anúncios forçados.
+- **Ética de monetização:** evitar pay-to-win. ❓ Definir um teto de recargas igual para quem assiste a anúncios e para quem comprou a remoção, para que o dinheiro não compre poder.
+- **Em avaliação, fora da definição mínima:** classes adicionais (além das três, que são liberadas jogando; ver 3.2), cosméticos e expansões de conteúdo.
 
 ---
 ## 8. Plataforma Técnica
@@ -341,7 +421,8 @@ Skills são **reutilizáveis** — após o cooldown, podem ser usadas novamente.
 - **Resolução alvo:** ...
 - **Orientação:** [Retrato / Paisagem]
 - **FPS alvo:** ...
-- **Estado da run:** se o app for para segundo plano, a run continua de onde parou quando o jogador voltar (o jogo é por turnos, então nada avança sem ele). Se o app for fechado, a run é perdida: não há salvamento de run.
+- **Estado da run:** a run é salva automaticamente entre as ações do jogador, tanto no meio da batalha quanto na tela do mapa. Se o app for para segundo plano ou for fechado, o jogador retoma exatamente do ponto em que parou. O estado salvo inclui a posição dos sorteios da *seed* (por exemplo, críticos e ofertas de talento), para que recarregar não mude o resultado das ações. Não há salvamento manual. ❓ Detalhes do formato do salvamento e o que acontece se um anúncio estiver pendente ao fechar.
+- **Perfil do jogador:** as classes liberadas, o contador de batalhas vencidas (3.2) e o glossário (2.7) persistem entre runs, em um salvamento de perfil separado do salvamento da run. ❓ Sincronização entre dispositivos.
 
 ### 8.2 Requisitos mínimos
 - ...
@@ -388,7 +469,7 @@ Skills são **reutilizáveis** — após o cooldown, podem ser usadas novamente.
 ### 11.2 Escopo (Out of Scope)
 [O que NÃO será feito nesta versão. Ajuda a controlar feature creep.]
 
-- Itens (consumíveis e itens ativos) — fora do escopo por enquanto; podem voltar em uma versão futura.
+- Itens ativos e equipáveis — fora do escopo por enquanto; podem voltar em uma versão futura. Os consumíveis (nó de consumível no mapa) entram no escopo.
 - Skills detalhadas — serão revistas no futuro, após o jogo base funcionar.
 - ...
 
@@ -408,8 +489,12 @@ Skills são **reutilizáveis** — após o cooldown, podem ser usadas novamente.
 | Termo | Definição                                                                                                                         | Tags   |
 | ----- | --------------------------------------------------------------------------------------------------------------------------------- | ------ |
 | Grid  | Tabuleiro de células onde ocorre o combate                                                                                        | #grid  |
-| Trait | São mecânicas obtidas a cada nível ganho pelo jogador, eles concedem estados que alteram características, comportamentos e mecânicas de jogo, e liberam skills. | #trait |
+| Trait | São mecânicas obtidas a cada nível ganho pelo jogador (uma batalha vencida), eles concedem estados que alteram características, comportamentos e mecânicas de jogo, e liberam skills. | #trait |
 | Skill | Ação ativa do personagem, vinculada à classe ou a traits. Possui área de efeito, dano, alcance e cooldown. Pode ser reutilizada. | #skill |
 | Atributo | Valor base que configura o personagem no início da run (vida máxima, dano básico, defesa etc.). | #atributo |
 | Estado | Condição com nome que concede efeitos ao personagem (incrementa atributos ou modifica comportamentos do jogo), permanente ou por X turnos conforme a situação ou o talento que o aplica. | #estado |
 | Turno | Turno global: o jogador joga primeiro e depois jogam os inimigos; termina depois que a última entidade do grid faz sua ação. Cada entidade tem o seu turno dentro dele. | #turno |
+| Nó | Ponto do mapa da run. Pode ser uma batalha, um nó de cura, de talento (com custo), de consumível, entre outros. | #nó |
+| Mapa | Estrutura de nós da run, no estilo de Slay the Spire. O jogador escolhe o caminho até o chefe final. | #mapa |
+| Batalha | Combate em grid por turnos iniciado ao escolher um nó de batalha. Vencê-la concede um nível e a escolha de um talento. | #batalha |
+| Nível de batalha | Posição do jogador na árvore de batalhas (uma batalha vencida = um nível). Define a dificuldade dos inimigos. | #nível |

@@ -16,7 +16,7 @@ MonoBehaviour:
   animatorController: {fileID: 9100000, guid: 7234148229c32134ebe17e99d573581d, type: 2}
   maxHp: 25
   walkDistance: 1
-  attackDistance: 1
+  attackDistance: 2
   basicAttackDamage: 7
   skills: []
   prefab: {fileID: 2069839144374370989, guid: 4cf13f1910da4e14296e096a872f8cf2, type: 3}
