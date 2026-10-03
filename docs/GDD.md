@@ -26,7 +26,7 @@ Um RPG/Survivor em turnos onde cada ação do jogador importa para que ele consi
 
 ### 1.2 Sinopse
 
-O jogador poderá selecionar dentre X classes para controlar dentro de um sistema de #grid. A #classe determina as variações de quais ações o jogador poderá realizar e seus #trait's. A run é um mapa de nós: o jogador escolhe o caminho, enfrenta batalhas no grid e, a cada batalha vencida, sobe um nível e escolhe um trait entre as ofertas da classe. Os #trait serão responsáveis por modificar características, modificar comportamentos do jogo, liberar #skill de uso ativo.
+O jogador poderá selecionar dentre X classes para controlar dentro de um sistema de #grid. A #classe determina as variações de quais ações o jogador poderá realizar e seus #trait's. A run é um mapa de nós: o jogador escolhe o caminho, enfrenta batalhas no grid e ganha XP ao vencê-las; a cada nível alcançado, escolhe um trait entre as ofertas da classe. Os #trait serão responsáveis por modificar características, modificar comportamentos do jogo, liberar #skill de uso ativo.
 
 ### 1.3 Pillars de Design
 
@@ -54,14 +54,15 @@ Run finita em um mapa de nós, no estilo de Slay the Spire: o jogador escolhe o 
 Iniciar a run (classe + seed) → mapa de nós
   → Escolher o próximo nó
       • Batalha → combate em grid por turnos (mover / atacar / usar skill)
-          → vencer a batalha → subir de nível → o jogo oferece 3 talentos da classe
+          → cada inimigo derrotado soma o seu XP na hora (o total da batalha é mostrado na prévia do nó)
+          → se o XP alcançar o próximo nível → subir de nível na hora (inclusive no meio da batalha) → o jogo oferece 3 talentos da classe
           → escolher 1 (ou usar reroll / banir / pular)
           → a build evolui e muda a forma de jogar com a classe
       • Nó sem luta (cura, talento com custo, consumível…) → efeito do nó
   → A vida do jogador persiste entre os nós
   → Repetir até o nó do chefe final
   → Chefe final derrotado → vitória
-  → Morte em qualquer batalha → fim da run (resumo da build + nível de batalha alcançado) → nova run (outra classe ou outro caminho)
+  → Morte em qualquer batalha → fim da run (resumo da build + nível e profundidade alcançados) → nova run (outra classe ou outro caminho)
 ```
 
 ### 2.2 Objetivo do Jogador
@@ -71,7 +72,7 @@ O objetivo é montar builds diferentes com as árvores de talento de cada classe
 - **Curto prazo:** vencer a batalha atual e escolher o próximo talento ou o próximo nó.
 - **Médio prazo:** formar uma build coerente, com sinergia entre os talentos oferecidos, e decidir a rota no mapa (quando lutar, quando curar).
 - **Longo prazo:** vencer a run com cada classe e cada build, explorando caminhos diferentes das árvores.
-- **Métrica de sucesso:** vitória e nível de batalha alcançado, registrados por classe. ❓ Detalhes do registro (recordes, dificuldades adicionais).
+- **Métrica de sucesso:** vitória, nível do jogador e profundidade alcançados, registrados por classe. ❓ Detalhes do registro (recordes, dificuldades adicionais).
 
 ### 2.3 Mecânicas Principais
 
@@ -79,33 +80,42 @@ O objetivo é montar builds diferentes com as árvores de talento de cada classe
 - **Descrição:** O combate acontece num grid de células, com no máximo uma entidade por célula. Cada ação consumida pelo jogador (mover, atacar ou usar skill) é seguida por uma rodada de ações de todos os inimigos. Ações inválidas não consomem o turno. Jogador e inimigos seguem as mesmas regras de alcance e ocupação.
 - **Entrada do jogador:** Toque em uma célula (andar ou atacar, conforme o conteúdo e o alcance).
 - **Feedback visual/sonoro:** Células destacadas para andar e para atacar, animações de movimento e de ataque, texto de dano flutuante.
-- **Interação com outras mecânicas:** Vencer a batalha concede o nível e a escolha de talentos (os inimigos não dão XP). Skills e talentos alteram alcance, dano e comportamento das ações.
+- **Interação com outras mecânicas:** Cada inimigo derrotado concede o seu XP na hora, que leva ao nível e à escolha de talentos. Skills e talentos alteram alcance, dano e comportamento das ações.
 - **Sem telegrafia (decisão de design):** os inimigos não anunciam onde vão atacar. O jogo se mantém como está: o impacto vem principalmente da build do jogador, e não de esquivar de golpes. A variedade entre batalhas vem de outras fontes (papéis dos inimigos, personalidade do grid e inimigos que cobram a build; ver Mecânicas 4, 5 e 6).
 
 #### Mecânica 2: Mapa, Nós e Batalhas
 - **Descrição:** A run é um mapa de nós, como em Slay the Spire. O jogador escolhe o próximo nó entre os disponíveis; ao escolher um nó de batalha, entra no combate no grid. Os inimigos ficam mais fortes conforme o jogador avança no mapa, e a run termina com o chefe final. ❓ Formato exato do mapa (andares, ramificações e número de caminhos).
 - **Run finita:** a run tem um número fixo de nós e termina na vitória (chefe final derrotado) ou na morte. Exemplo, não é valor final: um mapa de cerca de 30 nós, com uma pool de cerca de 50 talentos por classe. A pool pode ser maior que o número de escolhas de uma run, então cada run usa só uma parte dela. ❓ Número de nós e duração da run.
-- **Nível de batalha:** cada batalha vencida concede um nível. O nível de batalha é a posição do jogador na árvore de batalhas e define a dificuldade dos inimigos. Não existe XP: os inimigos não dão XP. Como o poder do jogador depende só de quantos talentos ele escolheu, a dificuldade pode ser balanceada simplesmente pelo nível de batalha.
+- **Profundidade e nível (conceitos separados):**
+  - **Profundidade:** quão longe o jogador está no mapa (a posição do nó, de 1 até o chefe final). Define a escala dos inimigos e é o eixo principal de balanceamento da dificuldade.
+  - **Nível:** o nível do jogador, obtido com XP. Cada nível alcançado concede a escolha de um talento (Mecânica 3). Varia conforme o caminho escolhido: dois jogadores na mesma profundidade podem ter níveis diferentes.
+  - **XP por inimigo derrotado:** cada inimigo tem um valor de XP, que é somado ao jogador na hora em que ele é derrotado (comportamento já implementado). O XP total possível da batalha é a soma dos valores dos inimigos que a compõem, conhecido ao gerar a batalha e mostrado na prévia do nó. Batalhas com mais inimigos ou inimigos mais fortes rendem mais XP, então as batalhas mais difíceis rendem mais. Não há farm de abates porque a batalha tem um número fixo de inimigos e termina quando todos são eliminados. ❓ Inimigos invocados durante a batalha (por exemplo, por um Invocador) devem dar XP? (sugestão: não, ou o XP total da batalha poderia ser inflado). Sugestão: o valor de XP de cada inimigo sai da sua força na fórmula de ameaça (a mesma usada na geração das batalhas), em vez de ser escrito à mão.
+  - **Nem toda batalha concede talento:** o jogador pode escolher batalhas mais fáceis, que rendem pouco XP, ou mais difíceis, que rendem mais. A decisão de risco e recompensa é do jogador: o esperado é que ele tenda a escolher batalhas difíceis para ficar mais forte, ao custo de mais dano e de menos vida para as batalhas seguintes.
+  - **Nível máximo fixo:** a run tem um nível máximo definido no design, independente do número de batalhas do mapa. Exemplo, não é valor final: nível máximo 30. O XP além do teto não gera mais níveis. Isso permite que algumas batalhas (por exemplo, as mais difíceis e as elites) concedam mais XP do que o necessário para um nível, levando a mais de um nível de uma vez, e que o mapa tenha mais batalhas do que níveis. Quem pegar as batalhas mais difíceis chega ao nível máximo; quem escolher batalhas mais fáceis chega ao fim com menos níveis (por exemplo, perto de 15 a 25). A diferença entre o máximo e o mínimo é a alavanca de balanceamento da escolha de risco e recompensa: pequena demais e não vale arriscar, grande demais e quem pega só as fáceis não consegue vencer. ❓ Valor do nível máximo, número de batalhas do mapa em relação a ele, quanto XP a batalha difícil e a elite concedem em relação ao custo do nível, e se o nó de talento conta como nível (hoje ele concede só o talento, sem XP).
+  - ❓ Como as batalhas do mesmo andar variam de dificuldade (sugestão: cada nó de batalha tem uma faixa de dificuldade, por exemplo fácil, normal e difícil, que muda o número e a força dos inimigos e o XP concedido; elites e chefes seriam casos especiais).
+  - **Custo por nível crescente:** o XP necessário para cada nível cresce conforme o nível sobe. A curva de custo e o XP das batalhas, ao longo do mapa, definem quanto XP total o jogador pode juntar e, com isso, até onde cada caminho chega. Para que a batalha difícil renda cerca de um nível, a curva pode acompanhar o XP de uma batalha difícil na profundidade correspondente: como os inimigos ficam mais fortes (e valem mais XP) com a profundidade, a curva pode ser derivada do gerador de batalhas. Exemplo, não é valor final: o nível 1 exige 100 de XP; uma batalha fácil concede 50, uma média 75 e uma difícil 100 nesse ponto. Com esse exemplo, em 30 batalhas, só difíceis rendem cerca de um nível por batalha, só médias cerca de 75% disso e só fáceis cerca de 50%, supondo que o XP que sobra ao subir de nível é guardado. Elites e batalhas especiais podem render mais de 100%. ❓ A fórmula da curva de custo, e se a sobra de XP é guardada.
+  - **Subida de nível na hora:** o talento é escolhido no momento em que a barra de XP cruza o limiar do nível, mesmo no meio da batalha. Nesse momento o jogo é pausado e o jogador escolhe o talento; a partida só continua depois da escolha. Se a barra cruzar mais de um limiar (um abate que leve a mais de um nível), as escolhas vêm em sequência, uma por nível, e o jogo só retoma depois da última. O talento escolhido vale já para o restante do turno. Como a lógica é imediata e o visual atrasado, a tela de escolha deve aparecer quando a barra de XP visual cruzar o limiar, depois da animação do abate, e não antes. ❓ Se a escolha pode ser adiada para o fim da batalha (hoje não: o jogo pausa e exige a escolha) e como funciona o reroll, o banimento e o pular durante a pausa.
+  - **Sem XP em nós sem combate:** cura e consumível não concedem XP. O nó de talento concede o talento sem XP e tem custo.
 - **Tipos de nó (exemplos):**
-  - **Batalha:** combate no grid. Vencer concede o nível e a escolha de um talento.
+  - **Batalha:** combate no grid. Os inimigos derrotados concedem XP, que pode levar a um novo nível e à escolha de um talento.
   - **Cura:** recupera a vida do jogador.
   - **Talento:** oferece a escolha de um talento sem precisar lutar, mas **tem um custo**. ❓ Qual custo (por exemplo, vida, um consumível ou uma penalidade temporária).
   - **Consumível:** concede um item de uso único.
   - ❓ Outros tipos (por exemplo, elite, evento, chefe) e a distribuição deles no mapa.
-- **Sem luta, sem talento:** o jogador só ganha talento vencendo batalhas ou pelo nó de talento, que tem custo. Os nós de cura e de consumível não exigem limite por andar: quem evita as batalhas chega ao chefe sem talentos e perde.
+- **Sem luta, sem talento:** o jogador só ganha talento ganhando XP em batalhas ou pelo nó de talento, que tem custo. Os nós de cura e de consumível não exigem limite por andar: quem evita as batalhas chega ao chefe sem talentos e perde.
 - **Vida entre batalhas:** a vida do jogador persiste entre os nós. Ela só é recuperada por nós de cura (e por efeitos que a build conceda). Não há cura automática ao vencer uma batalha.
 - **Fim da batalha:** a batalha termina quando todos os inimigos são eliminados. Não há limite de turnos: um jogador que enrola indefinidamente simplesmente não vence. Se builds de muita cura tornarem isso um problema, avaliar um debuff que cresce com o tempo na batalha. ❓ A rever só se acontecer na prática.
 - **Derrota:** a morte em qualquer batalha encerra a run.
 - **Direções para a variedade das batalhas:** para que as batalhas não sejam sempre "correr atrás do jogador e bater", a variedade vem de três mecânicas: papéis dos inimigos (Mecânica 4), personalidade do grid (Mecânica 5) e inimigos que cobram a build (Mecânica 6).
-- **Prévia do nó:** antes de escolher o nó, o jogador vê o tipo do nó e, nas batalhas, os papéis dos inimigos e o terreno do grid. Não vê a lista exata de inimigos.
-- **Geração das batalhas:** as batalhas e o mapa não são escritos à mão; um algoritmo os formula de acordo com o nível de batalha. Entradas: a *seed* da run, o nível de batalha e a pool de inimigos do jogo. Saída: quais inimigos entram e em que quantidade. A quantidade é definida pela força de cada inimigo em relação à força esperada para aquele nível (inimigos mais fortes entram em níveis mais altos, e os mais fracos aparecem em maior número). A mesma *seed* gera sempre o mesmo mapa e as mesmas batalhas, o que torna a run totalmente reproduzível (para debug). *Seeds* diferentes geram runs diferentes, para que o jogador não sinta repetição entre runs. A mesma *seed* governa todos os aspectos aleatórios da run (mapa, batalhas, ofertas de talento, rerolls e demais sorteios): com a mesma *seed* e as mesmas ações do jogador, a run se repete por completo.
-- **Em aberto (geração):** ❓ função da força esperada por nível de batalha, ❓ força de cada inimigo, ❓ regras da pool por nível (nível mínimo/máximo de cada inimigo), ❓ regras de elites e chefes e ❓ limite de inimigos pela capacidade do grid.
+- **Prévia do nó:** antes de escolher o nó, o jogador vê o tipo do nó e, nas batalhas, o XP total que ela concede, os papéis dos inimigos e o terreno do grid. Não vê a lista exata de inimigos.
+- **Geração das batalhas:** as batalhas e o mapa não são escritos à mão; um algoritmo os formula de acordo com a profundidade. Entradas: a *seed* da run, a profundidade (e a faixa de dificuldade do nó) e a pool de inimigos do jogo. Saída: quais inimigos entram e em que quantidade, além do XP da batalha. A quantidade é definida pela força de cada inimigo em relação à força esperada para aquela profundidade (inimigos mais fortes entram em profundidades maiores, e os mais fracos aparecem em maior número). A mesma *seed* gera sempre o mesmo mapa e as mesmas batalhas, o que torna a run totalmente reproduzível (para debug). *Seeds* diferentes geram runs diferentes, para que o jogador não sinta repetição entre runs. A mesma *seed* governa todos os aspectos aleatórios da run (mapa, batalhas, ofertas de talento, rerolls e demais sorteios): com a mesma *seed* e as mesmas ações do jogador, a run se repete por completo.
+- **Em aberto (geração):** ❓ função da força esperada por profundidade (e o quanto ela assume do nível do jogador), ❓ força de cada inimigo, ❓ regras da pool por profundidade (profundidade mínima/máxima de cada inimigo), ❓ regras de elites e chefes e ❓ limite de inimigos pela capacidade do grid.
 - **Entrada do jogador:** Escolha de nó no mapa; dentro da batalha, as ações da Mecânica 1.
-- **Feedback visual/sonoro:** Mapa com os tipos de nó e o caminho percorrido, indicação do nível de batalha na HUD e transição entre mapa e batalha.
-- **Interação com outras mecânicas:** Cada batalha vencida concede um nível e a escolha de talentos. A dificuldade crescente por nível de batalha é o que testa a build, e a vida persistente faz o mapa pedir decisões de rota.
+- **Feedback visual/sonoro:** Mapa com os tipos de nó e o caminho percorrido, indicação da profundidade, do nível e da barra de XP na HUD e transição entre mapa e batalha.
+- **Interação com outras mecânicas:** Os inimigos derrotados concedem XP, que leva a níveis e à escolha de talentos. A dificuldade crescente por profundidade, contra o nível que o jogador conseguiu juntar, é o que testa a build, e a vida persistente faz o mapa pedir decisões de rota.
 
-#### Mecânica 3: Nível de Batalha e Escolha de Talentos (build adaptativa)
-- **Descrição:** A cada batalha vencida, o jogador sobe um nível e o jogo oferece 3 talentos sorteados entre os que a classe escolhida pode pegar naquele momento (pré-requisitos cumpridos). O jogador escolhe 1. A build nasce da adaptação ao que aparece, e não de um plano fechado desde o início. O sorteio é ponderado por sinergia: talentos ligados aos já escolhidos têm mais chance de aparecer, para que as builds tendam a se formar sem serem garantidas. Detalhes do sorteio (por exemplo, evitar repetição excessiva ou proteção contra azar) ❓ a definir.
+#### Mecânica 3: XP, Nível e Escolha de Talentos (build adaptativa)
+- **Descrição:** O jogador ganha XP a cada inimigo derrotado. A cada nível alcançado, no momento em que ele ocorre (inclusive no meio da batalha), o jogo oferece 3 talentos sorteados entre os que a classe escolhida pode pegar naquele momento (pré-requisitos cumpridos). O jogador escolhe 1. A build nasce da adaptação ao que aparece, e não de um plano fechado desde o início. O sorteio é ponderado por sinergia: talentos ligados aos já escolhidos têm mais chance de aparecer, para que as builds tendam a se formar sem serem garantidas. Detalhes do sorteio (por exemplo, evitar repetição excessiva ou proteção contra azar) ❓ a definir.
 - **Configuração da escolha de talentos:** o número de opções oferecidas (base: 3), de rerolls e de banimentos são configurações da run, não características de classe. Estados ativos podem alterá-las (por exemplo, um estado que concede mais rerolls). ❓ Quantidades base.
 - **Recuperação de vida:** subir de nível não recupera vida. A vida persiste entre as batalhas e se recupera nos nós de cura do mapa (ver Mecânica 2).
 - **Ferramentas do jogador:** o RNG deve ser controlável pelo jogador (pilar 3). Para isso, o jogador pode **rerrolar** a oferta, **banir** um talento da pool e **pular** a oferta. Custo de uso ❓ a definir. Possibilidade em avaliação: recarregar essas ferramentas assistindo a anúncio recompensado, de forma gratuita para quem comprar a remoção de anúncios (ver seção 7).
@@ -136,7 +146,7 @@ O objetivo é montar builds diferentes com as árvores de talento de cada classe
   - **Célula de perigo:** quem estiver nela sofre dano ou recebe um estado negativo (por exemplo, fogo, veneno ou gelo).
   - **Célula de bônus:** quem estiver nela recebe um estado benéfico.
   - ❓ Lista final de elementos, se bloqueiam alcance e área de skills, quando o efeito é aplicado, e se afetam jogador e inimigos da mesma forma (a direção inicial é que sim, coerente com a regra de que jogador e inimigos seguem as mesmas regras).
-- **Geração:** o terreno de cada batalha é gerado pela *seed* e pelo nível de batalha, junto com a composição dos inimigos. ❓ Regras de geração (quantidade e posições, garantir que o grid continue jogável e que o jogador e os inimigos tenham espaço para entrar).
+- **Geração:** o terreno de cada batalha é gerado pela *seed* e pela profundidade, junto com a composição dos inimigos. ❓ Regras de geração (quantidade e posições, garantir que o grid continue jogável e que o jogador e os inimigos tenham espaço para entrar).
 - **Entrada do jogador:** Toque nas células (andar ou atacar) como na Mecânica 1; o terreno limita ou altera as opções.
 - **Feedback visual/sonoro:** Visual distinto para cada tipo de célula e indicação clara do efeito antes de entrar nela.
 - **Interação com outras mecânicas:** Células de perigo e de bônus aplicam estados (ver 3.1). O terreno reduz as células livres e interage com o limite de inimigos pela capacidade do grid (Mecânica 2). A prévia do nó mostra o terreno da batalha.
@@ -185,11 +195,11 @@ O objetivo é montar builds diferentes com as árvores de talento de cada classe
 
 ### 2.5.2 Progressão de Conteúdo
 
-- **Spawn por nível de batalha:** A tabela de spawn filtra inimigos por nível de batalha mínimo/máximo. Conforme o nível de batalha sobe, inimigos mais fortes aparecem.
-- **Traits por nível:** Traits têm nível requerido e pré-requisitos. Ao subir de nível, o jogador vê 3 traits sorteados entre os disponíveis para a classe, com peso maior para os que têm sinergia com a build atual (ver Mecânica 3 em 2.3).
+- **Spawn por profundidade:** A tabela de spawn filtra inimigos por profundidade mínima/máxima. Conforme o jogador avança no mapa, inimigos mais fortes aparecem.
+- **Traits por nível:** Traits têm nível requerido e pré-requisitos. Ao alcançar um nível, o jogador vê 3 traits sorteados entre os disponíveis para a classe, com peso maior para os que têm sinergia com a build atual (ver Mecânica 3 em 2.3).
 
-- **Sistema de progressão:** nível de batalha (um nível por batalha vencida, sem XP), árvore de traits e skills por classe
-- **Curva de dificuldade:** sobe a cada nível de batalha ao longo do mapa, até o chefe final. ❓ Valores e ritmo a definir.
+- **Sistema de progressão:** XP por inimigo derrotado e nível do jogador (a profundidade no mapa é um eixo separado), árvore de traits e skills por classe
+- **Curva de dificuldade:** sobe com a profundidade ao longo do mapa, até o chefe final. ❓ Valores e ritmo a definir.
 - **Unlocks:** Traits desbloqueiam skills ativas (que entram no repertório do personagem). O avanço no mapa introduz inimigos mais fortes.
 
 ### 2.6 Economia
@@ -208,7 +218,7 @@ O objetivo é montar builds diferentes com as árvores de talento de cada classe
 - **Seção de classes:** mostra as classes já liberadas. Em cada classe aparecem os talentos que o jogador já escolheu em algum momento do jogo. Os talentos que nunca foram escolhidos aparecem como "?".
 - **Seção de inimigos:** mostra todos os inimigos que o jogador já enfrentou. De cada um é possível ver os atributos, as skills e como o tipo de inimigo age (seu papel e comportamento).
 - **Persistência:** o glossário vale entre runs. O que foi descoberto fica registrado no perfil do jogador, e não só na run atual.
-- ❓ O que conta como descoberto para um talento (apenas escolhido, ou também apenas oferecido), se os inimigos ainda não enfrentados aparecem como "?" na lista, se as informações de cada inimigo são reveladas por etapas (por exemplo, mais detalhes depois de enfrentá-lo mais vezes), quais valores de atributo são exibidos (base ou escalados pelo nível de batalha) e onde o glossário fica no menu (ver 4.3).
+- ❓ O que conta como descoberto para um talento (apenas escolhido, ou também apenas oferecido), se os inimigos ainda não enfrentados aparecem como "?" na lista, se as informações de cada inimigo são reveladas por etapas (por exemplo, mais detalhes depois de enfrentá-lo mais vezes), quais valores de atributo são exibidos (base ou escalados pela profundidade) e onde o glossário fica no menu (ver 4.3).
 
 ---
 
@@ -313,10 +323,12 @@ Fora do conjunto por enquanto: esquiva e tamanho da área das skills.
 
 Papéis e comportamentos dos inimigos: ver Mecânica 4. Inimigos que exigem resposta da build: ver Mecânica 6 em 2.3.
 
-| Nome | Tipo | Comportamento | Dificuldade |
-|------|------|---------------|-------------|
-| ... | Inimigo comum | ... | Fácil |
-| ... | Boss | ... | Difícil |
+| Nome | Tipo | Comportamento | Dificuldade | XP |
+|------|------|---------------|-------------|----|
+| ... | Inimigo comum | ... | Fácil | ❓ |
+| ... | Boss | ... | Difícil | ❓ |
+
+Cada inimigo tem um valor de XP, somado ao XP da batalha (ver Mecânica 2 em 2.3).
 
 ### 3.4 Mundo / Cenário
 - **Ambientação:** ...
@@ -489,12 +501,14 @@ Definição mínima: anúncios e compra de remoção de anúncios.
 | Termo | Definição                                                                                                                         | Tags   |
 | ----- | --------------------------------------------------------------------------------------------------------------------------------- | ------ |
 | Grid  | Tabuleiro de células onde ocorre o combate                                                                                        | #grid  |
-| Trait | São mecânicas obtidas a cada nível ganho pelo jogador (uma batalha vencida), eles concedem estados que alteram características, comportamentos e mecânicas de jogo, e liberam skills. | #trait |
+| Trait | São mecânicas obtidas a cada nível alcançado pelo jogador, eles concedem estados que alteram características, comportamentos e mecânicas de jogo, e liberam skills. | #trait |
 | Skill | Ação ativa do personagem, vinculada à classe ou a traits. Possui área de efeito, dano, alcance e cooldown. Pode ser reutilizada. | #skill |
 | Atributo | Valor base que configura o personagem no início da run (vida máxima, dano básico, defesa etc.). | #atributo |
 | Estado | Condição com nome que concede efeitos ao personagem (incrementa atributos ou modifica comportamentos do jogo), permanente ou por X turnos conforme a situação ou o talento que o aplica. | #estado |
 | Turno | Turno global: o jogador joga primeiro e depois jogam os inimigos; termina depois que a última entidade do grid faz sua ação. Cada entidade tem o seu turno dentro dele. | #turno |
 | Nó | Ponto do mapa da run. Pode ser uma batalha, um nó de cura, de talento (com custo), de consumível, entre outros. | #nó |
 | Mapa | Estrutura de nós da run, no estilo de Slay the Spire. O jogador escolhe o caminho até o chefe final. | #mapa |
-| Batalha | Combate em grid por turnos iniciado ao escolher um nó de batalha. Vencê-la concede um nível e a escolha de um talento. | #batalha |
-| Nível de batalha | Posição do jogador na árvore de batalhas (uma batalha vencida = um nível). Define a dificuldade dos inimigos. | #nível |
+| Batalha | Combate em grid por turnos iniciado ao escolher um nó de batalha. Os inimigos derrotados nela concedem XP, que pode levar a um novo nível e à escolha de um talento. | #batalha |
+| Profundidade | Quão longe o jogador está no mapa. Define a escala dos inimigos. | #profundidade |
+| Nível | Nível do jogador, obtido com XP de batalhas. Cada nível alcançado concede a escolha de um talento. | #nível |
+| XP | Valor de cada inimigo, somado ao jogador na hora em que ele é derrotado. O total possível da batalha é mostrado na prévia do nó. Leva ao próximo nível. | #xp |
