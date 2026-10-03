@@ -4,21 +4,17 @@
     "type": "split",
     "children": [
       {
-        "id": "41161e2b6f279393",
+        "id": "d6595cf647f98961",
         "type": "tabs",
         "children": [
           {
-            "id": "d31be8652752a03b",
+            "id": "9a7b6c9953f65d08",
             "type": "leaf",
             "state": {
-              "type": "markdown",
-              "state": {
-                "file": "GDD.md",
-                "mode": "source",
-                "source": false
-              },
+              "type": "empty",
+              "state": {},
               "icon": "lucide-file",
-              "title": "GDD"
+              "title": "Nova aba"
             }
           }
         ]
@@ -184,42 +180,43 @@
       "project-manager:Project manager": false
     }
   },
-  "active": "d31be8652752a03b",
+  "active": "9a7b6c9953f65d08",
   "lastOpenFiles": [
-    "design/proposta_conteudo_classes_skills_estados_talentos.md",
-    "design/sistema_combate.md",
-    "design/talentos.md",
-    "projeto",
+    "design/perguntas_em_aberto.md",
+    "design/mapa_e_nos.md",
     "GDD.md",
+    "design/consumiveis.md",
+    "design/talentos_e_oferta.md",
+    "design/xp_e_niveis.md",
+    "design/meta_progressao_e_perfil.md",
+    "design/progressao_xp_nivel_talentos.md",
+    "design/balanceamento_e_geracao.md",
+    "design/classes_e_skills.md",
+    "design/grid_e_terreno.md",
+    "design/estados_e_atributos.md",
+    "design/interface.md",
+    "design/sistema_combate.md",
+    "design/inimigos.md",
+    "design/inimigos_e_variedade.md",
+    "design/skills.md",
+    "design/classes.md",
+    "propostas/proposta_conteudo_classes_skills_estados_talentos.md",
+    "propostas",
+    "Sem título.md",
+    "propostas/ideias_traits_itens.md",
+    "propostas/talentos.md",
+    "projeto",
     "design/prototipo_ondas.py",
     "sed2AGUw6",
-    "design/ideias_traits_itens.md",
     "_index_.md",
     "planos/plano_game_feel_movimento.md",
     "analise/analise_melhoria.md",
     "analise/racional_refatoracao.md",
-    "planos/plano_implementacao_gdd.md",
-    "planos/plano_progressao.md",
-    "planos/plano_entidades.md",
-    "planos/plano_refatoracao.md",
-    "Drawing 2026-07-13 08.52.29.excalidraw.md",
-    "Drawing 2026-07-13 00.38.43.excalidraw.md",
-    "projeto/New Project_tasks/ssa.md",
-    "projeto/New Project_tasks/new-task.md",
-    "projeto/New Project.md",
     "projeto/New Project_tasks",
     "projeto/Grid Battle_tasks",
-    "projeto/Grid Battle.md",
     "planos",
     "design",
-    "Design/ideias_traits_itens.md",
-    "Design/talentos.md",
-    "Planos/plano_refatoracao.md",
-    "Planos/plano_progressao.md",
-    "Planos/plano_entidades.md",
     "analise",
-    "Analise/racional_refatoracao.md",
-    "Projeto/Grid Battle_tasks",
-    "Projeto"
+    "Projeto/Grid Battle_tasks"
   ]
 }
