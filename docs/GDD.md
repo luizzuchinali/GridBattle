@@ -37,10 +37,11 @@ O jogador poderá selecionar dentre X classes para controlar dentro de um sistem
 3. O rng no jogo deve ser um fator, porém um fator controlável pelo jogador
 
 ### 1.4 Unique Selling Points (USPs)
-[O que diferencia este jogo de outros do mesmo gênero.]
 
-- O sistema de combate em um grid por turno onde cada ação do jogador gera uma reação.
-- ...
+- **Combate em grid por turnos onde cada ação do jogador gera uma reação.** Mover, atacar ou usar uma skill consome o turno, e todos os inimigos respondem em seguida.
+- **Build montada durante a batalha.** O talento é escolhido no momento em que a barra de XP cruza o limiar de nível, com o jogo pausado, inclusive no meio da luta (Mecânica 3). O sorteio é controlável pelo jogador: reroll, banir e pular.
+- **Risco e recompensa no mapa.** Batalhas mais difíceis rendem mais XP, e a vida persiste entre as batalhas, então o jogador decide quanto arriscar para ficar mais forte (Mecânica 2).
+- **Run curta e de uma mão.** Run finita, em retrato, pensada para sessões curtas no celular, com salvamento automático a cada ação (ver 8.1).
 
 ---
 
@@ -91,7 +92,7 @@ O objetivo é montar builds diferentes com as árvores de talento de cada classe
   - **Nível:** o nível do jogador, obtido com XP. Cada nível alcançado concede a escolha de um talento (Mecânica 3). Varia conforme o caminho escolhido: dois jogadores na mesma profundidade podem ter níveis diferentes.
   - **XP por inimigo derrotado:** cada inimigo tem um valor de XP, que é somado ao jogador na hora em que ele é derrotado (comportamento já implementado). O XP total possível da batalha é a soma dos valores dos inimigos que a compõem, conhecido ao gerar a batalha e mostrado na prévia do nó. Batalhas com mais inimigos ou inimigos mais fortes rendem mais XP, então as batalhas mais difíceis rendem mais. Não há farm de abates porque a batalha tem um número fixo de inimigos e termina quando todos são eliminados. ❓ Inimigos invocados durante a batalha (por exemplo, por um Invocador) devem dar XP? (sugestão: não, ou o XP total da batalha poderia ser inflado). Sugestão: o valor de XP de cada inimigo sai da sua força na fórmula de ameaça (a mesma usada na geração das batalhas), em vez de ser escrito à mão.
   - **Nem toda batalha concede talento:** o jogador pode escolher batalhas mais fáceis, que rendem pouco XP, ou mais difíceis, que rendem mais. A decisão de risco e recompensa é do jogador: o esperado é que ele tenda a escolher batalhas difíceis para ficar mais forte, ao custo de mais dano e de menos vida para as batalhas seguintes.
-  - **Nível máximo fixo:** a run tem um nível máximo definido no design, independente do número de batalhas do mapa. Exemplo, não é valor final: nível máximo 30. O XP além do teto não gera mais níveis. Isso permite que algumas batalhas (por exemplo, as mais difíceis e as elites) concedam mais XP do que o necessário para um nível, levando a mais de um nível de uma vez, e que o mapa tenha mais batalhas do que níveis. Quem pegar as batalhas mais difíceis chega ao nível máximo; quem escolher batalhas mais fáceis chega ao fim com menos níveis (por exemplo, perto de 15 a 25). A diferença entre o máximo e o mínimo é a alavanca de balanceamento da escolha de risco e recompensa: pequena demais e não vale arriscar, grande demais e quem pega só as fáceis não consegue vencer. ❓ Valor do nível máximo, número de batalhas do mapa em relação a ele, quanto XP a batalha difícil e a elite concedem em relação ao custo do nível, e se o nó de talento conta como nível (hoje ele concede só o talento, sem XP).
+  - **Nível máximo fixo:** a run tem um nível máximo definido no design, independente do número de batalhas do mapa. Exemplo, não é valor final: nível máximo 30. Nota: o exemplo de cerca de 30 nós por mapa inclui nós sem luta, então com 30 níveis seria preciso que muitas batalhas rendessem mais de um nível, ou que o mapa tivesse mais nós; revisar os dois exemplos em conjunto. O XP além do teto não gera mais níveis. Isso permite que algumas batalhas (por exemplo, as mais difíceis e as elites) concedam mais XP do que o necessário para um nível, levando a mais de um nível de uma vez, e que o mapa tenha mais batalhas do que níveis. Quem pegar as batalhas mais difíceis chega ao nível máximo; quem escolher batalhas mais fáceis chega ao fim com menos níveis (por exemplo, perto de 15 a 25). A diferença entre o máximo e o mínimo é a alavanca de balanceamento da escolha de risco e recompensa: pequena demais e não vale arriscar, grande demais e quem pega só as fáceis não consegue vencer. ❓ Valor do nível máximo, número de batalhas do mapa em relação a ele, quanto XP a batalha difícil e a elite concedem em relação ao custo do nível, e se o nó de talento conta como nível (hoje ele concede só o talento, sem XP).
   - ❓ Como as batalhas do mesmo andar variam de dificuldade (sugestão: cada nó de batalha tem uma faixa de dificuldade, por exemplo fácil, normal e difícil, que muda o número e a força dos inimigos e o XP concedido; elites e chefes seriam casos especiais).
   - **Custo por nível crescente:** o XP necessário para cada nível cresce conforme o nível sobe. A curva de custo e o XP das batalhas, ao longo do mapa, definem quanto XP total o jogador pode juntar e, com isso, até onde cada caminho chega. Para que a batalha difícil renda cerca de um nível, a curva pode acompanhar o XP de uma batalha difícil na profundidade correspondente: como os inimigos ficam mais fortes (e valem mais XP) com a profundidade, a curva pode ser derivada do gerador de batalhas. Exemplo, não é valor final: o nível 1 exige 100 de XP; uma batalha fácil concede 50, uma média 75 e uma difícil 100 nesse ponto. Com esse exemplo, em 30 batalhas, só difíceis rendem cerca de um nível por batalha, só médias cerca de 75% disso e só fáceis cerca de 50%, supondo que o XP que sobra ao subir de nível é guardado. Elites e batalhas especiais podem render mais de 100%. ❓ A fórmula da curva de custo, e se a sobra de XP é guardada.
   - **Subida de nível na hora:** o talento é escolhido no momento em que a barra de XP cruza o limiar do nível, mesmo no meio da batalha. Nesse momento o jogo é pausado e o jogador escolhe o talento; a partida só continua depois da escolha. Se a barra cruzar mais de um limiar (um abate que leve a mais de um nível), as escolhas vêm em sequência, uma por nível, e o jogo só retoma depois da última. O talento escolhido vale já para o restante do turno. Como a lógica é imediata e o visual atrasado, a tela de escolha deve aparecer quando a barra de XP visual cruzar o limiar, depois da animação do abate, e não antes. ❓ Se a escolha pode ser adiada para o fim da batalha (hoje não: o jogo pausa e exige a escolha) e como funciona o reroll, o banimento e o pular durante a pausa.
@@ -120,7 +121,7 @@ O objetivo é montar builds diferentes com as árvores de talento de cada classe
 - **Recuperação de vida:** subir de nível não recupera vida. A vida persiste entre as batalhas e se recupera nos nós de cura do mapa (ver Mecânica 2).
 - **Ferramentas do jogador:** o RNG deve ser controlável pelo jogador (pilar 3). Para isso, o jogador pode **rerrolar** a oferta, **banir** um talento da pool e **pular** a oferta. Custo de uso ❓ a definir. Possibilidade em avaliação: recarregar essas ferramentas assistindo a anúncio recompensado, de forma gratuita para quem comprar a remoção de anúncios (ver seção 7).
 - **Fora do escopo desta mecânica:** escolha livre periódica na árvore inteira (descartada). A *seed* da run existe apenas para debug e reprodução de cenários e governa todos os sorteios da run, incluindo as ofertas de talento, o mapa e as batalhas (ver Mecânica 2); não é exposta ao jogador.
-- **Entrada do jogador:** Tela de escolha ao vencer uma batalha (e no nó de talento), com as 3 opções e as ferramentas. Toque para escolher.
+- **Entrada do jogador:** Tela de escolha que aparece no momento em que o jogador alcança um nível (inclusive no meio da batalha, com o jogo pausado) e no nó de talento, com as 3 opções e as ferramentas. Toque para escolher.
 - **Feedback visual/sonoro:** Destaque nos talentos que combinam com a build atual; efeito visual de aquisição.
 - **Interação com outras mecânicas:** Talentos concedem estados (que alteram atributos, comportamentos e regras do jogo) e liberam skills ativas. As batalhas, cada vez mais difíceis, testam a build.
 
@@ -203,12 +204,7 @@ O objetivo é montar builds diferentes com as árvores de talento de cada classe
 - **Unlocks:** Traits desbloqueiam skills ativas (que entram no repertório do personagem). O avanço no mapa introduz inimigos mais fortes.
 
 ### 2.6 Economia
-[Recursos, moedas, custos, recompensas.]
-
-| Recurso | Origem | Uso |
-|---------|--------|-----|
-| [Moeda] | [Drop de inimigos] | [Comprar upgrades] |
-| ... | ... | ... |
+Não há moeda por enquanto. Os recursos da run são: vida (persiste entre os nós e se recupera em nós de cura), XP (por inimigo derrotado, leva a níveis e talentos), consumíveis (nó de consumível) e as ferramentas de oferta de talento (reroll, banimento e pular; ver Mecânica 3). O custo do nó de talento ainda é ❓ a definir (ver Mecânica 2). Itens ativos e equipáveis estão fora do escopo (ver 11.2).
 
 ### 2.7 Glossário do Jogo
 
@@ -301,10 +297,17 @@ Exemplo inverso: um inimigo aplica um debuff de 2 turnos no jogador durante a jo
 Fora do conjunto por enquanto: esquiva e tamanho da área das skills.
 
 ### 3.2 Personagem do Jogador
-- **Nome:** ...
-- **Descrição:** ...
-- **Motivação:** ...
-- **Habilidades iniciais:** ...
+Valores atuais das três classes, como estão implementados no jogo (um asset de configuração por classe). Todos os valores são provisórios e serão balanceados.
+
+| Classe | Vida máxima | Alcance de movimento | Alcance de ataque | Dano básico |
+|---|---|---|---|---|
+| Guerreiro (Knight) | 120 | 1 | 1 | 15 |
+| Mago (Mage) | 80 | 1 | 1 | 15 |
+| Ladino (Rogue) | 90 | 1 | 1 | 15 |
+
+- Hoje as classes diferem só na vida máxima. Movimento, alcance e dano básico são iguais, e nenhuma tem skill configurada (a lista de skills de cada classe em 6.2 é a direção de design, ainda não implementada).
+- **Curva de XP implementada:** o XP para subir do nível 1 ao 2 é 50, e cada nível seguinte soma 25 (50, 75, 100, 125...). O valor é configurado por classe e hoje é igual nas três. Isso já segue a regra de custo por nível crescente (Mecânica 2), mas os inimigos hoje dão um XP fixo (3.3), sem escalar com a profundidade. ❓ Ajustar a curva e o XP dos inimigos juntos para a regra de XP por batalha (Mecânica 2).
+- ❓ Papel e identidade de cada classe e a motivação do personagem. Nada disso está definido ainda, só os números acima. Sugestão a validar: o Guerreiro com mais vida (já é assim), o Mago com skills de área e o Ladino com mais mobilidade ou alcance.
 - **Classes disponíveis:** apenas uma classe está aberta desde o início; as outras duas são liberadas jogando.
   - **Guerreiro (Knight):** disponível desde o início.
   - **Mago (Mage):** liberado ao vencer 15 batalhas.
@@ -319,57 +322,112 @@ Fora do conjunto por enquanto: esquiva e tamanho da área das skills.
 - **Slots de skill:** O personagem pode carregar até N skills ativas por vez, selecionadas na tela de classe antes da run (ou durante, via traits).
 
 ### 3.3 NPCs / Inimigos
-[Liste tipos de inimigos, bosses e NPCs relevantes.]
-
 Papéis e comportamentos dos inimigos: ver Mecânica 4. Inimigos que exigem resposta da build: ver Mecânica 6 em 2.3.
 
-| Nome | Tipo | Comportamento | Dificuldade | XP |
-|------|------|---------------|-------------|----|
-| ... | Inimigo comum | ... | Fácil | ❓ |
-| ... | Boss | ... | Difícil | ❓ |
+Inimigos implementados hoje (um asset de configuração por inimigo). Valores provisórios.
+
+| Nome | Vida máxima | Alcance de movimento | Alcance de ataque | Dano básico | XP |
+|---|---|---|---|---|---|
+| Goblin | 30 | 1 | 1 | 5 | 10 |
+| Rat (Rato) | 20 | 2 | 1 | 5 | 8 |
+| Slime | 40 | 1 | 1 | 5 | 12 |
+| FireSkull (Crânio de fogo) | 25 | 1 | 2 | 7 | 15 |
+| EyeBat (Morcego-olho) | 25 | 2 | 1 | 5 | 8 |
+
+- **Comportamento atual:** todos seguem o mesmo comportamento (Mecânica 4): se estiverem no alcance de ataque do jogador, atacam; senão, dão um passo em direção a ele. Nenhum tem skill configurada. Eles só diferem nos números da tabela.
+- **Encontro atual:** o encontro de teste coloca os cinco inimigos no grid de uma vez.
+- **Chefes e elites:** ainda não implementados. ❓ Lista de chefes e elites (ver Mecânica 2) e se algum inimigo é o chefe final.
+- ❓ Papel de cada inimigo (Mecânica 4) e quais são inimigos que cobram a build (Mecânica 6).
 
 Cada inimigo tem um valor de XP, somado ao XP da batalha (ver Mecânica 2 em 2.3).
 
 ### 3.4 Mundo / Cenário
-- **Ambientação:** ...
-- **Estética:** ...
-- **Estrutura de fases/mundo:** mapa de nós ramificado e gerado por seed, com batalhas no grid (ver Mecânica 2 em 2.3).
+- **Ambientação:** masmorra subterrânea. A run é uma descida por salas e corredores (os nós do mapa) até o chefe final, onde as batalhas acontecem em salas de grid. Os inimigos são criaturas da masmorra (goblin, rato, slime, crânio de fogo, morcego-olho e as próximas).
+- **Estética:** fantasia sombria leve, em pixel art (ver 5.1). O terreno das batalhas (obstáculos, células de perigo e de bônus, ver Mecânica 5) é o que dá personalidade a cada sala.
+- **Estrutura de fases/mundo:** mapa de nós ramificado e gerado por seed, com batalhas no grid (ver Mecânica 2 em 2.3). Um único tema visual do início ao fim: a dificuldade e os inimigos mudam com a profundidade, mas não há regiões visualmente diferentes. ❓ Se isso muda no futuro (por exemplo, variação de cor do grid por trecho do mapa, ver 5.1).
+- **Narrativa:** sem história explícita. O mundo é sugerido pela arte e pelos nomes, sem diálogos nem textos de história, o que também evita traduzir narrativa para os três idiomas (ver 8.1).
 
 ---
 
 ## 4. Controles e Interface
 
+Interface em UI Toolkit, em orientação retrato no mobile (ver 8.1). Os controles são os mesmos em mobile e PC: toque no mobile, clique do mouse no PC. Não há controle de teclado.
+
 ### 4.1 Esquema de Controles
 | Ação | Entrada |
 |------|--------|
-| Mover | [Toque / WASD / Analógico] |
-| Atacar | [Toque / Botão] |
-| ... | ... |
+| Andar ou atacar | Toque/clique em uma célula do grid. Anda ou ataca conforme o conteúdo da célula e o alcance. Ação inválida não consome o turno. |
+| Usar skill | Toque no botão da skill na HUD (as células de alcance são destacadas) e toque na célula alvo. Tocar de novo no botão da skill cancela. |
+| Escolher nó no mapa | Toque em um nó disponível mostra a prévia (tipo, XP total, papéis dos inimigos e terreno); um botão de confirmar entra no nó. Tocar em outro nó troca a prévia. |
+| Escolher talento | Toque em um dos 3 talentos oferecidos. Botões de reroll, banir e pular na mesma tela. |
+| Ver detalhes de uma entidade | Toque longo (*long tap*) em uma célula com uma entidade (o jogador ou um inimigo); no PC, clique com o botão direito do mouse. Mostra os detalhes dela: atributos, skills e os estados ativos com a duração restante; no caso de inimigos, também o papel e o comportamento. Os detalhes abrem em uma janela própria, que só fecha quando o jogador clica no X da janela (soltar o dedo ou o botão não fecha). Enquanto a janela está aberta, o jogo não aceita ações. Abrir ou fechar a janela não consome o turno nem faz nenhuma ação no jogo. O toque curto no mobile e o clique esquerdo no PC continuam sendo andar ou atacar. |
+| Abrir menu | Botão de menu na HUD. |
+| Abrir glossário | Botão no menu principal, no mapa e no menu de pausa (ver 2.7). |
+
+- As entradas de jogo são aceitas apenas na vez do jogador, e ignoradas durante as animações e o turno dos inimigos.
+- Durante a pausa da escolha de talento, só a tela de escolha responde ao toque.
+- A janela de detalhes de uma entidade não consome o turno e não ataca nem anda. ❓ Se o jogador também vê os talentos já escolhidos (por exemplo, nos detalhes do próprio personagem), e, no mobile, o tempo de espera que distingue um toque curto de um longo para não abrir os detalhes sem querer.
+- ❓ Como o banimento é feito (botão em cada talento ou modo de banir).
 
 ### 4.2 HUD
-[Quais elementos aparecem na tela durante o jogo — vida, pontos, minimapa, etc.]
+**Em batalha:**
+- Vida do jogador (barra e número).
+- Barra de XP com o nível do jogador (já implementada, com os orbs de XP vindo dos inimigos derrotados).
+- Profundidade no mapa.
+- Botões das skills ativas, com o cooldown de cada uma.
+- Os estados ativos de cada entidade, com a duração restante, ficam nos detalhes da entidade (toque longo na célula, ver 4.1). ❓ Se o jogador também tem ícones de estado fixos na HUD para ver de relance.
+- Barra de vida e ícone de papel sobre cada inimigo; texto de dano flutuante.
+- Botão de menu.
 
-- ...
+**No mapa:**
+- Vida do jogador, nível e barra de XP, consumíveis e profundidade.
+- Acesso ao glossário e ao menu.
+
+❓ Posição exata dos elementos no retrato (sugestão: HUD no alto, grid no centro, botões de skill embaixo, ao alcance do polegar) e como ficam no PC.
 
 ### 4.3 Menus
-[Liste telas de menu: Principal, Pausa, Opções, Inventário, Fim de partida...]
-
-- ...
+- **Tela inicial:** toque para começar (já implementada).
+- **Menu principal e seleção de classe:** as classes bloqueadas mostram o progresso de liberação (por exemplo, "7/15 batalhas", ver 3.2). Acesso ao glossário e às opções.
+- **Mapa:** nós, caminho percorrido, prévia do nó e botão de confirmar.
+- **Batalha:** grid e HUD.
+- **Detalhes da entidade:** janela aberta por toque longo (mobile) ou clique direito (PC) em uma entidade, fechada pelo X da janela (ver 4.1).
+- **Escolha de talento:** tela sobre a batalha ou o mapa, com o jogo pausado (ver Mecânica 3).
+- **Glossário:** seções de classes e de inimigos (ver 2.7). ❓ Se é acessível durante a pausa de escolha de talento.
+- **Pausa (overlay de menu, já existe):** continuar, glossário, opções e desistir da run. ❓ O que acontece com a run ao desistir (conta como derrota no registro de nível e profundidade).
+- **Opções:** idioma (inglês, espanhol e português do Brasil; ver 8.1), volume da música e dos efeitos (ver 5.2) e ❓ vibração, entre outros.
+- **Fim de run (derrota):** resumo da build, nível e profundidade alcançados, progresso de liberação de classes e anúncio (ver seção 7).
+- **Vitória:** resumo da run e o que foi desbloqueado.
+- **Remoção de anúncios:** tela de compra (ver seção 7).
 
 ---
 
 ## 5. Arte e Áudio
 
 ### 5.1 Direção de Arte
-- **Estilo visual:** [pixel art, 2D vetorial, 3D low-poly...]
-- **Paleta de cores:** ...
-- **Referências:** ...
+- **Estilo visual:** pixel art 2D, com câmera Pixel Perfect (PPU 100) e render URP 2D. Resolução de referência em retrato de 216×384. Os personagens e inimigos são sprites animados em tiras de quadros (hoje 36×30 px por quadro); skills e elementos de interface têm folhas de sprite próprias.
+- **Tom:** fantasia sombria leve. Fundo escuro e criaturas estranhas (como o crânio de fogo e o morcego-olho), mas legível e sem ser pesado, coerente com a classificação indicativa livre.
+- **Paleta de cores:** paleta limitada e fixa, com um número pequeno de cores compartilhado por todo o jogo, para manter a pixel art coesa e facilitar a criação de conteúdo novo. Na interface já existem o fundo escuro (rgb 27, 27, 27), o amarelo de destaque (#ffcc00) e o dourado do XP. ❓ Número de cores e a paleta final.
+- **Legibilidade (prioridades):** a arte deve deixar claro, de relance:
+  - **Papéis dos inimigos:** silhueta e cor distintas por papel (corpo a corpo, enxame, atirador, suporte, invocador, controlador, elite), além do ícone de papel sobre o inimigo (Mecânica 4).
+  - **Terreno do grid:** obstáculos, células de perigo e células de bônus identificáveis antes de o jogador entrar nelas (Mecânica 5).
+  - **Estados e dano:** ícones de estado e texto de dano legíveis no tamanho pequeno da tela.
+  - **Dificuldade do nó no mapa:** os nós de batalha fácil, média e difícil, e o XP, distinguíveis visualmente no mapa (Mecânica 2).
+- **Referências:** ❓ A definir.
+- ❓ Arte do mapa de nós (ícones dos tipos de nó e do caminho), do glossário e das telas de fim de run, e se haverá variação visual do grid conforme a profundidade.
 
 ### 5.2 Áudio
-- **Trilha sonora:** [estilo, ritmo, momentos]
-- **SFX:** [lista de efeitos necessários]
-- **Locução/Voz:** [sim/não, idioma]
+Ainda não há nenhum áudio no projeto.
 
+- **Trilha sonora:** chiptune/sintetizador atmosférico, coerente com a pixel art e com o tom de fantasia sombria leve. A trilha é dividida por contexto: uma faixa calma para o menu e o mapa, outra para as batalhas e outra para o chefe final. A música muda na transição entre mapa e batalha. ❓ Número de faixas de batalha (para não repetir sempre a mesma) e se a música continua durante a pausa da escolha de talento.
+- **SFX (efeitos necessários):**
+  - **Combate:** andar, ataque básico, skill (um som por skill ou por tipo), dano recebido, morte de inimigo, morte do jogador.
+  - **Progressão:** ganho de XP (orbs de XP), subida de nível e abertura da tela de escolha de talento, escolha de talento, reroll, banimento, pular.
+  - **Estados e terreno:** aplicação e fim de estados (por exemplo, Fraquejado), células de perigo e de bônus.
+  - **Mapa:** selecionar e confirmar um nó, cura, consumível.
+  - **Interface:** toque em botões, abrir e fechar janelas (inclusive a de detalhes da entidade), transição de tela.
+  - **Resultado:** vitória e derrota da run, classe liberada.
+- **Locução/Voz:** sem voz. Os personagens se expressam por efeitos sonoros curtos, o que evita gravar e traduzir falas para os três idiomas (ver 8.1).
+- **Controles de volume:** o jogador pode ajustar o volume da música e dos efeitos nas Opções (ver 4.3). ❓ Se há botão rápido de silenciar e como o áudio se comporta durante os anúncios (ver seção 7).
 
 ## 6. Skills
 
@@ -417,9 +475,9 @@ Skills são **reutilizáveis** — após o cooldown, podem ser usadas novamente.
 Definição mínima: anúncios e compra de remoção de anúncios.
 
 - **Modelo:** anúncios mais uma compra para removê-los. ❓ Se o modelo é o mesmo no PC e no mobile.
-- **Anúncios forçados:** aparecem de tempos em tempos no meio da run, em pausas naturais, como ao sair de uma batalha e depois de escolher o novo talento. Nunca durante uma batalha em andamento. ❓ Quais outros momentos de transição.
+- **Anúncios forçados:** aparecem de tempos em tempos no meio da run, em pausas naturais, como ao sair de uma batalha ou ao sair de um nó sem luta (por exemplo, depois do nó de talento). Nunca durante uma batalha em andamento, o que inclui a escolha de talento feita no meio da batalha ao subir de nível: o anúncio só aparece depois que a batalha termina. ❓ Quais outros momentos de transição.
 - **Rampa de frequência:** no início (as primeiras X vezes) os anúncios aparecem com frequência baixa, para dar tempo de o jogador gostar do jogo e não ser atrapalhado. Depois de um tempo, passam à frequência normal, a cada X nós. ❓ Valores de X, duração da fase inicial e se a contagem é por nós, por batalhas vencidas ou por tempo (em avaliação: contar por batalhas e impor um tempo mínimo entre anúncios, porque os nós de cura e de consumível são instantâneos).
-- **Anúncio recompensado (opcional):** recarrega as ferramentas de oferta de talento (reroll, banimento e pular; ver Mecânica 3 em 2.3). ❓ Limite de recargas.
+- **Anúncio recompensado (opcional):** recarrega as ferramentas de oferta de talento (reroll, banimento e pular; ver Mecânica 3 em 2.3). Só é exibido se o jogador pedir. ❓ Limite de recargas e se ele pode ser pedido durante a pausa da escolha de talento no meio da batalha (é uma ação iniciada pelo jogador, mas ocorre em batalha).
 - **Remoção de anúncios:** compra que remove os anúncios forçados e recarrega as ferramentas de oferta de talento sem precisar assistir a anúncio (ver Mecânica 3). ❓ Preço e se qualquer compra também remove os anúncios forçados.
 - **Ética de monetização:** evitar pay-to-win. ❓ Definir um teto de recargas igual para quem assiste a anúncios e para quem comprou a remoção, para que o dinheiro não compre poder.
 - **Em avaliação, fora da definição mínima:** classes adicionais (além das três, que são liberadas jogando; ver 3.2), cosméticos e expansões de conteúdo.
@@ -429,15 +487,18 @@ Definição mínima: anúncios e compra de remoção de anúncios.
 
 ### 8.1 Especificações
 - **Engine:** Unity
-- **Renderização:** [URP, Built-in...]
-- **Resolução alvo:** ...
-- **Orientação:** [Retrato / Paisagem]
-- **FPS alvo:** ...
-- **Estado da run:** a run é salva automaticamente entre as ações do jogador, tanto no meio da batalha quanto na tela do mapa. Se o app for para segundo plano ou for fechado, o jogador retoma exatamente do ponto em que parou. O estado salvo inclui a posição dos sorteios da *seed* (por exemplo, críticos e ofertas de talento), para que recarregar não mude o resultado das ações. Não há salvamento manual. ❓ Detalhes do formato do salvamento e o que acontece se um anúncio estiver pendente ao fechar.
+- **Renderização:** URP 2D, com câmera Pixel Perfect (PPU 100) e interface em UI Toolkit.
+- **Resolução alvo:** resolução de referência de 216×384 em retrato, escalada para a tela do dispositivo (ver 5.1). ❓ Como a escala se comporta em telas de proporção diferente de 9:16 e no PC (por exemplo, escala inteira com bordas).
+- **Orientação:** retrato no mobile. ❓ Janela e proporção no PC (sugestão: janela em retrato ou com a interface centralizada).
+- **FPS alvo:** 60 FPS no mobile (já configurado no projeto).
+- **Estado da run:** a run é salva automaticamente entre as ações do jogador, tanto no meio da batalha quanto na tela do mapa. Se o app for para segundo plano ou for fechado, o jogador retoma exatamente do ponto em que parou. O estado salvo inclui a posição dos sorteios da *seed* (por exemplo, críticos e ofertas de talento), para que recarregar não mude o resultado das ações. A escolha de talento pendente (a oferta de 3 talentos, quando o jogo está pausado por uma subida de nível) também é salva, com a mesma oferta, para que fechar e reabrir o app não permita sortear de novo. Não há salvamento manual. ❓ Detalhes do formato do salvamento e o que acontece se um anúncio estiver pendente ao fechar.
+- **Idiomas:** o jogo suporta vários idiomas. Os idiomas iniciais são inglês, espanhol e português do Brasil. Todo texto exibido ao jogador (interface, nomes e descrições de talentos, skills, estados e inimigos, glossário do jogo e mensagens) deve ser traduzível, e não fixo no código ou nos assets. ❓ Idioma padrão na primeira abertura (sugestão: o idioma do sistema, com inglês como padrão quando não houver tradução), se a troca de idioma vale na hora ou só ao reabrir, e quem faz as traduções.
 - **Perfil do jogador:** as classes liberadas, o contador de batalhas vencidas (3.2) e o glossário (2.7) persistem entre runs, em um salvamento de perfil separado do salvamento da run. ❓ Sincronização entre dispositivos.
 
 ### 8.2 Requisitos mínimos
-- ...
+- **Android:** Android 8.0 (API 26) ou superior (configuração atual do projeto).
+- **iOS:** iOS 15.0 ou superior (configuração atual do projeto).
+- ❓ Requisitos mínimos de PC (sistema operacional, memória e placa de vídeo) e a lista de aparelhos de teste.
 
 ### 8.3 Plataformas de publicação
 - Steam
@@ -447,36 +508,39 @@ Definição mínima: anúncios e compra de remoção de anúncios.
 
 ## 9. Acessibilidade
 
-[Liste recursos de acessibilidade planejados.]
-
-- [ ] Tamanho de fonte ajustável
-- [ ] Daltonismo (cores alternativas)
-- [ ] Legendas
-- [ ] Dificuldade ajustável
-- [ ] Remapeamento de controles
-- [ ] ...
+Nenhum recurso de acessibilidade está planejado no momento. Esta seção será revista quando o jogo base estiver funcionando.
 
 ---
 
 ## 10. Métricas de Sucesso
 
-[Como medir se o jogo atingiu seus objetivos.]
+Esta seção cobre apenas as métricas de design, usadas para balancear o jogo. Métricas de negócio (vendas, conversão, receita por usuário) e metas qualitativas (notas nas lojas, feedback da comunidade) não serão definidas neste documento.
 
-- **KPIs de jogo:** [retenção D1/D7/D30, tempo de sessão, taxa de conclusão]
-- **KPIs de negócio:** [vendas, ARPU, conversão]
-- **Metas qualitativas:** [avaliações na loja, feedback de comunidade]
+- **Dificuldade e progressão:**
+  - Em que profundidade o jogador morre (distribuição por classe).
+  - Taxa de vitória por classe e por build.
+  - Nível do jogador na morte e no chefe final.
+- **Escolha de risco e recompensa:**
+  - Proporção de batalhas fáceis, médias e difíceis escolhidas no mapa, e a vida do jogador ao entrar em cada tipo.
+  - Se quem escolhe só as fáceis chega ao chefe final e vence (para avaliar a faixa de níveis, ver Mecânica 2).
+  - Uso dos nós de cura, de talento e de consumível.
+- **Talentos e builds:**
+  - Quais talentos são escolhidos e quais são ofertados e recusados.
+  - Uso de reroll, banir e pular.
+  - Combinações de talentos mais frequentes e as que mais vencem.
+- **Inimigos:**
+  - Quais inimigos mais causam dano e mais matam o jogador.
+  - Tempo e turnos por batalha (para identificar batalhas que se arrastam).
+- **Liberação de classes:** quantas runs o jogador leva para liberar o Mago e o Ladino (ver 3.2).
+
+❓ Como os dados são coletados e armazenados (ferramenta de análise), o consentimento de privacidade necessário e se os dados são só locais (para teste interno) ou enviados para um servidor.
 
 ---
 
 ## 11. Cronograma e Escopo
 
 ### 11.1 Milestones
-| Milestone | Data alvo | Entregáveis |
-|-----------|-----------|-------------|
-| Protótipo jogável | [DD/MM/AAAA] | [Core loop funcional] |
-| Alpha | [DD/MM/AAAA] | [Conteúdo principal] |
-| Beta | [DD/MM/AAAA] | [Balanceamento e polish] |
-| Lançamento | [DD/MM/AAAA] | [Versão 1.0] |
+Não será definido neste documento. O cronograma não faz parte do GDD.
 
 ### 11.2 Escopo (Out of Scope)
 [O que NÃO será feito nesta versão. Ajuda a controlar feature creep.]
@@ -489,10 +553,7 @@ Definição mínima: anúncios e compra de remoção de anúncios.
 
 ## 12. Riscos
 
-| Risco | Probabilidade | Impacto | Mitigação |
-|-------|---------------|---------|-----------|
-| [ex.: Engine não suporta X] | Média | Alto | [Plano B] |
-| ... | ... | ... | ... |
+Não será preenchido neste documento.
 
 ---
 
@@ -502,6 +563,7 @@ Definição mínima: anúncios e compra de remoção de anúncios.
 | ----- | --------------------------------------------------------------------------------------------------------------------------------- | ------ |
 | Grid  | Tabuleiro de células onde ocorre o combate                                                                                        | #grid  |
 | Trait | São mecânicas obtidas a cada nível alcançado pelo jogador, eles concedem estados que alteram características, comportamentos e mecânicas de jogo, e liberam skills. | #trait |
+| Talento | Sinônimo de trait na linguagem do jogo (o jogador escolhe talentos ao alcançar um nível). | #trait |
 | Skill | Ação ativa do personagem, vinculada à classe ou a traits. Possui área de efeito, dano, alcance e cooldown. Pode ser reutilizada. | #skill |
 | Atributo | Valor base que configura o personagem no início da run (vida máxima, dano básico, defesa etc.). | #atributo |
 | Estado | Condição com nome que concede efeitos ao personagem (incrementa atributos ou modifica comportamentos do jogo), permanente ou por X turnos conforme a situação ou o talento que o aplica. | #estado |
