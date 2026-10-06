@@ -3,7 +3,7 @@ tags:
   - plano
   - balanceamento
 created: 2026-10-05
-status: em execução
+status: pausado
 ---
 # Plano de balanceamento e profundidade tática
 
@@ -194,6 +194,57 @@ de 1 run em 10 no começo e melhora com conhecimento e builds.
     imunidade); a Peçonha (5% da vida máxima por pilha, até 5) é muito forte
     contra o chefe.
 
-**Ao retomar:**
-1. G5/G6 (agente): especificação em `scratchpad/g56/G56_SPEC.md` da sessão
-   `d1b6d413`.
+- **G5/G6 interrompido** (o agente parou pelo limite de uso no meio do
+  ajuste; compila sem erros; a partida determinística e as `TalentChecks`
+  não foram rodadas de novo depois destas mudanças):
+  - **regras novas, configuráveis:**
+    - curva de orçamento por andar (`BattleGenerationSettings.budgetPoints`:
+      6 no andar 1, 9 no 5, 13 no 10, 16,5 no 15, 22 no 20, 33 no 25, 48 no
+      30; linear entre os pontos). Sem pontos, vale a fórmula antiga;
+    - XP com orçamento próprio (`xpBaseBudget` 6 e `xpBudgetPerDepth` 0,52),
+      separado da curva de força: endurecer as lutas não muda o ritmo de
+      níveis;
+    - composição por andar (`compositionBands`): a partir do andar 8, pelo
+      menos 2 papéis diferentes; a partir do 22, pelo menos 3; do 15 em
+      diante, corpo a corpo e enxame pesam menos (0,6–0,8) e atirador,
+      suporte, controlador e invocador pesam mais (1,4–2,0);
+    - limite de papéis por batalha: no máximo 1 suporte e 1 invocador;
+    - invocadores: no máximo 2 invocados vivos e 6 por batalha
+      (`SummonAction.maxAlive`/`maxTotalSummons`); acaba o impasse da RatQueen;
+    - Escudo não se renova enquanto está ativo (política "ignorar"); acaba o
+      impasse do Xamã na Pedra de proteção;
+    - `CharacterConfig.immuneStates` (estados que o personagem ignora) e
+      `maxHpPercentDamageMultiplier` (parte do dano periódico que depende da
+      vida máxima). O chefe é imune a Atordoado e não sofre a parte
+      percentual da Peçonha;
+  - **valores ajustados:**
+    - dano dos inimigos +1,45% por andar (era 1,03%);
+    - XP: 6,9 por ponto de orçamento (era 8,5); multiplicador de XP fácil
+      0,65 e difícil 2,0 (eram 1 e 1);
+    - terreno em 5 faixas (andares 1, 4, 10, 16 e 22), com mais obstáculos,
+      perigos e bônus no fim da run;
+    - vida: Mago 85, Ladino 108, chefe 130;
+  - **última medição** (bot escolhendo a primeira opção de talento, mapa
+    misto, 100 runs por classe, sem runs abortadas):
+
+    | Seeds | Guerreiro | Mago | Ladino |
+    |---|---|---|---|
+    | 1000–1099 | 12% | 12% | 15% |
+    | 5000–5099 | 14% | 18% | 14% |
+
+  - não medido: talentos por sinergia, caminho fácil × difícil, distribuição
+    das mortes;
+  - não construído: a ferramenta de metas e ajuste automático
+    (`BalanceTargets`, `BalanceTuningSettings`, `BalanceTuner`) e a janela
+    "Balance Lab" para uso humano (ver as decisões acima).
+
+## Pausa (decisão do usuário, 2026-10-06)
+
+O balanceamento está **pausado**: o jogo ainda vai mudar bastante. Os valores
+atuais são um ponto de partida, não finais. Ao retomar:
+1. Rodar a partida determinística e as `TalentChecks` para confirmar o
+   estado deixado pelo G5/G6.
+2. Construir a ferramenta de metas e ajuste automático com a janela para uso
+   humano, antes de qualquer ajuste numérico novo.
+3. Medir de novo com o jogo novo (talentos por sinergia, caminho fácil ×
+   difícil, mortes por andar) e ajustar pela ferramenta.

@@ -3,7 +3,7 @@ tags:
   - plano
   - implementacao
 created: 2026-10-05
-status: em execução
+status: concluído
 ---
 # Plano de implementação do GDD
 
@@ -80,7 +80,41 @@ Regras gerais:
 Ao fim, `AGENTS.md`, `docs/design/sistema_combate.md` e o status dos
 documentos de design são atualizados.
 
-## Estado atual (2026-10-05, ~01h)
+## Estado final (2026-10-06)
+
+- **Implementação do GDD concluída e verificada** em 2026-10-05: todas as
+  levas (A a F) abaixo foram entregues, revisadas e integradas. Verificação
+  final:
+  - compilação limpa;
+  - testes `ZS.UI` 14/14;
+  - `TalentChecks` aprovadas;
+  - partida determinística idêntica;
+  - console sem erros.
+
+  O usuário jogou e achou o jogo funcional.
+- **Depois da implementação** (pedidos do usuário):
+  - toda classe começa com uma skill (Mago: Nova de Gelo; Ladino: Adaga
+    Envenenada); Criomancia e Mãos Ligeiras viraram talentos de reforço;
+  - mapa com 30 andares;
+  - cura completa a cada nível;
+  - balanceamento em etapas G1–G6: simulador, XP coerente com a dificuldade,
+    empurrar e puxar, identidade de classe nos talentos, profundidade tática
+    nas lutas finais. Está **pausado** desde 2026-10-06, porque o jogo ainda
+    vai mudar bastante. Detalhes, números e o que falta:
+    [[plano_balanceamento]].
+- **Onde está cada coisa:**
+  - guia de uso pelo editor: `docs/projeto/guia_sistemas.md`;
+  - estrutura e convenções para quem programa: `AGENTS.md`;
+  - valores iniciais das perguntas em aberto: [[valores_padrao_em_aberto]].
+- **Pendências:**
+  - fonte pixel com acentos (decisão de arte);
+  - conteúdo provisório (inimigos de exemplo, chefe, talentos, ícones);
+  - clipes de áudio;
+  - monetização (fora do escopo);
+  - o ajuste final do balanceamento.
+- Nada foi commitado (pedido do usuário).
+
+## Histórico da execução (2026-10-05)
 
 Nada foi commitado.
 
@@ -316,10 +350,11 @@ Nada foi commitado.
     (mapa, fim de run, vitória), modais (talento, glossário, opções, pausa,
     dicas, menu principal com classes bloqueadas), textos e verificação final.
 - Testes em Play Mode gravam `run.json`, `profile.json` e `metrics.jsonl` em
-  `%USERPROFILE%/AppData/LocalLow/Zuchinali Softworks/GridBattle`. Apague os
-  três depois dos testes.
+  `%USERPROFILE%/AppData/LocalLow/Zuchinali Softworks/GridBattle`. Esses
+  arquivos podem ser do jogo de verdade do usuário: guarde uma cópia antes
+  do teste e restaure depois (regra desde 2026-10-06; ver `AGENTS.md`).
 
-### Próximas levas
+### Levas planejadas (todas concluídas em 2026-10-05)
 - **B:**
   - **Terreno:** `TerrainDefinition`, visual na `Cell`, `GridRules`
     (obstáculos), efeitos por gatilho e gerador com conectividade.

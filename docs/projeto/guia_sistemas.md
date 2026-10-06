@@ -127,6 +127,11 @@ Perfil (entre runs): classes liberadas, glossário, recordes, opções, dicas vi
    e peso.
 4. Chefe: marque `isBoss` e coloque-o na lista do chefe em
    `BattleGenerationSettings`.
+5. Resistências (opcionais, no config):
+   - `canBeDisplaced` desmarcado: empurrões e puxões não o movem;
+   - `immuneStates`: estados que ele ignora (o chefe ignora Atordoado);
+   - `maxHpPercentDamageMultiplier`: quanto ele sofre da parte do dano
+     periódico que depende da vida máxima (a Peçonha). 1 = normal, 0 = nada.
 
 ### Papel de inimigo
 - `Create > GridBattle > AI > Enemy Role`: nome, descrição, **ícone 8×8**
@@ -148,6 +153,9 @@ Perfil (entre runs): classes liberadas, glossário, recordes, opções, dicas vi
   - Summon (invocador).
 - As ações de habilidade têm **cooldown em turnos do inimigo**, com a mesma
   regra das skills ("N turnos entre usos").
+- Summon tem dois limites: invocados vivos ao mesmo tempo (`maxAlive`) e
+  invocados por batalha (`maxTotalSummons`, 0 = sem limite). O segundo evita
+  lutas sem fim quando o invocador fica fora de alcance.
 - Exemplos prontos em `Settings/AI/`: ChaseAndAttack, Ranged, Support,
   Summoner e Controller.
 
@@ -320,8 +328,9 @@ compartilhado, para os talentos da classe aparecerem mais. 1 desliga o efeito.
 | Quero mudar... | Asset | Campos |
 |---|---|---|
 | Tamanho e forma do mapa | `Map/MapGenerationSettings` | andares, andares de referência do balanceamento (`balanceFloorCount`: os valores por profundidade dos outros assets valem para esse tamanho e se esticam para o tamanho real), colunas, nós por andar, caminhos por nó, tipos de nó por profundidade, pesos de dificuldade, `diversifyBattleChoices` |
-| Força das batalhas | `Map/BattleGenerationSettings` | pool de inimigos, fórmula de ameaça, orçamento por profundidade e dificuldade, escala de vida/dano por profundidade, limites de inimigos, posições, chefe |
-| XP das batalhas | `Map/BattleGenerationSettings` | `xpSource` (`ThreatBudget`: XP pelo orçamento da batalha, fácil < normal < difícil), `xpPerThreat`, `xpPerDepth`, multiplicador por dificuldade |
+| Força das batalhas | `Map/BattleGenerationSettings` | pool de inimigos, fórmula de ameaça, orçamento por profundidade (`baseBudget` + `budgetPerDepth`, ou uma curva de pontos andar → orçamento em `budgetPoints`) e por dificuldade, escala de vida/dano por profundidade, limites de inimigos e de papéis, posições, chefe |
+| Composição das lutas por andar | `Map/BattleGenerationSettings` | `compositionBands`: a partir de cada andar, mínimo de papéis diferentes por batalha e multiplicador do peso de cada papel no sorteio (por exemplo, mais atiradores e suportes no fim da run) |
+| XP das batalhas | `Map/BattleGenerationSettings` | `xpSource` (`ThreatBudget`: XP pelo orçamento da batalha, fácil < normal < difícil), `xpPerThreat`, `xpPerDepth`, multiplicador por dificuldade; `xpBaseBudget`/`xpBudgetPerDepth` dão ao XP um orçamento próprio, para mudar a força das lutas sem mudar o ritmo de níveis |
 | Curva de XP e nível máximo | `Progression/ProgressionSettings` | XP do nível 1→2, acréscimo por nível, nível máximo, sobra de XP, vida recuperada a cada nível (`levelUpHealFraction`, 1 = vida cheia) |
 | Ofertas de talento | `Talents/TalentOfferSettings` | opções por oferta, rerolls, banimentos e pulos por run, peso de sinergia, limite de talentos de skill, pool compartilhado |
 | Fórmula de dano | `Combat/CombatSettings` | defesa fixa ou %, dano mínimo, arredondamento, métricas de distância |
@@ -464,8 +473,10 @@ Cada lote cria `persistentDataPath/Simulation/<data>_<rótulo>/` (no Windows,
   - **resultado por classe**: taxa de vitória com intervalo de confiança de
     95%, profundidade e nível médios, batalhas vencidas, talentos, uso de
     skills e itens;
-  - **onde as runs terminam** (andar da morte) e **nível ao entrar em cada
-    andar**;
+  - **onde as runs terminam** (andar da morte), a distribuição das mortes e
+    a vitória contra o chefe, e o **nível ao entrar em cada andar**;
+  - **batalhas por faixa de andares**: inimigos, papéis diferentes, terreno,
+    invocações e uso de skills e empurrões em cada parte da run;
   - **batalhas por andar** e por dificuldade: dano recebido (em % da vida
     máxima), ações por batalha, XP planejado e ganho;
   - **XP por nó**: mínimo, média e máximo por andar e dificuldade, e as
@@ -552,10 +563,10 @@ isso, o simulador trava esperando uma animação ou grava arquivos reais.
 - **Conteúdo provisório:** inimigos de exemplo, chefe, talentos e ícones
   existem para os sistemas funcionarem e devem ser substituídos pelos
   definitivos.
-- **Balanceamento:** todos os ❓ estão com valores neutros (ver
-  [[valores_padrao_em_aberto]]).
-  - O plano de balanceamento está em `docs/planos/plano_balanceamento.md`.
-  - A diferença de XP entre preferir batalhas fáceis ou difíceis ainda é
-    pequena, porque o mapa nem sempre oferece a escolha.
+- **Balanceamento: pausado** (decisão de 2026-10-06; o jogo ainda vai
+  mudar bastante). Os valores atuais são um ponto de partida (ver
+  [[valores_padrao_em_aberto]]). O que foi feito, a última medição e o que
+  falta (inclusive a ferramenta de metas e ajuste automático com uma janela
+  para uso humano) estão em `docs/planos/plano_balanceamento.md`.
 - **Monetização (anúncios e compra):** fora do escopo por enquanto.
 - **Áudio:** sistema pronto, sem clipes.

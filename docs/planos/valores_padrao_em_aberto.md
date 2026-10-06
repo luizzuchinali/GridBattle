@@ -4,7 +4,7 @@ tags:
   - balanceamento
   - revisar
 created: 2026-10-05
-status: para revisão
+status: para revisão (balanceamento pausado em 2026-10-06)
 ---
 # Valores padrão das perguntas em aberto
 
@@ -22,6 +22,7 @@ Ver também: [[plano_implementacao_gdd]], [[perguntas_em_aberto]].
 | Defesa: fixa ou porcentagem | estados_e_atributos, 2.9 | Fixa (dano − defesa); modo percentual disponível com teto de 80% | `CombatSettings.defenseMode` |
 | Dano mínimo | 2.9 | 1 (quando o dano base > 0) | `CombatSettings.minimumDamage` |
 | Multiplicador de crítico | estados_e_atributos | 2,0 (chance de crítico 0 em todos os personagens hoje) | cada `CharacterConfig` |
+| Vida das classes | classes_e_skills | Guerreiro 120, Mago 85, Ladino 108 (ajuste G5/G6 interrompido, ponto de partida; ver [[plano_balanceamento]]) | cada `PlayerCharacterConfig` |
 | Métrica de distância | classes_e_skills | Movimento e ataque: euclidiana (como já era). Alcance de skill: Manhattan (GDD) | `CombatSettings` |
 | Dano ao longo do tempo, espinhos e terreno ignoram defesa | — | Sim (configurável) | `CombatSettings` |
 | Reaplicação de estados | estados_e_atributos | Renova a duração (fica a maior). Outras políticas por estado: somar duração, acumular pilhas, ignorar | `StateDefinition.stackPolicy` |
@@ -29,7 +30,7 @@ Ver também: [[plano_implementacao_gdd]], [[perguntas_em_aberto]].
 | Armadura de Espinhos | estados_e_atributos | Devolve 3 de dano por golpe recebido | `ThornArmor` |
 | Roubo de vida | estados_e_atributos | 15% do dano causado | `LifeSteal` |
 | Regeneração | estados_e_atributos | 3 de vida por turno (valor fixo) | `Regeneration` |
-| Escudo | estados_e_atributos | 15 pontos; some quando esgota | `Shield` |
+| Escudo | estados_e_atributos | 15 pontos; some quando esgota; não se renova enquanto ainda tem pontos (política "ignorar"; acaba com o Xamã invencível na Pedra de proteção) (ajuste G5/G6 interrompido, ponto de partida; ver [[plano_balanceamento]]) | `Shield` |
 | Envenenado | estados_e_atributos | 3 de dano por turno | `Poisoned` |
 | Estados ao mudar de batalha | estados_e_atributos | Temporários são removidos; permanentes continuam | `RunSettings` |
 | Atributos e estados valem para inimigos | estados_e_atributos | Sim, o mesmo modelo | — |
@@ -59,9 +60,10 @@ Ver também: [[plano_implementacao_gdd]], [[perguntas_em_aberto]].
 | Papel dos inimigos atuais | inimigos | Goblin e Slime: corpo a corpo. Rat e EyeBat: enxame. FireSkull: atirador (passa a manter distância) |
 | Fator de ameaça por papel | balanceamento | 1 para todos |
 | Invocados dão XP | xp_e_niveis | Não |
+| Limite de invocações | inimigos | No máximo 2 invocados vivos e 6 por batalha por invocador (`SummonAction.maxAlive`/`maxTotalSummons`) (ajuste G5/G6 interrompido, ponto de partida; ver [[plano_balanceamento]]) |
 | Inimigos de exemplo dos papéis sem inimigo | inimigos | GoblinShaman (suporte), RatQueen (invocador), HexingEye (controlador): **provisórios**, com arte existente recolorida |
 | Inimigos que cobram a build | inimigos | ArmoredGoblin (defesa), RegeneratingSlime (regeneração), ThornyRat (espinhos): **provisórios** |
-| Chefe final | inimigos, mapa_e_nos | GoblinKing com 2 GoblinGuard: **provisório**; ganhou a Onda de Choque (empurra 2) e é imóvel (G4) |
+| Chefe final | inimigos, mapa_e_nos | GoblinKing com 2 GoblinGuard: **provisório**; ganhou a Onda de Choque (empurra 2) e é imóvel (G4); vida 130, imune a Atordoado e sem a parte percentual da Peçonha (`immuneStates`, `maxHpPercentDamageMultiplier` = 0) (ajuste G5/G6 interrompido, ponto de partida; ver [[plano_balanceamento]]) |
 | Inimigo que puxa (G4) | plano_balanceamento | GoblinHookman (Goblin Arpoador): **provisório**, papel controlador, a partir do andar 8 (escala de 30 andares), skill Gancho (puxa 3, cooldown 3) |
 | IA de skills de deslocamento (G4) | plano_balanceamento | Só usa quando a pontuação prevista chega a 1: dano de colisão e de terreno, +5 por aliado que passa a alcançar o jogador, +1 por célula de aproximação, +50 por abate | `UseSkillsAction.displacement` |
 
@@ -72,7 +74,7 @@ Ver também: [[plano_implementacao_gdd]], [[perguntas_em_aberto]].
 | Quando o efeito é aplicado | grid_e_terreno | No fim do turno de quem está na célula |
 | Bloqueia área de skill | grid_e_terreno | Não |
 | Afeta jogador e inimigos | grid_e_terreno | Sim, igualmente |
-| Quantidade por profundidade | grid_e_terreno | Andares 1–3: nada. 4–12: 0–2 obstáculos, 0–1 perigo, 0–1 bônus. 13+: 1–3, 1–2, 0–1 (num mapa de 30 andares) |
+| Quantidade por profundidade | grid_e_terreno | Faixas a partir dos andares 1 (nada), 4, 10, 16 e 22, com mais obstáculos, perigos e bônus no fim da run (andar 22+: 2–4 obstáculos, 2–3 perigos, 0–2 bônus) (ajuste G5/G6 interrompido, ponto de partida; ver [[plano_balanceamento]]) |
 | Tipos | grid_e_terreno | Rocha (obstáculo), Fogo (4 de dano), Pântano (Envenenado 3), Santuário (Regeneração 3), Pedra de proteção (Escudo 2) |
 
 ## Consumíveis (`Settings/Consumables`)
@@ -95,10 +97,10 @@ Ver também: [[plano_implementacao_gdd]], [[perguntas_em_aberto]].
 | Dificuldade dentro do andar | mapa_e_nos | Fácil 35%, normal 40%, difícil 25% |
 | Cura do nó de cura | balanceamento | 30% da vida máxima |
 | Custo do nó de talento | mapa_e_nos | 15% da vida máxima (nunca deixa abaixo de 1) |
-| Força esperada por profundidade | balanceamento | Orçamento de ameaça 6 + 0,52 por andar (os 6 + 1,5 pensados para 11 andares, convertidos); fácil ×0,75, normal ×1, difícil ×1,35 |
-| Escala dos inimigos | balanceamento | +2,1% de vida e +1,03% de dano por andar (os +6% e +3% de 11 andares, convertidos) |
+| Força esperada por profundidade | balanceamento | Curva de orçamento (`budgetPoints`, Normal): 6 no andar 1, 9 no 5, 13 no 10, 16,5 no 15, 22 no 20, 33 no 25, 48 no 30, linear entre os pontos; fácil ×0,75, normal ×1, difícil ×1,35 (ajuste G5/G6 interrompido, ponto de partida; ver [[plano_balanceamento]]) |
+| Escala dos inimigos | balanceamento | +2,1% de vida e +1,45% de dano por andar (ajuste G5/G6 interrompido, ponto de partida; ver [[plano_balanceamento]]) |
 | Limite de inimigos | balanceamento | 1 a 8, ocupação máxima de 40% do grid |
-| Composição | balanceamento | Pelo menos um inimigo corpo a corpo ou enxame |
+| Composição | balanceamento | Pelo menos um inimigo corpo a corpo ou enxame; no máximo 1 suporte e 1 invocador por batalha; a partir do andar 8, pelo menos 2 papéis diferentes, e a partir do 22, pelo menos 3; do andar 15 em diante, atirador, suporte, controlador e invocador pesam mais (×1,4–2,0) e corpo a corpo e enxame menos (×0,6–0,8) (`compositionBands`) (ajuste G5/G6 interrompido, ponto de partida; ver [[plano_balanceamento]]) |
 | Pool por profundidade | balanceamento | Os 5 originais desde o andar 1; os provisórios a partir dos andares 7 (GoblinShaman, ThornyRat), 10 (RegeneratingSlime, ArmoredGoblin), 13 (HexingEye) e 16 (RatQueen) |
 
 ## Perfil, meta e interface (`Settings/Meta`, `Settings/Input`, `Settings/Hud`)
@@ -131,7 +133,7 @@ Ver também: [[plano_implementacao_gdd]], [[perguntas_em_aberto]].
 | Nível máximo | xp_e_niveis | 30 (exemplo do documento). Com 30 andares a run chega perto do nível 19 antes do chefe |
 | Sobra de XP ao subir de nível | xp_e_niveis | É guardada |
 | Vida ao subir de nível | xp_e_niveis | Recupera toda a vida a cada nível (decisão do usuário, 2026-10-06; `ProgressionSettings.levelUpHealFraction`) |
-| XP por batalha | xp_e_niveis | Orçamento de ameaça × 8,5 × (1 + 0,07 × (profundidade − 1)), dividido pela ameaça dos inimigos (`xpSource = ThreatBudget`). Fácil < normal < difícil no mesmo andar. Andar 1: 38 / 51 / 69; andar 15: ~160 / 214 / 288 |
+| XP por batalha | xp_e_niveis | Orçamento de XP (6 + 0,52 por andar, separado da curva de força: `xpBaseBudget`/`xpBudgetPerDepth`) × 6,9 × (1 + 0,07 × (profundidade − 1)) × multiplicador da dificuldade (fácil 0,65, normal 1, difícil 2,0), dividido pela ameaça dos inimigos (`xpSource = ThreatBudget`). Fácil < normal < difícil no mesmo andar (ajuste G5/G6 interrompido, ponto de partida; ver [[plano_balanceamento]]) |
 | Opções por oferta | talentos_e_oferta | 3 (GDD), até 5 com talentos |
 | Rerolls, banimentos e pulos por run | talentos_e_oferta | 2, 1 e 1 (mais os de talentos) |
 | Peso por sinergia | talentos_e_oferta | Peso base × (1 + 0,5 × tags em comum com os talentos escolhidos) |

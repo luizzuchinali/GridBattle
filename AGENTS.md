@@ -394,7 +394,7 @@ Morte de inimigo
 | Novo papel de inimigo | `Create > GridBattle > AI > Enemy Role` (ícone 8×8, fator de ameaça, conta como linha de frente). |
 | Nova skill | `Create > GridBattle > Skills > Skill Definition`: tipo, dano, forma/tamanho de área, alcance, cooldown, alvos, efeitos. Inicial de classe: lista `skills` do `PlayerCharacterConfig`; liberada por talento: `unlockedSkill` do talento; de inimigo: `skills` do `EnemyConfig`. |
 | Skill que empurra ou puxa | Skill normal com o efeito `Displace` na lista de efeitos: modo (longe do lançador, em direção ao lançador ou longe do centro da área) e distância. Ele roda depois do dano; colisão e terreno seguem `CombatSettings`. Para inimigos, `UseSkills` só a usa quando o resultado previsto vale a pena (`DisplacementAiWeights` no asset `UseSkills`). |
-| Personagem imóvel (chefe) | Desmarque `canBeDisplaced` no `CharacterConfig`: empurrões e puxões não o movem, mas ele ainda bloqueia e leva o dano de quem é lançado contra ele. |
+| Personagem imóvel (chefe) | Desmarque `canBeDisplaced` no `CharacterConfig`: empurrões e puxões não o movem, mas ele ainda bloqueia e leva o dano de quem é lançado contra ele. Imunidades: `immuneStates` (estados ignorados, `StateContainer.Apply` devolve nulo) e `maxHpPercentDamageMultiplier` (parte do dano periódico que depende da vida máxima). |
 | Novo estado | `Create > GridBattle > States > State Definition` + efeitos no dropdown (atributos, dano/cura periódicos, espinhos, roubo de vida, escudo, restrições, modificadores da run). |
 | Novo talento | `Create > GridBattle > Talents > Talent` (classes permitidas, nível, pré-requisitos, tags, `maxRank`, estados, skill) e coloque no `talentPool` da classe ou no pool compartilhado de `TalentOfferSettings`. O peso dos que só vêm do pool compartilhado é multiplicado por `sharedPoolWeightMultiplier` (0,5). |
 | Talento que modifica uma skill da classe | Estado com `Skill Modifier Effect` (skills, dano fixo/%, passos de área, alcance, redução de cooldown, empurrão, duração de estados, efeitos anexados; valores por pilha, `repeatAttachedPerStack`) + talento com `maxRank` (posto = pilha) e a skill (ou o talento que a libera) nos pré-requisitos. Ver `docs/projeto/guia_sistemas.md`. |
@@ -483,6 +483,26 @@ O Unity Editor costuma estar aberto e acessível pela CLI `unity` (pacote
 ## Histórico de refatorações
 
 Registre aqui toda mudança estrutural (mais recente primeiro).
+
+### 2026-10-06 — Balanceamento G5/G6 (interrompido; balanceamento pausado)
+O agente parou no meio do ajuste e o usuário pausou o balanceamento (o jogo
+ainda vai mudar). Compila; partida determinística e `TalentChecks` não foram
+rodadas de novo depois destas mudanças. Detalhes em `docs/planos/plano_balanceamento.md`.
+- `BattleGenerationSettings`: curva de orçamento opcional (`budgetPoints`,
+  linear entre pontos andar → orçamento), orçamento de XP separado
+  (`xpBaseBudget`, `xpBudgetPerDepth`) e faixas de composição
+  (`compositionBands`: mínimo de papéis diferentes e peso por papel a partir
+  de um andar), usadas pelo `BattleGenerator`.
+- `CharacterConfig`: `immuneStates` e `maxHpPercentDamageMultiplier` (lido por
+  `PeriodicDamageEffect`); o chefe usa os dois.
+- `SummonAction`: `maxTotalSummons` (invocados por batalha, contado na memória
+  do inimigo e salvo) além de `maxAlive`.
+- Assets: Escudo com `IgnoreIfPresent`, limites de papel, terreno em 5
+  faixas, valores numéricos de partida (listados no plano). Relatório do
+  simulador com "Death spread and the final boss" e "Battles by floor band"
+  (papéis, terreno, invocações e táticas por faixa de andares).
+- Não construído: ferramenta de metas e ajuste automático com janela para uso
+  humano (decisão registrada no plano).
 
 ### 2026-10-06 — Balanceamento G3: identidade de classe
 Mudança de mecânica pedida (decisão do usuário: "modificadores + passivas únicas"; `docs/planos/plano_balanceamento.md`).
