@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3de5524bc0b2b224ca62baccc6375deb, type: 3}
+  m_Name: CombatSettings
+  m_EditorClassIdentifier: Assembly-CSharp::GridBattle.Gameplay.Combat.CombatSettings
+  defenseMode: 0
+  maxPercentReduction: 0.8
+  minimumDamage: 1
+  rounding: 0
+  critChanceCap: 1
+  periodicIgnoresDefense: 1
+  thornsIgnoreDefense: 1
+  terrainIgnoresDefense: 1
+  collisionDamage: 6
+  collisionDamagePerUnspentCell: 2
+  collisionHitCharacterDamage: 6
+  collisionIgnoresDefense: 1
+  edgeCountsAsCollision: 1
+  movementMetric: 0
+  attackMetric: 0
+  skillRangeMetric: 1
+  adjacencyMetric: 2

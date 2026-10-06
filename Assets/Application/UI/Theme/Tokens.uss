@@ -8,6 +8,21 @@
     --color-primary: #ffcc00;
     --color-xp-level: rgb(220, 178, 101);
     --color-overlay-dim: rgba(0, 0, 0, 0.7);
+    --color-text: rgb(232, 222, 202);
+    --color-text-dim: rgb(160, 150, 134);
+    --color-text-shadow: rgba(0, 0, 0, 0.9);
+    --color-good: rgb(116, 214, 124);
+    --color-bad: rgb(238, 104, 92);
+    --color-cooldown: rgb(255, 255, 255);
+    --color-disabled-tint: rgb(150, 150, 150);
+    --color-hp: rgb(214, 74, 66);
+    --color-hp-bg: rgb(52, 24, 24);
+    --color-xp-bg: rgb(34, 28, 18);
+    --color-frame: rgb(96, 76, 56);
+    --color-panel-dim: rgba(0, 0, 0, 0.35);
+    --color-node-dim: rgb(130, 130, 130);
+    --color-card-chosen: rgb(255, 224, 120);
+    --color-ban-tint: rgb(238, 120, 108);
 
     /* Spacing */
     --spacing-sm: 2px;
@@ -16,9 +31,11 @@
     /* Typography */
     --font-size-hud: 10px;
     --font-size-body: 12px;
+    --font-size-title: 16px;
 
     /* Timing */
     --transition-screen: 0.25s;
+    --transition-fade: 0.18s;
 
     /* Screen cover offset: reference screen width (216px) */
     --cover-offset-right: 216px;
@@ -29,5 +46,9 @@
     --skin-slot-pressed: url("project://database/Assets/Application/Art/Sprites/UI.png?fileID=-6595680761151332689&guid=62a3f1345f5495642b6ab1f188fd400c&type=3#UI_8");
     --skin-grid-cell: url("project://database/Assets/Application/Art/Sprites/UI.png?fileID=82707731993968007&guid=62a3f1345f5495642b6ab1f188fd400c&type=3#GridCell");
     --skin-panel: url("project://database/Assets/Application/Art/Sprites/UI.png?fileID=846991392&guid=62a3f1345f5495642b6ab1f188fd400c&type=3#UI_1");
+    --skin-slot-selected: url("project://database/Assets/Application/Art/Sprites/UI.png?fileID=-273060469431498887&guid=62a3f1345f5495642b6ab1f188fd400c&type=3#UI_9");
+    --skin-slot-round: url("project://database/Assets/Application/Art/Sprites/Placeholders/UI/ItemSlot.png?fileID=21300000&guid=63ebbef0c76ee7c4cb2b3760cf8c9a63&type=3#ItemSlot");
+    --skin-slot-round-pressed: url("project://database/Assets/Application/Art/Sprites/Placeholders/UI/ItemSlotPressed.png?fileID=21300000&guid=a038071257b6c5842a0a6964bcdb7193&type=3#ItemSlotPressed");
+    --skin-slot-round-selected: url("project://database/Assets/Application/Art/Sprites/Placeholders/UI/ItemSlotSelected.png?fileID=21300000&guid=722863192158f0d47bcb67b47af0a82a&type=3#ItemSlotSelected");
     --skin-xp-bar-progress: url("project://database/Assets/Application/Art/Sprites/UI.png?fileID=8160775752198118580&guid=62a3f1345f5495642b6ab1f188fd400c&type=3#XpBarProgress");
 }

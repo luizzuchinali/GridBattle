@@ -1,0 +1,33 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:zs="ZS.UI" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/Application/UI/Overlays/Options/Options.uss?fileID=7433441132597879392&amp;guid=7dea0c7471004515becc3b4b165b3ec5&amp;type=3#Options"/>
+    <zs:SafeArea name="container" picking-mode="Ignore" class="container overlay-screen">
+        <ui:VisualElement name="overlay-background">
+            <ui:VisualElement name="options-window" class="window-frame">
+                <ui:Label name="options-title" text="Options" picking-mode="Ignore"/>
+                <ui:ScrollView name="options-scroll" class="slim-scroll" mode="Vertical" horizontal-scroller-visibility="Hidden" vertical-scroller-visibility="Auto" touch-scroll-type="Clamped">
+                    <ui:Label name="options-language-label" text="Language" class="options-section" picking-mode="Ignore"/>
+                    <ui:VisualElement name="options-language-list">
+                        <ui:Button name="options-lang-auto" text="Automatic" class="text-button option-choice"/>
+                        <ui:Button name="options-lang-en" text="English" class="text-button option-choice"/>
+                        <ui:Button name="options-lang-es" text="Espanol" class="text-button option-choice"/>
+                        <ui:Button name="options-lang-pt" text="Portugues (Brasil)" class="text-button option-choice"/>
+                    </ui:VisualElement>
+                    <ui:Label name="options-music-label" text="Music" class="options-section" picking-mode="Ignore"/>
+                    <ui:VisualElement class="volume-row">
+                        <ui:Slider name="options-music-slider" low-value="0" high-value="1" value="1" class="volume-slider"/>
+                        <ui:Label name="options-music-value" text="100%" class="volume-value" picking-mode="Ignore"/>
+                    </ui:VisualElement>
+                    <ui:Label name="options-sfx-label" text="Sound effects" class="options-section" picking-mode="Ignore"/>
+                    <ui:VisualElement class="volume-row">
+                        <ui:Slider name="options-sfx-slider" low-value="0" high-value="1" value="1" class="volume-slider"/>
+                        <ui:Label name="options-sfx-value" text="100%" class="volume-value" picking-mode="Ignore"/>
+                    </ui:VisualElement>
+                    <ui:Label name="options-tips-label" text="Tips" class="options-section" picking-mode="Ignore"/>
+                    <ui:Button name="options-tips-toggle" text="Tips: On" class="text-button option-choice"/>
+                    <ui:Button name="options-tips-reset" text="Show tips again" class="text-button option-choice"/>
+                </ui:ScrollView>
+                <ui:Button name="options-close-button" text="X" class="slot-button corner-close-button"/>
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </zs:SafeArea>
+</ui:UXML>

@@ -1,0 +1,41 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7c2f23721b5a514d8ba29a58f31908d, type: 3}
+  m_Name: ScreensSettings
+  m_EditorClassIdentifier: Assembly-CSharp::GridBattle.UI.Screens.ScreensSettings
+  mapWidth: 200
+  floorSpacing: 44
+  nodeSize: 32
+  mapPadding: 8
+  scrollFocus: 0.6
+  battleEasyIcon: {fileID: 21300000, guid: e7b9de4b6f08b0e4693859ccda9a9fcd, type: 3}
+  battleNormalIcon: {fileID: 21300000, guid: 28bc7f30a46be0b4b9d53eca6660a5d4, type: 3}
+  battleHardIcon: {fileID: 21300000, guid: 7e22831298c41fe41afbcb28d5852565, type: 3}
+  healIcon: {fileID: 21300000, guid: e6df82bfa2269a244977d5cf141a7016, type: 3}
+  talentIcon: {fileID: 21300000, guid: 144a822625fac7148a6b7a3d3d2222c6, type: 3}
+  consumableIcon: {fileID: 21300000, guid: ef0da68aaa2607748a13666bc8fcbb4f, type: 3}
+  bossIcon: {fileID: 21300000, guid: 7105721c761a7fa468eef396303e905c, type: 3}
+  showNodeXp: 1
+  lineWidth: 2
+  pathColor: {r: 1, g: 0.8, b: 0, a: 1}
+  availableColor: {r: 0.91, g: 0.87, b: 0.79, a: 1}
+  dimColor: {r: 0.35, g: 0.31, b: 0.27, a: 1}
+  easyColor: {r: 0.45, g: 0.84, b: 0.49, a: 1}
+  normalColor: {r: 0.92, g: 0.75, b: 0.27, a: 1}
+  hardColor: {r: 0.93, g: 0.41, b: 0.36, a: 1}
+  previewEmptyColor: {r: 0.35, g: 0.22, b: 0.15, a: 1}
+  previewPlayerColor: {r: 1, g: 0.8, b: 0, a: 1}
+  terrainObstacleColor: {r: 0.62, g: 0.62, b: 0.66, a: 1}
+  terrainHazardColor: {r: 0.9, g: 0.35, b: 0.24, a: 1}
+  terrainBonusColor: {r: 0.36, g: 0.82, b: 0.43, a: 1}
+  showConsumablesOnMap: 1
+  lockIcon: {fileID: 21300000, guid: f44ed238c30f554419c5a6a61a947e9e, type: 3}

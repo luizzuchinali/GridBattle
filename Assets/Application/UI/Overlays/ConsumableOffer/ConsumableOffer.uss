@@ -1,0 +1,98 @@
+#overlay-background {
+    flex-grow: 1;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+}
+
+#offer-window {
+    width: 200px;
+    max-height: 330px;
+    flex-shrink: 1;
+}
+
+#offer-title {
+    margin: 0 0 var(--spacing-sm) 0;
+    padding: 0;
+    font-size: var(--font-size-title);
+    color: var(--color-primary);
+    white-space: normal;
+    -unity-text-align: middle-center;
+}
+
+#offer-subtitle {
+    margin: 0 0 6px 0;
+    padding: 0;
+    font-size: var(--font-size-body);
+    color: var(--color-text-dim);
+    white-space: normal;
+    -unity-text-align: middle-center;
+}
+
+#offer-scroll {
+    flex-grow: 0;
+    flex-shrink: 1;
+    width: 100%;
+}
+
+/* A consumable row: icon, name and description. */
+#container .offer-item {
+    flex-direction: row;
+    align-items: center;
+    margin: var(--spacing-sm) 0;
+    padding: 5px 6px;
+    border-width: 0;
+    border-radius: 0;
+    background-color: transparent;
+    background-image: var(--skin-slot);
+    -unity-slice-left: 8;
+    -unity-slice-top: 8;
+    -unity-slice-right: 8;
+    -unity-slice-bottom: 8;
+    -unity-text-align: middle-left;
+}
+
+#container .offer-item:active {
+    background-image: var(--skin-slot-pressed);
+}
+
+.offer-item__icon {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+    margin-right: 6px;
+}
+
+.offer-item__texts {
+    flex-grow: 1;
+    flex-shrink: 1;
+}
+
+.offer-item__name {
+    margin: 0;
+    padding: 0;
+    font-size: var(--font-size-body);
+    color: var(--color-primary);
+    white-space: normal;
+    -unity-text-align: upper-left;
+}
+
+.offer-item__desc {
+    margin: 0;
+    padding: 0;
+    font-size: var(--font-size-hud);
+    color: var(--color-text-dim);
+    white-space: normal;
+    -unity-text-align: upper-left;
+}
+
+#offer-buttons {
+    flex-direction: row;
+    justify-content: center;
+    margin-top: 6px;
+}
+
+#container #offer-buttons .text-button {
+    min-width: 70px;
+    margin: 0 3px;
+}

@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 622dde2550acda34c8f6a16e77e20a27, type: 3}
+  m_Name: MetaSettings
+  m_EditorClassIdentifier: Assembly-CSharp::GridBattle.Gameplay.Meta.MetaSettings
+  countBattlesFromLostRuns: 1
+  discoverOfferedTalents: 0
+  showUnknownEnemies: 1
+  giveUpCountsAsDefeat: 1
+  tipsEnabledByDefault: 1
+  allowDisablingTips: 1
+  defaultMusicVolume: 1
+  defaultSfxVolume: 1
+  recordMetrics: 1
+  metricsMaxFileKb: 2048

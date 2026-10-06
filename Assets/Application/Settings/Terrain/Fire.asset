@@ -1,0 +1,48 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c0df8e54e886e534ab6f0ba363c615f5, type: 3}
+  m_Name: Fire
+  m_EditorClassIdentifier: Assembly-CSharp::GridBattle.Gameplay.Terrain.TerrainDefinition
+  id: 2a133503e7f961f4aaf6f98d2ad6db38
+  displayName:
+    m_TableReference:
+      m_TableCollectionName: Content
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: terrain.fire.name
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  description:
+    m_TableReference:
+      m_TableCollectionName: Content
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: terrain.fire.desc
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  icon: {fileID: 21300000, guid: d803a86f7f3dd694fa13ed1af812c314, type: 3}
+  kind: 1
+  blocksMovement: 0
+  blocksSkillArea: 0
+  trigger: 2
+  damage: 4
+  states: []
+  affectsPlayer: 1
+  affectsEnemies: 1
+  overlaySprite: {fileID: 21300000, guid: d803a86f7f3dd694fa13ed1af812c314, type: 3}
+  overlayColor: {r: 1, g: 1, b: 1, a: 1}
+  floorTint: {r: 1, g: 0.68, b: 0.58, a: 1}
+  references:
+    version: 2
+    RefIds: []

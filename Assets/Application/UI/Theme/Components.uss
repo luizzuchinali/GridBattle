@@ -23,6 +23,70 @@
     background-image: var(--skin-slot-pressed);
 }
 
+/* Row of slot buttons (skill bar, item bar): 2px between them, centered. */
+.slot-bar {
+    flex-direction: row;
+    justify-content: center;
+    width: 100%;
+    min-height: 32px;
+    max-height: 32px;
+}
+
+#container .slot-bar > .slot-button {
+    margin-left: var(--spacing-sm);
+}
+
+#container .slot-bar > .slot-button:first-child {
+    margin-left: 0;
+}
+
+/* Slot looks (set by code, see HudSlot): selected, disabled and empty. */
+#container .slot-button--selected {
+    background-image: var(--skin-slot-selected);
+}
+
+#container .slot-button--disabled {
+    -unity-background-image-tint-color: var(--color-disabled-tint);
+}
+
+#container .slot-button--disabled > Image {
+    opacity: 0.3;
+}
+
+#container .slot-button--empty {
+    opacity: 0.6;
+}
+
+/* Circular variant (item bar). */
+#container .slot-button--round {
+    background-image: var(--skin-slot-round);
+}
+
+#container .slot-button--round.slot-button--selected {
+    background-image: var(--skin-slot-round-selected);
+}
+
+#container .slot-button--round:active {
+    background-image: var(--skin-slot-round-pressed);
+}
+
+/* Text over a slot's icon (the remaining cooldown). */
+.slot-button__badge {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    margin: 0;
+    padding: 0;
+    -unity-text-align: middle-center;
+    font-size: var(--font-size-title);
+    color: var(--color-cooldown);
+    text-shadow: 1px 1px 0 var(--color-text-shadow);
+    -unity-text-outline-width: 0.5px;
+    -unity-text-outline-color: var(--color-text-shadow);
+}
+
 /* Character portrait button (main menu). */
 #container .portrait-button {
     height: 46px;
@@ -51,10 +115,420 @@
     max-height: 30px;
 }
 
+/* Window frame sized by its content (sliced skin, so any size works). */
+.window-frame {
+    background-image: var(--skin-panel);
+    -unity-slice-left: 19;
+    -unity-slice-top: 15;
+    -unity-slice-right: 19;
+    -unity-slice-bottom: 15;
+    padding: 14px 16px;
+}
+
 /* Framed panel (overlays). */
 .panel-frame {
     background-image: var(--skin-panel);
     background-size: 100% 100%;
     width: 200px;
     height: 226px;
+}
+
+/* ---------------------------------------------------------------------------
+ * Run screens (map, end of run, menus): added with the screens module.
+ * ------------------------------------------------------------------------- */
+
+/* Slot button whose content is a text glyph (the glossary "?"). */
+#container .slot-button--glyph {
+    font-size: var(--font-size-title);
+    color: var(--color-primary);
+    -unity-text-align: middle-center;
+}
+
+/* Text button on the sliced slot skin (menus, confirm, offers). */
+#container .text-button {
+    min-width: 96px;
+    height: 24px;
+    margin: var(--spacing-sm) 0;
+    padding: 0 10px;
+    border-width: 0;
+    border-radius: 0;
+    background-color: transparent;
+    background-image: var(--skin-slot);
+    -unity-slice-left: 8;
+    -unity-slice-top: 8;
+    -unity-slice-right: 8;
+    -unity-slice-bottom: 8;
+    color: var(--color-primary);
+    font-size: var(--font-size-body);
+    -unity-text-align: middle-center;
+}
+
+#container .text-button:active {
+    background-image: var(--skin-slot-pressed);
+}
+
+#container .text-button:disabled {
+    opacity: 0.5;
+}
+
+/* Small framed panel (node preview): sliced slot skin with a light padding. */
+.panel-simple {
+    background-image: var(--skin-slot);
+    -unity-slice-left: 8;
+    -unity-slice-top: 8;
+    -unity-slice-right: 8;
+    -unity-slice-bottom: 8;
+    padding: 7px;
+}
+
+/* Full-screen dim over a view with a window in the middle (modals). */
+.overlay-screen {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--color-overlay-dim);
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+/* 32x32 tile with a caption and a value (depth). */
+.hud-tile {
+    width: 32px;
+    height: 32px;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    background-image: var(--skin-slot);
+}
+
+.hud-tile__caption {
+    margin: 0;
+    padding: 0;
+    font-size: var(--font-size-hud);
+    color: var(--color-xp-level);
+    -unity-text-align: middle-center;
+}
+
+.hud-tile__value {
+    margin: 0;
+    padding: 0;
+    font-size: var(--font-size-body);
+    color: var(--color-primary);
+    -unity-text-align: middle-center;
+}
+
+/* Bar with a fill (width in percent, set by code) and a centered label (HP, XP). */
+.stat-bar {
+    height: 15px;
+    flex-shrink: 0;
+    border-width: 1px;
+    border-color: var(--color-frame);
+    background-color: var(--color-xp-bg);
+}
+
+.stat-bar--hp {
+    background-color: var(--color-hp-bg);
+}
+
+.stat-bar__fill {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 0;
+    background-color: var(--color-xp-level);
+}
+
+.stat-bar--hp .stat-bar__fill {
+    background-color: var(--color-hp);
+}
+
+.stat-bar__label {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    margin: 0;
+    padding: 0;
+    font-size: var(--font-size-hud);
+    color: var(--color-cooldown);
+    -unity-text-align: middle-center;
+    text-shadow: 1px 1px 0 var(--color-text-shadow);
+}
+
+/* Small box with a 16px icon (consumables carried, read only). */
+.mini-slot {
+    width: 20px;
+    height: 20px;
+    margin: 0 var(--spacing-sm);
+    align-items: center;
+    justify-content: center;
+    border-width: 1px;
+    border-color: var(--color-frame);
+    background-color: var(--color-panel-dim);
+}
+
+.mini-slot--empty {
+    opacity: 0.5;
+}
+
+.mini-slot > Image {
+    width: 16px;
+    height: 16px;
+}
+
+/* Slim scrollbar: no arrows, a thin track and a gold handle. */
+.slim-scroll .unity-scroller__low-button,
+.slim-scroll .unity-scroller__high-button {
+    display: none;
+}
+
+.slim-scroll .unity-scroller--vertical {
+    width: 4px;
+    margin-left: var(--spacing-md);
+    border-width: 0;
+    background-color: transparent;
+}
+
+.slim-scroll .unity-scroller--vertical .unity-base-slider__drag-container {
+    width: 4px;
+    margin: 0;
+    padding: 0;
+}
+
+.slim-scroll .unity-scroller--vertical .unity-base-slider__tracker {
+    width: 4px;
+    margin: 0;
+    border-width: 0;
+    border-radius: 0;
+    background-color: rgba(0, 0, 0, 0.35);
+}
+
+.slim-scroll .unity-scroller--vertical .unity-base-slider__dragger {
+    width: 4px;
+    margin: 0;
+    border-width: 0;
+    border-radius: 0;
+    background-color: var(--color-primary);
+}
+
+/* Information lists (end of run, offers): section titles, rows with an icon and a value, paragraphs. */
+.info-section-title {
+    margin: var(--spacing-md) 0 var(--spacing-sm) 0;
+    padding: 0;
+    font-size: var(--font-size-body);
+    color: var(--color-primary);
+    -unity-text-align: middle-left;
+}
+
+.info-row {
+    flex-direction: row;
+    align-items: center;
+    min-height: 14px;
+}
+
+.info-row__label {
+    flex-grow: 1;
+    flex-shrink: 1;
+    margin: 0;
+    padding: 0;
+    font-size: var(--font-size-body);
+    color: var(--color-text);
+    white-space: normal;
+    -unity-text-align: middle-left;
+}
+
+.info-row__value {
+    flex-shrink: 0;
+    margin: 0 0 0 var(--spacing-md);
+    padding: 0;
+    font-size: var(--font-size-body);
+    color: var(--color-text);
+    -unity-text-align: middle-right;
+}
+
+.info-icon {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+    margin-right: var(--spacing-md);
+}
+
+.info-text {
+    margin: 0;
+    padding: 0;
+    font-size: var(--font-size-body);
+    color: var(--color-text-dim);
+    white-space: normal;
+    -unity-text-align: upper-left;
+}
+
+.info-text--good {
+    color: var(--color-good);
+}
+
+/* ---------------------------------------------------------------------------
+ * Modal windows (talent choice, glossary, options, tips, pause menu).
+ * ------------------------------------------------------------------------- */
+
+/* Window title and subtitle (modals built on .window-frame). */
+.window-title {
+    margin: 0 0 var(--spacing-md) 0;
+    padding: 0;
+    font-size: var(--font-size-title);
+    color: var(--color-primary);
+    white-space: normal;
+    -unity-text-align: middle-center;
+}
+
+.window-subtitle {
+    margin: 0 0 var(--spacing-md) 0;
+    padding: 0;
+    font-size: var(--font-size-body);
+    color: var(--color-text-dim);
+    white-space: normal;
+    -unity-text-align: middle-center;
+}
+
+/* X button on the corner of a window frame: the way to close it. Combine with .slot-button. */
+#container .corner-close-button {
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    height: 32px;
+    font-size: var(--font-size-title);
+    color: var(--color-primary);
+    -unity-text-align: middle-center;
+}
+
+/* Tab bar: a row of text buttons (combine .text-button with .tab-button); the active one is highlighted. */
+.tab-bar {
+    flex-direction: row;
+    width: 100%;
+    flex-shrink: 0;
+    margin-bottom: var(--spacing-md);
+}
+
+#container .tab-button {
+    min-width: 0;
+    flex-grow: 1;
+    flex-basis: 0;
+    height: 22px;
+    margin: 0 1px;
+    padding: 0 3px;
+    color: var(--color-text-dim);
+}
+
+#container .tab-button--active {
+    background-image: var(--skin-slot-selected);
+    color: var(--color-primary);
+}
+
+/* Highlighted text button (the chosen language, a tool in use). */
+#container .text-button--selected {
+    background-image: var(--skin-slot-selected);
+}
+
+/* Tappable or static row of a list: an icon, a name and a description (glossary). */
+#container .list-row {
+    flex-direction: row;
+    align-items: center;
+    margin: var(--spacing-sm) 0;
+    padding: 4px 6px;
+    border-width: 0;
+    border-radius: 0;
+    background-color: transparent;
+    background-image: var(--skin-slot);
+    -unity-slice-left: 8;
+    -unity-slice-top: 8;
+    -unity-slice-right: 8;
+    -unity-slice-bottom: 8;
+    -unity-text-align: middle-left;
+}
+
+#container Button.list-row:active {
+    background-image: var(--skin-slot-pressed);
+}
+
+#container .list-row--locked {
+    opacity: 0.6;
+}
+
+.list-row__icon {
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+    margin-right: 6px;
+}
+
+/* "?" in the place of an icon: something not discovered yet. */
+.list-row__unknown {
+    flex-grow: 1;
+    height: 24px;
+    margin: 0;
+    padding: 0;
+    font-size: var(--font-size-title);
+    color: var(--color-text-dim);
+    -unity-text-align: middle-center;
+}
+
+.list-row__texts {
+    flex-grow: 1;
+    flex-shrink: 1;
+}
+
+.list-row__name {
+    margin: 0;
+    padding: 0;
+    font-size: var(--font-size-body);
+    color: var(--color-primary);
+    white-space: normal;
+    -unity-text-align: upper-left;
+}
+
+.list-row__name--dim {
+    color: var(--color-text-dim);
+}
+
+.list-row__desc {
+    margin: 0;
+    padding: 0;
+    font-size: var(--font-size-hud);
+    color: var(--color-text-dim);
+    white-space: normal;
+    -unity-text-align: upper-left;
+}
+
+/* Small tag under a name: an optional icon and a short colored text (talent badges). */
+.badge {
+    flex-direction: row;
+    align-items: center;
+    margin-top: 1px;
+}
+
+.badge__icon {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+    margin-right: var(--spacing-sm);
+}
+
+.badge__label {
+    flex-shrink: 1;
+    margin: 0;
+    padding: 0;
+    font-size: var(--font-size-hud);
+    white-space: normal;
+    -unity-text-align: middle-left;
+}
+
+.badge--match .badge__label {
+    color: var(--color-good);
+}
+
+.badge--skill .badge__label {
+    color: var(--color-xp-level);
 }

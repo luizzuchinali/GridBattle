@@ -1,0 +1,51 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ed99a411c5aa8942a176dce8ef11ada, type: 3}
+  m_Name: Regeneration
+  m_EditorClassIdentifier: Assembly-CSharp::GridBattle.Gameplay.Talents.TalentDefinition
+  id: 192a13f0d8d007b4485a5271abdf7d57
+  displayName:
+    m_TableReference:
+      m_TableCollectionName: Content
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: talent.regeneration.name
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  description:
+    m_TableReference:
+      m_TableCollectionName: Content
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: talent.regeneration.desc
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  icon: {fileID: 21300000, guid: 2602ce840ca871044b4a30dcb9a50d1e, type: 3}
+  isPlaceholder: 1
+  allowedClasses: []
+  requiredLevel: 2
+  prerequisites: []
+  maxRank: 3
+  baseWeight: 1
+  synergyTags:
+  - {fileID: 11400000, guid: 33c84fdd5fbea584698c9dd24bd9cfb2, type: 2}
+  states:
+  - state: {fileID: 11400000, guid: 6bed737fbe76b4e43bb692af76c3e4eb, type: 2}
+    permanent: 1
+    duration: 1
+    stacks: 1
+  unlockedSkill: {fileID: 0}
+  references:
+    version: 2
+    RefIds: []

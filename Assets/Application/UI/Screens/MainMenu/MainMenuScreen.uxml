@@ -1,8 +1,8 @@
 <ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:zs="ZS.UI" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/Application/UI/Screens/MainMenu/MainMenuScreen.uss?fileID=7433441132597879392&amp;guid=d277521352ca2443cb0ca7d3549b5673&amp;type=3#MainMenuScreen"/>
-    <!-- Element names below are animated by CharacterButtonsAnim (Animator paths): keep names and hierarchy. -->
+    <!-- Element names below are animated by CharacterButtonsAnim (Animator paths): keep names and hierarchy of #character-selection. -->
     <zs:SafeArea name="container" class="container">
-        <ui:Label text="Select a character"/>
+        <ui:Label name="select-class-label" text="Select a character"/>
         <ui:VisualElement name="character-selection">
             <ui:Button text="" name="knight-btn" class="portrait-button portrait-button--flush">
                 <ui:VisualElement name="knight-image" class="portrait-image"/>
@@ -13,6 +13,14 @@
             <ui:Button text="" name="rogue-btn" class="portrait-button">
                 <ui:VisualElement name="rogue-image" class="portrait-image"/>
             </ui:Button>
+        </ui:VisualElement>
+        <ui:VisualElement name="locked-info" picking-mode="Ignore"/>
+        <ui:VisualElement name="menu-buttons">
+            <ui:Button name="continue-btn" text="Continue" class="text-button"/>
+            <ui:VisualElement name="menu-buttons-row">
+                <ui:Button name="glossary-btn" text="Glossary" class="text-button"/>
+                <ui:Button name="options-btn" text="Options" class="text-button"/>
+            </ui:VisualElement>
         </ui:VisualElement>
     </zs:SafeArea>
 </ui:UXML>

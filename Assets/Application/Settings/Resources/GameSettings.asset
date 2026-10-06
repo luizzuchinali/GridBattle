@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28585f01b63498943922bdc145448d13, type: 3}
+  m_Name: GameSettings
+  m_EditorClassIdentifier: Assembly-CSharp::GridBattle.Data.GameSettings
+  settings:
+  - {fileID: 11400000, guid: 15761b6caf848c64ea79ae62f41bc1e4, type: 2}
+  - {fileID: 11400000, guid: 01490b134a84d5940bf7f674903e4fd5, type: 2}
+  - {fileID: 11400000, guid: 76c43fe2c370667408a71be476be9f80, type: 2}
+  - {fileID: 11400000, guid: 7713929d631d70041a19c72750bd3ded, type: 2}
+  - {fileID: 11400000, guid: 295b955bd65ab064ab755db9b198a7bd, type: 2}
+  - {fileID: 11400000, guid: 08213e0eac9d2d44a8c17668695a68e8, type: 2}
+  - {fileID: 11400000, guid: b028eea20f5dce142b12425f7eef56d3, type: 2}
+  - {fileID: 11400000, guid: 110abc4d23d1f704e8b6f833e8a8e529, type: 2}
+  - {fileID: 11400000, guid: 3e23f7154a092c54aaca5668b0dbb2e1, type: 2}
+  - {fileID: 11400000, guid: ce9af91ecab9e6741a8511caf4e3470c, type: 2}
+  - {fileID: 11400000, guid: 0ca6c708485e61744a323600304762f2, type: 2}
+  - {fileID: 11400000, guid: 3f48acaa3e766404fa6e50012fbae98c, type: 2}
+  - {fileID: 11400000, guid: 4df6be4c094c4ce498915d8372931143, type: 2}
+  - {fileID: 11400000, guid: a5ba8c915989b224d8d38ff983861342, type: 2}
+  - {fileID: 11400000, guid: 2c7f11be61f32194fbd9f4edf4e50fda, type: 2}

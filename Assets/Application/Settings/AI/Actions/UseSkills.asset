@@ -12,3 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4eefdc8d301b46b4a926f8be9c557ae1, type: 3}
   m_Name: UseSkills
   m_EditorClassIdentifier: Assembly-CSharp::GridBattle.Gameplay.AI.Actions.UseSkillsAction
+  id: 3e13a9d097dfc2e4aa0ce7abb923b950
+  displacement:
+    minScore: 1
+    allyReachValue: 5
+    approachValue: 1
+    killValue: 50
+    hazardStateValue: 4
+    bonusStateCost: 5

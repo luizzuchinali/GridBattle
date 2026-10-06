@@ -1,5 +1,6 @@
 using System;
 using GridBattle.Gameplay.Events;
+using GridBattle.Gameplay.Simulation;
 using GridBattle.UI.Screens;
 using LitMotion;
 using UnityEngine;
@@ -41,7 +42,7 @@ namespace GridBattle.UI.Vfx
 
         private void OnXpRewardDropped(XpRewardDroppedEvent e)
         {
-            if (e.IsPresented || settings == null) return;
+            if (e.IsPresented || settings == null || SimMode.IsActive) return;
             if (_uiRoot == null || !_uiRoot.TryGetController(out GameScreenController gameScreen)) return;
 
             var layer = gameScreen.EffectsLayer;

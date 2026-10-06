@@ -1,0 +1,96 @@
+/*
+ * In-game glossary (GDD 2.7): two tabs (classes, enemies), a scrollable list and a detail view that replaces
+ * the list. Rows use the shared .list-row / .info-* components.
+ */
+#overlay-background {
+    flex-grow: 1;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+}
+
+#glossary-window {
+    width: 200px;
+    height: 340px;
+    flex-shrink: 1;
+}
+
+#glossary-title {
+    margin: 0 0 var(--spacing-md) 0;
+    padding: 0 20px;
+    font-size: var(--font-size-title);
+    color: var(--color-primary);
+    white-space: normal;
+    -unity-text-align: middle-center;
+}
+
+/* The back button is a tab-like bar of a single button. */
+#container #glossary-back-button {
+    flex-grow: 0;
+    flex-shrink: 0;
+    flex-basis: auto;
+    width: 100%;
+    margin: 0 0 var(--spacing-md) 0;
+    color: var(--color-primary);
+}
+
+#glossary-scroll {
+    flex-grow: 1;
+    flex-shrink: 1;
+    width: 100%;
+}
+
+/* Header of a detail view: portrait, name and a short line. */
+.glossary-header {
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: var(--spacing-md);
+}
+
+.glossary-header__image {
+    width: 36px;
+    height: 36px;
+    flex-shrink: 0;
+    margin-right: 6px;
+}
+
+.glossary-header__texts {
+    flex-grow: 1;
+    flex-shrink: 1;
+}
+
+.glossary-header__name {
+    margin: 0;
+    padding: 0;
+    font-size: var(--font-size-title);
+    color: var(--color-primary);
+    white-space: normal;
+    -unity-text-align: middle-left;
+}
+
+.glossary-header__sub {
+    margin: 0;
+    padding: 0;
+    font-size: var(--font-size-hud);
+    color: var(--color-xp-level);
+    white-space: normal;
+    -unity-text-align: middle-left;
+}
+
+.glossary-note {
+    margin: var(--spacing-sm) 0 0 0;
+    padding: 0;
+    font-size: var(--font-size-hud);
+    color: var(--color-text-dim);
+    white-space: normal;
+    -unity-text-align: upper-left;
+}
+
+.glossary-empty {
+    margin: 12px 0;
+    padding: 0;
+    font-size: var(--font-size-body);
+    color: var(--color-text-dim);
+    white-space: normal;
+    -unity-text-align: middle-center;
+}

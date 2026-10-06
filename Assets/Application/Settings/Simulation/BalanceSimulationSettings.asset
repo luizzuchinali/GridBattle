@@ -1,0 +1,63 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e997ff281d74c1f428c2c32584dff828, type: 3}
+  m_Name: BalanceSimulationSettings
+  m_EditorClassIdentifier: Assembly-CSharp::GridBattle.Gameplay.Simulation.BalanceSimulationSettings
+  options:
+    label: baseline
+    classes: 
+    runsPerClass: 30
+    startSeed: 1000
+    botSeed: 12345
+    map:
+      policy: 3
+      healBelowHpFraction: 0.5
+      talentNodeMinHpFraction: 0.6
+      battleWeight: 3
+      healWeight: 0.5
+      talentWeight: 1
+      consumableWeight: 1
+    talents:
+      policy: 0
+      rerollWithoutSynergy: 0
+      maxRerollsPerOffer: 1
+      banWithoutSynergy: 0
+      skipWithoutSynergy: 0
+    battleBot:
+      useSkills: 1
+      useConsumables: 1
+      skillMinTargets: 2
+      potionHpFraction: 0.5
+      supportItemHpFraction: 0.8
+      areaItemMinTargets: 2
+      healSkillHpFraction: 0.4
+      hazardPenalty: 3
+      bonusReward: 1.5
+      roleTierDistanceBonus: 1
+      focusRoleOrder:
+      - Support
+      - Summoner
+      - Controller
+      - Ranged
+      rushRoleNames:
+      - Summoner
+    restoreHpBeforeBattle: 0
+    maxTurnsPerBattle: 150
+    stuckFrames: 240
+    maxSecondsPerRun: 120
+    maxFailedActions: 3
+    actionBudgetMs: 25
+    timeScale: 1
+    uncapFrameRate: 1
+    outputFolder: Simulation
+    writeCsv: 1
+    logSummary: 1

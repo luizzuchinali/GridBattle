@@ -1,0 +1,1632 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b11a58205ec3474ca216360e9fa74a8, type: 3}
+  m_Name: Content Shared Data
+  m_EditorClassIdentifier: Unity.Localization::UnityEngine.Localization.Tables.SharedTableData
+  m_TableCollectionName: Content
+  m_TableCollectionNameGuidString: 84108cdf327ab9342bf94b3442a30042
+  m_Entries:
+  - m_Id: 4496571990016
+    m_Key: state.weakened.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4496651681792
+    m_Key: state.weakened.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4497024974848
+    m_Key: state.thorn_armor.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4497024974849
+    m_Key: state.thorn_armor.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4497381490688
+    m_Key: state.life_steal.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4497381490689
+    m_Key: state.life_steal.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4497729617920
+    m_Key: state.regeneration.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4497729617921
+    m_Key: state.regeneration.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4498077745152
+    m_Key: state.shield.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4498077745153
+    m_Key: state.shield.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4498425872384
+    m_Key: state.poisoned.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4498425872385
+    m_Key: state.poisoned.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7824852877312
+    m_Key: state.armored.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7824865460224
+    m_Key: state.armored.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7825255530496
+    m_Key: enemy_role.melee.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7825255530497
+    m_Key: enemy_role.melee.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7825603657728
+    m_Key: enemy_role.swarm.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7825603657729
+    m_Key: enemy_role.swarm.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7825955979264
+    m_Key: enemy_role.ranged.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7825955979265
+    m_Key: enemy_role.ranged.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7826312495104
+    m_Key: enemy_role.support.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7826312495105
+    m_Key: enemy_role.support.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7826656428032
+    m_Key: enemy_role.summoner.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7826656428033
+    m_Key: enemy_role.summoner.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7827000360960
+    m_Key: enemy_role.controller.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7827000360961
+    m_Key: enemy_role.controller.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7828103462912
+    m_Key: enemy.goblin.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7828103462913
+    m_Key: enemy.goblin.behavior
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7828103462914
+    m_Key: enemy.slime.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7828103462915
+    m_Key: enemy.slime.behavior
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7828103462916
+    m_Key: enemy.rat.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7828103462917
+    m_Key: enemy.rat.behavior
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7828103462918
+    m_Key: enemy.eye_bat.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7828103462919
+    m_Key: enemy.eye_bat.behavior
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7828103462920
+    m_Key: enemy.fire_skull.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7828103462921
+    m_Key: enemy.fire_skull.behavior
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7828212514816
+    m_Key: enemy.goblin_shaman.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7828212514817
+    m_Key: enemy.goblin_shaman.behavior
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7828325761024
+    m_Key: enemy.rat_queen.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7828325761025
+    m_Key: enemy.rat_queen.behavior
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7828430618624
+    m_Key: enemy.hexing_eye.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7828430618625
+    m_Key: enemy.hexing_eye.behavior
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7828539670528
+    m_Key: enemy.armored_goblin.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7828539670529
+    m_Key: enemy.armored_goblin.behavior
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7828652916736
+    m_Key: enemy.regenerating_slime.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7828652916737
+    m_Key: enemy.regenerating_slime.behavior
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7828757774336
+    m_Key: enemy.thorny_rat.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7828757774337
+    m_Key: enemy.thorny_rat.behavior
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7840745095168
+    m_Key: skill.strike.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7840745095169
+    m_Key: skill.strike.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7841101611008
+    m_Key: skill.shield_charge.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7841101611009
+    m_Key: skill.shield_charge.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7841487486976
+    m_Key: skill.fireball.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7841487486977
+    m_Key: skill.fireball.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7841844002816
+    m_Key: skill.frost_nova.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7841844002817
+    m_Key: skill.frost_nova.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7842200518656
+    m_Key: skill.lightning_storm.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7842200518657
+    m_Key: skill.lightning_storm.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7842586394624
+    m_Key: skill.throwing_dagger.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7842586394625
+    m_Key: skill.throwing_dagger.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7842947104768
+    m_Key: skill.smoke_bomb.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7842947104769
+    m_Key: skill.smoke_bomb.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7843299426304
+    m_Key: skill.poisoned_dagger.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7843299426305
+    m_Key: skill.poisoned_dagger.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7843660136448
+    m_Key: skill.poison_line.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7843660136449
+    m_Key: skill.poison_line.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10290159910912
+    m_Key: tutorial.first_battle.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10290247991296
+    m_Key: tutorial.first_battle.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10290373820416
+    m_Key: tutorial.first_map.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10290373820417
+    m_Key: tutorial.first_map.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10290495455232
+    m_Key: tutorial.first_level_up.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10290495455233
+    m_Key: tutorial.first_level_up.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10290604507136
+    m_Key: tutorial.first_battle_won.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10290604507137
+    m_Key: tutorial.first_battle_won.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10290717753344
+    m_Key: tutorial.first_heal_node.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10290717753345
+    m_Key: tutorial.first_heal_node.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10290826805248
+    m_Key: tutorial.first_talent_node.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10290826805249
+    m_Key: tutorial.first_talent_node.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10290944245760
+    m_Key: tutorial.first_consumable_node.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10290944245761
+    m_Key: tutorial.first_consumable_node.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10291057491968
+    m_Key: tutorial.first_long_press.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10291057491969
+    m_Key: tutorial.first_long_press.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10291187515392
+    m_Key: tutorial.first_skill.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10291187515393
+    m_Key: tutorial.first_skill.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 141742633615360
+    m_Key: consumable.healing_potion.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 141742713307136
+    m_Key: consumable.healing_potion.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 141743153709056
+    m_Key: consumable.bomb.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 141743153709057
+    m_Key: consumable.bomb.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 141743547973632
+    m_Key: consumable.regeneration_tonic.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 141743547973633
+    m_Key: consumable.regeneration_tonic.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 142151209156608
+    m_Key: terrain.rock.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 142151209156609
+    m_Key: terrain.rock.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 142151704084480
+    m_Key: terrain.fire.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 142151704084481
+    m_Key: terrain.fire.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 142152127709184
+    m_Key: terrain.poison_bog.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 142152127709185
+    m_Key: terrain.poison_bog.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 142152563916800
+    m_Key: terrain.healing_shrine.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 142152563916801
+    m_Key: terrain.healing_shrine.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 142153050456064
+    m_Key: terrain.ward_stone.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 142153050456065
+    m_Key: terrain.ward_stone.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 151679795429376
+    m_Key: enemy.goblin_king.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 151679891898368
+    m_Key: enemy.goblin_king.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 151679891898369
+    m_Key: enemy.goblin_king.behavior
+    m_Metadata:
+      m_Items: []
+  - m_Id: 151680038699008
+    m_Key: enemy.goblin_guard.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 151680038699009
+    m_Key: enemy.goblin_guard.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 151680038699010
+    m_Key: enemy.goblin_guard.behavior
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218482187194368
+    m_Key: tag.offense.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218482434658304
+    m_Key: tag.defense.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218482585653248
+    m_Key: tag.critical.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218482719870976
+    m_Key: tag.skills.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218482841505792
+    m_Key: tag.sustain.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218482958946304
+    m_Key: tag.utility.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218483076386816
+    m_Key: tag.guardian.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218483202215936
+    m_Key: tag.arcane.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218483328045056
+    m_Key: tag.shadow.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218483445485568
+    m_Key: tag.venom.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218484057853952
+    m_Key: state.talent.vitality.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218484057853953
+    m_Key: state.talent.vitality.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218484464701440
+    m_Key: state.talent.sharpened_blade.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218484464701441
+    m_Key: state.talent.sharpened_blade.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218484909297664
+    m_Key: state.talent.keen_eye.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218484909297665
+    m_Key: state.talent.keen_eye.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218485311950848
+    m_Key: state.talent.lethal_precision.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218485311950849
+    m_Key: state.talent.lethal_precision.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218485693632512
+    m_Key: state.talent.armor_piercing.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218485693632513
+    m_Key: state.talent.armor_piercing.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218486079508480
+    m_Key: state.talent.toughness.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218486079508481
+    m_Key: state.talent.toughness.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218486490550272
+    m_Key: state.talent.skill_mastery.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218486490550273
+    m_Key: state.talent.skill_mastery.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218486876426240
+    m_Key: state.talent.far_reach.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218486876426241
+    m_Key: state.talent.far_reach.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218487270690816
+    m_Key: state.talent.quick_recovery.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218487270690817
+    m_Key: state.talent.quick_recovery.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218487669149696
+    m_Key: state.talent.thorn_armor.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218487669149697
+    m_Key: state.talent.thorn_armor.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218488046637056
+    m_Key: state.talent.life_steal.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218488046637057
+    m_Key: state.talent.life_steal.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218488432513024
+    m_Key: state.talent.regeneration.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218488432513025
+    m_Key: state.talent.regeneration.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218488814194688
+    m_Key: state.talent.wider_choice.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218488814194689
+    m_Key: state.talent.wider_choice.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218489191682048
+    m_Key: state.talent.fortunes_favor.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218489191682049
+    m_Key: state.talent.fortunes_favor.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218489581752320
+    m_Key: state.talent.banisher.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218489581752321
+    m_Key: state.talent.banisher.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218489829216256
+    m_Key: talent.vitality.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218489829216257
+    m_Key: talent.vitality.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218490064097280
+    m_Key: talent.sharpened_blade.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218490064097281
+    m_Key: talent.sharpened_blade.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218490298978304
+    m_Key: talent.keen_eye.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218490298978305
+    m_Key: talent.keen_eye.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218490542247936
+    m_Key: talent.lethal_precision.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218490542247937
+    m_Key: talent.lethal_precision.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218490772934656
+    m_Key: talent.armor_piercing.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218490777128960
+    m_Key: talent.armor_piercing.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218490995232768
+    m_Key: talent.toughness.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218490995232769
+    m_Key: talent.toughness.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218491221725184
+    m_Key: talent.skill_mastery.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218491221725185
+    m_Key: talent.skill_mastery.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218491444023296
+    m_Key: talent.far_reach.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218491444023297
+    m_Key: talent.far_reach.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218491670515712
+    m_Key: talent.quick_recovery.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218491670515713
+    m_Key: talent.quick_recovery.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218491930562560
+    m_Key: talent.thorn_armor.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218491930562561
+    m_Key: talent.thorn_armor.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218492148666368
+    m_Key: talent.life_steal.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218492148666369
+    m_Key: talent.life_steal.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218492383547392
+    m_Key: talent.regeneration.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218492383547393
+    m_Key: talent.regeneration.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218492639399936
+    m_Key: talent.wider_choice.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218492639399937
+    m_Key: talent.wider_choice.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218492886863872
+    m_Key: talent.fortunes_favor.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218492886863873
+    m_Key: talent.fortunes_favor.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218493130133504
+    m_Key: talent.banisher.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218493130133505
+    m_Key: talent.banisher.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218493557952512
+    m_Key: talent.bulwark.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218493557952513
+    m_Key: talent.bulwark.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218493989965824
+    m_Key: talent.grimoire.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218493989965825
+    m_Key: talent.grimoire.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218494451339264
+    m_Key: talent.cryomancy.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218494451339265
+    m_Key: talent.cryomancy.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218494916907008
+    m_Key: talent.stormcaller.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218494921101312
+    m_Key: talent.stormcaller.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218495558635520
+    m_Key: talent.hidden_arsenal.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218495558635521
+    m_Key: talent.hidden_arsenal.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218496020008960
+    m_Key: talent.shadow_master.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218496020008961
+    m_Key: talent.shadow_master.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218496452022272
+    m_Key: talent.quick_hands.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218496452022273
+    m_Key: talent.quick_hands.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218496955338752
+    m_Key: talent.poison_master.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218496955338753
+    m_Key: talent.poison_master.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 220859090882560
+    m_Key: class.knight.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 220859187351552
+    m_Key: class.mage.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 220859187351553
+    m_Key: class.rogue.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 302178474938368
+    m_Key: state.talent.cryomancy.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 302178546241536
+    m_Key: state.talent.cryomancy.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 302178680459264
+    m_Key: state.talent.quick_hands.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 302178684653568
+    m_Key: state.talent.quick_hands.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 444084762312704
+    m_Key: skill.shield_bash.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 444084842004480
+    m_Key: skill.shield_bash.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 444085320155136
+    m_Key: skill.gust.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 444085320155137
+    m_Key: skill.gust.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 444085714419712
+    m_Key: skill.hook.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 444085714419713
+    m_Key: skill.hook.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 444086129655808
+    m_Key: skill.goblin_hook.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 444086129655809
+    m_Key: skill.goblin_hook.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 444086486171648
+    m_Key: skill.king_shockwave.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 444086486171649
+    m_Key: skill.king_shockwave.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 444086842687488
+    m_Key: talent.brute_force.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 444086842687489
+    m_Key: talent.brute_force.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 444087199203328
+    m_Key: talent.wind_mastery.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 444087199203329
+    m_Key: talent.wind_mastery.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 444087547330560
+    m_Key: talent.grappling_hook.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 444087547330561
+    m_Key: talent.grappling_hook.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 444087660576768
+    m_Key: enemy.goblin_hookman.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 444087660576769
+    m_Key: enemy.goblin_hookman.behavior
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458931054968832
+    m_Key: tag.brawler.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458931294044160
+    m_Key: tag.elemental.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458931742834688
+    m_Key: state.burning.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458931742834689
+    m_Key: state.burning.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458932103544832
+    m_Key: state.venom.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458932103544833
+    m_Key: state.venom.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458932476837888
+    m_Key: state.chilled.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458932476837889
+    m_Key: state.chilled.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458932833353728
+    m_Key: state.stunned.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458932833353729
+    m_Key: state.stunned.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458933202452480
+    m_Key: state.exposed.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458933202452481
+    m_Key: state.exposed.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458933571551232
+    m_Key: state.talent.heavy_strike.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458933571551233
+    m_Key: state.talent.heavy_strike.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458933923872768
+    m_Key: talent.heavy_strike.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458933923872769
+    m_Key: talent.heavy_strike.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458934280388608
+    m_Key: state.talent.wide_swing.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458934280388609
+    m_Key: state.talent.wide_swing.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458934632710144
+    m_Key: talent.wide_swing.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458934632710145
+    m_Key: talent.wide_swing.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458935052140544
+    m_Key: state.talent.shoving_strike.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458935052140545
+    m_Key: state.talent.shoving_strike.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458935479959552
+    m_Key: talent.shoving_strike.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458935484153856
+    m_Key: talent.shoving_strike.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458935916167168
+    m_Key: state.talent.melee_frenzy.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458935916167169
+    m_Key: state.talent.melee_frenzy.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458936364957696
+    m_Key: talent.melee_frenzy.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458936364957697
+    m_Key: talent.melee_frenzy.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458936805359616
+    m_Key: state.talent.hold_the_line.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458936805359617
+    m_Key: state.talent.hold_the_line.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458937233178624
+    m_Key: talent.hold_the_line.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458937233178625
+    m_Key: talent.hold_the_line.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458937702940672
+    m_Key: state.talent.bloodlust.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458937702940673
+    m_Key: state.talent.bloodlust.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458938113982464
+    m_Key: talent.bloodlust.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458938113982465
+    m_Key: talent.bloodlust.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458938508247040
+    m_Key: state.talent.shatter.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458938508247041
+    m_Key: state.talent.shatter.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458938906705920
+    m_Key: talent.shatter.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458938906705921
+    m_Key: talent.shatter.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458939284193280
+    m_Key: state.talent.concussive_bash.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458939284193281
+    m_Key: state.talent.concussive_bash.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458939636514816
+    m_Key: talent.concussive_bash.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458939640709120
+    m_Key: talent.concussive_bash.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458939997224960
+    m_Key: state.talent.rattling_bash.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458939997224961
+    m_Key: state.talent.rattling_bash.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458940349546496
+    m_Key: talent.rattling_bash.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458940349546497
+    m_Key: talent.rattling_bash.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458940697673728
+    m_Key: state.talent.concussion.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458940697673729
+    m_Key: state.talent.concussion.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458941049995264
+    m_Key: talent.concussion.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458941049995265
+    m_Key: talent.concussion.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458941398122496
+    m_Key: state.talent.rapid_charge.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458941398122497
+    m_Key: state.talent.rapid_charge.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458941809164288
+    m_Key: talent.rapid_charge.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458941809164289
+    m_Key: talent.rapid_charge.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458942165680128
+    m_Key: state.talent.bulldozer.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458942165680129
+    m_Key: state.talent.bulldozer.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458942522195968
+    m_Key: talent.bulldozer.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458942522195969
+    m_Key: talent.bulldozer.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458942870323200
+    m_Key: state.talent.chilling_touch.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458942874517504
+    m_Key: state.talent.chilling_touch.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458943222644736
+    m_Key: talent.chilling_touch.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458943222644737
+    m_Key: talent.chilling_touch.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458943574966272
+    m_Key: state.talent.quick_frost.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458943574966273
+    m_Key: state.talent.quick_frost.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458943927287808
+    m_Key: talent.quick_frost.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458943927287809
+    m_Key: talent.quick_frost.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458944296386560
+    m_Key: state.talent.frost_expansion.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458944296386561
+    m_Key: state.talent.frost_expansion.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458944678068224
+    m_Key: talent.frost_expansion.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458944678068225
+    m_Key: talent.frost_expansion.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458945072332800
+    m_Key: state.talent.pyromancy.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458945072332801
+    m_Key: state.talent.pyromancy.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458945437237248
+    m_Key: talent.pyromancy.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458945437237249
+    m_Key: talent.pyromancy.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458945785364480
+    m_Key: state.talent.ignite.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458945785364481
+    m_Key: state.talent.ignite.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458946141880320
+    m_Key: talent.ignite.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458946141880321
+    m_Key: talent.ignite.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458946494201856
+    m_Key: state.talent.wide_blast.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458946494201857
+    m_Key: state.talent.wide_blast.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458946846523392
+    m_Key: talent.wide_blast.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458946846523393
+    m_Key: talent.wide_blast.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458947198844928
+    m_Key: state.talent.storm_caller.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458947198844929
+    m_Key: state.talent.storm_caller.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458947559555072
+    m_Key: talent.storm_caller.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458947559555073
+    m_Key: talent.storm_caller.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458947907682304
+    m_Key: state.talent.storm_front.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458947907682305
+    m_Key: state.talent.storm_front.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458948264198144
+    m_Key: talent.storm_front.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458948268392448
+    m_Key: talent.storm_front.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458948629102592
+    m_Key: state.talent.hurricane.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458948629102593
+    m_Key: state.talent.hurricane.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458948994007040
+    m_Key: talent.hurricane.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458948994007041
+    m_Key: talent.hurricane.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458949342134272
+    m_Key: state.talent.gale_force.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458949342134273
+    m_Key: state.talent.gale_force.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458949694455808
+    m_Key: talent.gale_force.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458949694455809
+    m_Key: talent.gale_force.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458950071943168
+    m_Key: state.talent.brittle.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458950071943169
+    m_Key: state.talent.brittle.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458950432653312
+    m_Key: talent.brittle.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458950432653313
+    m_Key: talent.brittle.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458950780780544
+    m_Key: state.talent.arcane_focus.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458950780780545
+    m_Key: state.talent.arcane_focus.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458951166656512
+    m_Key: talent.arcane_focus.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458951166656513
+    m_Key: talent.arcane_focus.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458951573504000
+    m_Key: state.talent.soul_harvest.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458951573504001
+    m_Key: state.talent.soul_harvest.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458951959379968
+    m_Key: talent.soul_harvest.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458951959379969
+    m_Key: talent.soul_harvest.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458952328478720
+    m_Key: state.talent.envenomed_blades.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458952328478721
+    m_Key: state.talent.envenomed_blades.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458952731131904
+    m_Key: talent.envenomed_blades.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458952731131905
+    m_Key: talent.envenomed_blades.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458953083453440
+    m_Key: state.talent.coated_weapon.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458953087647744
+    m_Key: state.talent.coated_weapon.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458953444163584
+    m_Key: talent.coated_weapon.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458953444163585
+    m_Key: talent.coated_weapon.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458953796485120
+    m_Key: state.talent.sharpened_daggers.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458953796485121
+    m_Key: state.talent.sharpened_daggers.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458954153000960
+    m_Key: talent.sharpened_daggers.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458954153000961
+    m_Key: talent.sharpened_daggers.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458954513711104
+    m_Key: state.talent.eagle_eye.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458954513711105
+    m_Key: state.talent.eagle_eye.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458954857644032
+    m_Key: talent.eagle_eye.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458954857644033
+    m_Key: talent.eagle_eye.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458955201576960
+    m_Key: state.talent.piercing_throw.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458955201576961
+    m_Key: state.talent.piercing_throw.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458955553898496
+    m_Key: talent.piercing_throw.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458955553898497
+    m_Key: talent.piercing_throw.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458955914608640
+    m_Key: state.talent.swift_dagger.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458955914608641
+    m_Key: state.talent.swift_dagger.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458956275318784
+    m_Key: talent.swift_dagger.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458956275318785
+    m_Key: talent.swift_dagger.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458956627640320
+    m_Key: state.talent.choking_smoke.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458956627640321
+    m_Key: state.talent.choking_smoke.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458956996739072
+    m_Key: talent.choking_smoke.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458956996739073
+    m_Key: talent.choking_smoke.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458957365837824
+    m_Key: state.talent.lingering_smoke.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458957365837825
+    m_Key: state.talent.lingering_smoke.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458957718159360
+    m_Key: talent.lingering_smoke.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458957718159361
+    m_Key: talent.lingering_smoke.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458958066286592
+    m_Key: state.talent.billowing_smoke.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458958066286593
+    m_Key: state.talent.billowing_smoke.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458958418608128
+    m_Key: talent.billowing_smoke.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458958418608129
+    m_Key: talent.billowing_smoke.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458958779318272
+    m_Key: state.talent.stunning_hook.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458958783512576
+    m_Key: state.talent.stunning_hook.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458959148417024
+    m_Key: talent.stunning_hook.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458959148417025
+    m_Key: talent.stunning_hook.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458959504932864
+    m_Key: state.talent.strong_pull.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458959504932865
+    m_Key: state.talent.strong_pull.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458959886614528
+    m_Key: talent.strong_pull.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458959886614529
+    m_Key: talent.strong_pull.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458960251518976
+    m_Key: state.talent.venom_bolt.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458960251518977
+    m_Key: state.talent.venom_bolt.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458960670949376
+    m_Key: talent.venom_bolt.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458960670949377
+    m_Key: talent.venom_bolt.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458961031659520
+    m_Key: state.talent.predator.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458961031659521
+    m_Key: state.talent.predator.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458961388175360
+    m_Key: talent.predator.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458961388175361
+    m_Key: talent.predator.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458961736302592
+    m_Key: state.talent.hit_and_run.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458961736302593
+    m_Key: state.talent.hit_and_run.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458962084429824
+    m_Key: talent.hit_and_run.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458962084429825
+    m_Key: talent.hit_and_run.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458962432557056
+    m_Key: state.talent.assassin.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458962432557057
+    m_Key: state.talent.assassin.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458962789072896
+    m_Key: talent.assassin.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458962789072897
+    m_Key: talent.assassin.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458963149783040
+    m_Key: state.talent.shadow_feast.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458963149783041
+    m_Key: state.talent.shadow_feast.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458963497910272
+    m_Key: talent.shadow_feast.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458963497910273
+    m_Key: talent.shadow_feast.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 463460722933760
+    m_Key: state.talent.crippling_venom.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 463460781654016
+    m_Key: state.talent.crippling_venom.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 463461142364160
+    m_Key: talent.crippling_venom.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 463461142364161
+    m_Key: talent.crippling_venom.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 472301057474560
+    m_Key: state.talent.nimble.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 472301116194816
+    m_Key: state.talent.nimble.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 472301472710656
+    m_Key: talent.nimble.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 472301472710657
+    m_Key: talent.nimble.desc
+    m_Metadata:
+      m_Items: []
+  m_Metadata:
+    m_Items: []
+  m_KeyGenerator:
+    rid: 8661860360884846669
+  references:
+    version: 2
+    RefIds:
+    - rid: 8661860360884846669
+      type: {class: DistributedUIDGenerator, ns: UnityEngine.Localization.Tables, asm: Unity.Localization}
+      data:
+        m_CustomEpoch: 1791169959898

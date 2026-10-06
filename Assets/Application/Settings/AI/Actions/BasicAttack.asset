@@ -12,3 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 025b480f3c7377749a97f933147ec27b, type: 3}
   m_Name: BasicAttack
   m_EditorClassIdentifier: Assembly-CSharp::GridBattle.Gameplay.AI.Actions.BasicAttackAction
+  id: 731a0a1959b25f941b34c00a4d8f3b97

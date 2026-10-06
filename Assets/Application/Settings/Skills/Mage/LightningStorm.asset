@@ -1,0 +1,47 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6eef7bd41a83def4b92a13c21f9f56c7, type: 3}
+  m_Name: LightningStorm
+  m_EditorClassIdentifier: Assembly-CSharp::GridBattle.Gameplay.Entities.Skills.SkillDefinition
+  id: 1144dc0d578bd1343a9f1185f0613046
+  displayName:
+    m_TableReference:
+      m_TableCollectionName: Content
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: skill.lightning_storm.name
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  description:
+    m_TableReference:
+      m_TableCollectionName: Content
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: skill.lightning_storm.desc
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  icon: {fileID: 21300000, guid: 9095ebf7019266c4ab486024ff40bd32, type: 3}
+  type: 0
+  damage: 14
+  areaShape: 3
+  areaSize: 3
+  range: 3
+  unlimitedRange: 0
+  affects: 0
+  requiresAffectedTarget: 1
+  cooldown: 4
+  effects: []
+  references:
+    version: 2
+    RefIds: []

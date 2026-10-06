@@ -1,0 +1,15 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:zs="ZS.UI" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/Application/UI/Overlays/TutorialTip/TutorialTip.uss?fileID=7433441132597879392&amp;guid=51a6ca139bc84d8bac4e2238bbe45192&amp;type=3#TutorialTip"/>
+    <zs:SafeArea name="container" picking-mode="Ignore" class="container overlay-screen">
+        <ui:VisualElement name="overlay-background">
+            <ui:VisualElement name="tip-window" class="window-frame">
+                <ui:VisualElement name="tip-header" picking-mode="Ignore">
+                    <ui:Image name="tip-icon" picking-mode="Ignore"/>
+                    <ui:Label name="tip-title" text="Tip" picking-mode="Ignore"/>
+                </ui:VisualElement>
+                <ui:Label name="tip-text" picking-mode="Ignore"/>
+                <ui:Button name="tip-ok-button" text="OK" class="text-button"/>
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </zs:SafeArea>
+</ui:UXML>

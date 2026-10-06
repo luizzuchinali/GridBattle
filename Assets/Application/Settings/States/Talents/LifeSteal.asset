@@ -1,0 +1,47 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8398ac738fa68741976f21eef8c4ee6, type: 3}
+  m_Name: LifeSteal
+  m_EditorClassIdentifier: Assembly-CSharp::GridBattle.Gameplay.States.StateDefinition
+  id: 87515d7156d30e042b04635188da2cc5
+  displayName:
+    m_TableReference:
+      m_TableCollectionName: Content
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: state.talent.life_steal.name
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  description:
+    m_TableReference:
+      m_TableCollectionName: Content
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: state.talent.life_steal.desc
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  icon: {fileID: 21300000, guid: fa04aca535b4dfe4c8296ba1521d2c10, type: 3}
+  kind: 0
+  stackPolicy: 2
+  maxStacks: 5
+  showInDetails: 1
+  effects:
+  - rid: 8661860374469673035
+  references:
+    version: 2
+    RefIds:
+    - rid: 8661860374469673035
+      type: {class: LifeStealEffect, ns: GridBattle.Gameplay.States.Effects, asm: Assembly-CSharp}
+      data:
+        fraction: 0.05

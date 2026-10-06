@@ -12,14 +12,62 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e7f604e158106f469724d865979731e, type: 3}
   m_Name: Knight
   m_EditorClassIdentifier: Assembly-CSharp::GridBattle.Gameplay.Entities.PlayerCharacterConfig
+  id: f425b4995a2a673498e410377d0afb75
+  displayName:
+    m_TableReference:
+      m_TableCollectionName: Content
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: class.knight.name
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  description:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  icon: {fileID: 0}
   sprite: {fileID: 961244134, guid: 2fdad3188ff58ad499e2f7940baf39ec, type: 3}
   animatorController: {fileID: 9100000, guid: 24a7dbd209e828e48a95a3c0a59aac93, type: 2}
+  tint: {r: 1, g: 1, b: 1, a: 1}
   maxHp: 120
   walkDistance: 1
   attackDistance: 1
   basicAttackDamage: 15
-  skills: []
+  critChance: 0
+  critMultiplier: 2
+  defensePenetration: 0
+  defense: 0
+  skillDamageBonus: 0
+  skillRange: 0
+  cooldownReduction: 0
+  canBeDisplaced: 1
+  skills:
+  - {fileID: 11400000, guid: 4bb8f2044b811214fbdcf69ebc8ef3b4, type: 2}
+  initialStates: []
   prefab: {fileID: 1427551736305951215, guid: 967c67956658ad84eade02cf2c3c6628, type: 3}
   characterClass: 0
-  baseXpToLevelUp: 50
-  xpToLevelUpGrowthPerLevel: 25
+  battlesToUnlock: 0
+  talentPool:
+  - {fileID: 11400000, guid: b653077e3e1075e41a1627e808d81b15, type: 2}
+  - {fileID: 11400000, guid: 6b9d27bbf1f4fd345bed28d7697f863b, type: 2}
+  - {fileID: 11400000, guid: 10ee6daa5f5f56d47a70ae48b3a22cd3, type: 2}
+  - {fileID: 11400000, guid: 34ef2de06e5eace41be788ddbc246a5d, type: 2}
+  - {fileID: 11400000, guid: e79e2ce31cc217e46b5a177f4e40f5bd, type: 2}
+  - {fileID: 11400000, guid: ed91790d308aa304699a9b8663fb09b3, type: 2}
+  - {fileID: 11400000, guid: 6dd5ac940f890de48a3f1f301245b7fa, type: 2}
+  - {fileID: 11400000, guid: 357d902b6118cc049bf2b1ae82fb5af9, type: 2}
+  - {fileID: 11400000, guid: 750cb6cc49edbd0458ddd3e77b97288a, type: 2}
+  - {fileID: 11400000, guid: 24a4d5cb5097a784286f3752e5878f22, type: 2}
+  - {fileID: 11400000, guid: 61acce770ae59f94aaa4c5db65429bea, type: 2}
+  - {fileID: 11400000, guid: 45754c032c8016242b4f8113518911bd, type: 2}
+  - {fileID: 11400000, guid: bc5569b32ba7c914789d334bbc62da84, type: 2}
+  - {fileID: 11400000, guid: f21b6b5fcffbb9c41814905f045b5296, type: 2}
+  references:
+    version: 2
+    RefIds: []

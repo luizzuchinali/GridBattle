@@ -1,0 +1,54 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ed99a411c5aa8942a176dce8ef11ada, type: 3}
+  m_Name: Predator
+  m_EditorClassIdentifier: Assembly-CSharp::GridBattle.Gameplay.Talents.TalentDefinition
+  id: 49cc3b15c4498ce48a32dacd1875260f
+  displayName:
+    m_TableReference:
+      m_TableCollectionName: Content
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: talent.predator.name
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  description:
+    m_TableReference:
+      m_TableCollectionName: Content
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: talent.predator.desc
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  icon: {fileID: 21300000, guid: e369b039e39933443b40968139761f9f, type: 3}
+  isPlaceholder: 1
+  allowedClasses:
+  - {fileID: 11400000, guid: 317c9296b1886594c806574a4d3d6726, type: 2}
+  requiredLevel: 3
+  prerequisites: []
+  maxRank: 2
+  baseWeight: 2.5
+  synergyTags:
+  - {fileID: 11400000, guid: 14ab514c221772b41969c956a3e86745, type: 2}
+  - {fileID: 11400000, guid: 8e6b5e3faa33a5b4bba8010bce3c89e6, type: 2}
+  - {fileID: 11400000, guid: 55505cd50faa2184ebd8a2ed32e83013, type: 2}
+  states:
+  - state: {fileID: 11400000, guid: 78113cc5d8133e142ba1f64bc3214d9b, type: 2}
+    permanent: 1
+    duration: 1
+    stacks: 1
+  unlockedSkill: {fileID: 0}
+  references:
+    version: 2
+    RefIds: []

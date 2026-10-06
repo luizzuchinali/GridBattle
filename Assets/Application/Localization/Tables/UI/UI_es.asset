@@ -1,0 +1,535 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: UI_es
+  m_EditorClassIdentifier: Unity.Localization::UnityEngine.Localization.Tables.StringTable
+  m_LocaleId:
+    m_Code: es
+  m_SharedData: {fileID: 11400000, guid: f76f6e135264e704c8f2234042ef4ff7, type: 2}
+  m_Metadata:
+    m_Items: []
+  m_TableData:
+  - m_Id: 151705321963520
+    m_Localized: Prof.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 151705368100864
+    m_Localized: PV
+    m_Metadata:
+      m_Items: []
+  - m_Id: 151705368100865
+    m_Localized: Papel
+    m_Metadata:
+      m_Items: []
+  - m_Id: 151705368100866
+    m_Localized: Comportamiento
+    m_Metadata:
+      m_Items: []
+  - m_Id: 151705368100867
+    m_Localized: Atributos
+    m_Metadata:
+      m_Items: []
+  - m_Id: 151705368100868
+    m_Localized: Habilidades
+    m_Metadata:
+      m_Items: []
+  - m_Id: 151705368100869
+    m_Localized: Estados
+    m_Metadata:
+      m_Items: []
+  - m_Id: 151705368100870
+    m_Localized: Terreno
+    m_Metadata:
+      m_Items: []
+  - m_Id: 151705368100871
+    m_Localized: Ninguno
+    m_Metadata:
+      m_Items: []
+  - m_Id: 151705368100872
+    m_Localized: Lista
+    m_Metadata:
+      m_Items: []
+  - m_Id: 151705368100873
+    m_Localized: Recarga {0}
+    m_Metadata:
+      m_Items: []
+  - m_Id: 151705368100874
+    m_Localized: Permanente
+    m_Metadata:
+      m_Items: []
+  - m_Id: 151705368100875
+    m_Localized: '{0} turno'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 151705368100876
+    m_Localized: '{0} turnos'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 151705368100877
+    m_Localized: "PV m\xE1x."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 151705368100878
+    m_Localized: Movimiento
+    m_Metadata:
+      m_Items: []
+  - m_Id: 151705368100879
+    m_Localized: Alcance de ataque
+    m_Metadata:
+      m_Items: []
+  - m_Id: 151705368100880
+    m_Localized: "Da\xF1o"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 151705368100881
+    m_Localized: "Prob. cr\xEDtico"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 151705368100882
+    m_Localized: "Da\xF1o cr\xEDtico"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 151705368100883
+    m_Localized: "Penetraci\xF3n"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 151705368100884
+    m_Localized: Defensa
+    m_Metadata:
+      m_Items: []
+  - m_Id: 151705368100885
+    m_Localized: "Da\xF1o de hab."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 151705368100886
+    m_Localized: Alcance de hab.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 151705368100887
+    m_Localized: Reduc. recarga
+    m_Metadata:
+      m_Items: []
+  - m_Id: 151705368100888
+    m_Localized: "Da\xF1o infligido"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 151705368100889
+    m_Localized: "Da\xF1o recibido"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333777707008
+    m_Localized: Elige un personaje
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010176
+    m_Localized: Continuar
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010177
+    m_Localized: Glosario
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010178
+    m_Localized: Opciones
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010179
+    m_Localized: '{0}: {1}/{2} batallas'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010180
+    m_Localized: Nueva partida
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010181
+    m_Localized: "Empezar una nueva partida descarta tu partida guardada. \xBFContinuar?"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010182
+    m_Localized: "S\xED"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010183
+    m_Localized: No
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010184
+    m_Localized: '{0}/{1}'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010185
+    m_Localized: PV {0}/{1}
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010186
+    m_Localized: Nv {0}   XP {1}/{2}
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010187
+    m_Localized: Nv {0}
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010188
+    m_Localized: "Elige tu pr\xF3ximo nodo"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010189
+    m_Localized: Confirmar
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010190
+    m_Localized: Enemigos
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010191
+    m_Localized: Terreno
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010192
+    m_Localized: Ninguno
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010193
+    m_Localized: XP {0}
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010194
+    m_Localized: '{0} x{1}'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010195
+    m_Localized: Batalla
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010196
+    m_Localized: Jefe
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010197
+    m_Localized: "Curaci\xF3n"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010198
+    m_Localized: Talento
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010199
+    m_Localized: Consumible
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010200
+    m_Localized: '{0} - {1}'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010201
+    m_Localized: "F\xE1cil"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010202
+    m_Localized: Normal
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010203
+    m_Localized: "Dif\xEDcil"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010204
+    m_Localized: Recupera {0} PV.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010205
+    m_Localized: Elige un talento. Cuesta {0} PV.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010206
+    m_Localized: Encuentra un consumible para tus batallas.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010207
+    m_Localized: Consumible encontrado
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010208
+    m_Localized: Elige uno
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010209
+    m_Localized: Inventario lleno
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010210
+    m_Localized: Descarta un objeto para tomar {0}
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010211
+    m_Localized: Descarta un objeto para hacer espacio
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010212
+    m_Localized: Dejarlo
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010213
+    m_Localized: Volver
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010214
+    m_Localized: Derrota
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010215
+    m_Localized: "Tu partida termina aqu\xED."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010216
+    m_Localized: Partida abandonada
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010217
+    m_Localized: Abandonaste esta partida.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010218
+    m_Localized: "\xA1Victoria!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010219
+    m_Localized: "El jefe final ha ca\xEDdo."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010220
+    m_Localized: Nivel {0}
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010221
+    m_Localized: Partida
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010222
+    m_Localized: Profundidad
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010223
+    m_Localized: '{0}/{1}'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010224
+    m_Localized: Batallas ganadas
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010225
+    m_Localized: Enemigos derrotados
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010226
+    m_Localized: "Da\xF1o infligido"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010227
+    m_Localized: "Da\xF1o recibido"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010228
+    m_Localized: Talentos
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010229
+    m_Localized: Habilidades
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333853204480
+    m_Localized: Ninguno
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333853204481
+    m_Localized: x{0}
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333853204482
+    m_Localized: Clases
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333853204483
+    m_Localized: "\xA1Nueva clase desbloqueada: {0}!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333853204484
+    m_Localized: "Men\xFA principal"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 230266591793152
+    m_Localized: Nivel {0}
+    m_Metadata:
+      m_Items: []
+  - m_Id: 230266675679232
+    m_Localized: Nodo de talento
+    m_Metadata:
+      m_Items: []
+  - m_Id: 230266675679233
+    m_Localized: Elige un talento
+    m_Metadata:
+      m_Items: []
+  - m_Id: 230266675679234
+    m_Localized: Toca un talento para vetarlo
+    m_Metadata:
+      m_Items: []
+  - m_Id: 230266675679235
+    m_Localized: "+{0} m\xE1s en espera"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 230266675679236
+    m_Localized: 'Encaja con tu build: {0}'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 230266675679237
+    m_Localized: 'Nueva habilidad: {0}'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 230266675679238
+    m_Localized: Repetir x{0}
+    m_Metadata:
+      m_Items: []
+  - m_Id: 230266675679239
+    m_Localized: Vetar x{0}
+    m_Metadata:
+      m_Items: []
+  - m_Id: 230266675679240
+    m_Localized: Cancelar
+    m_Metadata:
+      m_Items: []
+  - m_Id: 230266675679241
+    m_Localized: Omitir x{0}
+    m_Metadata:
+      m_Items: []
+  - m_Id: 230266675679242
+    m_Localized: "\xBFOmitir talento?"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 230266675679243
+    m_Localized: "Perder\xE1s esta elecci\xF3n de talento."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 230266675679244
+    m_Localized: Glosario
+    m_Metadata:
+      m_Items: []
+  - m_Id: 230266675679245
+    m_Localized: Clases
+    m_Metadata:
+      m_Items: []
+  - m_Id: 230266675679246
+    m_Localized: Enemigos
+    m_Metadata:
+      m_Items: []
+  - m_Id: 230266675679247
+    m_Localized: Volver
+    m_Metadata:
+      m_Items: []
+  - m_Id: 230266675679248
+    m_Localized: '{0}/{1} talentos hallados'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 230266675679249
+    m_Localized: 'Bloqueada: {0}/{1} batallas'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 230266675679250
+    m_Localized: Talentos {0}/{1}
+    m_Metadata:
+      m_Items: []
+  - m_Id: 230266675679251
+    m_Localized: "Rango m\xE1x. {0}"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 230266675679252
+    m_Localized: "A\xFAn no conoces enemigos"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 230266675679253
+    m_Localized: Jefe
+    m_Metadata:
+      m_Items: []
+  - m_Id: 230266675679254
+    m_Localized: Valores base. Crecen con la profundidad.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 230266675679255
+    m_Localized: Empieza con
+    m_Metadata:
+      m_Items: []
+  - m_Id: 230266675679256
+    m_Localized: Idioma
+    m_Metadata:
+      m_Items: []
+  - m_Id: 230266675679257
+    m_Localized: "Autom\xE1tico"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 230266675679258
+    m_Localized: English
+    m_Metadata:
+      m_Items: []
+  - m_Id: 230266675679259
+    m_Localized: "Espa\xF1ol"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 230266675679260
+    m_Localized: "Portugu\xEAs (Brasil)"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 230266675679261
+    m_Localized: "M\xFAsica"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 230266675679262
+    m_Localized: Efectos de sonido
+    m_Metadata:
+      m_Items: []
+  - m_Id: 230266675679263
+    m_Localized: Consejos
+    m_Metadata:
+      m_Items: []
+  - m_Id: 230266675679264
+    m_Localized: "Consejos: S\xED"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 230266675679265
+    m_Localized: 'Consejos: No'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 230266675679266
+    m_Localized: Ver consejos otra vez
+    m_Metadata:
+      m_Items: []
+  - m_Id: 230266675679267
+    m_Localized: Pausa
+    m_Metadata:
+      m_Items: []
+  - m_Id: 230266675679268
+    m_Localized: Rendirse
+    m_Metadata:
+      m_Items: []
+  - m_Id: 230266675679269
+    m_Localized: "\xBFRendirse?"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 230266675679270
+    m_Localized: La partida termina ahora y se pierde su progreso.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 230266675679271
+    m_Localized: OK
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 2
+    RefIds: []

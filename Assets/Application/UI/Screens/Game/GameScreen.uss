@@ -1,9 +1,11 @@
+/* Vertical budget at the 216x384 reference: XP bar 32 + grid 286 + item bar 32 + skill bar 32 = 382,
+   so no padding: the bars hug the screen edges (the safe area still insets them on devices). */
 #container {
     background-color: rgba(0, 0, 0, 0);
     align-self: center;
     width: 202px;
-    padding-top: 8px;
-    padding-bottom: 8px;
+    padding-top: 0;
+    padding-bottom: 0;
 }
 
 /* XP area (top bar) */
@@ -13,6 +15,36 @@
     width: 100%;
     min-height: 32px;
     max-height: 32px;
+}
+
+/* Run depth tile, left of the XP bar. Keeps its place (invisible) while there is no depth. */
+#hud-depth {
+    width: 32px;
+    height: 32px;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    background-image: var(--skin-slot);
+}
+
+#hud-depth.hud-depth--hidden {
+    visibility: hidden;
+}
+
+#hud-depth-caption {
+    margin: 0;
+    padding: 0;
+    font-size: var(--font-size-hud);
+    color: var(--color-xp-level);
+    -unity-text-align: middle-center;
+}
+
+#hud-depth-value {
+    margin: 0;
+    padding: 0;
+    font-size: var(--font-size-body);
+    color: var(--color-primary);
+    -unity-text-align: middle-center;
 }
 
 #xp-bar {
@@ -83,13 +115,4 @@
     flex-direction: column;
     width: 100%;
     height: 100%;
-}
-
-/* Skill slots (bottom bar) */
-#spell-area {
-    flex-grow: 1;
-    justify-content: center;
-    flex-direction: row;
-    width: 100%;
-    min-height: 32px;
 }

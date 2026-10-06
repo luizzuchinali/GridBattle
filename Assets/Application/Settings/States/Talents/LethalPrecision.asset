@@ -1,0 +1,50 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8398ac738fa68741976f21eef8c4ee6, type: 3}
+  m_Name: LethalPrecision
+  m_EditorClassIdentifier: Assembly-CSharp::GridBattle.Gameplay.States.StateDefinition
+  id: cfd96d866a79b8f4b99b9d32b8496f3a
+  displayName:
+    m_TableReference:
+      m_TableCollectionName: Content
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: state.talent.lethal_precision.name
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  description:
+    m_TableReference:
+      m_TableCollectionName: Content
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: state.talent.lethal_precision.desc
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  icon: {fileID: 21300000, guid: 2ac1336ac8d66474fa226ad1e6cfb773, type: 3}
+  kind: 0
+  stackPolicy: 2
+  maxStacks: 5
+  showInDetails: 1
+  effects:
+  - rid: 8661860374469673032
+  references:
+    version: 2
+    RefIds:
+    - rid: 8661860374469673032
+      type: {class: AttributeModifierEffect, ns: GridBattle.Gameplay.States.Effects, asm: Assembly-CSharp}
+      data:
+        modifiers:
+        - attribute: 5
+          type: 0
+          value: 0.25

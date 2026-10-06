@@ -1,0 +1,18 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:zs="ZS.UI" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/Application/UI/Overlays/TalentChoice/TalentChoice.uss?fileID=7433441132597879392&amp;guid=530622ea25b84c96accfc74aa330c7d8&amp;type=3#TalentChoice"/>
+    <zs:SafeArea name="container" picking-mode="Ignore" class="container overlay-screen">
+        <ui:VisualElement name="overlay-background">
+            <ui:VisualElement name="talent-window" class="window-frame">
+                <ui:Label name="talent-title" text="Level up" picking-mode="Ignore"/>
+                <ui:Label name="talent-subtitle" text="Choose a talent" picking-mode="Ignore"/>
+                <ui:Label name="talent-queued" picking-mode="Ignore"/>
+                <ui:ScrollView name="talent-scroll" class="slim-scroll" mode="Vertical" horizontal-scroller-visibility="Hidden" vertical-scroller-visibility="Auto" touch-scroll-type="Clamped"/>
+                <ui:VisualElement name="talent-tools">
+                    <ui:Button name="talent-reroll-button" text="Reroll" class="text-button talent-tool"/>
+                    <ui:Button name="talent-ban-button" text="Ban" class="text-button talent-tool"/>
+                    <ui:Button name="talent-skip-button" text="Skip" class="text-button talent-tool"/>
+                </ui:VisualElement>
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </zs:SafeArea>
+</ui:UXML>

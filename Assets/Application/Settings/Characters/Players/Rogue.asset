@@ -12,14 +12,73 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e7f604e158106f469724d865979731e, type: 3}
   m_Name: Rogue
   m_EditorClassIdentifier: Assembly-CSharp::GridBattle.Gameplay.Entities.PlayerCharacterConfig
+  id: 317c9296b1886594c806574a4d3d6726
+  displayName:
+    m_TableReference:
+      m_TableCollectionName: Content
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: class.rogue.name
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  description:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  icon: {fileID: 0}
   sprite: {fileID: -594443160, guid: 2fdad3188ff58ad499e2f7940baf39ec, type: 3}
   animatorController: {fileID: 9100000, guid: 721e6857049d8754b98733c23b06d3f8, type: 2}
-  maxHp: 90
+  tint: {r: 1, g: 1, b: 1, a: 1}
+  maxHp: 108
   walkDistance: 1
   attackDistance: 1
   basicAttackDamage: 15
-  skills: []
+  critChance: 0
+  critMultiplier: 2
+  defensePenetration: 0
+  defense: 0
+  skillDamageBonus: 0
+  skillRange: 0
+  cooldownReduction: 0
+  canBeDisplaced: 1
+  immuneStates: []
+  maxHpPercentDamageMultiplier: 1
+  skills:
+  - {fileID: 11400000, guid: b157a86b34771194ca950092c68cb1e6, type: 2}
+  initialStates: []
   prefab: {fileID: 1427551736305951215, guid: 967c67956658ad84eade02cf2c3c6628, type: 3}
   characterClass: 2
-  baseXpToLevelUp: 50
-  xpToLevelUpGrowthPerLevel: 25
+  battlesToUnlock: 30
+  talentPool:
+  - {fileID: 11400000, guid: e2caece96a82e8c48a3b95b1d0d9ddd3, type: 2}
+  - {fileID: 11400000, guid: 51ae753c9801b5e4a89fad33c266e86a, type: 2}
+  - {fileID: 11400000, guid: 8268718dc264f5f4aa467b897aca59b8, type: 2}
+  - {fileID: 11400000, guid: 838fd36a2c19ff0479fd983bdee00430, type: 2}
+  - {fileID: 11400000, guid: 4e613278d33da6a458a55c2048400562, type: 2}
+  - {fileID: 11400000, guid: 093ae4882d0365a499d4e2ac007fab70, type: 2}
+  - {fileID: 11400000, guid: 1f1fced6d1f423c4eb58eab91582ea21, type: 2}
+  - {fileID: 11400000, guid: 82793f47b847cb74ba004891af5ac631, type: 2}
+  - {fileID: 11400000, guid: 2f6846c1a00459744a4187518b0d12b5, type: 2}
+  - {fileID: 11400000, guid: 8128e65a59bd37b43972f1c5940630e6, type: 2}
+  - {fileID: 11400000, guid: 4c44b0ff5d1cf994687c70fff59385f4, type: 2}
+  - {fileID: 11400000, guid: 67fffe54998b99f4d84e7eff302f3e8e, type: 2}
+  - {fileID: 11400000, guid: 24de453237279784490c5e94f85c3b70, type: 2}
+  - {fileID: 11400000, guid: 4c32c406df26485449906bfc7b2d1981, type: 2}
+  - {fileID: 11400000, guid: 9ccba28cb67192c41af870984426ccb1, type: 2}
+  - {fileID: 11400000, guid: 1d7430671d3a2664aa44510766223e9a, type: 2}
+  - {fileID: 11400000, guid: 862b9649bd6c7a442a52ed45d6cd68ce, type: 2}
+  - {fileID: 11400000, guid: 49cc3b15c4498ce48a32dacd1875260f, type: 2}
+  - {fileID: 11400000, guid: a46fdb29996619547a2e63e0177d6293, type: 2}
+  - {fileID: 11400000, guid: 144547545f3f73940b4b2912042b37d9, type: 2}
+  - {fileID: 11400000, guid: 9deb95b2cdbca8f4e867d8decd343a77, type: 2}
+  - {fileID: 11400000, guid: 1f00a6f13d1e01d4a88383bb90981960, type: 2}
+  - {fileID: 11400000, guid: 11563319c10acbe4a9d27abb2d0c1869, type: 2}
+  references:
+    version: 2
+    RefIds: []

@@ -1,0 +1,540 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b11a58205ec3474ca216360e9fa74a8, type: 3}
+  m_Name: UI Shared Data
+  m_EditorClassIdentifier: Unity.Localization::UnityEngine.Localization.Tables.SharedTableData
+  m_TableCollectionName: UI
+  m_TableCollectionNameGuidString: f76f6e135264e704c8f2234042ef4ff7
+  m_Entries:
+  - m_Id: 151705321963520
+    m_Key: hud.depth
+    m_Metadata:
+      m_Items: []
+  - m_Id: 151705368100864
+    m_Key: details.hp
+    m_Metadata:
+      m_Items: []
+  - m_Id: 151705368100865
+    m_Key: details.role
+    m_Metadata:
+      m_Items: []
+  - m_Id: 151705368100866
+    m_Key: details.behavior
+    m_Metadata:
+      m_Items: []
+  - m_Id: 151705368100867
+    m_Key: details.attributes
+    m_Metadata:
+      m_Items: []
+  - m_Id: 151705368100868
+    m_Key: details.skills
+    m_Metadata:
+      m_Items: []
+  - m_Id: 151705368100869
+    m_Key: details.states
+    m_Metadata:
+      m_Items: []
+  - m_Id: 151705368100870
+    m_Key: details.terrain
+    m_Metadata:
+      m_Items: []
+  - m_Id: 151705368100871
+    m_Key: details.none
+    m_Metadata:
+      m_Items: []
+  - m_Id: 151705368100872
+    m_Key: details.skill.ready
+    m_Metadata:
+      m_Items: []
+  - m_Id: 151705368100873
+    m_Key: details.skill.cooldown
+    m_Metadata:
+      m_Items: []
+  - m_Id: 151705368100874
+    m_Key: details.state.permanent
+    m_Metadata:
+      m_Items: []
+  - m_Id: 151705368100875
+    m_Key: details.state.turn
+    m_Metadata:
+      m_Items: []
+  - m_Id: 151705368100876
+    m_Key: details.state.turns
+    m_Metadata:
+      m_Items: []
+  - m_Id: 151705368100877
+    m_Key: attribute.max_hp
+    m_Metadata:
+      m_Items: []
+  - m_Id: 151705368100878
+    m_Key: attribute.walk_range
+    m_Metadata:
+      m_Items: []
+  - m_Id: 151705368100879
+    m_Key: attribute.attack_range
+    m_Metadata:
+      m_Items: []
+  - m_Id: 151705368100880
+    m_Key: attribute.basic_damage
+    m_Metadata:
+      m_Items: []
+  - m_Id: 151705368100881
+    m_Key: attribute.crit_chance
+    m_Metadata:
+      m_Items: []
+  - m_Id: 151705368100882
+    m_Key: attribute.crit_multiplier
+    m_Metadata:
+      m_Items: []
+  - m_Id: 151705368100883
+    m_Key: attribute.defense_penetration
+    m_Metadata:
+      m_Items: []
+  - m_Id: 151705368100884
+    m_Key: attribute.defense
+    m_Metadata:
+      m_Items: []
+  - m_Id: 151705368100885
+    m_Key: attribute.skill_damage_bonus
+    m_Metadata:
+      m_Items: []
+  - m_Id: 151705368100886
+    m_Key: attribute.skill_range
+    m_Metadata:
+      m_Items: []
+  - m_Id: 151705368100887
+    m_Key: attribute.cooldown_reduction
+    m_Metadata:
+      m_Items: []
+  - m_Id: 151705368100888
+    m_Key: attribute.damage_dealt
+    m_Metadata:
+      m_Items: []
+  - m_Id: 151705368100889
+    m_Key: attribute.damage_taken
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333777707008
+    m_Key: menu.select_class
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010176
+    m_Key: menu.continue
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010177
+    m_Key: menu.glossary
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010178
+    m_Key: menu.options
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010179
+    m_Key: menu.unlock_progress
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010180
+    m_Key: menu.new_run.title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010181
+    m_Key: menu.new_run.message
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010182
+    m_Key: confirm.yes
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010183
+    m_Key: confirm.no
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010184
+    m_Key: map.depth_value
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010185
+    m_Key: map.hp
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010186
+    m_Key: map.xp
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010187
+    m_Key: map.level
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010188
+    m_Key: map.preview.hint
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010189
+    m_Key: map.confirm
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010190
+    m_Key: map.preview.enemies
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010191
+    m_Key: map.preview.terrain
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010192
+    m_Key: map.preview.no_terrain
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010193
+    m_Key: map.preview.xp
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010194
+    m_Key: map.preview.terrain_count
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010195
+    m_Key: map.node.battle
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010196
+    m_Key: map.node.boss
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010197
+    m_Key: map.node.heal
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010198
+    m_Key: map.node.talent
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010199
+    m_Key: map.node.consumable
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010200
+    m_Key: map.node.battle_difficulty
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010201
+    m_Key: map.difficulty.easy
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010202
+    m_Key: map.difficulty.normal
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010203
+    m_Key: map.difficulty.hard
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010204
+    m_Key: map.node.heal.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010205
+    m_Key: map.node.talent.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010206
+    m_Key: map.node.consumable.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010207
+    m_Key: consumable_offer.title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010208
+    m_Key: consumable_offer.choose
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010209
+    m_Key: consumable_offer.full
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010210
+    m_Key: consumable_offer.discard
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010211
+    m_Key: consumable_offer.discard_generic
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010212
+    m_Key: consumable_offer.decline
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010213
+    m_Key: consumable_offer.back
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010214
+    m_Key: run_end.defeat
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010215
+    m_Key: run_end.defeat.sub
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010216
+    m_Key: run_end.given_up
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010217
+    m_Key: run_end.given_up.sub
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010218
+    m_Key: victory.title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010219
+    m_Key: victory.sub
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010220
+    m_Key: run_end.class_level
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010221
+    m_Key: run_end.section.run
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010222
+    m_Key: run_end.depth
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010223
+    m_Key: run_end.depth_value
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010224
+    m_Key: run_end.battles
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010225
+    m_Key: run_end.enemies
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010226
+    m_Key: run_end.damage_dealt
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010227
+    m_Key: run_end.damage_taken
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010228
+    m_Key: run_end.section.talents
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010229
+    m_Key: run_end.section.skills
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333853204480
+    m_Key: run_end.none
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333853204481
+    m_Key: run_end.rank
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333853204482
+    m_Key: run_end.section.classes
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333853204483
+    m_Key: run_end.unlocked
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333853204484
+    m_Key: run_end.menu
+    m_Metadata:
+      m_Items: []
+  - m_Id: 230266591793152
+    m_Key: talent.title.level
+    m_Metadata:
+      m_Items: []
+  - m_Id: 230266675679232
+    m_Key: talent.title.node
+    m_Metadata:
+      m_Items: []
+  - m_Id: 230266675679233
+    m_Key: talent.choose
+    m_Metadata:
+      m_Items: []
+  - m_Id: 230266675679234
+    m_Key: talent.choose_ban
+    m_Metadata:
+      m_Items: []
+  - m_Id: 230266675679235
+    m_Key: talent.queued
+    m_Metadata:
+      m_Items: []
+  - m_Id: 230266675679236
+    m_Key: talent.match
+    m_Metadata:
+      m_Items: []
+  - m_Id: 230266675679237
+    m_Key: talent.new_skill
+    m_Metadata:
+      m_Items: []
+  - m_Id: 230266675679238
+    m_Key: talent.reroll
+    m_Metadata:
+      m_Items: []
+  - m_Id: 230266675679239
+    m_Key: talent.ban
+    m_Metadata:
+      m_Items: []
+  - m_Id: 230266675679240
+    m_Key: talent.ban_cancel
+    m_Metadata:
+      m_Items: []
+  - m_Id: 230266675679241
+    m_Key: talent.skip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 230266675679242
+    m_Key: talent.skip.title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 230266675679243
+    m_Key: talent.skip.message
+    m_Metadata:
+      m_Items: []
+  - m_Id: 230266675679244
+    m_Key: glossary.title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 230266675679245
+    m_Key: glossary.tab.classes
+    m_Metadata:
+      m_Items: []
+  - m_Id: 230266675679246
+    m_Key: glossary.tab.enemies
+    m_Metadata:
+      m_Items: []
+  - m_Id: 230266675679247
+    m_Key: glossary.back
+    m_Metadata:
+      m_Items: []
+  - m_Id: 230266675679248
+    m_Key: glossary.class_progress
+    m_Metadata:
+      m_Items: []
+  - m_Id: 230266675679249
+    m_Key: glossary.locked_progress
+    m_Metadata:
+      m_Items: []
+  - m_Id: 230266675679250
+    m_Key: glossary.talents
+    m_Metadata:
+      m_Items: []
+  - m_Id: 230266675679251
+    m_Key: glossary.max_rank
+    m_Metadata:
+      m_Items: []
+  - m_Id: 230266675679252
+    m_Key: glossary.empty_enemies
+    m_Metadata:
+      m_Items: []
+  - m_Id: 230266675679253
+    m_Key: glossary.boss
+    m_Metadata:
+      m_Items: []
+  - m_Id: 230266675679254
+    m_Key: glossary.base_values
+    m_Metadata:
+      m_Items: []
+  - m_Id: 230266675679255
+    m_Key: glossary.initial_states
+    m_Metadata:
+      m_Items: []
+  - m_Id: 230266675679256
+    m_Key: options.language
+    m_Metadata:
+      m_Items: []
+  - m_Id: 230266675679257
+    m_Key: options.language.auto
+    m_Metadata:
+      m_Items: []
+  - m_Id: 230266675679258
+    m_Key: options.language.en
+    m_Metadata:
+      m_Items: []
+  - m_Id: 230266675679259
+    m_Key: options.language.es
+    m_Metadata:
+      m_Items: []
+  - m_Id: 230266675679260
+    m_Key: options.language.pt
+    m_Metadata:
+      m_Items: []
+  - m_Id: 230266675679261
+    m_Key: options.music
+    m_Metadata:
+      m_Items: []
+  - m_Id: 230266675679262
+    m_Key: options.sfx
+    m_Metadata:
+      m_Items: []
+  - m_Id: 230266675679263
+    m_Key: options.tips
+    m_Metadata:
+      m_Items: []
+  - m_Id: 230266675679264
+    m_Key: options.tips_on
+    m_Metadata:
+      m_Items: []
+  - m_Id: 230266675679265
+    m_Key: options.tips_off
+    m_Metadata:
+      m_Items: []
+  - m_Id: 230266675679266
+    m_Key: options.tips_reset
+    m_Metadata:
+      m_Items: []
+  - m_Id: 230266675679267
+    m_Key: menu.pause.title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 230266675679268
+    m_Key: menu.give_up
+    m_Metadata:
+      m_Items: []
+  - m_Id: 230266675679269
+    m_Key: menu.give_up.title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 230266675679270
+    m_Key: menu.give_up.message
+    m_Metadata:
+      m_Items: []
+  - m_Id: 230266675679271
+    m_Key: tip.ok
+    m_Metadata:
+      m_Items: []
+  m_Metadata:
+    m_Items: []
+  m_KeyGenerator:
+    rid: 8661860360884846668
+  references:
+    version: 2
+    RefIds:
+    - rid: 8661860360884846668
+      type: {class: DistributedUIDGenerator, ns: UnityEngine.Localization.Tables, asm: Unity.Localization}
+      data:
+        m_CustomEpoch: 1791169959747

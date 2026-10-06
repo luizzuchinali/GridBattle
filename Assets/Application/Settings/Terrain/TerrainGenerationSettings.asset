@@ -1,0 +1,65 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4382c9f66ee30f4489f2259e09afaadd, type: 3}
+  m_Name: TerrainGenerationSettings
+  m_EditorClassIdentifier: Assembly-CSharp::GridBattle.Gameplay.Terrain.TerrainGenerationSettings
+  bands:
+  - minDepth: 1
+    obstacleMin: 0
+    obstacleMax: 0
+    hazardMin: 0
+    hazardMax: 0
+    bonusMin: 0
+    bonusMax: 0
+  - minDepth: 4
+    obstacleMin: 0
+    obstacleMax: 2
+    hazardMin: 0
+    hazardMax: 1
+    bonusMin: 0
+    bonusMax: 1
+  - minDepth: 10
+    obstacleMin: 1
+    obstacleMax: 2
+    hazardMin: 0
+    hazardMax: 2
+    bonusMin: 0
+    bonusMax: 1
+  - minDepth: 16
+    obstacleMin: 1
+    obstacleMax: 3
+    hazardMin: 1
+    hazardMax: 3
+    bonusMin: 0
+    bonusMax: 2
+  - minDepth: 22
+    obstacleMin: 2
+    obstacleMax: 4
+    hazardMin: 2
+    hazardMax: 3
+    bonusMin: 1
+    bonusMax: 2
+  obstaclePool:
+  - terrain: {fileID: 11400000, guid: 4601f7397e2feca46b213eda9af2f981, type: 2}
+    weight: 1
+  hazardPool:
+  - terrain: {fileID: 11400000, guid: 2a133503e7f961f4aaf6f98d2ad6db38, type: 2}
+    weight: 1
+  - terrain: {fileID: 11400000, guid: 64165f775a07f244db0d27d7d7f6aeff, type: 2}
+    weight: 1
+  bonusPool:
+  - terrain: {fileID: 11400000, guid: 298450cbde443a5449331b3caffab4bf, type: 2}
+    weight: 1
+  - terrain: {fileID: 11400000, guid: 10f56c64eb6a48e4f8cb537ead2284e0, type: 2}
+    weight: 1
+  clearRadiusAroundPlayer: 1
+  maxAttempts: 20

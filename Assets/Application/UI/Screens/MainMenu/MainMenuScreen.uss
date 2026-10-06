@@ -6,3 +6,48 @@
     justify-content: center;
     align-items: center;
 }
+
+/* Classes that are not unlocked yet: dark portrait with a lock over it, the progress listed below. */
+.portrait-button--locked .portrait-image {
+    -unity-background-image-tint-color: rgb(50, 50, 50);
+}
+
+#container .portrait-lock {
+    position: absolute;
+    left: 8px;
+    top: 15px;
+    width: 16px;
+    height: 16px;
+}
+
+#locked-info {
+    align-items: center;
+    margin-top: 6px;
+}
+
+.locked-info__line {
+    margin: 1px 0;
+    padding: 0;
+    font-size: var(--font-size-hud);
+    color: var(--color-text-dim);
+    -unity-text-align: middle-center;
+}
+
+#menu-buttons {
+    align-items: center;
+    margin-top: 14px;
+}
+
+#menu-buttons-row {
+    flex-direction: row;
+}
+
+#container #continue-btn {
+    min-width: 168px;
+    margin-bottom: var(--spacing-md);
+}
+
+#container #menu-buttons-row .text-button {
+    min-width: 82px;
+    margin: 0 var(--spacing-sm);
+}

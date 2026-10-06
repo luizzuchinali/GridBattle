@@ -1,0 +1,38 @@
+#overlay-background {
+    flex-grow: 1;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+}
+
+#confirm-window {
+    width: 190px;
+}
+
+#confirm-title {
+    margin: 0 0 6px 0;
+    padding: 0;
+    font-size: var(--font-size-title);
+    color: var(--color-primary);
+    white-space: normal;
+    -unity-text-align: middle-center;
+}
+
+#confirm-message {
+    margin: 0 0 8px 0;
+    padding: 0;
+    font-size: var(--font-size-body);
+    color: var(--color-text);
+    white-space: normal;
+    -unity-text-align: middle-center;
+}
+
+#confirm-buttons {
+    flex-direction: row;
+    justify-content: center;
+}
+
+#container #confirm-buttons .text-button {
+    min-width: 64px;
+    margin: 0 3px;
+}

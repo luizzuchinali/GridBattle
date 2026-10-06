@@ -1,14 +1,35 @@
-#container {
-    background-color: var(--color-overlay-dim);
-    padding-top: 0;
-    padding-bottom: 0;
-}
-
-/* Tapping this element (outside the panel) closes the overlay. */
+/*
+ * Pause menu (interface 4.3): continue, glossary, options and give up. Tapping the dim area outside the
+ * window closes it (the controller checks that the tap target is the background itself).
+ */
 #overlay-background {
     flex-grow: 1;
+    width: 100%;
     align-items: center;
-    flex-direction: row;
-    justify-content: space-between;
-    align-self: center;
+    justify-content: center;
+}
+
+#menu-window {
+    width: 150px;
+    align-items: center;
+}
+
+#menu-title {
+    margin: 0 0 var(--spacing-md) 0;
+    padding: 0;
+    font-size: var(--font-size-title);
+    color: var(--color-primary);
+    white-space: normal;
+    -unity-text-align: middle-center;
+}
+
+#container #menu-window .text-button {
+    width: 100%;
+    min-width: 0;
+    margin: 2px 0;
+}
+
+/* Giving up is dangerous: it reads as such. */
+#container #menu-giveup-button {
+    color: var(--color-bad);
 }

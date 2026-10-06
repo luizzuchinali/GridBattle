@@ -1,8 +1,11 @@
 using System;
+using System.Collections.Generic;
 using GridBattle.Gameplay;
 using GridBattle.Gameplay.Controllers;
 using GridBattle.Gameplay.Entities;
 using GridBattle.Gameplay.Events;
+using GridBattle.Gameplay.Simulation;
+using GridBattle.Gameplay.Turns;
 using UnityEngine;
 
 namespace GridBattle.Managers
@@ -23,14 +26,19 @@ namespace GridBattle.Managers
     }
 
     /// <summary>
-    /// Turn flow: every action consumed by the player (PlayerActionEvent) hands
-    /// the turn to the enemies. After the player's move animation, the enemies act
-    /// (waiting for their move animations) and then the turn returns to the
-    /// player. Raises TurnChangedEvent on every change. Enemies act by distance to
-    /// the player (closest first), ties broken by y then x. Tapping during the
-    /// enemies' turn speeds the animations up until the turn returns to the player.
+    /// Turn flow (GDD: global turn). Each global turn the player plays first, then
+    /// every enemy. Each entity has its own turn inside it: at its start the
+    /// entity's states run their turn-start effects (damage/healing over time)
+    /// and at its end the state durations go down (EntityTurnStarted/EndedEvent).
+    /// Every action consumed by the player (PlayerActionEvent) ends the player's
+    /// turn; after the player's animations the enemies act (closest to the player
+    /// first, ties by y then x) and then the turn returns to the player. Each step
+    /// also waits for <see cref="TurnBlockers"/> (XP orbs that level up, talent
+    /// choice, pause). Tapping during the enemies' turn speeds the animations up
+    /// until the turn returns to the player. Raises TurnChangedEvent on every
+    /// change.
     /// </summary>
-    [RequireComponent(typeof(GridController))]
+    [RequireComponent(typeof(GridController), typeof(BattleController))]
     public class TurnManager : MonoBehaviour
     {
         [SerializeField]
@@ -48,16 +56,24 @@ namespace GridBattle.Managers
         private float speedUpMultiplier = 2f;
 
         private GridController _grid;
+        private BattleController _battle;
         private int _turnVersion;
+        private bool _battleOver;
 
         public ETurnOwner CurrentTurn { get; private set; } = ETurnOwner.Player;
+
+        /// <summary>Global turn number of the current battle (1 = first turn).</summary>
+        public int GlobalTurn { get; private set; }
 
         private void Awake()
         {
             _grid = GetComponent<GridController>();
+            _battle = GetComponent<BattleController>();
             EventBus.Subscribe<PlayerActionEvent>(OnPlayerAction);
             EventBus.Subscribe<GridInitializedEvent>(OnGridInitialized);
             EventBus.Subscribe<CellTapEvent>(OnCellTap);
+            EventBus.Subscribe<BattleEndedEvent>(OnBattleEnded);
+            EventBus.Subscribe<BattleDecidedEvent>(OnBattleDecided);
         }
 
         private void OnDestroy()
@@ -65,6 +81,15 @@ namespace GridBattle.Managers
             EventBus.Unsubscribe<PlayerActionEvent>(OnPlayerAction);
             EventBus.Unsubscribe<GridInitializedEvent>(OnGridInitialized);
             EventBus.Unsubscribe<CellTapEvent>(OnCellTap);
+            EventBus.Unsubscribe<BattleEndedEvent>(OnBattleEnded);
+            EventBus.Unsubscribe<BattleDecidedEvent>(OnBattleDecided);
+        }
+
+        private void Start()
+        {
+            // The grid built by the editor (debug) before this component subscribed.
+            if (GlobalTurn == 0 && FindAnyObjectByType<PlayerCharacter>() != null)
+                BeginBattle(1);
         }
 
         private void OnCellTap(CellTapEvent e)
@@ -75,68 +100,157 @@ namespace GridBattle.Managers
 
         private void OnPlayerAction(PlayerActionEvent e)
         {
-            if (CurrentTurn != ETurnOwner.Player) return;
+            if (CurrentTurn != ETurnOwner.Player || IsBattleOver) return;
 
             _ = RunEnemyTurn(++_turnVersion);
         }
 
         /// <summary>
-        /// A new run starts on the player's turn; a pending enemy turn of the
-        /// previous run is abandoned.
+        /// A new battle starts on the player's turn; a pending enemy turn of the
+        /// previous battle is abandoned.
         /// </summary>
         private void OnGridInitialized(GridInitializedEvent e)
         {
+            BeginBattle(e.FirstGlobalTurn);
+        }
+
+        /// <summary>
+        /// The outcome is decided: the turn flow stops and nobody may act while the
+        /// last animations, XP orbs and talent choice resolve.
+        /// </summary>
+        private void OnBattleDecided(BattleDecidedEvent e)
+        {
             _turnVersion++;
+            if (CurrentTurn != ETurnOwner.None)
+                SetTurn(ETurnOwner.None);
+        }
+
+        private void OnBattleEnded(BattleEndedEvent e)
+        {
+            _battleOver = true;
+            _turnVersion++;
+        }
+
+        private void BeginBattle(int firstGlobalTurn)
+        {
+            _battleOver = false;
+            TurnBlockers.Clear();
+            if (_battle != null)
+                _battle.BeginBattle();
+            GlobalTurn = Mathf.Max(1, firstGlobalTurn) - 1;
+            _ = BeginPlayerTurn(++_turnVersion);
+        }
+
+        private async Awaitable BeginPlayerTurn(int version)
+        {
+            GlobalTurn++;
+            EventBus.Raise(new GlobalTurnStartedEvent(GlobalTurn));
+
+            var player = FindAnyObjectByType<PlayerCharacter>();
+            if (player != null)
+                BeginEntityTurn(player);
+
+            try
+            {
+                await WaitForAnimationsAndBlockers();
+            }
+            catch (OperationCanceledException)
+            {
+                return;
+            }
+
+            if (!IsCurrent(version)) return;
+            if (player == null || player.IsDead) return;
+
             SetTurn(ETurnOwner.Player);
         }
 
         private async Awaitable RunEnemyTurn(int version)
         {
             SetTurn(ETurnOwner.Enemies);
-            var cancellation = destroyCancellationToken;
+
+            var player = FindAnyObjectByType<PlayerCharacter>();
+            if (player != null && !player.IsDead)
+                EndEntityTurn(player);
 
             try
             {
-                // Let the player's own move finish first.
-                await _grid.WaitForMovementsAsync(cancellation);
-                if (version != _turnVersion) return;
+                // Let the player's own move (and any level up it caused) finish first.
+                await WaitForAnimationsAndBlockers();
+                if (!IsCurrent(version)) return;
 
                 foreach (var enemy in GetEnemiesInActingOrder())
                 {
                     if (enemy == null) continue;
+                    var character = enemy.GetComponent<Enemy>();
+                    if (character == null || character.IsDead) continue;
 
-                    enemy.Act();
+                    BeginEntityTurn(character);
+                    if (!character.IsDead)
+                        enemy.Act();
+                    if (!character.IsDead)
+                        EndEntityTurn(character);
 
                     if (enemyPacing == EEnemyTurnPacing.Sequential)
                     {
-                        await _grid.WaitForMovementsAsync(cancellation);
+                        await _grid.WaitForMovementsAsync(destroyCancellationToken);
                     }
-                    else if (enemyPacing == EEnemyTurnPacing.Staggered && enemyStagger > 0f)
+                    else if (enemyPacing == EEnemyTurnPacing.Staggered && enemyStagger > 0f && !SimMode.IsActive)
                     {
-                        await Awaitable.WaitForSecondsAsync(enemyStagger / _grid.AnimationSpeed, cancellation);
+                        await Awaitable.WaitForSecondsAsync(enemyStagger / _grid.AnimationSpeed,
+                            destroyCancellationToken);
                     }
 
-                    if (version != _turnVersion) return;
+                    await TurnBlockers.WaitAsync(destroyCancellationToken);
+                    if (!IsCurrent(version)) return;
+                    if (player == null || player.IsDead) return;
                 }
 
-                await _grid.WaitForMovementsAsync(cancellation);
-                if (version != _turnVersion) return;
+                await WaitForAnimationsAndBlockers();
+                if (!IsCurrent(version)) return;
 
-                SetTurn(ETurnOwner.Player);
+                await BeginPlayerTurn(version);
             }
             catch (OperationCanceledException)
             {
             }
         }
 
-        private static EnemyController[] GetEnemiesInActingOrder()
+        private bool IsBattleOver => _battleOver || (_battle != null && _battle.IsOver);
+
+        private bool IsCurrent(int version) => version == _turnVersion && !IsBattleOver;
+
+        private async Awaitable WaitForAnimationsAndBlockers()
         {
-            var enemies = FindObjectsByType<EnemyController>(FindObjectsInactive.Exclude);
+            do
+            {
+                await _grid.WaitForMovementsAsync(destroyCancellationToken);
+                await TurnBlockers.WaitAsync(destroyCancellationToken);
+            } while (_grid.IsAnimatingMovement || TurnBlockers.IsBlocked);
+        }
+
+        private void BeginEntityTurn(Character character)
+        {
+            character.BeginTurn();
+            if (!character.IsDead)
+                EventBus.Raise(new EntityTurnStartedEvent(character, GlobalTurn));
+        }
+
+        private void EndEntityTurn(Character character)
+        {
+            EventBus.Raise(new EntityTurnEndedEvent(character, GlobalTurn));
+            if (!character.IsDead)
+                character.EndTurn();
+        }
+
+        private static List<EnemyController> GetEnemiesInActingOrder()
+        {
+            var enemies = new List<EnemyController>(FindObjectsByType<EnemyController>(FindObjectsInactive.Exclude));
             var player = FindAnyObjectByType<PlayerCharacter>();
             if (player == null) return enemies;
 
             var playerPos = player.CurrentGridPos;
-            Array.Sort(enemies, (a, b) =>
+            enemies.Sort((a, b) =>
             {
                 var posA = a.GetComponent<GridEntity>().CurrentGridPos;
                 var posB = b.GetComponent<GridEntity>().CurrentGridPos;

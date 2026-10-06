@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Threading;
 using GridBattle.Gameplay.Entities;
+using GridBattle.Gameplay.Simulation;
 using GridBattle.Managers;
 using LitMotion;
 using UnityEngine;
@@ -54,7 +55,7 @@ namespace GridBattle.Gameplay.Movement
         public void PlayAttack(GridEntity attacker, GridEntity target, Vector3 direction,
             GridMovementSettings settings)
         {
-            if (settings == null || !Application.isPlaying || attacker == null) return;
+            if (settings == null || !Application.isPlaying || SimMode.IsActive || attacker == null) return;
 
             direction.z = 0f;
             direction = direction.sqrMagnitude > 0f ? direction.normalized : Vector3.right;
@@ -82,17 +83,34 @@ namespace GridBattle.Gameplay.Movement
                 .AddTo(attacker.gameObject);
         }
 
+        /// <summary>
+        /// Delays the entity's next hit or death reaction by <paramref name="delay"/> seconds, with the recoil
+        /// pushed toward <paramref name="direction"/> (world space): the collision bump of a pushed or pulled
+        /// character, which must wait for its slide to end. Call it before the damage that causes the reaction.
+        /// </summary>
+        public void QueueImpact(GridEntity entity, Vector3 direction, float delay)
+        {
+            if (!Application.isPlaying || SimMode.IsActive || entity == null) return;
+
+            direction.z = 0f;
+            direction = direction.sqrMagnitude > 0f ? direction.normalized : Vector3.right;
+            _pendingHits[entity] = new PendingHit(delay, direction);
+        }
+
         /// <summary>Flash and small recoil, at the impact point of a pending attack.</summary>
         public void PlayHit(GridEntity entity, GridMovementSettings settings)
         {
-            if (settings == null || !Application.isPlaying || entity == null) return;
+            if (settings == null || !Application.isPlaying || SimMode.IsActive || entity == null) return;
             if (!entity.TryGetComponent(out SpriteRenderer sprite)) return;
 
             TakePending(entity, out var delay, out var direction);
             Stop(_reactions, entity);
 
             var transform = entity.transform;
+
+            // A delayed reaction (the entity may still be sliding) reads its resting position when it starts.
             var basePos = transform.localPosition;
+            var started = delay <= 0f;
             var baseColor = sprite.color;
             var worldOffset = direction * (settings.HitRecoilPixels / GameConfigManager.Ppu);
             var offset = transform.parent != null
@@ -104,13 +122,20 @@ namespace GridBattle.Gameplay.Movement
             _reactions[entity] = LMotion.Create(0f, 1f, total)
                 .WithOnComplete(() =>
                 {
-                    transform.localPosition = basePos;
+                    if (started)
+                        transform.localPosition = basePos;
                     sprite.color = baseColor;
                 })
                 .Bind(t =>
                 {
                     var time = t * total - delay;
                     if (time < 0f) return;
+
+                    if (!started)
+                    {
+                        basePos = transform.localPosition;
+                        started = true;
+                    }
 
                     var k = time / flash;
                     sprite.color = k < 0.7f ? settings.HitFlashColor : baseColor;
@@ -126,7 +151,8 @@ namespace GridBattle.Gameplay.Movement
         public void PlayDeath(GridEntity entity, GridMovementSettings settings)
         {
             if (entity == null) return;
-            if (settings == null || !Application.isPlaying || !entity.TryGetComponent(out SpriteRenderer sprite))
+            if (settings == null || !Application.isPlaying || SimMode.IsActive ||
+                !entity.TryGetComponent(out SpriteRenderer sprite))
             {
                 Object.Destroy(entity.gameObject);
                 return;

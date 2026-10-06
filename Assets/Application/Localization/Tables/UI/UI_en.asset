@@ -1,0 +1,535 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: UI_en
+  m_EditorClassIdentifier: Unity.Localization::UnityEngine.Localization.Tables.StringTable
+  m_LocaleId:
+    m_Code: en
+  m_SharedData: {fileID: 11400000, guid: f76f6e135264e704c8f2234042ef4ff7, type: 2}
+  m_Metadata:
+    m_Items: []
+  m_TableData:
+  - m_Id: 151705321963520
+    m_Localized: Depth
+    m_Metadata:
+      m_Items: []
+  - m_Id: 151705368100864
+    m_Localized: HP
+    m_Metadata:
+      m_Items: []
+  - m_Id: 151705368100865
+    m_Localized: Role
+    m_Metadata:
+      m_Items: []
+  - m_Id: 151705368100866
+    m_Localized: Behavior
+    m_Metadata:
+      m_Items: []
+  - m_Id: 151705368100867
+    m_Localized: Attributes
+    m_Metadata:
+      m_Items: []
+  - m_Id: 151705368100868
+    m_Localized: Skills
+    m_Metadata:
+      m_Items: []
+  - m_Id: 151705368100869
+    m_Localized: States
+    m_Metadata:
+      m_Items: []
+  - m_Id: 151705368100870
+    m_Localized: Terrain
+    m_Metadata:
+      m_Items: []
+  - m_Id: 151705368100871
+    m_Localized: None
+    m_Metadata:
+      m_Items: []
+  - m_Id: 151705368100872
+    m_Localized: Ready
+    m_Metadata:
+      m_Items: []
+  - m_Id: 151705368100873
+    m_Localized: Cooldown {0}
+    m_Metadata:
+      m_Items: []
+  - m_Id: 151705368100874
+    m_Localized: Permanent
+    m_Metadata:
+      m_Items: []
+  - m_Id: 151705368100875
+    m_Localized: '{0} turn'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 151705368100876
+    m_Localized: '{0} turns'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 151705368100877
+    m_Localized: Max HP
+    m_Metadata:
+      m_Items: []
+  - m_Id: 151705368100878
+    m_Localized: Movement
+    m_Metadata:
+      m_Items: []
+  - m_Id: 151705368100879
+    m_Localized: Attack range
+    m_Metadata:
+      m_Items: []
+  - m_Id: 151705368100880
+    m_Localized: Damage
+    m_Metadata:
+      m_Items: []
+  - m_Id: 151705368100881
+    m_Localized: Crit chance
+    m_Metadata:
+      m_Items: []
+  - m_Id: 151705368100882
+    m_Localized: Crit damage
+    m_Metadata:
+      m_Items: []
+  - m_Id: 151705368100883
+    m_Localized: Penetration
+    m_Metadata:
+      m_Items: []
+  - m_Id: 151705368100884
+    m_Localized: Defense
+    m_Metadata:
+      m_Items: []
+  - m_Id: 151705368100885
+    m_Localized: Skill damage
+    m_Metadata:
+      m_Items: []
+  - m_Id: 151705368100886
+    m_Localized: Skill range
+    m_Metadata:
+      m_Items: []
+  - m_Id: 151705368100887
+    m_Localized: Cooldown red.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 151705368100888
+    m_Localized: Damage dealt
+    m_Metadata:
+      m_Items: []
+  - m_Id: 151705368100889
+    m_Localized: Damage taken
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333777707008
+    m_Localized: Select a character
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010176
+    m_Localized: Continue
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010177
+    m_Localized: Glossary
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010178
+    m_Localized: Options
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010179
+    m_Localized: '{0}: {1}/{2} battles'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010180
+    m_Localized: New run
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010181
+    m_Localized: Starting a new run discards your saved run. Continue?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010182
+    m_Localized: Yes
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010183
+    m_Localized: No
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010184
+    m_Localized: '{0}/{1}'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010185
+    m_Localized: HP {0}/{1}
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010186
+    m_Localized: Lv {0}   XP {1}/{2}
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010187
+    m_Localized: Lv {0}
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010188
+    m_Localized: Choose your next node
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010189
+    m_Localized: Confirm
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010190
+    m_Localized: Enemies
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010191
+    m_Localized: Terrain
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010192
+    m_Localized: None
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010193
+    m_Localized: XP {0}
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010194
+    m_Localized: '{0} x{1}'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010195
+    m_Localized: Battle
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010196
+    m_Localized: Boss
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010197
+    m_Localized: Healing
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010198
+    m_Localized: Talent
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010199
+    m_Localized: Consumable
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010200
+    m_Localized: '{0} - {1}'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010201
+    m_Localized: Easy
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010202
+    m_Localized: Normal
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010203
+    m_Localized: Hard
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010204
+    m_Localized: Restores {0} HP.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010205
+    m_Localized: Choose a talent. Costs {0} HP.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010206
+    m_Localized: Find a consumable for your battles.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010207
+    m_Localized: Consumable found
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010208
+    m_Localized: Choose one
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010209
+    m_Localized: Bag full
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010210
+    m_Localized: Discard one item to take {0}
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010211
+    m_Localized: Discard one item to make room
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010212
+    m_Localized: Leave it
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010213
+    m_Localized: Back
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010214
+    m_Localized: Defeat
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010215
+    m_Localized: Your run ends here.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010216
+    m_Localized: Run abandoned
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010217
+    m_Localized: You gave up this run.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010218
+    m_Localized: Victory!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010219
+    m_Localized: The final boss has fallen.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010220
+    m_Localized: Level {0}
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010221
+    m_Localized: Run
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010222
+    m_Localized: Depth reached
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010223
+    m_Localized: '{0}/{1}'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010224
+    m_Localized: Battles won
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010225
+    m_Localized: Enemies defeated
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010226
+    m_Localized: Damage dealt
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010227
+    m_Localized: Damage taken
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010228
+    m_Localized: Talents
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333849010229
+    m_Localized: Skills
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333853204480
+    m_Localized: None
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333853204481
+    m_Localized: x{0}
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333853204482
+    m_Localized: Classes
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333853204483
+    m_Localized: 'New class unlocked: {0}!'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 219333853204484
+    m_Localized: Main menu
+    m_Metadata:
+      m_Items: []
+  - m_Id: 230266591793152
+    m_Localized: Level {0}
+    m_Metadata:
+      m_Items: []
+  - m_Id: 230266675679232
+    m_Localized: Talent node
+    m_Metadata:
+      m_Items: []
+  - m_Id: 230266675679233
+    m_Localized: Choose a talent
+    m_Metadata:
+      m_Items: []
+  - m_Id: 230266675679234
+    m_Localized: Tap a talent to ban it
+    m_Metadata:
+      m_Items: []
+  - m_Id: 230266675679235
+    m_Localized: +{0} more waiting
+    m_Metadata:
+      m_Items: []
+  - m_Id: 230266675679236
+    m_Localized: 'Fits your build: {0}'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 230266675679237
+    m_Localized: 'New skill: {0}'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 230266675679238
+    m_Localized: Reroll x{0}
+    m_Metadata:
+      m_Items: []
+  - m_Id: 230266675679239
+    m_Localized: Ban x{0}
+    m_Metadata:
+      m_Items: []
+  - m_Id: 230266675679240
+    m_Localized: Cancel
+    m_Metadata:
+      m_Items: []
+  - m_Id: 230266675679241
+    m_Localized: Skip x{0}
+    m_Metadata:
+      m_Items: []
+  - m_Id: 230266675679242
+    m_Localized: Skip talent?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 230266675679243
+    m_Localized: You will lose this talent choice.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 230266675679244
+    m_Localized: Glossary
+    m_Metadata:
+      m_Items: []
+  - m_Id: 230266675679245
+    m_Localized: Classes
+    m_Metadata:
+      m_Items: []
+  - m_Id: 230266675679246
+    m_Localized: Enemies
+    m_Metadata:
+      m_Items: []
+  - m_Id: 230266675679247
+    m_Localized: Back
+    m_Metadata:
+      m_Items: []
+  - m_Id: 230266675679248
+    m_Localized: '{0}/{1} talents found'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 230266675679249
+    m_Localized: 'Locked: {0}/{1} battles'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 230266675679250
+    m_Localized: Talents {0}/{1}
+    m_Metadata:
+      m_Items: []
+  - m_Id: 230266675679251
+    m_Localized: Max rank {0}
+    m_Metadata:
+      m_Items: []
+  - m_Id: 230266675679252
+    m_Localized: No enemies met yet
+    m_Metadata:
+      m_Items: []
+  - m_Id: 230266675679253
+    m_Localized: Boss
+    m_Metadata:
+      m_Items: []
+  - m_Id: 230266675679254
+    m_Localized: Base values. They grow with depth.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 230266675679255
+    m_Localized: Starts with
+    m_Metadata:
+      m_Items: []
+  - m_Id: 230266675679256
+    m_Localized: Language
+    m_Metadata:
+      m_Items: []
+  - m_Id: 230266675679257
+    m_Localized: Automatic
+    m_Metadata:
+      m_Items: []
+  - m_Id: 230266675679258
+    m_Localized: English
+    m_Metadata:
+      m_Items: []
+  - m_Id: 230266675679259
+    m_Localized: "Espa\xF1ol"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 230266675679260
+    m_Localized: "Portugu\xEAs (Brasil)"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 230266675679261
+    m_Localized: Music
+    m_Metadata:
+      m_Items: []
+  - m_Id: 230266675679262
+    m_Localized: Sound effects
+    m_Metadata:
+      m_Items: []
+  - m_Id: 230266675679263
+    m_Localized: Tips
+    m_Metadata:
+      m_Items: []
+  - m_Id: 230266675679264
+    m_Localized: 'Tips: On'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 230266675679265
+    m_Localized: 'Tips: Off'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 230266675679266
+    m_Localized: Show tips again
+    m_Metadata:
+      m_Items: []
+  - m_Id: 230266675679267
+    m_Localized: Paused
+    m_Metadata:
+      m_Items: []
+  - m_Id: 230266675679268
+    m_Localized: Give up
+    m_Metadata:
+      m_Items: []
+  - m_Id: 230266675679269
+    m_Localized: Give up?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 230266675679270
+    m_Localized: The run ends now and its progress is lost.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 230266675679271
+    m_Localized: OK
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 2
+    RefIds: []

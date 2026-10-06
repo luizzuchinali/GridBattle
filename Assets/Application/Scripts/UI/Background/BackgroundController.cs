@@ -1,3 +1,4 @@
+using GridBattle.Gameplay.Events;
 using GridBattle.UI.Events;
 using UnityEngine;
 using UnityEngine.Scripting;
@@ -18,11 +19,13 @@ namespace GridBattle.UI.Background
         protected override void OnCreate()
         {
             EventBus.Subscribe<CharacterChoosenEvent>(OnCharacterChoosen);
+            EventBus.Subscribe<RunStartedEvent>(OnRunStarted);
         }
 
         protected override void OnDestroy()
         {
             EventBus.Unsubscribe<CharacterChoosenEvent>(OnCharacterChoosen);
+            EventBus.Unsubscribe<RunStartedEvent>(OnRunStarted);
         }
 
         protected override void OnBind(VisualElement root)
@@ -32,6 +35,12 @@ namespace GridBattle.UI.Background
         }
 
         private void OnCharacterChoosen(CharacterChoosenEvent e)
+        {
+            Context.Layer.SortingOrder = BehindWorldSortingOrder;
+        }
+
+        /// <summary>A resumed run starts without choosing a class: the world must show as well.</summary>
+        private void OnRunStarted(RunStartedEvent e)
         {
             Context.Layer.SortingOrder = BehindWorldSortingOrder;
         }

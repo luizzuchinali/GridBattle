@@ -1,0 +1,51 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8398ac738fa68741976f21eef8c4ee6, type: 3}
+  m_Name: SoulHarvest
+  m_EditorClassIdentifier: Assembly-CSharp::GridBattle.Gameplay.States.StateDefinition
+  id: 3cf85be09af451447892546d491036fa
+  displayName:
+    m_TableReference:
+      m_TableCollectionName: Content
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: state.talent.soul_harvest.name
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  description:
+    m_TableReference:
+      m_TableCollectionName: Content
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: state.talent.soul_harvest.desc
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  icon: {fileID: 21300000, guid: ba094652e45187d4b8000d242d8552d3, type: 3}
+  kind: 0
+  stackPolicy: 2
+  maxStacks: 2
+  showInDetails: 1
+  effects:
+  - rid: 8661860384129156086
+  references:
+    version: 2
+    RefIds:
+    - rid: 8661860384129156086
+      type: {class: OnKillEffect, ns: GridBattle.Gameplay.States.Effects, asm: Assembly-CSharp}
+      data:
+        appliesTo: 3
+        cooldownReduction: 1
+        healFlat: 0
+        healMaxHpFraction: 0
+        grantStates: []

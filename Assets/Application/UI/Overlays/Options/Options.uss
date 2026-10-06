@@ -1,0 +1,111 @@
+/* Options (interface 4.3): language, music and effects volume, tips. */
+#overlay-background {
+    flex-grow: 1;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+}
+
+#options-window {
+    width: 200px;
+    max-height: 340px;
+    flex-shrink: 1;
+}
+
+#options-title {
+    margin: 0 0 var(--spacing-md) 0;
+    padding: 0 20px;
+    font-size: var(--font-size-title);
+    color: var(--color-primary);
+    white-space: normal;
+    -unity-text-align: middle-center;
+}
+
+#options-scroll {
+    flex-grow: 0;
+    flex-shrink: 1;
+    width: 100%;
+}
+
+.options-section {
+    margin: 6px 0 var(--spacing-sm) 0;
+    padding: 0;
+    font-size: var(--font-size-body);
+    color: var(--color-xp-level);
+    -unity-text-align: middle-left;
+}
+
+#container .option-choice {
+    min-width: 0;
+    height: 22px;
+    margin: 1px 0;
+    padding: 0 4px;
+    color: var(--color-text);
+}
+
+#container .option-choice--active {
+    background-image: var(--skin-slot-selected);
+    color: var(--color-primary);
+}
+
+.volume-row {
+    flex-direction: row;
+    align-items: center;
+    height: 22px;
+}
+
+.volume-value {
+    width: 32px;
+    flex-shrink: 0;
+    margin: 0;
+    padding: 0;
+    font-size: var(--font-size-body);
+    color: var(--color-text);
+    -unity-text-align: middle-right;
+}
+
+/* Pixel slider: a thin dark track and a square gold handle. */
+#container .volume-slider {
+    flex-grow: 1;
+    flex-shrink: 1;
+    height: 22px;
+    margin: 0 var(--spacing-md) 0 0;
+    padding: 0;
+}
+
+#container .volume-slider .unity-base-slider__input {
+    height: 22px;
+    margin: 0;
+    padding: 0;
+}
+
+#container .volume-slider .unity-base-slider__drag-container {
+    height: 22px;
+    margin: 0;
+    padding: 0;
+}
+
+#container .volume-slider .unity-base-slider__tracker {
+    height: 6px;
+    top: 8px;
+    margin: 0;
+    border-width: 1px;
+    border-radius: 0;
+    border-color: var(--color-frame);
+    background-color: var(--color-xp-bg);
+}
+
+#container .volume-slider .unity-base-slider__dragger-border {
+    display: none;
+}
+
+#container .volume-slider .unity-base-slider__dragger {
+    width: 8px;
+    height: 14px;
+    top: 4px;
+    margin: 0;
+    border-width: 1px;
+    border-radius: 0;
+    border-color: var(--color-frame);
+    background-color: var(--color-primary);
+}

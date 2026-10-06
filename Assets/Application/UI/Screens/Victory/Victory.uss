@@ -1,0 +1,4 @@
+/* Victory: the same layout as the end of run (RunEnd.uss) with a gold title. */
+#container.run-summary--victory .run-summary__title {
+    color: var(--color-primary);
+}

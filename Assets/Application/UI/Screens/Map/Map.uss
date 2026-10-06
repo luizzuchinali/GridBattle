@@ -1,0 +1,297 @@
+/*
+ * Map screen: HUD (depth, HP, level and XP, consumables), the scrollable node map and the preview panel.
+ * Vertical budget at the 216x384 reference: HUD 54 + map (flexible, about 190) + preview 120 + margins.
+ */
+.map-screen {
+    justify-content: flex-start;
+    padding-top: 2px;
+    padding-bottom: 2px;
+}
+
+/* HUD */
+.map-hud {
+    width: 202px;
+    flex-shrink: 0;
+}
+
+.map-hud__row {
+    flex-direction: row;
+    height: 32px;
+}
+
+.map-hud__stats {
+    flex-grow: 1;
+    flex-shrink: 1;
+    margin: 0 var(--spacing-sm);
+    justify-content: space-between;
+}
+
+#container .map-hud__row .slot-button {
+    margin-left: var(--spacing-sm);
+}
+
+.map-items {
+    flex-direction: row;
+    justify-content: center;
+    height: 20px;
+    margin-top: var(--spacing-sm);
+}
+
+/* Node map */
+#map-scroll {
+    width: 202px;
+    flex-grow: 1;
+    flex-shrink: 1;
+    margin: var(--spacing-md) 0;
+}
+
+#map-scroll .unity-scroll-view__content-container {
+    align-items: center;
+}
+
+#map-canvas {
+    flex-shrink: 0;
+}
+
+.map-lines {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+}
+
+/* Node button: the slot skin at its native 32x32. Nodes that cannot be chosen are dim. */
+#container .map-node {
+    position: absolute;
+    margin: 0;
+    padding: 0;
+    border-width: 0;
+    border-radius: 0;
+    background-color: transparent;
+    background-image: var(--skin-slot);
+    -unity-background-image-tint-color: var(--color-node-dim);
+    align-items: center;
+    justify-content: flex-start;
+}
+
+#container .map-node:active {
+    background-image: var(--skin-slot-pressed);
+}
+
+.map-node__icon {
+    width: 16px;
+    height: 16px;
+    margin-top: 4px;
+    opacity: 0.6;
+}
+
+.map-node__xp {
+    margin: 0;
+    padding: 0;
+    font-size: var(--font-size-hud);
+    -unity-text-align: upper-center;
+    opacity: 0.6;
+}
+
+/* Walked: dim (the path line is gold). */
+#container .map-node--visited {
+    -unity-background-image-tint-color: var(--color-node-dim);
+}
+
+/* Can be chosen now: full color and a gold border. */
+#container .map-node--available {
+    -unity-background-image-tint-color: rgb(255, 255, 255);
+    border-width: 1px;
+    border-color: var(--color-primary);
+}
+
+#container .map-node--available .map-node__icon,
+#container .map-node--available .map-node__xp,
+#container .map-node--current .map-node__icon,
+#container .map-node--current .map-node__xp {
+    opacity: 1;
+}
+
+/* Where the player is: the selected skin. */
+#container .map-node--current {
+    background-image: var(--skin-slot-selected);
+    -unity-background-image-tint-color: rgb(255, 255, 255);
+}
+
+/* Being previewed: the selected skin and the gold border. */
+#container .map-node--selected {
+    background-image: var(--skin-slot-selected);
+    -unity-background-image-tint-color: rgb(255, 255, 255);
+    border-width: 1px;
+    border-color: var(--color-primary);
+}
+
+#container .map-node--boss {
+    border-width: 1px;
+    border-color: var(--color-hp);
+}
+
+/* Preview panel */
+#map-preview {
+    width: 202px;
+    height: 120px;
+    flex-shrink: 0;
+    margin-bottom: var(--spacing-sm);
+}
+
+#preview-hint {
+    flex-grow: 1;
+    align-items: center;
+    justify-content: center;
+}
+
+#preview-hint-label {
+    margin: 0;
+    padding: 0;
+    font-size: var(--font-size-body);
+    color: var(--color-text-dim);
+    white-space: normal;
+    -unity-text-align: middle-center;
+}
+
+#preview-content {
+    flex-grow: 1;
+}
+
+.preview-header {
+    flex-direction: row;
+    align-items: center;
+    height: 18px;
+}
+
+#preview-icon {
+    width: 16px;
+    height: 16px;
+    margin-right: var(--spacing-md);
+}
+
+#preview-title {
+    flex-grow: 1;
+    margin: 0;
+    padding: 0;
+    font-size: var(--font-size-body);
+    -unity-text-align: middle-left;
+}
+
+#preview-xp {
+    margin: 0;
+    padding: 0;
+    font-size: var(--font-size-body);
+    color: var(--color-xp-level);
+    -unity-text-align: middle-right;
+}
+
+#preview-text {
+    margin: var(--spacing-md) 0 0 0;
+    padding: 0;
+    font-size: var(--font-size-body);
+    color: var(--color-text-dim);
+    white-space: normal;
+    -unity-text-align: upper-left;
+}
+
+#preview-battle {
+    margin-top: var(--spacing-sm);
+}
+
+.preview-row {
+    flex-direction: row;
+    align-items: flex-start;
+    margin-bottom: var(--spacing-sm);
+}
+
+.preview-caption {
+    width: 46px;
+    flex-shrink: 0;
+    margin: 0;
+    padding: 0;
+    font-size: var(--font-size-hud);
+    color: var(--color-text-dim);
+    -unity-text-align: upper-left;
+}
+
+#preview-roles {
+    flex-direction: row;
+    flex-wrap: wrap;
+    flex-grow: 1;
+    flex-shrink: 1;
+}
+
+.role-chip {
+    flex-direction: row;
+    align-items: center;
+    margin-right: 6px;
+    height: 16px;
+}
+
+.role-chip__icon {
+    width: 16px;
+    height: 16px;
+    margin-right: 1px;
+}
+
+.role-chip__count {
+    margin: 0;
+    padding: 0;
+    font-size: var(--font-size-body);
+    color: var(--color-text);
+}
+
+#preview-grid {
+    flex-direction: column;
+    flex-shrink: 0;
+    margin-right: 6px;
+    padding: 1px 0 0 1px;
+    border-width: 1px;
+    border-color: var(--color-frame);
+    background-color: var(--color-panel-dim);
+}
+
+.mini-grid__row {
+    flex-direction: row;
+}
+
+.mini-grid__cell {
+    width: 5px;
+    height: 5px;
+    margin: 0 1px 1px 0;
+}
+
+#preview-terrain-list {
+    flex-grow: 1;
+    flex-shrink: 1;
+}
+
+.preview-terrain-row {
+    flex-direction: row;
+    align-items: center;
+    height: 12px;
+}
+
+.preview-terrain-row__swatch {
+    width: 6px;
+    height: 6px;
+    margin-right: 3px;
+    flex-shrink: 0;
+}
+
+.preview-terrain-row__name {
+    margin: 0;
+    padding: 0;
+    font-size: var(--font-size-hud);
+    color: var(--color-text);
+    -unity-text-align: middle-left;
+}
+
+#container #confirm-button {
+    align-self: center;
+    margin: auto 0 0 0;
+    min-width: 110px;
+    height: 22px;
+}

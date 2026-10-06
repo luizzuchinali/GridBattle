@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd381ae026817004da0be9f7b58422c8, type: 3}
+  m_Name: ConsumableSettings
+  m_EditorClassIdentifier: Assembly-CSharp::GridBattle.Gameplay.Consumables.ConsumableSettings
+  slots: 3
+  fullPolicy: 0
+  maxUsesPerTurn: 1
+  onlyInBattle: 1
+  pool:
+  - {fileID: 11400000, guid: c28750548bb4a794ea783d0e21d8b6f6, type: 2}
+  - {fileID: 11400000, guid: 9563bc73932e34f45bd5fac6bba777f1, type: 2}
+  - {fileID: 11400000, guid: 70956fae1ae59b04cade0bfc9aee3d44, type: 2}
+  choiceCount: 1
+  debugStartingConsumables:
+  - {fileID: 11400000, guid: c28750548bb4a794ea783d0e21d8b6f6, type: 2}
+  - {fileID: 11400000, guid: 9563bc73932e34f45bd5fac6bba777f1, type: 2}
+  - {fileID: 11400000, guid: 70956fae1ae59b04cade0bfc9aee3d44, type: 2}

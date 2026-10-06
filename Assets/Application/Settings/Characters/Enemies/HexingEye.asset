@@ -1,0 +1,67 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79aab3d122fc9a54184cb0b84d518416, type: 3}
+  m_Name: HexingEye
+  m_EditorClassIdentifier: Assembly-CSharp::GridBattle.Gameplay.Entities.EnemyConfig
+  id: f2517ae6ccda85b44beb9ab916f0d719
+  displayName:
+    m_TableReference:
+      m_TableCollectionName: Content
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: enemy.hexing_eye.name
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  description:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  icon: {fileID: 0}
+  sprite: {fileID: 574073971, guid: 2fdad3188ff58ad499e2f7940baf39ec, type: 3}
+  animatorController: {fileID: 9100000, guid: 41aa709114486cb4aab6d0d0f575177a, type: 2}
+  tint: {r: 0.75, g: 0.4, b: 0.95, a: 1}
+  maxHp: 22
+  walkDistance: 1
+  attackDistance: 1
+  basicAttackDamage: 3
+  critChance: 0
+  critMultiplier: 2
+  defensePenetration: 0
+  defense: 0
+  skillDamageBonus: 0
+  skillRange: 0
+  cooldownReduction: 0
+  skills: []
+  initialStates: []
+  prefab: {fileID: 2069839144374370989, guid: 4cf13f1910da4e14296e096a872f8cf2, type: 3}
+  role: {fileID: 11400000, guid: 6e2cff6a20436de4dbc845648caf76a9, type: 2}
+  isBoss: 0
+  behavior: {fileID: 11400000, guid: 5482335a344a3b840beb378d0f0593c8, type: 2}
+  behaviorDescription:
+    m_TableReference:
+      m_TableCollectionName: Content
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: enemy.hexing_eye.behavior
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  xpReward: 14
+  references:
+    version: 2
+    RefIds: []

@@ -1,0 +1,16 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:zs="ZS.UI" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/Application/UI/Overlays/ConsumableOffer/ConsumableOffer.uss?fileID=7433441132597879392&amp;guid=5bed62349289c7645bf6e3245d3564f6&amp;type=3#ConsumableOffer"/>
+    <zs:SafeArea name="container" picking-mode="Ignore" class="container overlay-screen">
+        <ui:VisualElement name="overlay-background">
+            <ui:VisualElement name="offer-window" class="window-frame">
+                <ui:Label name="offer-title" text="Consumable" picking-mode="Ignore"/>
+                <ui:Label name="offer-subtitle" picking-mode="Ignore"/>
+                <ui:ScrollView name="offer-scroll" class="slim-scroll" mode="Vertical" horizontal-scroller-visibility="Hidden" vertical-scroller-visibility="Auto" touch-scroll-type="Clamped"/>
+                <ui:VisualElement name="offer-buttons">
+                    <ui:Button name="offer-back-button" text="Back" class="text-button"/>
+                    <ui:Button name="offer-decline-button" text="Leave it" class="text-button"/>
+                </ui:VisualElement>
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </zs:SafeArea>
+</ui:UXML>

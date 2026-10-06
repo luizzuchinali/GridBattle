@@ -84,6 +84,20 @@ namespace GridBattle.Gameplay.Movement
         [Min(0.01f)]
         private float arrivalPulseDuration = 0.08f;
 
+        [Header("Slide (pushed and pulled characters)")]
+        [SerializeField]
+        [Min(0.01f)]
+        [Tooltip("Seconds a pushed or pulled character takes to slide across one cell (no hop: it is thrown).")]
+        private float slideSecondsPerCell = 0.06f;
+
+        [SerializeField]
+        private Ease slideEase = Ease.OutQuad;
+
+        [SerializeField]
+        [Min(0f)]
+        [Tooltip("Extra seconds between the end of the slide and the collision reaction (flash and bump) of the characters involved.")]
+        private float collisionBumpDelay = 0.02f;
+
         [Header("Combat")]
         [SerializeField]
         [Min(0f)]
@@ -112,6 +126,9 @@ namespace GridBattle.Gameplay.Movement
         [Tooltip("Fade-out duration before a dead enemy is destroyed.")]
         private float deathDuration = 0.15f;
 
+        public float SlideSecondsPerCell => slideSecondsPerCell;
+        public Ease SlideEase => slideEase;
+        public float CollisionBumpDelay => collisionBumpDelay;
         public float LungePixels => lungePixels;
         public float LungeDuration => lungeDuration;
         public Color HitFlashColor => hitFlashColor;

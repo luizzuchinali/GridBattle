@@ -3,7 +3,7 @@ tags:
   - design
   - gdd
 created: 2026-07-12
-updated: 2026-10-03
+updated: 2026-10-05
 ---
 ## Grid Battle (TEMP)
 
@@ -97,8 +97,8 @@ O objetivo é montar builds diferentes com as árvores de talento de cada classe
 
 #### Mecânica 3: XP, Nível e Escolha de Talentos (build adaptativa)
 - **Descrição:** a cada nível alcançado, no momento em que a barra de XP cruza o limiar, o jogo é pausado e oferece 3 talentos sorteados entre os que a classe pode pegar. O jogador escolhe 1. O sorteio é ponderado por sinergia com a build.
-- **Controle do RNG (pilar 3):** o jogador pode rerrolar a oferta, banir um talento e pular a oferta. Quantidades e custos em aberto.
-- **Vida:** subir de nível não recupera vida.
+- **Controle do RNG (pilar 3):** o jogador pode rerrolar a oferta, banir um talento e pular a oferta. Quantidades e custos em aberto. Valores iniciais configuráveis: 2 rerolls, 1 banimento e 1 pulo por run, sem custo além desse limite (ver [[valores_padrao_em_aberto]]).
+- **Vida:** cada nível ganho recupera toda a vida (decisão de balanceamento de 2026-10-06; fração configurável em `ProgressionSettings`). Entre os níveis, a vida persiste entre as batalhas e se recupera nos nós de cura.
 - **Detalhes:** [[talentos_e_oferta]] (oferta, reroll, banir e pular) e [[xp_e_niveis]] (XP e nível).
 
 #### Mecânica 4: Papéis dos Inimigos
@@ -125,7 +125,7 @@ O objetivo é montar builds diferentes com as árvores de talento de cada classe
 - **Detalhes:** [[xp_e_niveis]] (XP e nível), [[talentos_e_oferta]] (talentos) e [[classes_e_skills]] (skills).
 
 ### 2.6 Economia
-Não há moeda por enquanto. Os recursos da run são: vida (persiste entre os nós e se recupera em nós de cura), XP (por inimigo derrotado, leva a níveis e talentos), consumíveis (nó de consumível, ver 2.8) e as ferramentas de oferta de talento (reroll, banimento e pular; ver Mecânica 3). O custo do nó de talento ainda é ❓ a definir (ver Mecânica 2). Itens ativos e equipáveis estão fora do escopo (ver seção 10).
+Não há moeda por enquanto. Os recursos da run são: vida (persiste entre os nós e se recupera em nós de cura), XP (por inimigo derrotado, leva a níveis e talentos), consumíveis (nó de consumível, ver 2.8) e as ferramentas de oferta de talento (reroll, banimento e pular; ver Mecânica 3). O custo do nó de talento ainda é ❓ a definir (ver Mecânica 2). Valor inicial configurável: 15% da vida máxima, sem nunca matar (ver [[valores_padrao_em_aberto]]). Itens ativos e equipáveis estão fora do escopo (ver seção 10).
 
 ### 2.7 Glossário do Jogo
 
@@ -138,7 +138,7 @@ Não há moeda por enquanto. Os recursos da run são: vida (persiste entre os n�
 
 ### 2.9 Balanceamento e Fórmulas
 - **Princípio:** a dificuldade vem da profundidade no mapa e o poder do jogador vem do nível (XP). A geração é determinística por seed, então o balanceamento pode ser simulado antes de implementar.
-- **Estado atual:** a curva de XP implementada é 50 de XP no nível 1→2 mais 25 por nível, e o XP dos inimigos é fixo. A regra desejada (custo crescente, batalha difícil rendendo cerca de um nível, nível máximo fixo) ainda está em definição. Detalhes: [[balanceamento_e_geracao]].
+- **Estado atual:** a curva de XP implementada é global e configurável (`ProgressionSettings`): 50 de XP no nível 1→2 mais 25 por nível, com nível máximo 30 e sobra de XP guardada. O XP de cada batalha vem do orçamento de ameaça da profundidade e da dificuldade: orçamento × 8,5 × (1 + 0,07 × (profundidade − 1)), dividido entre os inimigos pela ameaça de cada um. Assim uma batalha fácil sempre dá menos XP que uma normal, e uma normal menos que uma difícil, no mesmo andar. Com 30 andares, a primeira batalha normal dá o nível 2 e a run chega perto do nível 19 antes do chefe. São valores iniciais: a regra final (custo crescente, batalha difícil rendendo cerca de um nível, nível máximo fixo) ainda está em definição. Detalhes: [[balanceamento_e_geracao]], [[xp_e_niveis]] e [[valores_padrao_em_aberto]].
 
 ## 3. Personagens e Mundo
 
@@ -153,7 +153,7 @@ Duas camadas descrevem e alteram um personagem:
 
 ### 3.2 Personagem do Jogador
 
-Três classes, implementadas hoje apenas com diferença de vida máxima e sem skills:
+Três classes, implementadas com diferença de vida máxima e de skills (valores provisórios):
 
 | Classe | Vida máxima | Liberação |
 |---|---|---|
@@ -162,12 +162,12 @@ Três classes, implementadas hoje apenas com diferença de vida máxima e sem sk
 | Ladino (Rogue) | 90 | ao vencer 30 batalhas |
 
 - **Liberação:** só contam batalhas vencidas, acumuladas entre runs e guardadas no perfil do jogador (8.1). Regras em [[meta_progressao_e_perfil]].
-- **Skills:** o personagem carrega até 6 skills, uma por botão da barra de skills (ver [[classes_e_skills]]).
+- **Skills:** o personagem carrega até 6 skills, uma por botão da barra de skills (ver [[classes_e_skills]]). Toda classe começa com ao menos uma skill: Golpe (Guerreiro), Nova de Gelo (Mago) e Adaga Envenenada (Ladino); as demais vêm de talentos.
 - **Detalhes:** valores, curva de XP implementada e perguntas em aberto em [[classes_e_skills]].
 
 ### 3.3 NPCs / Inimigos
 
-Cinco inimigos implementados hoje, todos com o mesmo comportamento de perseguir e atacar: Goblin, Rat, Slime, FireSkull e EyeBat. Cada um tem vida, movimento, alcance, dano e um XP concedido ao ser derrotado. Chefes e elites ainda não existem. Tabela e detalhes: [[inimigos]]. Cada tipo de inimigo terá skills exclusivas dele.
+Cinco inimigos básicos implementados (Goblin, Rat, Slime, FireSkull e EyeBat), cada um com um papel e um comportamento configurável: corpo a corpo, enxame e atirador. Há também inimigos provisórios para os papéis de suporte, invocador e controlador e para os que cobram a build (blindado, regenerante e espinhoso), e um chefe final provisório (o Rei Goblin, com dois Guardas Goblin). Cada um tem vida, movimento, alcance, dano e um XP concedido ao ser derrotado. Elites ainda não existem. Tabela e detalhes: [[inimigos]]. Cada tipo de inimigo terá skills exclusivas dele.
 
 ### 3.4 Mundo / Cenário
 - **Ambientação:** masmorra subterrânea. A run é uma descida por salas e corredores (os nós do mapa) até o chefe final, onde as batalhas acontecem em salas de grid. Os inimigos são criaturas da masmorra (goblin, rato, slime, crânio de fogo, morcego-olho e as próximas).
@@ -209,9 +209,9 @@ Interface em UI Toolkit, em retrato no mobile (ver 8.1). Os controles são os me
 - ❓ Arte do mapa de nós (ícones dos tipos de nó e do caminho), do glossário e das telas de fim de run, e se haverá variação visual do grid conforme a profundidade.
 
 ### 5.2 Áudio
-Ainda não há nenhum áudio no projeto.
+Há a infraestrutura de áudio (efeitos por evento, música por contexto e volumes nas Opções), mas ainda nenhum clipe de áudio no projeto.
 
-- **Trilha sonora:** chiptune/sintetizador atmosférico, coerente com a pixel art e com o tom de fantasia sombria leve. A trilha é dividida por contexto: uma faixa calma para o menu e o mapa, outra para as batalhas e outra para o chefe final. A música muda na transição entre mapa e batalha. ❓ Número de faixas de batalha (para não repetir sempre a mesma) e se a música continua durante a pausa da escolha de talento.
+- **Trilha sonora:** chiptune/sintetizador atmosférico, coerente com a pixel art e com o tom de fantasia sombria leve. A trilha é dividida por contexto: uma faixa calma para o menu e o mapa, outra para as batalhas e outra para o chefe final. A música muda na transição entre mapa e batalha. ❓ Número de faixas de batalha (para não repetir sempre a mesma) e se a música continua durante a pausa da escolha de talento. Valores iniciais configuráveis: qualquer número de faixas de batalha, uma sorteada sem repetir em seguida, e a música continua durante a pausa (ver [[valores_padrao_em_aberto]]).
 - **SFX (efeitos necessários):**
   - **Combate:** andar, ataque básico, skill (um som por skill ou por tipo), dano recebido, morte de inimigo, morte do jogador.
   - **Progressão:** ganho de XP (orbs de XP), subida de nível e abertura da tela de escolha de talento, escolha de talento, reroll, banimento, pular.
@@ -250,7 +250,7 @@ Definição mínima: anúncios e compra de remoção de anúncios.
 - **Orientação:** retrato no mobile. ❓ Janela e proporção no PC (sugestão: janela em retrato ou com a interface centralizada).
 - **FPS alvo:** 60 FPS no mobile (já configurado no projeto).
 - **Estado da run:** a run é salva automaticamente entre as ações do jogador, tanto no meio da batalha quanto na tela do mapa. Se o app for para segundo plano ou for fechado, o jogador retoma exatamente do ponto em que parou. O estado salvo inclui a posição dos sorteios da *seed* (por exemplo, críticos e ofertas de talento), para que recarregar não mude o resultado das ações. A escolha de talento pendente (a oferta de 3 talentos, quando o jogo está pausado por uma subida de nível) também é salva, com a mesma oferta, para que fechar e reabrir o app não permita sortear de novo. Não há salvamento manual. ❓ Detalhes do formato do salvamento e o que acontece se um anúncio estiver pendente ao fechar.
-- **Idiomas:** o jogo suporta vários idiomas. Os idiomas iniciais são inglês, espanhol e português do Brasil. Todo texto exibido ao jogador (interface, nomes e descrições de talentos, skills, estados e inimigos, glossário do jogo e mensagens) deve ser traduzível, e não fixo no código ou nos assets. ❓ Idioma padrão na primeira abertura (sugestão: o idioma do sistema, com inglês como padrão quando não houver tradução), se a troca de idioma vale na hora ou só ao reabrir, e quem faz as traduções.
+- **Idiomas:** o jogo suporta vários idiomas. Os idiomas iniciais são inglês, espanhol e português do Brasil. Todo texto exibido ao jogador (interface, nomes e descrições de talentos, skills, estados e inimigos, glossário do jogo e mensagens) deve ser traduzível, e não fixo no código ou nos assets. ❓ Idioma padrão na primeira abertura (sugestão: o idioma do sistema, com inglês como padrão quando não houver tradução), se a troca de idioma vale na hora ou só ao reabrir, e quem faz as traduções. Valores iniciais: idioma do sistema na primeira abertura, com inglês como padrão, e a troca vale na hora (ver [[valores_padrao_em_aberto]]).
 - **Perfil do jogador:** as classes liberadas, o contador de batalhas vencidas e o glossário persistem entre runs, em um salvamento de perfil separado do da run (detalhes em [[meta_progressao_e_perfil]]).
 
 ### 8.2 Requisitos mínimos
@@ -285,7 +285,7 @@ Esta seção cobre apenas as métricas de design, usadas para balancear o jogo. 
   - Tempo e turnos por batalha (para identificar batalhas que se arrastam).
 - **Liberação de classes:** quantas runs o jogador leva para liberar o Mago e o Ladino (ver 3.2).
 
-❓ Como os dados são coletados e armazenados (ferramenta de análise), o consentimento de privacidade necessário e se os dados são só locais (para teste interno) ou enviados para um servidor.
+❓ Como os dados são coletados e armazenados (ferramenta de análise), o consentimento de privacidade necessário e se os dados são só locais (para teste interno) ou enviados para um servidor. Valor inicial: só locais, gravados em `metrics.jsonl` e ativados (ver [[valores_padrao_em_aberto]]).
 
 ---
 

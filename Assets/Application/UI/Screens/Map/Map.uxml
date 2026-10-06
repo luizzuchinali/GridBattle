@@ -1,0 +1,54 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:zs="ZS.UI" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/Application/UI/Screens/Map/Map.uss?fileID=7433441132597879392&amp;guid=2603ced9636af5542bf65a21fd96e845&amp;type=3#Map"/>
+    <zs:SafeArea name="container" class="container map-screen">
+        <ui:VisualElement name="map-hud" class="map-hud">
+            <ui:VisualElement class="map-hud__row">
+                <ui:VisualElement name="map-depth" class="hud-tile">
+                    <ui:Label name="map-depth-caption" text="Depth" class="hud-tile__caption" picking-mode="Ignore"/>
+                    <ui:Label name="map-depth-value" text="-" class="hud-tile__value" picking-mode="Ignore"/>
+                </ui:VisualElement>
+                <ui:VisualElement class="map-hud__stats">
+                    <ui:VisualElement name="map-hp-bar" class="stat-bar stat-bar--hp" picking-mode="Ignore">
+                        <ui:VisualElement name="map-hp-fill" class="stat-bar__fill" picking-mode="Ignore"/>
+                        <ui:Label name="map-hp-label" text="HP" class="stat-bar__label" picking-mode="Ignore"/>
+                    </ui:VisualElement>
+                    <ui:VisualElement name="map-xp-bar" class="stat-bar stat-bar--xp" picking-mode="Ignore">
+                        <ui:VisualElement name="map-xp-fill" class="stat-bar__fill" picking-mode="Ignore"/>
+                        <ui:Label name="map-xp-label" text="XP" class="stat-bar__label" picking-mode="Ignore"/>
+                    </ui:VisualElement>
+                </ui:VisualElement>
+                <ui:Button name="map-glossary-button" text="?" class="slot-button slot-button--glyph"/>
+                <ui:Button name="map-menu-button" class="slot-button" icon-image="project://database/Assets/Application/Art/Sprites/UI.png?fileID=9094600903545770030&amp;guid=62a3f1345f5495642b6ab1f188fd400c&amp;type=3#MenuIcon"/>
+            </ui:VisualElement>
+            <ui:VisualElement name="map-items" class="map-items" picking-mode="Ignore"/>
+        </ui:VisualElement>
+        <ui:ScrollView name="map-scroll" class="slim-scroll" mode="Vertical" horizontal-scroller-visibility="Hidden" vertical-scroller-visibility="Auto" touch-scroll-type="Clamped">
+            <ui:VisualElement name="map-canvas"/>
+        </ui:ScrollView>
+        <ui:VisualElement name="map-preview" class="panel-simple">
+            <ui:VisualElement name="preview-hint">
+                <ui:Label name="preview-hint-label" text="Choose your next node" picking-mode="Ignore"/>
+            </ui:VisualElement>
+            <ui:VisualElement name="preview-content" picking-mode="Ignore">
+                <ui:VisualElement class="preview-header" picking-mode="Ignore">
+                    <ui:Image name="preview-icon" picking-mode="Ignore"/>
+                    <ui:Label name="preview-title" text="Battle" picking-mode="Ignore"/>
+                    <ui:Label name="preview-xp" text="XP" picking-mode="Ignore"/>
+                </ui:VisualElement>
+                <ui:Label name="preview-text" picking-mode="Ignore"/>
+                <ui:VisualElement name="preview-battle" picking-mode="Ignore">
+                    <ui:VisualElement class="preview-row" picking-mode="Ignore">
+                        <ui:Label name="preview-roles-caption" text="Enemies" class="preview-caption" picking-mode="Ignore"/>
+                        <ui:VisualElement name="preview-roles" picking-mode="Ignore"/>
+                    </ui:VisualElement>
+                    <ui:VisualElement class="preview-row" picking-mode="Ignore">
+                        <ui:Label name="preview-terrain-caption" text="Terrain" class="preview-caption" picking-mode="Ignore"/>
+                        <ui:VisualElement name="preview-grid" picking-mode="Ignore"/>
+                        <ui:VisualElement name="preview-terrain-list" picking-mode="Ignore"/>
+                    </ui:VisualElement>
+                </ui:VisualElement>
+            </ui:VisualElement>
+            <ui:Button name="confirm-button" text="Confirm" class="text-button"/>
+        </ui:VisualElement>
+    </zs:SafeArea>
+</ui:UXML>

@@ -1,0 +1,55 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8398ac738fa68741976f21eef8c4ee6, type: 3}
+  m_Name: Predator
+  m_EditorClassIdentifier: Assembly-CSharp::GridBattle.Gameplay.States.StateDefinition
+  id: 78113cc5d8133e142ba1f64bc3214d9b
+  displayName:
+    m_TableReference:
+      m_TableCollectionName: Content
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: state.talent.predator.name
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  description:
+    m_TableReference:
+      m_TableCollectionName: Content
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: state.talent.predator.desc
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  icon: {fileID: 21300000, guid: 1ac030d4c5af3b64b82011f2eea6d6b4, type: 3}
+  kind: 0
+  stackPolicy: 2
+  maxStacks: 2
+  showInDetails: 1
+  effects:
+  - rid: 8661860384129156092
+  references:
+    version: 2
+    RefIds:
+    - rid: 8661860384129156092
+      type: {class: ConditionalDamageEffect, ns: GridBattle.Gameplay.States.Effects, asm: Assembly-CSharp}
+      data:
+        direction: 0
+        appliesTo: 3
+        condition: 4
+        states:
+        - {fileID: 11400000, guid: 69962cb40aeb9e54f86ea8a08b723b08, type: 2}
+        - {fileID: 11400000, guid: 6a75ff9af5119764f97e7a17c067d820, type: 2}
+        maxCount: 3
+        percent: 0.35
+        flat: 0

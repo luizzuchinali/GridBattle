@@ -12,13 +12,56 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79aab3d122fc9a54184cb0b84d518416, type: 3}
   m_Name: Slime
   m_EditorClassIdentifier: Assembly-CSharp::GridBattle.Gameplay.Entities.EnemyConfig
+  id: 67393b615f5b4214fa59f6354351e42f
+  displayName:
+    m_TableReference:
+      m_TableCollectionName: Content
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: enemy.slime.name
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  description:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  icon: {fileID: 0}
   sprite: {fileID: -1726699101, guid: 2fdad3188ff58ad499e2f7940baf39ec, type: 3}
   animatorController: {fileID: 9100000, guid: 891e71f08bda63843a373e19647b1db2, type: 2}
+  tint: {r: 1, g: 1, b: 1, a: 1}
   maxHp: 40
   walkDistance: 1
   attackDistance: 1
   basicAttackDamage: 5
+  critChance: 0
+  critMultiplier: 2
+  defensePenetration: 0
+  defense: 0
+  skillDamageBonus: 0
+  skillRange: 0
+  cooldownReduction: 0
   skills: []
+  initialStates: []
   prefab: {fileID: 2069839144374370989, guid: 4cf13f1910da4e14296e096a872f8cf2, type: 3}
+  role: {fileID: 11400000, guid: 17f7d49c6240e3e4fbd0d2c7588e2107, type: 2}
+  isBoss: 0
   behavior: {fileID: 11400000, guid: bfaaa7d80498e5e47ac0a7a9815afae7, type: 2}
+  behaviorDescription:
+    m_TableReference:
+      m_TableCollectionName: Content
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: enemy.slime.behavior
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   xpReward: 12
+  references:
+    version: 2
+    RefIds: []

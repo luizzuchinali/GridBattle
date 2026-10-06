@@ -1,0 +1,71 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79aab3d122fc9a54184cb0b84d518416, type: 3}
+  m_Name: GoblinGuard
+  m_EditorClassIdentifier: Assembly-CSharp::GridBattle.Gameplay.Entities.EnemyConfig
+  id: 79fb46051b81a144699d5cd43b748de2
+  displayName:
+    m_TableReference:
+      m_TableCollectionName: Content
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: enemy.goblin_guard.name
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  description:
+    m_TableReference:
+      m_TableCollectionName: Content
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: enemy.goblin_guard.desc
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  icon: {fileID: 0}
+  sprite: {fileID: 1053735724, guid: 2fdad3188ff58ad499e2f7940baf39ec, type: 3}
+  animatorController: {fileID: 9100000, guid: 54150efc98e73ae44a39d3819b6ee262, type: 2}
+  tint: {r: 0.7, g: 0.82, b: 1, a: 1}
+  maxHp: 36
+  walkDistance: 1
+  attackDistance: 1
+  basicAttackDamage: 5
+  critChance: 0
+  critMultiplier: 2
+  defensePenetration: 0
+  defense: 0
+  skillDamageBonus: 0
+  skillRange: 0
+  cooldownReduction: 0
+  skills: []
+  initialStates:
+  - state: {fileID: 11400000, guid: 855ff260788334e4dbcba3f4399dea4d, type: 2}
+    permanent: 1
+    duration: 1
+    stacks: 1
+  prefab: {fileID: 2069839144374370989, guid: 4cf13f1910da4e14296e096a872f8cf2, type: 3}
+  role: {fileID: 11400000, guid: 17f7d49c6240e3e4fbd0d2c7588e2107, type: 2}
+  isBoss: 0
+  behavior: {fileID: 11400000, guid: bfaaa7d80498e5e47ac0a7a9815afae7, type: 2}
+  behaviorDescription:
+    m_TableReference:
+      m_TableCollectionName: Content
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: enemy.goblin_guard.behavior
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  xpReward: 20
+  references:
+    version: 2
+    RefIds: []

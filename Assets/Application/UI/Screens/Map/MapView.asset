@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 911f3ae46822d5e49be4efe50cb95816, type: 3}
+  m_Name: MapView
+  m_EditorClassIdentifier: ZS.UI::ZS.UI.Navigation.ViewDefinition
+  visualTree: {fileID: 9197481963319205126, guid: 70fc67c27cf7dc744ada9d21bdad36ee, type: 3}
+  styleSheets: []
+  controllerType: GridBattle.UI.Screens.MapScreenController, Assembly-CSharp
+  layer: {fileID: 11400000, guid: 0f417e6c4fb753840b781dd02546fd41, type: 2}
+  mountMode: 0
+  transition: {fileID: 11400000, guid: 729894014d48e564995a7500fb2c3575, type: 2}
+  useBackdrop: 0
+  backdropColor: {r: 0, g: 0, b: 0, a: 0.5}
+  closeOnBackdropClick: 0
+  closeOnBack: 0

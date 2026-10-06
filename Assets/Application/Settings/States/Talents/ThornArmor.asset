@@ -1,0 +1,48 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8398ac738fa68741976f21eef8c4ee6, type: 3}
+  m_Name: ThornArmor
+  m_EditorClassIdentifier: Assembly-CSharp::GridBattle.Gameplay.States.StateDefinition
+  id: 51677238df8f3ec439ba87148678983c
+  displayName:
+    m_TableReference:
+      m_TableCollectionName: Content
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: state.talent.thorn_armor.name
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  description:
+    m_TableReference:
+      m_TableCollectionName: Content
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: state.talent.thorn_armor.desc
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  icon: {fileID: 21300000, guid: ffc057f54ab553b469746ca0a022b685, type: 3}
+  kind: 0
+  stackPolicy: 2
+  maxStacks: 5
+  showInDetails: 1
+  effects:
+  - rid: 8661860374469673025
+  references:
+    version: 2
+    RefIds:
+    - rid: 8661860374469673025
+      type: {class: ThornsEffect, ns: GridBattle.Gameplay.States.Effects, asm: Assembly-CSharp}
+      data:
+        flatDamage: 2
+        receivedFraction: 0

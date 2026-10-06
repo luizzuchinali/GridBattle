@@ -18,7 +18,7 @@ namespace GridBattle.Editor
 
             if (GUILayout.Button("Reset grid"))
             {
-                controller.InitializeGrid(controller.DebugPlayerConfig);
+                controller.InitializeGrid(controller.DebugPlayerConfig, true);
 
                 if (!Application.isPlaying)
                     EditorSceneManager.MarkSceneDirty(controller.gameObject.scene);

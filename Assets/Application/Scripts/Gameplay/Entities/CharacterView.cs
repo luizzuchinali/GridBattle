@@ -12,7 +12,9 @@ namespace GridBattle.Gameplay.Entities
     {
         public void Apply(CharacterConfig config)
         {
-            GetComponent<SpriteRenderer>().sprite = config.Sprite;
+            var spriteRenderer = GetComponent<SpriteRenderer>();
+            spriteRenderer.sprite = config.Sprite;
+            spriteRenderer.color = config.Tint;
             GetComponent<Animator>().runtimeAnimatorController = config.AnimatorController;
         }
     }

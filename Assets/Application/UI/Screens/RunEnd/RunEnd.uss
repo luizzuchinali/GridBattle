@@ -1,0 +1,78 @@
+/*
+ * End of run (defeat / given up) and victory share this layout: title, class and level, a scrollable summary
+ * and the main menu button.
+ */
+.run-summary {
+    justify-content: flex-start;
+    padding: 14px 7px 8px 7px;
+}
+
+#container .run-summary__title {
+    margin: 0;
+    padding: 0;
+    font-size: var(--font-size-title);
+    color: var(--color-bad);
+    -unity-text-align: middle-center;
+}
+
+#container .run-summary__subtitle {
+    margin: 0 0 8px 0;
+    padding: 0;
+    font-size: var(--font-size-body);
+    color: var(--color-text-dim);
+    -unity-text-align: middle-center;
+}
+
+.run-summary__hero {
+    flex-direction: row;
+    align-items: center;
+    width: 202px;
+    margin-bottom: var(--spacing-md);
+    flex-shrink: 0;
+}
+
+#summary-portrait {
+    width: 24px;
+    height: 30px;
+    margin-right: 8px;
+    flex-shrink: 0;
+}
+
+.run-summary__hero-texts {
+    flex-grow: 1;
+}
+
+#summary-class {
+    margin: 0;
+    padding: 0;
+    font-size: var(--font-size-title);
+    color: var(--color-primary);
+    -unity-text-align: middle-left;
+}
+
+#summary-level {
+    margin: 0;
+    padding: 0;
+    font-size: var(--font-size-body);
+    color: var(--color-xp-level);
+    -unity-text-align: middle-left;
+}
+
+.run-summary__scroll {
+    width: 202px;
+    flex-grow: 1;
+    flex-shrink: 1;
+    margin-bottom: 6px;
+}
+
+.summary-banner {
+    margin: var(--spacing-sm) 0 var(--spacing-md) 0;
+    padding: var(--spacing-sm);
+    font-size: var(--font-size-body);
+    color: var(--color-good);
+    white-space: normal;
+    -unity-text-align: middle-center;
+    border-width: 1px;
+    border-color: var(--color-good);
+    background-color: var(--color-panel-dim);
+}

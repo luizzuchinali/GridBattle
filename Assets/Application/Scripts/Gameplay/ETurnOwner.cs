@@ -6,6 +6,9 @@ namespace GridBattle.Gameplay
     public enum ETurnOwner
     {
         Player,
-        Enemies
+        Enemies,
+
+        /// <summary>Nobody: the battle's outcome is decided (or no battle is running).</summary>
+        None
     }
 }

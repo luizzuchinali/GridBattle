@@ -12,3 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54ff9244cfdfa014e80c7098ba1c4238, type: 3}
   m_Name: ChaseTarget
   m_EditorClassIdentifier: Assembly-CSharp::GridBattle.Gameplay.AI.Actions.ChaseTargetAction
+  id: 97ee48450a84d154cb6b05f59c21651c

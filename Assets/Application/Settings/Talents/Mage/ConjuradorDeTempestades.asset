@@ -1,0 +1,50 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ed99a411c5aa8942a176dce8ef11ada, type: 3}
+  m_Name: ConjuradorDeTempestades
+  m_EditorClassIdentifier: Assembly-CSharp::GridBattle.Gameplay.Talents.TalentDefinition
+  id: 4099095e6cf4d2740aa49be84bc87a8d
+  displayName:
+    m_TableReference:
+      m_TableCollectionName: Content
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: talent.stormcaller.name
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  description:
+    m_TableReference:
+      m_TableCollectionName: Content
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: talent.stormcaller.desc
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  icon: {fileID: 21300000, guid: 46bd92ef5175cf3429c43f9a50765e32, type: 3}
+  isPlaceholder: 1
+  allowedClasses:
+  - {fileID: 11400000, guid: 458abdf6a58316646803a046abb72a5c, type: 2}
+  requiredLevel: 4
+  prerequisites: []
+  maxRank: 1
+  baseWeight: 2
+  synergyTags:
+  - {fileID: 11400000, guid: dc99148dda435ab489bd4eb7df8b3289, type: 2}
+  - {fileID: 11400000, guid: a888e3420b849914d8888d268af42916, type: 2}
+  - {fileID: 11400000, guid: 14ab514c221772b41969c956a3e86745, type: 2}
+  states: []
+  unlockedSkill: {fileID: 11400000, guid: 1144dc0d578bd1343a9f1185f0613046, type: 2}
+  references:
+    version: 2
+    RefIds: []

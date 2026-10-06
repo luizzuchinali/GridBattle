@@ -1,0 +1,54 @@
+/* Contextual tutorial tip (interface 4.4): a small window with a title, a short text and an OK button. */
+#overlay-background {
+    flex-grow: 1;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+}
+
+#tip-window {
+    width: 190px;
+    max-height: 300px;
+}
+
+#tip-header {
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 6px;
+}
+
+#tip-icon {
+    width: 16px;
+    height: 16px;
+    margin-right: 6px;
+    flex-shrink: 0;
+}
+
+.tip-icon--hidden {
+    display: none;
+}
+
+#tip-title {
+    flex-shrink: 1;
+    margin: 0;
+    padding: 0;
+    font-size: var(--font-size-title);
+    color: var(--color-primary);
+    white-space: normal;
+    -unity-text-align: middle-center;
+}
+
+#tip-text {
+    margin: 0 0 8px 0;
+    padding: 0;
+    font-size: var(--font-size-body);
+    color: var(--color-text);
+    white-space: normal;
+    -unity-text-align: upper-center;
+}
+
+#container #tip-ok-button {
+    align-self: center;
+    min-width: 70px;
+}

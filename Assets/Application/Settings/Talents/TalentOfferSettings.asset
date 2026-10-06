@@ -1,0 +1,43 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 457774ba5dba2524f81a420696270ac2, type: 3}
+  m_Name: TalentOfferSettings
+  m_EditorClassIdentifier: Assembly-CSharp::GridBattle.Gameplay.Talents.TalentOfferSettings
+  optionsPerOffer: 3
+  maxOptionsPerOffer: 5
+  baseRerolls: 2
+  baseBans: 1
+  baseSkips: 1
+  rerollExcludesCurrentOptions: 1
+  synergyBonusPerSharedTag: 0.5
+  synergyCounting: 0
+  sharedPoolWeightMultiplier: 0.5
+  maxSkillTalents: 6
+  offerAfterFinalBossKill: 0
+  talentNodeLevelBonus: 1
+  maxHpGainHealsSameAmount: 1
+  sharedPool:
+  - {fileID: 11400000, guid: 41123f6c86fea634abc84f50a6873d05, type: 2}
+  - {fileID: 11400000, guid: c9b2f16158bcee64287f7ca3a29ca3d1, type: 2}
+  - {fileID: 11400000, guid: 0d2e52407a521734f8a2c068a57290d7, type: 2}
+  - {fileID: 11400000, guid: 7d23c58e01651b84da3e9eb4f7bf15cb, type: 2}
+  - {fileID: 11400000, guid: 6da7ae34dc4a8fc448770c8c7efe21db, type: 2}
+  - {fileID: 11400000, guid: 0b7d87b696dc3324da5ddd3f2e4116fc, type: 2}
+  - {fileID: 11400000, guid: dc515adcda81c2145b1396bfacd9a819, type: 2}
+  - {fileID: 11400000, guid: a8617da3882dcb346b06e32114ab4dbd, type: 2}
+  - {fileID: 11400000, guid: 1f104fa84b8909547b812df0aa1998a4, type: 2}
+  - {fileID: 11400000, guid: c36a43e6e8b8b474abbed221ba2d3eb6, type: 2}
+  - {fileID: 11400000, guid: 999695d2f17cff345916fc7739dd3ee6, type: 2}
+  - {fileID: 11400000, guid: 192a13f0d8d007b4485a5271abdf7d57, type: 2}
+  - {fileID: 11400000, guid: c4daa703ba7850f489ffaea4062c566c, type: 2}
+  - {fileID: 11400000, guid: 7d3adcd20fb263647ba97ad88beafe69, type: 2}
+  - {fileID: 11400000, guid: 44d239ec5b98f3c4681acdd75768294e, type: 2}

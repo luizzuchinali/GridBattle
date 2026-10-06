@@ -1,0 +1,54 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ed99a411c5aa8942a176dce8ef11ada, type: 3}
+  m_Name: PiercingThrow
+  m_EditorClassIdentifier: Assembly-CSharp::GridBattle.Gameplay.Talents.TalentDefinition
+  id: 8128e65a59bd37b43972f1c5940630e6
+  displayName:
+    m_TableReference:
+      m_TableCollectionName: Content
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: talent.piercing_throw.name
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  description:
+    m_TableReference:
+      m_TableCollectionName: Content
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: talent.piercing_throw.desc
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  icon: {fileID: 21300000, guid: cb12848918a993242b0c7bc128b9f5c9, type: 3}
+  isPlaceholder: 1
+  allowedClasses:
+  - {fileID: 11400000, guid: 317c9296b1886594c806574a4d3d6726, type: 2}
+  requiredLevel: 7
+  prerequisites:
+  - {fileID: 11400000, guid: 82793f47b847cb74ba004891af5ac631, type: 2}
+  maxRank: 1
+  baseWeight: 1
+  synergyTags:
+  - {fileID: 11400000, guid: dc99148dda435ab489bd4eb7df8b3289, type: 2}
+  - {fileID: 11400000, guid: 14ab514c221772b41969c956a3e86745, type: 2}
+  states:
+  - state: {fileID: 11400000, guid: 46ec48d47f2c79e4b84530feb3d3ba86, type: 2}
+    permanent: 1
+    duration: 1
+    stacks: 1
+  unlockedSkill: {fileID: 0}
+  references:
+    version: 2
+    RefIds: []

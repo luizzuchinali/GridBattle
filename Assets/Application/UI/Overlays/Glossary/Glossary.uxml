@@ -1,0 +1,17 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:zs="ZS.UI" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/Application/UI/Overlays/Glossary/Glossary.uss?fileID=7433441132597879392&amp;guid=100067da9f734154b69c0b5a2b622a8d&amp;type=3#Glossary"/>
+    <zs:SafeArea name="container" picking-mode="Ignore" class="container overlay-screen">
+        <ui:VisualElement name="overlay-background">
+            <ui:VisualElement name="glossary-window" class="window-frame">
+                <ui:Label name="glossary-title" text="Glossary" picking-mode="Ignore"/>
+                <ui:VisualElement name="glossary-tabs" class="tab-bar">
+                    <ui:Button name="glossary-tab-classes" text="Classes" class="text-button tab-button"/>
+                    <ui:Button name="glossary-tab-enemies" text="Enemies" class="text-button tab-button"/>
+                </ui:VisualElement>
+                <ui:Button name="glossary-back-button" text="Back" class="text-button tab-button"/>
+                <ui:ScrollView name="glossary-scroll" class="slim-scroll" mode="Vertical" horizontal-scroller-visibility="Hidden" vertical-scroller-visibility="Auto" touch-scroll-type="Clamped"/>
+                <ui:Button name="glossary-close-button" text="X" class="slot-button corner-close-button"/>
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </zs:SafeArea>
+</ui:UXML>

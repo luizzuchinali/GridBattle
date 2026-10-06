@@ -27,6 +27,9 @@ MonoBehaviour:
   flipOpenEase: 5
   arrivalPulsePixels: 4
   arrivalPulseDuration: 0.08
+  slideSecondsPerCell: 0.06
+  slideEase: 5
+  collisionBumpDelay: 0.02
   lungePixels: 5
   lungeDuration: 0.15
   hitFlashColor: {r: 1, g: 0.3, b: 0.3, a: 1}

@@ -1,0 +1,1627 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: Content_es
+  m_EditorClassIdentifier: Unity.Localization::UnityEngine.Localization.Tables.StringTable
+  m_LocaleId:
+    m_Code: es
+  m_SharedData: {fileID: 11400000, guid: 84108cdf327ab9342bf94b3442a30042, type: 2}
+  m_Metadata:
+    m_Items: []
+  m_TableData:
+  - m_Id: 4496571990016
+    m_Localized: Debilitado
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4496651681792
+    m_Localized: "Inflige un 50% menos de da\xF1o."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4497024974848
+    m_Localized: Armadura de Espinas
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4497024974849
+    m_Localized: "Al recibir un ataque, devuelve da\xF1o al atacante."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4497381490688
+    m_Localized: Robo de Vida
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4497381490689
+    m_Localized: "Recupera parte del da\xF1o infligido como vida."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4497729617920
+    m_Localized: "Regeneraci\xF3n"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4497729617921
+    m_Localized: Recupera vida al inicio de cada turno.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4498077745152
+    m_Localized: Escudo
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4498077745153
+    m_Localized: "Vida temporal que absorbe da\xF1o antes que la vida real."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4498425872384
+    m_Localized: Envenenado
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4498425872385
+    m_Localized: "Recibe da\xF1o al inicio de cada turno."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7824852877312
+    m_Localized: Blindado
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7824865460224
+    m_Localized: "Reduce el da\xF1o de cada golpe recibido."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7825255530496
+    m_Localized: Cuerpo a cuerpo
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7825255530497
+    m_Localized: Te persigue y ataca de cerca.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7825603657728
+    m_Localized: Enjambre
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7825603657729
+    m_Localized: "Fr\xE1gil y r\xE1pido, y llega en grupo."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7825955979264
+    m_Localized: Tirador
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7825955979265
+    m_Localized: Ataca desde lejos e intenta mantener la distancia.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7826312495104
+    m_Localized: Apoyo
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7826312495105
+    m_Localized: Cura o fortalece a sus aliados. Objetivo prioritario.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7826656428032
+    m_Localized: Invocador
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7826656428033
+    m_Localized: Invoca nuevos enemigos durante el combate.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7827000360960
+    m_Localized: Controlador
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7827000360961
+    m_Localized: "Te aplica estados negativos o te mueve por la cuadr\xEDcula."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7828103462912
+    m_Localized: Goblin
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7828103462913
+    m_Localized: Te persigue y ataca de cerca.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7828103462914
+    m_Localized: Slime
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7828103462915
+    m_Localized: Lento y resistente. Avanza hacia ti y ataca de cerca.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7828103462916
+    m_Localized: Rata
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7828103462917
+    m_Localized: "R\xE1pida y fr\xE1gil. Se acerca deprisa y muerde."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7828103462918
+    m_Localized: "Murci\xE9lago ojo"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7828103462919
+    m_Localized: "R\xE1pido y fr\xE1gil. Vuela hacia ti y ataca de cerca."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7828103462920
+    m_Localized: Calavera de fuego
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7828103462921
+    m_Localized: Ataca desde lejos e intenta mantener esa distancia.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7828212514816
+    m_Localized: "Cham\xE1n goblin"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7828212514817
+    m_Localized: "Cura y protege a los aliados heridos y se mantiene lejos de ti. Elim\xEDnalo primero."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7828325761024
+    m_Localized: Reina rata
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7828325761025
+    m_Localized: Invoca ratas para que luchen por ella y se mantiene lejos de ti.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7828430618624
+    m_Localized: Ojo maldito
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7828430618625
+    m_Localized: Te debilita desde lejos y luego se acerca para atacar.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7828539670528
+    m_Localized: Goblin blindado
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7828539670529
+    m_Localized: "La armadura bloquea parte de cada golpe, as\xED que los ataques d\xE9biles apenas le hacen da\xF1o."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7828652916736
+    m_Localized: Slime regenerante
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7828652916737
+    m_Localized: "Recupera vida cada turno. Haz da\xF1o r\xE1pido, antes de que se cure."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7828757774336
+    m_Localized: Rata espinosa
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7828757774337
+    m_Localized: "Hiere a quien lo golpea. Ataca desde lejos o usa da\xF1o con el tiempo."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7840745095168
+    m_Localized: Golpe
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7840745095169
+    m_Localized: "Un golpe r\xE1pido contra un enemigo adyacente."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7841101611008
+    m_Localized: Embestida con Escudo
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7841101611009
+    m_Localized: "Embiste con el escudo y golpea una l\xEDnea de enemigos."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7841487486976
+    m_Localized: Bola de Fuego
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7841487486977
+    m_Localized: "Lanza una bola de fuego que quema a los enemigos de un \xE1rea, desde cualquier punto de la cuadr\xEDcula."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7841844002816
+    m_Localized: Nova de Hielo
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7841844002817
+    m_Localized: "Una explosi\xF3n de hielo que golpea a los enemigos alrededor del objetivo."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7842200518656
+    m_Localized: "Tormenta El\xE9ctrica"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7842200518657
+    m_Localized: Un rayo que se abre en cono desde el objetivo.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7842586394624
+    m_Localized: Daga Arrojadiza
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7842586394625
+    m_Localized: Lanza una daga a un enemigo lejano.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7842947104768
+    m_Localized: Bomba de Humo
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7842947104769
+    m_Localized: Lanza una bomba de humo a un enemigo a tu lado.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7843299426304
+    m_Localized: Daga Envenenada
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7843299426305
+    m_Localized: "Una daga envenenada que atraviesa una l\xEDnea de enemigos."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7843660136448
+    m_Localized: "L\xEDnea Venenosa"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7843660136449
+    m_Localized: "Un largo rastro de veneno que golpea a todos los enemigos en l\xEDnea."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10290159910912
+    m_Localized: Tu primera batalla
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10290247991296
+    m_Localized: "Toca una celda resaltada para moverte o a un enemigo al alcance para atacar; cada acci\xF3n da un turno a los enemigos. Derrotarlos da XP: llena la barra para subir de nivel."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10290373820416
+    m_Localized: Elige tu camino
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10290373820417
+    m_Localized: 'Toca un nodo para ver su vista previa: el tipo y, en las batallas, el XP, los roles de los enemigos y el terreno. Luego confirma para entrar.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10290495455232
+    m_Localized: "\xA1Subiste de nivel!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10290495455233
+    m_Localized: "El juego est\xE1 en pausa: elige 1 de 3 talentos para formar tu build. Tambi\xE9n puedes sortear de nuevo la oferta, vetar un talento u omitirla."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10290604507136
+    m_Localized: La vida se mantiene
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10290604507137
+    m_Localized: "Tu vida se mantiene en la siguiente batalla. Solo se recupera en nodos de curaci\xF3n o con tu build; vig\xEDlala al planear tu ruta."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10290717753344
+    m_Localized: "Nodo de curaci\xF3n"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10290717753345
+    m_Localized: "Aqu\xED recuperas vida. Planea tu ruta para llegar a uno antes de que se acabe tu vida."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10290826805248
+    m_Localized: Nodo de talento
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10290826805249
+    m_Localized: "Aqu\xED puedes obtener un talento fuera de las subidas de nivel, a cambio de un coste. Aseg\xFArate de que valga la pena."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10290944245760
+    m_Localized: Consumibles
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10290944245761
+    m_Localized: "Los consumibles son de un solo uso y solo funcionan en batalla. Usar uno no gasta tu acci\xF3n, pero solo puedes usar uno por turno."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10291057491968
+    m_Localized: Detalles
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10291057491969
+    m_Localized: "Mant\xE9n pulsado (clic derecho en PC) un personaje para ver sus atributos, habilidades y estados activos. Nunca gasta tu turno: cierra la ventana con la X."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10291187515392
+    m_Localized: Habilidades
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10291187515393
+    m_Localized: "Toca el bot\xF3n de una habilidad y luego una celda resaltada para usarla; t\xF3calo de nuevo para cancelar. Las habilidades tienen una recarga que se cuenta en tus acciones."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 141742633615360
+    m_Localized: "Poci\xF3n de Curaci\xF3n"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 141742713307136
+    m_Localized: "Restaura 30 de vida. Usarla no gasta tu acci\xF3n."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 141743153709056
+    m_Localized: Bomba
+    m_Metadata:
+      m_Items: []
+  - m_Id: 141743153709057
+    m_Localized: "L\xE1nzala hasta 3 casillas de distancia: causa 15 de da\xF1o a cada enemigo en un \xE1rea de 3x3. No gasta tu acci\xF3n."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 141743547973632
+    m_Localized: "T\xF3nico de Regeneraci\xF3n"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 141743547973633
+    m_Localized: "Recupera vida con el tiempo durante 3 turnos. No gasta tu acci\xF3n."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 142151209156608
+    m_Localized: Roca
+    m_Metadata:
+      m_Items: []
+  - m_Id: 142151209156609
+    m_Localized: 'Los escombros bloquean el paso: nadie puede ocupar esta casilla ni cruzarla.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 142151704084480
+    m_Localized: Fuego
+    m_Metadata:
+      m_Items: []
+  - m_Id: 142151704084481
+    m_Localized: Quema a quien termine su turno sobre ella.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 142152127709184
+    m_Localized: Pantano Venenoso
+    m_Metadata:
+      m_Items: []
+  - m_Id: 142152127709185
+    m_Localized: Envenena a quien termine su turno sobre ella.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 142152563916800
+    m_Localized: Santuario Curativo
+    m_Metadata:
+      m_Items: []
+  - m_Id: 142152563916801
+    m_Localized: "Otorga Regeneraci\xF3n a quien termine su turno sobre ella."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 142153050456064
+    m_Localized: Piedra Protectora
+    m_Metadata:
+      m_Items: []
+  - m_Id: 142153050456065
+    m_Localized: Otorga un Escudo a quien termine su turno sobre ella.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 151679795429376
+    m_Localized: Rey Goblin
+    m_Metadata:
+      m_Items: []
+  - m_Id: 151679891898368
+    m_Localized: "Jefe final provisional: un rey goblin m\xE1s fuerte que cualquier goblin."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 151679891898369
+    m_Localized: Te embiste y golpea fuerte. Llega con dos guardias blindados.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 151680038699008
+    m_Localized: Guardia Goblin
+    m_Metadata:
+      m_Items: []
+  - m_Id: 151680038699009
+    m_Localized: Escolta provisional del jefe final. Blindado.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 151680038699010
+    m_Localized: "Te persigue y ataca de cerca. Recibe menos da\xF1o de cada golpe."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218482187194368
+    m_Localized: Ataque
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218482434658304
+    m_Localized: Defensa
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218482585653248
+    m_Localized: "Cr\xEDtico"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218482719870976
+    m_Localized: Habilidades
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218482841505792
+    m_Localized: "Recuperaci\xF3n"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218482958946304
+    m_Localized: Utilidad
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218483076386816
+    m_Localized: "Guardi\xE1n"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218483202215936
+    m_Localized: Arcano
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218483328045056
+    m_Localized: Sombra
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218483445485568
+    m_Localized: Veneno
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218484057853952
+    m_Localized: Vitalidad
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218484057853953
+    m_Localized: "+10 de vida m\xE1xima por acumulaci\xF3n."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218484464701440
+    m_Localized: Hoja Afilada
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218484464701441
+    m_Localized: "+2 de da\xF1o del ataque b\xE1sico por acumulaci\xF3n."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218484909297664
+    m_Localized: Ojo Agudo
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218484909297665
+    m_Localized: "+5% de probabilidad de cr\xEDtico por acumulaci\xF3n."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218485311950848
+    m_Localized: "Precisi\xF3n Letal"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218485311950849
+    m_Localized: "+0,25x al multiplicador de da\xF1o cr\xEDtico por acumulaci\xF3n."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218485693632512
+    m_Localized: "Perforaci\xF3n de Armadura"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218485693632513
+    m_Localized: "Ignora el 10% de la defensa del objetivo por acumulaci\xF3n."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218486079508480
+    m_Localized: Robustez
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218486079508481
+    m_Localized: "+1 de defensa por acumulaci\xF3n."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218486490550272
+    m_Localized: "Maestr\xEDa en Habilidades"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218486490550273
+    m_Localized: "+10% de da\xF1o en habilidades ofensivas por acumulaci\xF3n."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218486876426240
+    m_Localized: Largo Alcance
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218486876426241
+    m_Localized: "+1 de alcance de habilidades por acumulaci\xF3n."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218487270690816
+    m_Localized: "Recuperaci\xF3n R\xE1pida"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218487270690817
+    m_Localized: "Las habilidades se recuperan 1 acci\xF3n antes por acumulaci\xF3n."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218487669149696
+    m_Localized: Armadura de Espinas
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218487669149697
+    m_Localized: "Al recibir un ataque, devuelve 2 de da\xF1o al atacante por acumulaci\xF3n."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218488046637056
+    m_Localized: Robo de Vida
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218488046637057
+    m_Localized: "Recupera el 5% del da\xF1o infligido como vida por acumulaci\xF3n."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218488432513024
+    m_Localized: "Regeneraci\xF3n"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218488432513025
+    m_Localized: "Recupera 2 de vida al inicio de cada uno de tus turnos por acumulaci\xF3n."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218488814194688
+    m_Localized: "M\xE1s Opciones"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218488814194689
+    m_Localized: "+1 opci\xF3n de talento en cada oferta por acumulaci\xF3n."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218489191682048
+    m_Localized: Favor de la Fortuna
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218489191682049
+    m_Localized: "+1 reroll de ofertas de talento por acumulaci\xF3n."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218489581752320
+    m_Localized: Desterrador
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218489581752321
+    m_Localized: "+1 destierro de ofertas de talento por acumulaci\xF3n."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218489829216256
+    m_Localized: Vitalidad
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218489829216257
+    m_Localized: "+10 de vida m\xE1xima por rango."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218490064097280
+    m_Localized: Hoja Afilada
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218490064097281
+    m_Localized: "+2 de da\xF1o del ataque b\xE1sico por rango."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218490298978304
+    m_Localized: Ojo Agudo
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218490298978305
+    m_Localized: "+5% de probabilidad de cr\xEDtico por rango."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218490542247936
+    m_Localized: "Precisi\xF3n Letal"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218490542247937
+    m_Localized: "+0,25x al multiplicador de da\xF1o cr\xEDtico por rango. Requiere Ojo Agudo."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218490772934656
+    m_Localized: "Perforaci\xF3n de Armadura"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218490777128960
+    m_Localized: Ignora el 10% de la defensa del objetivo por rango.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218490995232768
+    m_Localized: Robustez
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218490995232769
+    m_Localized: +1 de defensa por rango.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218491221725184
+    m_Localized: "Maestr\xEDa en Habilidades"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218491221725185
+    m_Localized: "+10% de da\xF1o en habilidades ofensivas por rango."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218491444023296
+    m_Localized: Largo Alcance
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218491444023297
+    m_Localized: +1 de alcance de habilidades por rango.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218491670515712
+    m_Localized: "Recuperaci\xF3n R\xE1pida"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218491670515713
+    m_Localized: "Las habilidades se recuperan 1 acci\xF3n antes por rango."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218491930562560
+    m_Localized: Armadura de Espinas
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218491930562561
+    m_Localized: "Al recibir un ataque, devuelve 2 de da\xF1o al atacante por rango."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218492148666368
+    m_Localized: Robo de Vida
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218492148666369
+    m_Localized: "Recupera el 5% del da\xF1o infligido como vida por rango."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218492383547392
+    m_Localized: "Regeneraci\xF3n"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218492383547393
+    m_Localized: Recupera 2 de vida al inicio de cada uno de tus turnos por rango.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218492639399936
+    m_Localized: "M\xE1s Opciones"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218492639399937
+    m_Localized: "+1 opci\xF3n de talento en cada oferta por rango."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218492886863872
+    m_Localized: Favor de la Fortuna
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218492886863873
+    m_Localized: +1 reroll de ofertas de talento por rango.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218493130133504
+    m_Localized: Desterrador
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218493130133505
+    m_Localized: +1 destierro de ofertas de talento por rango.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218493557952512
+    m_Localized: Muralla
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218493557952513
+    m_Localized: "Desbloquea Embestida con Escudo: embiste con el escudo y golpea una l\xEDnea de enemigos."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218493989965824
+    m_Localized: Grimorio
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218493989965825
+    m_Localized: "Desbloquea Bola de Fuego: quema a los enemigos de un \xE1rea desde cualquier punto de la cuadr\xEDcula."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218494451339264
+    m_Localized: Criomancia
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218494451339265
+    m_Localized: "Dominio del hielo: tus habilidades infligen un 15 % m\xE1s de da\xF1o."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218494916907008
+    m_Localized: Invocador de Tormentas
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218494921101312
+    m_Localized: "Desbloquea Tormenta El\xE9ctrica: un rayo que se abre en cono desde el objetivo."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218495558635520
+    m_Localized: Arsenal Oculto
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218495558635521
+    m_Localized: 'Desbloquea Daga Arrojadiza: lanza una daga a un enemigo lejano.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218496020008960
+    m_Localized: Maestro de las Sombras
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218496020008961
+    m_Localized: 'Desbloquea Bomba de Humo: lanza una bomba de humo a un enemigo a tu lado.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218496452022272
+    m_Localized: Manos Ligeras
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218496452022273
+    m_Localized: "Manos r\xE1pidas: tus habilidades infligen un 15 % m\xE1s de da\xF1o."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218496955338752
+    m_Localized: Maestro del Veneno
+    m_Metadata:
+      m_Items: []
+  - m_Id: 218496955338753
+    m_Localized: "Desbloquea L\xEDnea Venenosa: una larga l\xEDnea de veneno que golpea a todos los enemigos en ella."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 220859090882560
+    m_Localized: Guerrero
+    m_Metadata:
+      m_Items: []
+  - m_Id: 220859187351552
+    m_Localized: Mago
+    m_Metadata:
+      m_Items: []
+  - m_Id: 220859187351553
+    m_Localized: "P\xEDcaro"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 302178474938368
+    m_Localized: Criomancia
+    m_Metadata:
+      m_Items: []
+  - m_Id: 302178546241536
+    m_Localized: "Tus habilidades infligen un 15 % m\xE1s de da\xF1o."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 302178680459264
+    m_Localized: Manos Ligeras
+    m_Metadata:
+      m_Items: []
+  - m_Id: 302178684653568
+    m_Localized: "Tus habilidades infligen un 15 % m\xE1s de da\xF1o."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 444084762312704
+    m_Localized: Golpe de Escudo
+    m_Metadata:
+      m_Items: []
+  - m_Id: 444084842004480
+    m_Localized: "Golpea con el escudo a un enemigo adyacente y emp\xFAjalo 2 casillas. Los enemigos lanzados contra un obst\xE1culo, el borde u otro personaje reciben da\xF1o extra."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 444085320155136
+    m_Localized: "R\xE1faga de Viento"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 444085320155137
+    m_Localized: "Una r\xE1faga de viento que da\xF1a a los enemigos de un \xE1rea peque\xF1a y empuja a cada uno 1 casilla lejos de su centro. Los que chocan reciben da\xF1o extra."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 444085714419712
+    m_Localized: Garfio
+    m_Metadata:
+      m_Items: []
+  - m_Id: 444085714419713
+    m_Localized: "Lanza un garfio a un enemigo lejano y tira de \xE9l hasta 3 casillas hacia ti, deteni\xE9ndolo a tu lado. Arr\xE1stralo a zonas peligrosas o contra otros enemigos."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 444086129655808
+    m_Localized: Garfio
+    m_Metadata:
+      m_Items: []
+  - m_Id: 444086129655809
+    m_Localized: Te lanza un garfio desde lejos y te arrastra hasta 3 casillas hacia el goblin.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 444086486171648
+    m_Localized: Onda de Choque
+    m_Metadata:
+      m_Items: []
+  - m_Id: 444086486171649
+    m_Localized: "Golpea a todos alrededor del rey y los lanza 2 casillas hacia atr\xE1s."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 444086842687488
+    m_Localized: Fuerza Bruta
+    m_Metadata:
+      m_Items: []
+  - m_Id: 444086842687489
+    m_Localized: "Desbloquea Golpe de Escudo: golpea a un enemigo adyacente y emp\xFAjalo 2 casillas. Los enemigos que chocan contra algo reciben da\xF1o extra."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 444087199203328
+    m_Localized: Dominio del Viento
+    m_Metadata:
+      m_Items: []
+  - m_Id: 444087199203329
+    m_Localized: "Desbloquea R\xE1faga de Viento: una r\xE1faga que da\xF1a a los enemigos de un \xE1rea peque\xF1a y los empuja lejos de su centro."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 444087547330560
+    m_Localized: Garfio de Abordaje
+    m_Metadata:
+      m_Items: []
+  - m_Id: 444087547330561
+    m_Localized: "Desbloquea Garfio: tira de un enemigo lejano hasta 3 casillas hacia ti. Arr\xE1stralo a zonas peligrosas o contra otros enemigos."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 444087660576768
+    m_Localized: Goblin arponero
+    m_Metadata:
+      m_Items: []
+  - m_Id: 444087660576769
+    m_Localized: Te engancha desde lejos y te arrastra hacia el grupo, y luego lucha de cerca.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458931054968832
+    m_Localized: Pendenciero
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458931294044160
+    m_Localized: Elemental
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458931742834688
+    m_Localized: Ardiendo
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458931742834689
+    m_Localized: "Sufre 2 de da\xF1o al inicio de su turno por cada acumulaci\xF3n (hasta 3)."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458932103544832
+    m_Localized: Veneno letal
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458932103544833
+    m_Localized: "Sufre 1 de da\xF1o m\xE1s un 5% de su vida m\xE1xima al inicio de su turno e inflige un 6% menos de da\xF1o, por cada acumulaci\xF3n (hasta 5)."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458932476837888
+    m_Localized: Helado
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458932476837889
+    m_Localized: "No puede moverse e inflige un 20% menos de da\xF1o."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458932833353728
+    m_Localized: Aturdido
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458932833353729
+    m_Localized: No puede moverse, atacar ni usar habilidades.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458933202452480
+    m_Localized: Expuesto
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458933202452481
+    m_Localized: "Recibe un 25% m\xE1s de da\xF1o."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458933571551232
+    m_Localized: Golpe Pesado
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458933571551233
+    m_Localized: "Golpe hace +3 de da\xF1o por rango."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458933923872768
+    m_Localized: Golpe Pesado
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458933923872769
+    m_Localized: "Golpe hace +3 de da\xF1o por rango."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458934280388608
+    m_Localized: Barrido Amplio
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458934280388609
+    m_Localized: "La l\xEDnea de Golpe crece 2 casillas por rango."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458934632710144
+    m_Localized: Barrido Amplio
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458934632710145
+    m_Localized: "La l\xEDnea de Golpe crece 2 casillas por rango."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458935052140544
+    m_Localized: "Golpe Empuj\xF3n"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458935052140545
+    m_Localized: "Golpe tambi\xE9n empuja 1 casilla a los enemigos que alcanza."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458935479959552
+    m_Localized: "Golpe Empuj\xF3n"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458935484153856
+    m_Localized: "Golpe tambi\xE9n empuja 1 casilla a los enemigos que alcanza."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458935916167168
+    m_Localized: "Frenes\xED Cuerpo a Cuerpo"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458935916167169
+    m_Localized: "+7% de da\xF1o por enemigo adyacente (hasta 3) por rango, con ataques y habilidades."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458936364957696
+    m_Localized: "Frenes\xED Cuerpo a Cuerpo"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458936364957697
+    m_Localized: "+7% de da\xF1o por enemigo adyacente (hasta 3) por rango, con ataques y habilidades."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458936805359616
+    m_Localized: "Mantener la L\xEDnea"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458936805359617
+    m_Localized: "Recibes un 4% menos de da\xF1o de ataques por enemigo adyacente (hasta 3) por rango."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458937233178624
+    m_Localized: "Mantener la L\xEDnea"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458937233178625
+    m_Localized: "Recibes un 4% menos de da\xF1o de ataques por enemigo adyacente (hasta 3) por rango."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458937702940672
+    m_Localized: Sed de Sangre
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458937702940673
+    m_Localized: Matar a un enemigo te cura 6 PV por rango.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458938113982464
+    m_Localized: Sed de Sangre
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458938113982465
+    m_Localized: Matar a un enemigo te cura 6 PV por rango.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458938508247040
+    m_Localized: Quebrantar
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458938508247041
+    m_Localized: "Los enemigos que empujas o arrastras contra algo reciben un 40% m\xE1s de da\xF1o por choque por rango."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458938906705920
+    m_Localized: Quebrantar
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458938906705921
+    m_Localized: "Los enemigos que empujas o arrastras contra algo reciben un 40% m\xE1s de da\xF1o por choque por rango."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458939284193280
+    m_Localized: Golpe Conmocionante
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458939284193281
+    m_Localized: "Golpe de Escudo empuja 1 casilla m\xE1s por rango."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458939636514816
+    m_Localized: Golpe Conmocionante
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458939640709120
+    m_Localized: "Golpe de Escudo empuja 1 casilla m\xE1s por rango."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458939997224960
+    m_Localized: Golpe Sacudidor
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458939997224961
+    m_Localized: "Golpe de Escudo tambi\xE9n expone al enemigo 2 turnos: recibe un 25% m\xE1s de da\xF1o."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458940349546496
+    m_Localized: Golpe Sacudidor
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458940349546497
+    m_Localized: "Golpe de Escudo tambi\xE9n expone al enemigo 2 turnos: recibe un 25% m\xE1s de da\xF1o."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458940697673728
+    m_Localized: "Conmoci\xF3n"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458940697673729
+    m_Localized: "Golpe de Escudo tambi\xE9n aturde al enemigo 1 turno."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458941049995264
+    m_Localized: "Conmoci\xF3n"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458941049995265
+    m_Localized: "Golpe de Escudo tambi\xE9n aturde al enemigo 1 turno."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458941398122496
+    m_Localized: "Embestida R\xE1pida"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458941398122497
+    m_Localized: La recarga de Embestida con Escudo baja 1 por rango.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458941809164288
+    m_Localized: "Embestida R\xE1pida"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458941809164289
+    m_Localized: La recarga de Embestida con Escudo baja 1 por rango.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458942165680128
+    m_Localized: Aplanadora
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458942165680129
+    m_Localized: "Embestida con Escudo hace +4 de da\xF1o y puede empezar 1 casilla m\xE1s lejos por rango."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458942522195968
+    m_Localized: Aplanadora
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458942522195969
+    m_Localized: "Embestida con Escudo hace +4 de da\xF1o y puede empezar 1 casilla m\xE1s lejos por rango."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458942870323200
+    m_Localized: "Toque G\xE9lido"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458942874517504
+    m_Localized: "Nova de Hielo enfr\xEDa a los enemigos 1 turno: no pueden moverse e infligen un 20% menos de da\xF1o."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458943222644736
+    m_Localized: "Toque G\xE9lido"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458943222644737
+    m_Localized: "Nova de Hielo enfr\xEDa a los enemigos 1 turno: no pueden moverse e infligen un 20% menos de da\xF1o."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458943574966272
+    m_Localized: Hielo Veloz
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458943574966273
+    m_Localized: La recarga de Nova de Hielo baja 1.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458943927287808
+    m_Localized: Hielo Veloz
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458943927287809
+    m_Localized: La recarga de Nova de Hielo baja 1.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458944296386560
+    m_Localized: "Expansi\xF3n de Hielo"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458944296386561
+    m_Localized: "El \xE1rea de Nova de Hielo crece un anillo (5x5 sin las esquinas)."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458944678068224
+    m_Localized: "Expansi\xF3n de Hielo"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458944678068225
+    m_Localized: "El \xE1rea de Nova de Hielo crece un anillo (5x5 sin las esquinas)."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458945072332800
+    m_Localized: Piromancia
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458945072332801
+    m_Localized: "Bola de Fuego hace +2 de da\xF1o por rango."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458945437237248
+    m_Localized: Piromancia
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458945437237249
+    m_Localized: "Bola de Fuego hace +2 de da\xF1o por rango."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458945785364480
+    m_Localized: "Ignici\xF3n"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458945785364481
+    m_Localized: "Bola de Fuego prende fuego a los enemigos 3 turnos (2 de da\xF1o por turno por acumulaci\xF3n): una acumulaci\xF3n por rango en cada impacto."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458946141880320
+    m_Localized: "Ignici\xF3n"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458946141880321
+    m_Localized: "Bola de Fuego prende fuego a los enemigos 3 turnos (2 de da\xF1o por turno por acumulaci\xF3n): una acumulaci\xF3n por rango en cada impacto."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458946494201856
+    m_Localized: "Explosi\xF3n Ampliada"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458946494201857
+    m_Localized: "El \xE1rea de Bola de Fuego crece un anillo (5x5 sin las esquinas)."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458946846523392
+    m_Localized: "Explosi\xF3n Ampliada"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458946846523393
+    m_Localized: "El \xE1rea de Bola de Fuego crece un anillo (5x5 sin las esquinas)."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458947198844928
+    m_Localized: Invocador de Tormentas
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458947198844929
+    m_Localized: "Tormenta El\xE9ctrica hace +3 de da\xF1o por rango."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458947559555072
+    m_Localized: Invocador de Tormentas
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458947559555073
+    m_Localized: "Tormenta El\xE9ctrica hace +3 de da\xF1o por rango."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458947907682304
+    m_Localized: Frente de Tormenta
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458947907682305
+    m_Localized: "El cono de Tormenta El\xE9ctrica crece una fila y su alcance 1."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458948264198144
+    m_Localized: Frente de Tormenta
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458948268392448
+    m_Localized: "El cono de Tormenta El\xE9ctrica crece una fila y su alcance 1."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458948629102592
+    m_Localized: "Hurac\xE1n"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458948629102593
+    m_Localized: "El \xE1rea de R\xE1faga de Viento crece un anillo (5x5 sin las esquinas)."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458948994007040
+    m_Localized: "Hurac\xE1n"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458948994007041
+    m_Localized: "El \xE1rea de R\xE1faga de Viento crece un anillo (5x5 sin las esquinas)."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458949342134272
+    m_Localized: Fuerza del Vendaval
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458949342134273
+    m_Localized: "R\xE1faga de Viento empuja 1 casilla m\xE1s por rango."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458949694455808
+    m_Localized: Fuerza del Vendaval
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458949694455809
+    m_Localized: "R\xE1faga de Viento empuja 1 casilla m\xE1s por rango."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458950071943168
+    m_Localized: Quebradizo
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458950071943169
+    m_Localized: "+20% de da\xF1o por rango a enemigos con un estado da\xF1ino (ardiendo, helado, envenenado...)."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458950432653312
+    m_Localized: Quebradizo
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458950432653313
+    m_Localized: "+20% de da\xF1o por rango a enemigos con un estado da\xF1ino (ardiendo, helado, envenenado...)."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458950780780544
+    m_Localized: Enfoque Arcano
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458950780780545
+    m_Localized: "Las habilidades hacen +15% de da\xF1o por rango si no te moviste en tu \xFAltimo turno."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458951166656512
+    m_Localized: Enfoque Arcano
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458951166656513
+    m_Localized: "Las habilidades hacen +15% de da\xF1o por rango si no te moviste en tu \xFAltimo turno."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458951573504000
+    m_Localized: Cosecha de Almas
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458951573504001
+    m_Localized: Matar a un enemigo acorta 1 por rango las recargas de tus habilidades.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458951959379968
+    m_Localized: Cosecha de Almas
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458951959379969
+    m_Localized: Matar a un enemigo acorta 1 por rango las recargas de tus habilidades.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458952328478720
+    m_Localized: Hojas Envenenadas
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458952328478721
+    m_Localized: "Tus habilidades envenenan a los enemigos que alcanzan: una acumulaci\xF3n de veneno por rango (1 de da\xF1o + 5% de su vida m\xE1xima por turno por acumulaci\xF3n, 4 turnos, hasta 5)."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458952731131904
+    m_Localized: Hojas Envenenadas
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458952731131905
+    m_Localized: "Tus habilidades envenenan a los enemigos que alcanzan: una acumulaci\xF3n de veneno por rango (1 de da\xF1o + 5% de su vida m\xE1xima por turno por acumulaci\xF3n, 4 turnos, hasta 5)."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458953083453440
+    m_Localized: Arma Untada
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458953087647744
+    m_Localized: "Tus ataques b\xE1sicos tambi\xE9n envenenan: 2 acumulaciones de veneno por rango (4 turnos)."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458953444163584
+    m_Localized: Arma Untada
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458953444163585
+    m_Localized: "Tus ataques b\xE1sicos tambi\xE9n envenenan: 2 acumulaciones de veneno por rango (4 turnos)."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458953796485120
+    m_Localized: Dagas Afiladas
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458953796485121
+    m_Localized: "Daga Envenenada y Daga Arrojadiza hacen +4 de da\xF1o por rango."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458954153000960
+    m_Localized: Dagas Afiladas
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458954153000961
+    m_Localized: "Daga Envenenada y Daga Arrojadiza hacen +4 de da\xF1o por rango."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458954513711104
+    m_Localized: "Ojo de \xC1guila"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458954513711105
+    m_Localized: "Daga Envenenada y Daga Arrojadiza llegan 1 casilla m\xE1s lejos por rango."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458954857644032
+    m_Localized: "Ojo de \xC1guila"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458954857644033
+    m_Localized: "Daga Envenenada y Daga Arrojadiza llegan 1 casilla m\xE1s lejos por rango."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458955201576960
+    m_Localized: Lanzamiento Perforante
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458955201576961
+    m_Localized: "La l\xEDnea de Daga Envenenada es 2 casillas m\xE1s larga."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458955553898496
+    m_Localized: Lanzamiento Perforante
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458955553898497
+    m_Localized: "La l\xEDnea de Daga Envenenada es 2 casillas m\xE1s larga."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458955914608640
+    m_Localized: Daga Veloz
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458955914608641
+    m_Localized: La recarga de Daga Envenenada baja 1.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458956275318784
+    m_Localized: Daga Veloz
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458956275318785
+    m_Localized: La recarga de Daga Envenenada baja 1.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458956627640320
+    m_Localized: Humo Asfixiante
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458956627640321
+    m_Localized: "Bomba de Humo debilita al enemigo 2 turnos: inflige un 50% menos de da\xF1o."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458956996739072
+    m_Localized: Humo Asfixiante
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458956996739073
+    m_Localized: "Bomba de Humo debilita al enemigo 2 turnos: inflige un 50% menos de da\xF1o."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458957365837824
+    m_Localized: Humo Persistente
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458957365837825
+    m_Localized: "Los estados que aplica Bomba de Humo duran 1 turno m\xE1s por rango."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458957718159360
+    m_Localized: Humo Persistente
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458957718159361
+    m_Localized: "Los estados que aplica Bomba de Humo duran 1 turno m\xE1s por rango."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458958066286592
+    m_Localized: Humo Expansivo
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458958066286593
+    m_Localized: "El \xE1rea de Bomba de Humo crece un anillo (una cruz de 5 casillas)."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458958418608128
+    m_Localized: Humo Expansivo
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458958418608129
+    m_Localized: "El \xE1rea de Bomba de Humo crece un anillo (una cruz de 5 casillas)."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458958779318272
+    m_Localized: Garfio Aturdidor
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458958783512576
+    m_Localized: "Garfio tambi\xE9n aturde al enemigo 1 turno."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458959148417024
+    m_Localized: Garfio Aturdidor
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458959148417025
+    m_Localized: "Garfio tambi\xE9n aturde al enemigo 1 turno."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458959504932864
+    m_Localized: "Tir\xF3n Fuerte"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458959504932865
+    m_Localized: "Garfio tira 1 casilla m\xE1s y llega 1 casilla m\xE1s lejos por rango."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458959886614528
+    m_Localized: "Tir\xF3n Fuerte"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458959886614529
+    m_Localized: "Garfio tira 1 casilla m\xE1s y llega 1 casilla m\xE1s lejos por rango."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458960251518976
+    m_Localized: Dardo Venenoso
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458960251518977
+    m_Localized: "L\xEDnea Venenosa hace +4 de da\xF1o por rango."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458960670949376
+    m_Localized: Dardo Venenoso
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458960670949377
+    m_Localized: "L\xEDnea Venenosa hace +4 de da\xF1o por rango."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458961031659520
+    m_Localized: Depredador
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458961031659521
+    m_Localized: "+35% de da\xF1o por rango a enemigos envenenados."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458961388175360
+    m_Localized: Depredador
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458961388175361
+    m_Localized: "+35% de da\xF1o por rango a enemigos envenenados."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458961736302592
+    m_Localized: Golpea y Huye
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458961736302593
+    m_Localized: "+30% de da\xF1o por rango en el turno posterior a moverte."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458962084429824
+    m_Localized: Golpea y Huye
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458962084429825
+    m_Localized: "+30% de da\xF1o por rango en el turno posterior a moverte."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458962432557056
+    m_Localized: Asesino
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458962432557057
+    m_Localized: "+40% de da\xF1o por rango a enemigos sin ning\xFAn aliado al lado."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458962789072896
+    m_Localized: Asesino
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458962789072897
+    m_Localized: "+40% de da\xF1o por rango a enemigos sin ning\xFAn aliado al lado."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458963149783040
+    m_Localized: "Fest\xEDn de Sombras"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458963149783041
+    m_Localized: Matar a un enemigo te cura 12 PV por rango.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458963497910272
+    m_Localized: "Fest\xEDn de Sombras"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 458963497910273
+    m_Localized: Matar a un enemigo te cura 12 PV por rango.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 463460722933760
+    m_Localized: Veneno Debilitante
+    m_Metadata:
+      m_Items: []
+  - m_Id: 463460781654016
+    m_Localized: "Los enemigos con un estado da\xF1ino (veneno, debilitado, helado...) te infligen un 15% menos de da\xF1o por rango."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 463461142364160
+    m_Localized: Veneno Debilitante
+    m_Metadata:
+      m_Items: []
+  - m_Id: 463461142364161
+    m_Localized: "Los enemigos con un estado da\xF1ino (veneno, debilitado, helado...) te infligen un 15% menos de da\xF1o por rango."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 472301057474560
+    m_Localized: "\xC1gil"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 472301116194816
+    m_Localized: "+12 de vida m\xE1xima por rango."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 472301472710656
+    m_Localized: "\xC1gil"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 472301472710657
+    m_Localized: "+12 de vida m\xE1xima por rango."
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 2
+    RefIds: []

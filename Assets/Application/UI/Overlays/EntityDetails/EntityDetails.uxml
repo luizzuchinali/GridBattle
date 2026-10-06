@@ -1,0 +1,15 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:zs="ZS.UI" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/Application/UI/Overlays/EntityDetails/EntityDetails.uss?fileID=7433441132597879392&amp;guid=4d60140b81f355a418e00f813a31416c&amp;type=3#EntityDetails"/>
+    <zs:SafeArea name="container" picking-mode="Ignore" class="container overlay-screen">
+        <ui:VisualElement name="overlay-background">
+            <ui:VisualElement name="details-window" class="window-frame">
+                <ui:VisualElement name="details-header" picking-mode="Ignore">
+                    <ui:Image name="details-portrait" picking-mode="Ignore"/>
+                    <ui:Label name="details-title" text="Name" picking-mode="Ignore"/>
+                </ui:VisualElement>
+                <ui:ScrollView name="details-scroll" mode="Vertical" horizontal-scroller-visibility="Hidden" vertical-scroller-visibility="Auto" touch-scroll-type="Clamped"/>
+                <ui:Button name="close-button" class="slot-button" text="X"/>
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </zs:SafeArea>
+</ui:UXML>

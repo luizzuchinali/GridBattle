@@ -1,0 +1,58 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8398ac738fa68741976f21eef8c4ee6, type: 3}
+  m_Name: SharpenedDaggers
+  m_EditorClassIdentifier: Assembly-CSharp::GridBattle.Gameplay.States.StateDefinition
+  id: 1ca26fc180a05f64a8807918fbf1c43c
+  displayName:
+    m_TableReference:
+      m_TableCollectionName: Content
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: state.talent.sharpened_daggers.name
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  description:
+    m_TableReference:
+      m_TableCollectionName: Content
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: state.talent.sharpened_daggers.desc
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  icon: {fileID: 21300000, guid: 335484beb22ae2d42b8f6ec375d355a1, type: 3}
+  kind: 0
+  stackPolicy: 2
+  maxStacks: 3
+  showInDetails: 1
+  effects:
+  - rid: 8661860384129156094
+  references:
+    version: 2
+    RefIds:
+    - rid: 8661860384129156094
+      type: {class: SkillModifierEffect, ns: GridBattle.Gameplay.States.Effects, asm: Assembly-CSharp}
+      data:
+        skills:
+        - {fileID: 11400000, guid: b157a86b34771194ca950092c68cb1e6, type: 2}
+        - {fileID: 11400000, guid: 8ce7125326b547148be0d49086fa0623, type: 2}
+        damageFlat: 4
+        damagePercent: 0
+        areaSteps: 0
+        range: 0
+        cooldownReduction: 0
+        displacement: 0
+        stateDuration: 0
+        attachedEffects: []
+        repeatAttachedPerStack: 0

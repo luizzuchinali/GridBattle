@@ -11,12 +11,22 @@ namespace GridBattle.Gameplay.Entities
     public static class CharacterFactory
     {
         [CanBeNull]
-        public static PlayerCharacter Spawn(PlayerCharacterConfig config) => Spawn(config, config.Prefab);
+        public static PlayerCharacter Spawn(PlayerCharacterConfig config) =>
+            Spawn(config, config.Prefab, CharacterScaling.None);
 
         [CanBeNull]
-        public static Enemy Spawn(EnemyConfig config) => Spawn(config, config.Prefab);
+        public static Enemy Spawn(EnemyConfig config) => Spawn(config, config.Prefab, CharacterScaling.None);
 
-        private static TCharacter Spawn<TCharacter>(CharacterConfig config, TCharacter prefab)
+        /// <summary>
+        /// Spawns an enemy with attribute <paramref name="scaling"/> applied (strength
+        /// by depth, a summoner's scaling for its minions).
+        /// </summary>
+        [CanBeNull]
+        public static Enemy Spawn(EnemyConfig config, CharacterScaling scaling) =>
+            Spawn(config, config.Prefab, scaling);
+
+        private static TCharacter Spawn<TCharacter>(CharacterConfig config, TCharacter prefab,
+            CharacterScaling scaling)
             where TCharacter : Character
         {
             if (prefab == null)
@@ -26,7 +36,7 @@ namespace GridBattle.Gameplay.Entities
             }
 
             var instance = InstantiatePrefabLinked(prefab);
-            instance.Initialize(config);
+            instance.Initialize(config, scaling);
             RecordEditModeChanges(instance);
             return instance;
         }

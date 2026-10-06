@@ -12,14 +12,67 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e7f604e158106f469724d865979731e, type: 3}
   m_Name: Mage
   m_EditorClassIdentifier: Assembly-CSharp::GridBattle.Gameplay.Entities.PlayerCharacterConfig
+  id: 458abdf6a58316646803a046abb72a5c
+  displayName:
+    m_TableReference:
+      m_TableCollectionName: Content
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: class.mage.name
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  description:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  icon: {fileID: 0}
   sprite: {fileID: 956639816, guid: 2fdad3188ff58ad499e2f7940baf39ec, type: 3}
   animatorController: {fileID: 9100000, guid: 9b8be9e49f36efe4da90c8d75acc1069, type: 2}
-  maxHp: 80
+  tint: {r: 1, g: 1, b: 1, a: 1}
+  maxHp: 85
   walkDistance: 1
   attackDistance: 1
   basicAttackDamage: 15
-  skills: []
+  critChance: 0
+  critMultiplier: 2
+  defensePenetration: 0
+  defense: 0
+  skillDamageBonus: 0
+  skillRange: 0
+  cooldownReduction: 0
+  canBeDisplaced: 1
+  immuneStates: []
+  maxHpPercentDamageMultiplier: 1
+  skills:
+  - {fileID: 11400000, guid: 6db82157da99a144dbc0fcc3216d859f, type: 2}
+  initialStates: []
   prefab: {fileID: 1427551736305951215, guid: 967c67956658ad84eade02cf2c3c6628, type: 3}
   characterClass: 1
-  baseXpToLevelUp: 50
-  xpToLevelUpGrowthPerLevel: 25
+  battlesToUnlock: 15
+  talentPool:
+  - {fileID: 11400000, guid: a973ab732133fba4da4a81d168a80b12, type: 2}
+  - {fileID: 11400000, guid: 8a721502b07c91447b9b3ba6f1a281f4, type: 2}
+  - {fileID: 11400000, guid: 4099095e6cf4d2740aa49be84bc87a8d, type: 2}
+  - {fileID: 11400000, guid: eee7bef22a83e1b43ae9120104a6a98b, type: 2}
+  - {fileID: 11400000, guid: 08a792658f2611f499e246e6aba7e947, type: 2}
+  - {fileID: 11400000, guid: 33bc4c66cc58bda48a4864890eb7c286, type: 2}
+  - {fileID: 11400000, guid: 1e2d3d0d0beb06941ac123cc514fdabb, type: 2}
+  - {fileID: 11400000, guid: 68a8fdb3da7f7a749b632f2352bafd86, type: 2}
+  - {fileID: 11400000, guid: 26e230f3bcdb6b84db6fe386a5bab41d, type: 2}
+  - {fileID: 11400000, guid: 3965deb4b70d32446ba2b9cdacd9c250, type: 2}
+  - {fileID: 11400000, guid: 12558fff5d10cec4396bafb598a43f0e, type: 2}
+  - {fileID: 11400000, guid: 270b6e440ea64ff4386712acf64c29dd, type: 2}
+  - {fileID: 11400000, guid: f22b9c15281443b46811e29941c6aadd, type: 2}
+  - {fileID: 11400000, guid: f2c41363a88b11943838a298b7b8d8a8, type: 2}
+  - {fileID: 11400000, guid: 0a9a79eed6ad1974fae2e68289e17060, type: 2}
+  - {fileID: 11400000, guid: 3a5b76ba61dd57b4d8643a6a11d71ccc, type: 2}
+  - {fileID: 11400000, guid: 9a96ef71b339b6b4fb9f051e77a6a532, type: 2}
+  references:
+    version: 2
+    RefIds: []

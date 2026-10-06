@@ -1,5 +1,6 @@
 using GridBattle.Gameplay.Entities;
 using GridBattle.Gameplay.Events;
+using GridBattle.Gameplay.Turns;
 using UnityEngine;
 
 namespace GridBattle.Gameplay.Progression
@@ -9,7 +10,9 @@ namespace GridBattle.Gameplay.Progression
     /// XpReward, split into packets. Delivery is announced via
     /// <see cref="XpRewardDroppedEvent"/> so the presentation controls the timing
     /// (each packet is credited when its orb reaches the bar); without a
-    /// presentation, it is credited right away.
+    /// presentation, it is credited right away. While XP that will level the
+    /// player up (or the XP of the battle's last enemy) is in flight, the turn
+    /// flow is held (<see cref="TurnBlockers"/>) so the level up resolves first.
     /// </summary>
     public class XpRewardSystem : MonoBehaviour
     {
@@ -41,11 +44,23 @@ namespace GridBattle.Gameplay.Progression
             var xpToNextLevel = player.XpToNextLevel;
             if (xpToNextLevel <= 0) return;
 
-            var packets = XpPacket.Split(enemyConfig.XpReward, xpPerPacket, player.CurrentXp, xpToNextLevel);
+            var reward = enemy.XpReward;
+            if (reward <= 0) return;
+
+            var packets = XpPacket.Split(reward, xpPerPacket, player.CurrentXp, xpToNextLevel);
+
+            // At the level cap the XP gives no level, so only the battle's last kill holds the turn.
+            var willLevelUp = !player.IsMaxLevel && player.CurrentXp + reward >= xpToNextLevel;
+            var holdsTurn = willLevelUp || !BattleController.AnyEnemyAlive();
+            var blocker = holdsTurn ? TurnBlockers.Acquire("XP delivery") : null;
+            var pending = packets.Length;
+
             var drop = new XpRewardDroppedEvent(enemy.transform.position, packets, packet =>
             {
                 if (player != null)
                     player.GainXp(packet.Amount);
+                if (--pending == 0)
+                    blocker?.Dispose();
             });
 
             EventBus.Raise(drop);

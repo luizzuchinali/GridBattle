@@ -1,0 +1,15 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:zs="ZS.UI" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/Application/UI/Overlays/Confirm/Confirm.uss?fileID=7433441132597879392&amp;guid=f4a7de0d24503cc4aa3bad2bf5af1da3&amp;type=3#Confirm"/>
+    <zs:SafeArea name="container" picking-mode="Ignore" class="container overlay-screen">
+        <ui:VisualElement name="overlay-background">
+            <ui:VisualElement name="confirm-window" class="window-frame">
+                <ui:Label name="confirm-title" text="Title" picking-mode="Ignore"/>
+                <ui:Label name="confirm-message" text="Message" picking-mode="Ignore"/>
+                <ui:VisualElement name="confirm-buttons">
+                    <ui:Button name="confirm-yes-button" text="Yes" class="text-button"/>
+                    <ui:Button name="confirm-no-button" text="No" class="text-button"/>
+                </ui:VisualElement>
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </zs:SafeArea>
+</ui:UXML>

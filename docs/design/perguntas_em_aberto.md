@@ -2,11 +2,13 @@
 tags:
   - design
   - indice
-updated: 2026-10-03
+updated: 2026-10-05
 ---
 # Perguntas em aberto
 
 > Índice das perguntas em aberto (❓) do [[GDD]] e dos subdocumentos, agrupadas por documento e seção. Cada pergunta vive no documento de origem (o link leva até a seção); quando for decidida, a decisão entra lá e a pergunta sai deste índice. Este índice foi gerado em 2026-10-03 e precisa ser regenerado quando as perguntas mudarem.
+>
+> As perguntas continuam em aberto, mas cada uma já tem um valor inicial configurável no jogo: ver [[valores_padrao_em_aberto]].
 
 
 Total: 84 perguntas.

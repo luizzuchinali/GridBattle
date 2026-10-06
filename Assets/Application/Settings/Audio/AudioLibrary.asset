@@ -1,0 +1,278 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8cbdbcff0d8bc8743bbfc6bbd4c4f174, type: 3}
+  m_Name: AudioLibrary
+  m_EditorClassIdentifier: Assembly-CSharp::GridBattle.Managers.Audio.AudioLibrary
+  sfxLevel: 1
+  musicLevel: 0.7
+  sfxVoices: 12
+  crossfadeSeconds: 1.5
+  keepMusicDuringTalentPause: 1
+  musicAfterVictory: 2
+  musicAfterDefeat: 1
+  hurtSoundOnKill: 1
+  stateSoundForPermanentStates: 0
+  sfxCues:
+  - sfx: 0
+    clips:
+    - {fileID: 0}
+    - {fileID: 0}
+    volume: 0.6
+    pitch: 1
+    pitchVariance: 0.08
+    minInterval: 0.08
+    maxSimultaneous: 2
+  - sfx: 1
+    clips:
+    - {fileID: 0}
+    - {fileID: 0}
+    volume: 0.9
+    pitch: 1
+    pitchVariance: 0.05
+    minInterval: 0.05
+    maxSimultaneous: 3
+  - sfx: 2
+    clips: []
+    volume: 1
+    pitch: 1
+    pitchVariance: 0.05
+    minInterval: 0.08
+    maxSimultaneous: 2
+  - sfx: 3
+    clips:
+    - {fileID: 0}
+    - {fileID: 0}
+    volume: 1
+    pitch: 1
+    pitchVariance: 0.05
+    minInterval: 0.1
+    maxSimultaneous: 2
+  - sfx: 4
+    clips:
+    - {fileID: 0}
+    - {fileID: 0}
+    volume: 0.8
+    pitch: 1
+    pitchVariance: 0.08
+    minInterval: 0.05
+    maxSimultaneous: 3
+  - sfx: 5
+    clips:
+    - {fileID: 0}
+    - {fileID: 0}
+    volume: 1
+    pitch: 1
+    pitchVariance: 0.03
+    minInterval: 0.15
+    maxSimultaneous: 1
+  - sfx: 6
+    clips:
+    - {fileID: 0}
+    - {fileID: 0}
+    volume: 0.9
+    pitch: 1
+    pitchVariance: 0.08
+    minInterval: 0.06
+    maxSimultaneous: 3
+  - sfx: 7
+    clips: []
+    volume: 1
+    pitch: 1
+    pitchVariance: 0
+    minInterval: 0.5
+    maxSimultaneous: 1
+  - sfx: 20
+    clips:
+    - {fileID: 0}
+    - {fileID: 0}
+    volume: 0.5
+    pitch: 1
+    pitchVariance: 0.1
+    minInterval: 0.04
+    maxSimultaneous: 4
+  - sfx: 21
+    clips:
+    - {fileID: 0}
+    - {fileID: 0}
+    volume: 1
+    pitch: 1
+    pitchVariance: 0
+    minInterval: 0.5
+    maxSimultaneous: 1
+  - sfx: 22
+    clips: []
+    volume: 1
+    pitch: 1
+    pitchVariance: 0
+    minInterval: 0.2
+    maxSimultaneous: 1
+  - sfx: 23
+    clips: []
+    volume: 1
+    pitch: 1
+    pitchVariance: 0
+    minInterval: 0.2
+    maxSimultaneous: 1
+  - sfx: 24
+    clips: []
+    volume: 0.8
+    pitch: 1
+    pitchVariance: 0.03
+    minInterval: 0.1
+    maxSimultaneous: 1
+  - sfx: 25
+    clips: []
+    volume: 0.8
+    pitch: 1
+    pitchVariance: 0.03
+    minInterval: 0.1
+    maxSimultaneous: 1
+  - sfx: 26
+    clips: []
+    volume: 0.8
+    pitch: 1
+    pitchVariance: 0.03
+    minInterval: 0.1
+    maxSimultaneous: 1
+  - sfx: 40
+    clips: []
+    volume: 0.7
+    pitch: 1
+    pitchVariance: 0.05
+    minInterval: 0.1
+    maxSimultaneous: 2
+  - sfx: 41
+    clips: []
+    volume: 0.7
+    pitch: 1
+    pitchVariance: 0.05
+    minInterval: 0.1
+    maxSimultaneous: 2
+  - sfx: 42
+    clips: []
+    volume: 0.8
+    pitch: 1
+    pitchVariance: 0.03
+    minInterval: 0.15
+    maxSimultaneous: 1
+  - sfx: 43
+    clips: []
+    volume: 0.8
+    pitch: 1
+    pitchVariance: 0.03
+    minInterval: 0.15
+    maxSimultaneous: 1
+  - sfx: 60
+    clips: []
+    volume: 0.7
+    pitch: 1
+    pitchVariance: 0.03
+    minInterval: 0.05
+    maxSimultaneous: 1
+  - sfx: 61
+    clips: []
+    volume: 0.9
+    pitch: 1
+    pitchVariance: 0.03
+    minInterval: 0.2
+    maxSimultaneous: 1
+  - sfx: 62
+    clips:
+    - {fileID: 0}
+    - {fileID: 0}
+    volume: 0.8
+    pitch: 1
+    pitchVariance: 0.03
+    minInterval: 0.15
+    maxSimultaneous: 2
+  - sfx: 63
+    clips: []
+    volume: 0.9
+    pitch: 1
+    pitchVariance: 0.03
+    minInterval: 0.1
+    maxSimultaneous: 1
+  - sfx: 64
+    clips: []
+    volume: 0.9
+    pitch: 1
+    pitchVariance: 0.03
+    minInterval: 0.1
+    maxSimultaneous: 1
+  - sfx: 80
+    clips:
+    - {fileID: 0}
+    - {fileID: 0}
+    volume: 0.6
+    pitch: 1
+    pitchVariance: 0.03
+    minInterval: 0.03
+    maxSimultaneous: 2
+  - sfx: 81
+    clips: []
+    volume: 0.7
+    pitch: 1
+    pitchVariance: 0.03
+    minInterval: 0.1
+    maxSimultaneous: 1
+  - sfx: 82
+    clips: []
+    volume: 0.7
+    pitch: 1
+    pitchVariance: 0.03
+    minInterval: 0.1
+    maxSimultaneous: 1
+  - sfx: 83
+    clips: []
+    volume: 0.8
+    pitch: 1
+    pitchVariance: 0.03
+    minInterval: 0.2
+    maxSimultaneous: 1
+  - sfx: 100
+    clips: []
+    volume: 1
+    pitch: 1
+    pitchVariance: 0
+    minInterval: 0.5
+    maxSimultaneous: 1
+  - sfx: 101
+    clips: []
+    volume: 1
+    pitch: 1
+    pitchVariance: 0
+    minInterval: 0.5
+    maxSimultaneous: 1
+  - sfx: 102
+    clips: []
+    volume: 1
+    pitch: 1
+    pitchVariance: 0
+    minInterval: 0.5
+    maxSimultaneous: 1
+  musicTracks:
+  - context: 1
+    clips: []
+    volume: 1
+    fallbackContext: 0
+  - context: 2
+    clips: []
+    volume: 1
+    fallbackContext: 1
+  - context: 3
+    clips: []
+    volume: 1
+    fallbackContext: 0
+  - context: 4
+    clips: []
+    volume: 1
+    fallbackContext: 3

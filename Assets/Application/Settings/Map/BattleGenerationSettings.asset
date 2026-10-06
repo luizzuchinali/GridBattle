@@ -1,0 +1,161 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 411097f971ed2074baceb8e7a733eaa3, type: 3}
+  m_Name: BattleGenerationSettings
+  m_EditorClassIdentifier: Assembly-CSharp::GridBattle.Gameplay.Map.BattleGenerationSettings
+  gridWidth: 6
+  gridHeight: 6
+  playerSpawn: {x: 2, y: 2}
+  pool:
+  - enemy: {fileID: 11400000, guid: 94550f4d9ee2ac94e8f28edb5d682ede, type: 2}
+    minDepth: 1
+    maxDepth: 0
+    weight: 1
+  - enemy: {fileID: 11400000, guid: e61374142aec0a942ae1367641c0fba2, type: 2}
+    minDepth: 1
+    maxDepth: 0
+    weight: 1
+  - enemy: {fileID: 11400000, guid: 67393b615f5b4214fa59f6354351e42f, type: 2}
+    minDepth: 1
+    maxDepth: 0
+    weight: 1
+  - enemy: {fileID: 11400000, guid: 299df325a4fe80e4ea2a5343841a0105, type: 2}
+    minDepth: 1
+    maxDepth: 0
+    weight: 1
+  - enemy: {fileID: 11400000, guid: 08e10715f32fb0f478aaa947e80e4690, type: 2}
+    minDepth: 1
+    maxDepth: 0
+    weight: 1
+  - enemy: {fileID: 11400000, guid: 378f7c028221c15459442d61ff4833f7, type: 2}
+    minDepth: 7
+    maxDepth: 0
+    weight: 1
+  - enemy: {fileID: 11400000, guid: d1fc8030f8fd68b43991ef0d4dcee979, type: 2}
+    minDepth: 7
+    maxDepth: 0
+    weight: 1
+  - enemy: {fileID: 11400000, guid: f2b5fdbcc8ae5fe4f8cc87ffcd234213, type: 2}
+    minDepth: 10
+    maxDepth: 0
+    weight: 1
+  - enemy: {fileID: 11400000, guid: 3ee972eb10e2efc4ea9cd410775be2c9, type: 2}
+    minDepth: 10
+    maxDepth: 0
+    weight: 1
+  - enemy: {fileID: 11400000, guid: f2517ae6ccda85b44beb9ab916f0d719, type: 2}
+    minDepth: 13
+    maxDepth: 0
+    weight: 1
+  - enemy: {fileID: 11400000, guid: b0697e0d892950d48ba95c908c8f9f01, type: 2}
+    minDepth: 16
+    maxDepth: 0
+    weight: 1
+  - enemy: {fileID: 11400000, guid: 4ace365b3f483414fb999bfc553de2aa, type: 2}
+    minDepth: 8
+    maxDepth: 0
+    weight: 1
+  threatDivisor: 50
+  movementCoefficient: 0.25
+  rangeCoefficient: 0.5
+  useScaledThreat: 1
+  baseBudget: 6
+  budgetPerDepth: 0.52
+  budgetPoints:
+  - depth: 1
+    budget: 6
+  - depth: 5
+    budget: 9
+  - depth: 10
+    budget: 13
+  - depth: 15
+    budget: 16.5
+  - depth: 20
+    budget: 22
+  - depth: 25
+    budget: 33
+  - depth: 30
+    budget: 48
+  budgetTolerance: 0.3
+  overshootAllowance: 0.5
+  maxAttempts: 12
+  difficulties:
+  - difficulty: 0
+    budgetMultiplier: 0.75
+    strengthMultiplier: 1
+    xpMultiplier: 0.65
+  - difficulty: 1
+    budgetMultiplier: 1
+    strengthMultiplier: 1
+    xpMultiplier: 1
+  - difficulty: 2
+    budgetMultiplier: 1.35
+    strengthMultiplier: 1
+    xpMultiplier: 2
+  hpPerDepth: 0.021
+  damagePerDepth: 0.0145
+  compoundScaling: 0
+  xpSource: 2
+  xpBaseBudget: 6
+  xpBudgetPerDepth: 0.52
+  xpPerDepth: 0.07
+  xpPerThreat: 6.9
+  minEnemies: 1
+  maxEnemies: 8
+  maxOccupancy: 0.4
+  requireFrontline: 1
+  roleLimits:
+  - role: {fileID: 11400000, guid: a2bc25f5b2c11eb4bad574db1dbe5302, type: 2}
+    max: 1
+  - role: {fileID: 11400000, guid: 70b8a3b094e4f604fa337bb31780eb1f, type: 2}
+    max: 1
+  compositionBands:
+  - minDepth: 8
+    minDistinctRoles: 2
+    roleWeights: []
+  - minDepth: 15
+    minDistinctRoles: 2
+    roleWeights:
+    - role: {fileID: 11400000, guid: 17f7d49c6240e3e4fbd0d2c7588e2107, type: 2}
+      multiplier: 0.7
+    - role: {fileID: 11400000, guid: 43fc379c21768174cbe1913be6c19374, type: 2}
+      multiplier: 0.8
+    - role: {fileID: 11400000, guid: 0e6b14ca26caec74fb7ac7de33caa44e, type: 2}
+      multiplier: 1.6
+    - role: {fileID: 11400000, guid: a2bc25f5b2c11eb4bad574db1dbe5302, type: 2}
+      multiplier: 1.5
+    - role: {fileID: 11400000, guid: 6e2cff6a20436de4dbc845648caf76a9, type: 2}
+      multiplier: 1.4
+    - role: {fileID: 11400000, guid: 70b8a3b094e4f604fa337bb31780eb1f, type: 2}
+      multiplier: 1.4
+  - minDepth: 22
+    minDistinctRoles: 3
+    roleWeights:
+    - role: {fileID: 11400000, guid: 17f7d49c6240e3e4fbd0d2c7588e2107, type: 2}
+      multiplier: 0.6
+    - role: {fileID: 11400000, guid: 43fc379c21768174cbe1913be6c19374, type: 2}
+      multiplier: 0.8
+    - role: {fileID: 11400000, guid: 0e6b14ca26caec74fb7ac7de33caa44e, type: 2}
+      multiplier: 2
+    - role: {fileID: 11400000, guid: a2bc25f5b2c11eb4bad574db1dbe5302, type: 2}
+      multiplier: 1.6
+    - role: {fileID: 11400000, guid: 6e2cff6a20436de4dbc845648caf76a9, type: 2}
+      multiplier: 1.6
+    - role: {fileID: 11400000, guid: 70b8a3b094e4f604fa337bb31780eb1f, type: 2}
+      multiplier: 1.6
+  minDistanceFromPlayer: 2
+  farCellFraction: 0.5
+  allowHazardCells: 0
+  bossEncounter:
+  - {fileID: 11400000, guid: fc3211cb5dfc0e9489f95f490ff2da49, type: 2}
+  - {fileID: 11400000, guid: 79fb46051b81a144699d5cd43b748de2, type: 2}
+  - {fileID: 11400000, guid: 378f7c028221c15459442d61ff4833f7, type: 2}

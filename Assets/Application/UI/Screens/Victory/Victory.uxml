@@ -1,0 +1,17 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:zs="ZS.UI" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/Application/UI/Screens/RunEnd/RunEnd.uss?fileID=7433441132597879392&amp;guid=8264f3fec9f0a474e8948e4c24fbc2a9&amp;type=3#RunEnd"/>
+    <Style src="project://database/Assets/Application/UI/Screens/Victory/Victory.uss?fileID=7433441132597879392&amp;guid=db39d6be5c513a249a07ad0e8cbccb6f&amp;type=3#Victory"/>
+    <zs:SafeArea name="container" class="container run-summary run-summary--victory">
+        <ui:Label name="summary-title" text="Victory!" class="run-summary__title" picking-mode="Ignore"/>
+        <ui:Label name="summary-subtitle" class="run-summary__subtitle" picking-mode="Ignore"/>
+        <ui:VisualElement class="run-summary__hero" picking-mode="Ignore">
+            <ui:Image name="summary-portrait" picking-mode="Ignore"/>
+            <ui:VisualElement class="run-summary__hero-texts" picking-mode="Ignore">
+                <ui:Label name="summary-class" picking-mode="Ignore"/>
+                <ui:Label name="summary-level" picking-mode="Ignore"/>
+            </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:ScrollView name="summary-scroll" class="slim-scroll run-summary__scroll" mode="Vertical" horizontal-scroller-visibility="Hidden" vertical-scroller-visibility="Auto" touch-scroll-type="Clamped"/>
+        <ui:Button name="summary-menu-button" text="Main menu" class="text-button"/>
+    </zs:SafeArea>
+</ui:UXML>

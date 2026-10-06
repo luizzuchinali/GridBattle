@@ -2,7 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using GridBattle.Gameplay.Entities;
+using GridBattle.Gameplay.Events;
+using GridBattle.Gameplay.Simulation;
 using GridBattle.Managers;
+using JetBrains.Annotations;
 using LitMotion;
 using UnityEngine;
 
@@ -44,7 +47,9 @@ namespace GridBattle.Gameplay.Movement
             GridMovementSettings settings, Action onArrived = null)
         {
             Stop(entity);
-            if (settings == null || !Application.isPlaying) return;
+            if (Application.isPlaying)
+                EventBus.Raise(new EntityMoveStartedEvent(entity, fromCell, toCell));
+            if (settings == null || !Application.isPlaying || SimMode.IsActive) return;
 
             var target = entity.transform;
             var end = target.localPosition;
@@ -56,6 +61,40 @@ namespace GridBattle.Gameplay.Movement
                 ? CreateFlip(target, start, end, settings, speed, onArrived)
                 : CreateHop(target, start, end, Vector2Int.Distance(fromCell, toCell), settings, speed, onArrived);
 
+            _motions[entity] = handle.AddTo(entity.gameObject);
+        }
+
+        /// <summary>Seconds a slide over <paramref name="cells"/> cells lasts at normal speed (0 without settings).</summary>
+        public static float GetSlideDuration([CanBeNull] GridMovementSettings settings, int cells)
+        {
+            return settings == null || cells <= 0 ? 0f : settings.SlideSecondsPerCell * cells;
+        }
+
+        /// <summary>
+        /// Like <see cref="Animate"/> for a character that is pushed or pulled: it slides in a straight line to
+        /// its new cell, without hopping or flipping, taking <see cref="GetSlideDuration"/> per cell crossed.
+        /// Skipped (only the move event is raised) outside Play Mode and during the balance simulation.
+        /// </summary>
+        public void AnimateSlide(GridEntity entity, Vector3 fromWorld, Vector2Int fromCell, Vector2Int toCell,
+            GridMovementSettings settings)
+        {
+            Stop(entity);
+            if (Application.isPlaying)
+                EventBus.Raise(new EntityMoveStartedEvent(entity, fromCell, toCell));
+            if (settings == null || !Application.isPlaying || SimMode.IsActive) return;
+
+            var target = entity.transform;
+            var end = target.localPosition;
+            var start = target.parent != null ? target.parent.InverseTransformPoint(fromWorld) : fromWorld;
+            if (start == end) return;
+
+            var cells = Mathf.Max(Mathf.Abs(toCell.x - fromCell.x), Mathf.Abs(toCell.y - fromCell.y));
+            var total = GetSlideDuration(settings, cells) / Mathf.Max(0.01f, SpeedMultiplier);
+            target.localPosition = start;
+            var handle = LMotion.Create(0f, 1f, total)
+                .WithEase(settings.SlideEase)
+                .WithOnComplete(() => Normalize(target, end))
+                .Bind(t => target.localPosition = Vector3.LerpUnclamped(start, end, t));
             _motions[entity] = handle.AddTo(entity.gameObject);
         }
 
