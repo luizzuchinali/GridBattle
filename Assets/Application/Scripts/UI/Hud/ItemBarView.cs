@@ -1,3 +1,4 @@
+using System;
 using GridBattle.Gameplay;
 using GridBattle.Gameplay.Consumables;
 using GridBattle.Gameplay.Entities;
@@ -16,7 +17,8 @@ namespace GridBattle.UI.Hud
     {
         private GridController _grid;
 
-        public ItemBarView(VisualElement container) : base(container, true)
+        public ItemBarView(VisualElement container, Action<EntityDetailsRequest> showDetails = null)
+            : base(container, true, showDetails)
         {
             Watch<ConsumableInventoryChangedEvent>(_ => Refresh());
             Watch<ConsumableSelectionChangedEvent>(e => RefreshIfPlayer(e.Owner));
@@ -53,6 +55,12 @@ namespace GridBattle.UI.Hud
         {
             if (Controller != null)
                 Controller.SelectConsumable(index);
+        }
+
+        protected override EntityDetailsRequest GetDetails(int index)
+        {
+            var item = Player != null ? Player.Inventory.Get(index) : null;
+            return item != null ? EntityDetailsRequest.ForConsumable(item, Player) : null;
         }
 
         private void RefreshIfPlayer(Character character)

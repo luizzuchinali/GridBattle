@@ -550,6 +550,138 @@ MonoBehaviour:
     m_Localized: Valores iniciais. Os talentos melhoram ao longo da run.
     m_Metadata:
       m_Items: []
+  - m_Id: 2755304981602304
+    m_Localized: Detalhes
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2755305061294080
+    m_Localized: Estado
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2755305061294081
+    m_Localized: Dano
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2755305061294082
+    m_Localized: Alcance
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2755305061294083
+    m_Localized: "Em voc\xEA mesmo"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2755305061294084
+    m_Localized: Qualquer casa
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2755305061294085
+    m_Localized: "\xC1rea"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2755305061294086
+    m_Localized: Um alvo
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2755305061294087
+    m_Localized: '{0} ({1})'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2755305061294088
+    m_Localized: Afeta
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2755305061294089
+    m_Localized: Inimigos
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2755305061294090
+    m_Localized: Aliados
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2755305061294091
+    m_Localized: "Voc\xEA e aliados"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2755305061294092
+    m_Localized: "S\xF3 voc\xEA"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2755305061294093
+    m_Localized: Todos
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2755305061294094
+    m_Localized: Recarga
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2755305061294095
+    m_Localized: Nenhuma
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2755305061294096
+    m_Localized: "Linha de vis\xE3o"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2755305061294097
+    m_Localized: "Necess\xE1ria"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2755305061294098
+    m_Localized: Ignorada
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2755305061294099
+    m_Localized: Move o alvo
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2755305061294100
+    m_Localized: Empurra {0} casas
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2755305061294101
+    m_Localized: Puxa {0} casas
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2755305061294102
+    m_Localized: Uso
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2755305061294103
+    m_Localized: "Em voc\xEA mesmo"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2755305061294104
+    m_Localized: Numa casa
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2755305061294105
+    m_Localized: "Usar um item n\xE3o gasta sua a\xE7\xE3o ({0} por turno)."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2755305061294106
+    m_Localized: "C\xEDrculo"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2755305061294107
+    m_Localized: Cruz
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2755305061294108
+    m_Localized: Linha
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2755305061294109
+    m_Localized: Cone
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2755305061294110
+    m_Localized: Arco
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2755305061294111
+    m_Localized: Varredura
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

@@ -16,7 +16,8 @@ namespace GridBattle.UI.Overlays
     /// <summary>
     /// Entity details modal (GDD 4.1): name, HP, role and behavior (enemies), effective attributes,
     /// skills, active states and the terrain of the cell. Opened by a long tap or right click on a cell
-    /// with a <see cref="EntityDetailsRequest"/> argument. It closes only with its X button (releasing the
+    /// with a <see cref="EntityDetailsRequest"/> argument. The same window shows the sheet of a skill or an item
+    /// of the bars (long press or right click on its slot; <see cref="ActionDetailsModel"/>). It closes only with its X button (releasing the
     /// finger or the button does not), never consumes the turn, and while it is open it holds
     /// <see cref="TurnBlockers"/> so the game accepts no actions.
     /// </summary>
@@ -114,6 +115,12 @@ namespace GridBattle.UI.Overlays
         {
             if (_request == null || _scroll == null) return;
 
+            if (_request.IsAction)
+            {
+                RenderAction();
+                return;
+            }
+
             var model = EntityDetailsModel.Build(_request, HudSettings.Current.ShowAllAttributes);
             _title.text = model.Title;
             _portrait.sprite = model.Portrait;
@@ -173,6 +180,37 @@ namespace GridBattle.UI.Overlays
                 if (!string.IsNullOrEmpty(model.TerrainDescription))
                     AddText(content, model.TerrainDescription);
             }
+
+            _scroll.scrollOffset = Vector2.zero;
+        }
+
+        /// <summary>The sheet of a skill or an item: description, facts, cooldown state and note.</summary>
+        private void RenderAction()
+        {
+            var model = _request.Skill != null
+                ? ActionDetailsModel.ForSkill(_request.Skill, _request.Owner)
+                : ActionDetailsModel.ForConsumable(_request.Consumable, _request.Owner);
+            _title.text = model.Title;
+            _portrait.sprite = model.Icon;
+            _portrait.EnableInClassList("details-portrait--hidden", model.Icon == null);
+
+            var content = _scroll.contentContainer;
+            content.Clear();
+            if (!string.IsNullOrEmpty(model.Description))
+                AddText(content, model.Description);
+
+            AddSection(content, HudText.Get("details.action.section"));
+            foreach (var fact in model.Facts)
+                AddRow(content, fact.Label, fact.Value);
+
+            if (model.Status != null)
+            {
+                AddRow(content, HudText.Get("details.action.status"), model.Status, null,
+                    model.Ready ? "details-row--ready" : "details-row--waiting");
+            }
+
+            if (!string.IsNullOrEmpty(model.Note))
+                AddText(content, model.Note);
 
             _scroll.scrollOffset = Vector2.zero;
         }

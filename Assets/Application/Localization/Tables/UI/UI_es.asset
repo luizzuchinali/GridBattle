@@ -550,6 +550,138 @@ MonoBehaviour:
     m_Localized: Valores iniciales. Los talentos los mejoran durante la run.
     m_Metadata:
       m_Items: []
+  - m_Id: 2755304981602304
+    m_Localized: Detalles
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2755305061294080
+    m_Localized: Estado
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2755305061294081
+    m_Localized: "Da\xF1o"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2755305061294082
+    m_Localized: Alcance
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2755305061294083
+    m_Localized: En ti mismo
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2755305061294084
+    m_Localized: Cualquier casilla
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2755305061294085
+    m_Localized: "\xC1rea"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2755305061294086
+    m_Localized: Un objetivo
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2755305061294087
+    m_Localized: '{0} ({1})'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2755305061294088
+    m_Localized: Afecta
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2755305061294089
+    m_Localized: Enemigos
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2755305061294090
+    m_Localized: Aliados
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2755305061294091
+    m_Localized: "T\xFA y aliados"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2755305061294092
+    m_Localized: "Solo t\xFA"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2755305061294093
+    m_Localized: Todos
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2755305061294094
+    m_Localized: Recarga
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2755305061294095
+    m_Localized: Ninguna
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2755305061294096
+    m_Localized: "L\xEDnea de visi\xF3n"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2755305061294097
+    m_Localized: Necesaria
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2755305061294098
+    m_Localized: Ignorada
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2755305061294099
+    m_Localized: Mueve al objetivo
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2755305061294100
+    m_Localized: Empuja {0} casillas
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2755305061294101
+    m_Localized: Atrae {0} casillas
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2755305061294102
+    m_Localized: Uso
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2755305061294103
+    m_Localized: En ti mismo
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2755305061294104
+    m_Localized: En una casilla
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2755305061294105
+    m_Localized: "Usar un objeto no gasta tu acci\xF3n ({0} por turno)."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2755305061294106
+    m_Localized: "C\xEDrculo"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2755305061294107
+    m_Localized: Cruz
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2755305061294108
+    m_Localized: "L\xEDnea"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2755305061294109
+    m_Localized: Cono
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2755305061294110
+    m_Localized: Arco
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2755305061294111
+    m_Localized: Barrido
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

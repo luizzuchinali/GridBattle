@@ -547,6 +547,138 @@ MonoBehaviour:
     m_Key: character.base_values
     m_Metadata:
       m_Items: []
+  - m_Id: 2755304981602304
+    m_Key: details.action.section
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2755305061294080
+    m_Key: details.action.status
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2755305061294081
+    m_Key: details.action.damage
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2755305061294082
+    m_Key: details.action.range
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2755305061294083
+    m_Key: details.action.range_self
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2755305061294084
+    m_Key: details.action.range_any
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2755305061294085
+    m_Key: details.action.area
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2755305061294086
+    m_Key: details.action.area_single
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2755305061294087
+    m_Key: details.action.area_value
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2755305061294088
+    m_Key: details.action.targets
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2755305061294089
+    m_Key: details.targets.enemies
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2755305061294090
+    m_Key: details.targets.allies
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2755305061294091
+    m_Key: details.targets.allies_and_self
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2755305061294092
+    m_Key: details.targets.self
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2755305061294093
+    m_Key: details.targets.everyone
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2755305061294094
+    m_Key: details.action.cooldown
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2755305061294095
+    m_Key: details.action.no_cooldown
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2755305061294096
+    m_Key: details.action.sight
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2755305061294097
+    m_Key: details.action.sight_needed
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2755305061294098
+    m_Key: details.action.sight_ignored
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2755305061294099
+    m_Key: details.action.displace
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2755305061294100
+    m_Key: details.action.pushes
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2755305061294101
+    m_Key: details.action.pulls
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2755305061294102
+    m_Key: details.action.use
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2755305061294103
+    m_Key: details.action.use_self
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2755305061294104
+    m_Key: details.action.use_cell
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2755305061294105
+    m_Key: details.action.item_note
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2755305061294106
+    m_Key: details.shape.circle
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2755305061294107
+    m_Key: details.shape.cross
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2755305061294108
+    m_Key: details.shape.linear
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2755305061294109
+    m_Key: details.shape.cone
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2755305061294110
+    m_Key: details.shape.arc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2755305061294111
+    m_Key: details.shape.perpendicular
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

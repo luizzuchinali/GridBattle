@@ -78,8 +78,8 @@ namespace GridBattle.UI.Screens
 
             // The bars subscribe to the game events themselves: drop the ones of the previous UI.
             DisposeBars();
-            _skillBar = new SkillBarView(root.Q<VisualElement>("skill-bar"));
-            _itemBar = new ItemBarView(root.Q<VisualElement>("item-bar"));
+            _skillBar = new SkillBarView(root.Q<VisualElement>("skill-bar"), ShowDetails);
+            _itemBar = new ItemBarView(root.Q<VisualElement>("item-bar"), ShowDetails);
         }
 
         private void OnXpChanged(PlayerXpChangedEvent e)
@@ -99,22 +99,34 @@ namespace GridBattle.UI.Screens
         }
 
         /// <summary>
-        /// A long tap (or right click) on a cell: opens the details of its entity and terrain. Needs
-        /// something to show, and the game input free (the details are not stacked on another window).
+        /// A long tap (or right click) on a cell: opens the details of its entity and terrain, when there is
+        /// something to show.
         /// </summary>
         private void OnCellLongPress(CellLongPressEvent e)
         {
-            if (!IsVisible || e.Cell == null) return;
-            if (GameplayInput.IsBlocked || Context.Navigator.HasModal) return;
-
-            var view = HudSettings.Current.EntityDetailsView;
-            if (view == null) return;
+            if (e.Cell == null) return;
 
             var character = e.Cell.GetContent() as Character;
             var terrain = e.Cell.Terrain;
             if (character == null && terrain == null) return;
 
-            _ = Context.Navigator.ShowModal(view, new EntityDetailsRequest(character, terrain));
+            ShowDetails(new EntityDetailsRequest(character, terrain));
+        }
+
+        /// <summary>
+        /// Opens the details window (a cell, or a skill or item of the bars after a long press or right click on
+        /// the slot). Needs the screen visible and the game input free: the details are not stacked on another
+        /// window.
+        /// </summary>
+        private void ShowDetails(EntityDetailsRequest request)
+        {
+            if (!IsVisible || request == null) return;
+            if (GameplayInput.IsBlocked || Context.Navigator.HasModal) return;
+
+            var view = HudSettings.Current.EntityDetailsView;
+            if (view == null) return;
+
+            _ = Context.Navigator.ShowModal(view, request);
         }
 
         private void DisposeBars()

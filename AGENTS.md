@@ -123,10 +123,10 @@ O namespace segue a pasta: `GridBattle.<Pasta>[.<Subpasta>]`.
 | `Gameplay/Simulation/` | `…Gameplay.Simulation` | simulador de balanceamento: `SimMode` (modo sem animações, sons, UI nem salvamento), `SimulationRunner`, bots (`BattleBot`, `MapPolicy`, `TalentPolicy`), `SimulationCollector`, `SimulationReport`, `SimulationOptions`, `BalanceSimulationSettings` |
 | `Gameplay/Meta/` | `…Gameplay.Meta` | `ProfileService`/`ProfileState`, `GlossaryService`, `TutorialService` + `TutorialTipDefinition`, `MetricsRecorder`, `MetaSettings`, `MetaBootstrap` |
 | `Gameplay/Events/` | `…Gameplay.Events` | eventos de gameplay |
-| `UI/` | `GridBattle.UI` | `XpBarView`, `PixelPerfectPanelScale`, `UiExtensions` (`OnClick`, `SimulateClick`) |
+| `UI/` | `GridBattle.UI` | `XpBarView`, `PixelPerfectPanelScale`, `UiExtensions` (`OnClick`, `SimulateClick`), `LongPressManipulator` (toque longo / clique direito em elementos de UI) |
 | `UI/Flow/` | `…UI.Flow` | `GameFlowController` (eventos → navegação) |
 | `UI/Screens/` | `…UI.Screens` | controladores das telas (Start, MainMenu, Game, Map, RunEnd, Victory), `ScreensSettings` |
-| `UI/Hud/` | `…UI.Hud` | `SkillBarView`, `ItemBarView`, `DepthView`, `EntityDetailsModel`, `HudText`, `HudSettings` |
+| `UI/Hud/` | `…UI.Hud` | `SkillBarView`, `ItemBarView` (toque longo nos botões abre os detalhes), `DepthView`, `EntityDetailsModel` (+`EntityDetailsRequest`: célula, skill ou item), `ActionDetailsModel` (ficha de skill e item), `HudText`, `HudSettings` |
 | `UI/Map/` | `…UI.Map` | `MapGraphView`, `MapLinesElement`, `MapHudView`, `NodePreviewView` |
 | `UI/Overlays/` | `…UI.Overlays` | controladores dos modais (menu/pausa, detalhes, oferta de consumível, confirmação, talento, glossário, opções, dicas, detalhes do personagem), `ModalsSettings` |
 | `UI/Background/`, `UI/Vfx/`, `UI/Events/` | `…UI.*` | fundo, orbs de XP, eventos de UI |
@@ -524,8 +524,16 @@ Pedidos do usuário; resumo para leitura em `docs/projeto/resumo_das_mudancas.md
   (`ModalsSettings.showBuildMatchOnCards`, desligado).
 - **Linha de visão e mira livre** (mudança de mecânica pedida): `LineOfSight`,
   `TerrainDefinition.blocksLineOfSight`, `CombatSettings.skillsNeedLineOfSight`
-  / `charactersBlockLineOfSight`, `SkillDefinition.ignoresLineOfSight` (Bola de
-  Fogo, Tempestade Elétrica); `requiresAffectedTarget` desligado em todas.
+  / `charactersBlockLineOfSight`, `SkillDefinition.ignoresLineOfSight`
+  (Tempestade Elétrica; a Bola de Fogo foi desligada pelo usuário);
+  `requiresAffectedTarget` desligado em todas.
+- **Detalhes de skills e itens:** toque longo ou clique direito num botão das
+  barras (`UI/LongPressManipulator`, mesma duração das células) abre a janela de
+  detalhes com `EntityDetailsRequest.ForSkill/ForConsumable`; a ficha vem de
+  `UI/Hud/ActionDetailsModel` (números efetivos do dono).
+  `SkillCooldowns.GetCooldownAfterUse` é a recarga que um uso aplicaria (a
+  mesma conta do `Trigger`). O toque rápido que encerra um toque longo é
+  ignorado (`LongPressManipulator.ConsumeFired`).
 - **Manutenção (sem mudar o jogo; simulador idêntico com as mesmas seeds,
   partida determinística idêntica, `TalentChecks` 7777/7777, `ZS.UI` 14/14):**
   - `PlayerCharacter.Active` e `GridController.Instance` no lugar de 19 buscas

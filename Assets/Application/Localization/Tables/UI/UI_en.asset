@@ -550,6 +550,138 @@ MonoBehaviour:
     m_Localized: Starting values. Talents improve them during the run.
     m_Metadata:
       m_Items: []
+  - m_Id: 2755304981602304
+    m_Localized: Details
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2755305061294080
+    m_Localized: Status
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2755305061294081
+    m_Localized: Damage
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2755305061294082
+    m_Localized: Range
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2755305061294083
+    m_Localized: On yourself
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2755305061294084
+    m_Localized: Any cell
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2755305061294085
+    m_Localized: Area
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2755305061294086
+    m_Localized: Single target
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2755305061294087
+    m_Localized: '{0} ({1})'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2755305061294088
+    m_Localized: Affects
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2755305061294089
+    m_Localized: Enemies
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2755305061294090
+    m_Localized: Allies
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2755305061294091
+    m_Localized: You and allies
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2755305061294092
+    m_Localized: Only you
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2755305061294093
+    m_Localized: Everyone
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2755305061294094
+    m_Localized: Cooldown
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2755305061294095
+    m_Localized: None
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2755305061294096
+    m_Localized: Line of sight
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2755305061294097
+    m_Localized: Needed
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2755305061294098
+    m_Localized: Ignored
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2755305061294099
+    m_Localized: Moves the target
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2755305061294100
+    m_Localized: Pushes {0} cells
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2755305061294101
+    m_Localized: Pulls {0} cells
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2755305061294102
+    m_Localized: Use
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2755305061294103
+    m_Localized: On yourself
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2755305061294104
+    m_Localized: On a cell
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2755305061294105
+    m_Localized: Using an item does not take your action ({0} per turn).
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2755305061294106
+    m_Localized: Circle
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2755305061294107
+    m_Localized: Cross
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2755305061294108
+    m_Localized: Line
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2755305061294109
+    m_Localized: Cone
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2755305061294110
+    m_Localized: Arc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2755305061294111
+    m_Localized: Sweep
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

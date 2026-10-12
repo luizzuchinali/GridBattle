@@ -1,3 +1,4 @@
+using System;
 using GridBattle.Gameplay.Entities;
 using GridBattle.Gameplay.Entities.Skills;
 using GridBattle.Gameplay.Events;
@@ -14,7 +15,8 @@ namespace GridBattle.UI.Hud
     /// </summary>
     public sealed class SkillBarView : SlotBarView
     {
-        public SkillBarView(VisualElement container) : base(container, false)
+        public SkillBarView(VisualElement container, Action<EntityDetailsRequest> showDetails = null)
+            : base(container, false, showDetails)
         {
             Watch<SkillListChangedEvent>(e =>
             {
@@ -57,6 +59,12 @@ namespace GridBattle.UI.Hud
             var skill = GetSkill(index);
             if (skill != null && Controller != null)
                 Controller.SelectSkill(skill);
+        }
+
+        protected override EntityDetailsRequest GetDetails(int index)
+        {
+            var skill = GetSkill(index);
+            return skill != null ? EntityDetailsRequest.ForSkill(skill, Player) : null;
         }
 
         private SkillDefinition GetSkill(int index)

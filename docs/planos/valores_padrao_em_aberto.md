@@ -74,7 +74,7 @@ Ver também: [[plano_implementacao_gdd]], [[perguntas_em_aberto]].
 |---|---|---|
 | Quando o efeito é aplicado | grid_e_terreno | No fim do turno de quem está na célula |
 | Bloqueia área de skill | grid_e_terreno | Não |
-| Bloqueia a linha de visão das skills | grid_e_terreno | Sim para a Rocha (terreno que bloqueia movimento); personagens vivos no caminho também bloqueiam (`CombatSettings.charactersBlockLineOfSight`). Bola de Fogo e Tempestade Elétrica ignoram (decisão do usuário, 2026-10-12) |
+| Bloqueia a linha de visão das skills | grid_e_terreno | Sim para a Rocha (terreno que bloqueia movimento); personagens vivos no caminho também bloqueiam (`CombatSettings.charactersBlockLineOfSight`). Só a Tempestade Elétrica ignora; a Bola de Fogo precisa de visão (decisão e ajuste do usuário, 2026-10-12) |
 | Afeta jogador e inimigos | grid_e_terreno | Sim, igualmente |
 | Quantidade por profundidade | grid_e_terreno | Faixas a partir dos andares 1 (nada), 4, 10, 16 e 22, com mais obstáculos, perigos e bônus no fim da run (andar 22+: 2–4 obstáculos, 2–3 perigos, 0–2 bônus) (ajuste G5/G6 interrompido, ponto de partida; ver [[plano_balanceamento]]) |
 | Tipos | grid_e_terreno | Rocha (obstáculo), Fogo (4 de dano), Pântano (Envenenado 3), Santuário (Regeneração 3), Pedra de proteção (Escudo 2) |
@@ -115,7 +115,7 @@ Ver também: [[plano_implementacao_gdd]], [[perguntas_em_aberto]].
 | Desistir conta como derrota | interface 4.3 | Sim |
 | Dicas podem ser desativadas | interface 4.4 | Sim; ativadas por padrão |
 | Métricas | GDD 9 | Só locais (`metrics.jsonl`), ativadas |
-| Tempo do toque longo | interface 4.1 | 0,45 s |
+| Tempo do toque longo | interface 4.1 | 0,45 s (células e botões de skill e item) |
 | Profundidade na HUD | interface 4.2 | Bloco à esquerda da barra de XP |
 | Atributos na janela de detalhes | interface 4.1 | Os básicos sempre; os demais só quando diferentes de zero |
 | Idioma na primeira abertura | GDD 8.1 | Idioma do sistema, com inglês como padrão |

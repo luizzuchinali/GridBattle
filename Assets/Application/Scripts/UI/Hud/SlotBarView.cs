@@ -20,13 +20,18 @@ namespace GridBattle.UI.Hud
     {
         private readonly VisualElement _container;
         private readonly bool _round;
+        private readonly Action<EntityDetailsRequest> _showDetails;
         private readonly List<Action> _unsubscribers = new();
         private readonly List<HudSlot> _slots = new();
 
-        protected SlotBarView(VisualElement container, bool round)
+        /// <param name="showDetails">
+        /// Opens the details window (long press or right click on a slot, like on a cell); null = no details.
+        /// </param>
+        protected SlotBarView(VisualElement container, bool round, Action<EntityDetailsRequest> showDetails = null)
         {
             _container = container;
             _round = round;
+            _showDetails = showDetails;
             var turns = UnityEngine.Object.FindAnyObjectByType<TurnManager>();
             IsPlayerTurn = turns == null || turns.CurrentTurn == ETurnOwner.Player;
 
@@ -78,6 +83,9 @@ namespace GridBattle.UI.Hud
         /// <summary>The player tapped slot <paramref name="index"/>.</summary>
         protected abstract void OnSlotTapped(int index);
 
+        /// <summary>What the details window shows for slot <paramref name="index"/> (null: an empty slot, nothing).</summary>
+        protected abstract EntityDetailsRequest GetDetails(int index);
+
         /// <summary>Calls <paramref name="handler"/> on every <typeparamref name="TEvent"/> until disposed.</summary>
         protected void Watch<TEvent>(Action<TEvent> handler)
         {
@@ -103,6 +111,15 @@ namespace GridBattle.UI.Hud
                 RefreshSlot(i, _slots[i]);
         }
 
+        private void ShowDetails(int index)
+        {
+            if (_showDetails == null) return;
+
+            var request = GetDetails(index);
+            if (request != null)
+                _showDetails(request);
+        }
+
         public void Dispose()
         {
             foreach (var unsubscribe in _unsubscribers)
@@ -118,8 +135,13 @@ namespace GridBattle.UI.Hud
             {
                 var index = i;
                 var slot = new HudSlot(_round);
+                var longPress = new LongPressManipulator(() => ShowDetails(index));
+                slot.Button.AddManipulator(longPress);
                 slot.Button.clicked += () =>
                 {
+                    // The release that ends a long press is not a tap.
+                    if (longPress.ConsumeFired()) return;
+
                     AudioManager.Play(ESfx.ButtonTap);
                     OnSlotTapped(index);
                 };

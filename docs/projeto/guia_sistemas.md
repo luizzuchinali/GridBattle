@@ -384,7 +384,9 @@ compartilhado, para os talentos da classe aparecerem mais. 1 desliga o efeito.
   4. Com vários níveis de uma vez, as ofertas vêm em sequência.
 - **Toque longo (ou clique direito)** numa célula mostra os detalhes da
   entidade ou do terreno: atributos, skills e estados com os turnos
-  restantes.
+  restantes. O mesmo gesto num botão de skill ou de item mostra a ficha dele
+  (números com os talentos aplicados). O tempo do toque longo é o mesmo
+  (`Input/GameplayInputSettings`).
 - **Pausa** (botão de menu, na batalha e no mapa): continuar, glossário,
   opções, desistir. O jogo fica pausado enquanto ela está aberta.
 - **Glossário** (menu principal, mapa e pausa): classes com os talentos já

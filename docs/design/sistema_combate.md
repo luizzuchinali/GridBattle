@@ -647,9 +647,9 @@ mirada (`SkillTargeting.HasLineOfSight`, regra em `Rules/LineOfSight`):
   inimigo da frente;
 - encostar só no canto de uma célula não a cruza, então um vizinho na
   diagonal é sempre visível. A regra é simétrica: A vê B se e só se B vê A;
-- não precisam de visão: skills com `ignoresLineOfSight` (Bola de Fogo,
-  lançada por cima; Tempestade Elétrica, raio do céu) e skills centradas no
-  lançador. `CombatSettings.skillsNeedLineOfSight` desliga a regra toda;
+- não precisam de visão: skills com `ignoresLineOfSight` (hoje só a
+  Tempestade Elétrica, raio do céu; a Bola de Fogo voltou a precisar de visão
+  por ajuste do usuário) e skills centradas no lançador. `CombatSettings.skillsNeedLineOfSight` desliga a regra toda;
 - a visão vale para a **mira**, não para a área: uma área continua atingindo
   as células dela (o terreno só tira células da área com "Bloqueia área de
   skill");

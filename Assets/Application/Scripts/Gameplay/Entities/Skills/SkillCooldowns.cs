@@ -41,14 +41,24 @@ namespace GridBattle.Gameplay.Entities.Skills
             return skill != null && _remaining.TryGetValue(skill, out var remaining) ? remaining : 0;
         }
 
+        /// <summary>
+        /// Cooldown the skill gets after a use by the owner now: its cooldown with the owner's talent modifiers, minus
+        /// the Cooldown Reduction attribute, never below the minimum. 0 = no cooldown.
+        /// </summary>
+        public int GetCooldownAfterUse(SkillDefinition skill)
+        {
+            if (skill == null || skill.Cooldown <= 0) return 0;
+
+            var reduced = EffectiveSkill.Resolve(_owner, skill).Cooldown - _owner.Stats.GetInt(EAttribute.CooldownReduction);
+            return Mathf.Max(0, Mathf.Max(SkillSettings.Current.MinimumCooldown, reduced));
+        }
+
         /// <summary>Starts the cooldown after a successful use of the skill.</summary>
         public void Trigger(SkillDefinition skill)
         {
             if (skill == null || skill.Cooldown <= 0) return;
 
-            // The skill's cooldown with the owner's talent modifiers, then its Cooldown Reduction attribute.
-            var reduced = EffectiveSkill.Resolve(_owner, skill).Cooldown - _owner.Stats.GetInt(EAttribute.CooldownReduction);
-            var value = Mathf.Max(SkillSettings.Current.MinimumCooldown, reduced);
+            var value = GetCooldownAfterUse(skill);
             if (value <= 0)
             {
                 // Reduction (with a minimum of 0) removed the cooldown completely.

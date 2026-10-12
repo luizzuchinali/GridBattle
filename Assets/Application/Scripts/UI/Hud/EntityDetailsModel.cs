@@ -1,7 +1,9 @@
 using System.Collections.Generic;
 using System.Globalization;
 using GridBattle.Gameplay.Combat;
+using GridBattle.Gameplay.Consumables;
 using GridBattle.Gameplay.Entities;
+using GridBattle.Gameplay.Entities.Skills;
 using GridBattle.Gameplay.States;
 using GridBattle.Gameplay.Stats;
 using GridBattle.Gameplay.Terrain;
@@ -11,8 +13,9 @@ using UnityEngine;
 namespace GridBattle.UI.Hud
 {
     /// <summary>
-    /// What the entity details window shows (GDD 4.1): a character (an enemy or the player) and/or the
-    /// terrain of the cell. Opening the window passes it to the controller as the navigation argument.
+    /// What the details window shows (GDD 4.1): a character (an enemy or the player) and/or the terrain of a
+    /// cell, or a skill or item of the player's bars (<see cref="ForSkill"/>, <see cref="ForConsumable"/>).
+    /// Opening the window passes it to the controller as the navigation argument.
     /// </summary>
     public sealed class EntityDetailsRequest
     {
@@ -21,6 +24,36 @@ namespace GridBattle.UI.Hud
             Character = character;
             Terrain = terrain;
         }
+
+        private EntityDetailsRequest(Character owner, SkillDefinition skill, ConsumableDefinition consumable)
+        {
+            Owner = owner;
+            Skill = skill;
+            Consumable = consumable;
+        }
+
+        /// <summary>A skill as <paramref name="owner"/> uses it (its sheet, with the owner's real numbers).</summary>
+        public static EntityDetailsRequest ForSkill(SkillDefinition skill, [CanBeNull] Character owner) =>
+            new(owner, skill, null);
+
+        /// <summary>An item (consumable) of <paramref name="owner"/>'s inventory.</summary>
+        public static EntityDetailsRequest ForConsumable(ConsumableDefinition consumable, [CanBeNull] Character owner) =>
+            new(owner, null, consumable);
+
+        /// <summary>The skill to show (null when the request is about a cell or an item).</summary>
+        [CanBeNull]
+        public SkillDefinition Skill { get; }
+
+        /// <summary>The item to show (null when the request is about a cell or a skill).</summary>
+        [CanBeNull]
+        public ConsumableDefinition Consumable { get; }
+
+        /// <summary>Who has the skill or item (its numbers depend on it).</summary>
+        [CanBeNull]
+        public Character Owner { get; }
+
+        /// <summary>Whether the request is about a skill or an item rather than a cell.</summary>
+        public bool IsAction => Skill != null || Consumable != null;
 
         /// <summary>The character on the cell (null for an empty cell).</summary>
         [CanBeNull]

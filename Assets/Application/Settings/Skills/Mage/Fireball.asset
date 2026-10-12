@@ -36,11 +36,11 @@ MonoBehaviour:
   damage: 10
   areaShape: 0
   areaSize: 3
-  range: 0
-  unlimitedRange: 1
+  range: 3
+  unlimitedRange: 0
   affects: 0
   requiresAffectedTarget: 0
-  ignoresLineOfSight: 1
+  ignoresLineOfSight: 0
   cooldown: 3
   effects: []
   references:

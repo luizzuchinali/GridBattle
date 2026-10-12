@@ -74,9 +74,15 @@ está em [[guia_sistemas]].
   nível, descrição, skill que libera), sem o aviso "combina com a build"
   (dá para religar em `ModalsSettings`).
 - **Linha de visão:** as skills não podem ser miradas através de pedras nem de
-  personagens. A Bola de Fogo e a Tempestade Elétrica ignoram isso; skills
-  centradas no personagem não precisam. Tudo configurável (cada skill, cada
+  personagens. A Tempestade Elétrica ignora isso (a Bola de Fogo também
+  ignorava; você a deixou precisando de visão); skills centradas no
+  personagem não precisam. Tudo configurável (cada skill, cada
   terreno e `CombatSettings`).
+- **Detalhes de skills e itens:** como nas células, tocar e segurar (ou
+  clicar com o botão direito) num botão de skill ou de item mostra a ficha:
+  descrição, dano, alcance, área, quem é afetado, recarga (com os talentos
+  aplicados), linha de visão, empurrão e se está pronta. O toque rápido
+  continua selecionando.
 - **Mira livre:** toda skill pode ser mirada em qualquer célula do alcance
   que ela vê, e o destaque cobre todo o alcance, não só os inimigos.
 - **Manutenção sem mudar o jogo:**
