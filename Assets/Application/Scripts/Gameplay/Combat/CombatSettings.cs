@@ -88,6 +88,17 @@ namespace GridBattle.Gameplay.Combat
         [Tooltip("Being pushed into the edge of the grid counts as a collision (damage as above). When off the character just stops.")]
         private bool edgeCountsAsCollision = true;
 
+        [Header("Line of sight (skills)")]
+        [SerializeField]
+        [Tooltip("Skills need a clear line from the caster to the aimed cell: obstacles that block sight (Terrain " +
+                 "Definition) and, below, characters in between block it. Skills marked 'Ignores Line Of Sight' and " +
+                 "self-centered skills never need it. Off = no line of sight rule at all.")]
+        private bool skillsNeedLineOfSight = true;
+
+        [SerializeField]
+        [Tooltip("Living characters (enemies and allies) between the caster and the aimed cell block the line of sight.")]
+        private bool charactersBlockLineOfSight = true;
+
         [Header("Distances")]
         [SerializeField]
         [Tooltip("Metric of the walk range (the game currently uses Euclidean).")]
@@ -124,6 +135,8 @@ namespace GridBattle.Gameplay.Combat
         public EDistanceMetric AttackMetric => attackMetric;
         public EDistanceMetric SkillRangeMetric => skillRangeMetric;
         public EDistanceMetric AdjacencyMetric => adjacencyMetric;
+        public bool SkillsNeedLineOfSight => skillsNeedLineOfSight;
+        public bool CharactersBlockLineOfSight => charactersBlockLineOfSight;
 
         /// <summary>Base collision damage of a displaced character that left <paramref name="unspentCells"/> cells untravelled.</summary>
         public int GetCollisionDamage(int unspentCells) =>

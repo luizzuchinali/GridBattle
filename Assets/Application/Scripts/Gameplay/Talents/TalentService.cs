@@ -123,11 +123,11 @@ namespace GridBattle.Gameplay.Talents
             var manager = RunManager.Instance;
             if (manager == null || !manager.IsBattleActive) return null;
 
-            return Object.FindAnyObjectByType<PlayerCharacter>();
+            return PlayerCharacter.Active;
         }
 
         /// <summary>The player of a battle that is not part of a run.</summary>
-        private static PlayerCharacter FindAnyPlayer() => Object.FindAnyObjectByType<PlayerCharacter>();
+        private static PlayerCharacter FindAnyPlayer() => PlayerCharacter.Active;
 
         private static TalentSession EnsureDebugSession(PlayerCharacter player)
         {

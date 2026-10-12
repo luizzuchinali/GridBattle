@@ -23,6 +23,16 @@ namespace GridBattle.Gameplay
     [ExecuteAlways]
     public class GridController : MonoBehaviour
     {
+        private static GridController _current;
+
+        /// <summary>
+        /// The grid of the scene. In Play Mode it is registered by the grid itself on Awake (which also runs with the
+        /// component unchecked, as in the scene), so systems never search the scene for it; outside Play Mode
+        /// (editor tools) it falls back to a scene search.
+        /// </summary>
+        public static GridController Instance =>
+            Application.isPlaying && _current != null ? _current : FindAnyObjectByType<GridController>();
+
         private static readonly Vector2Int PlayerSpawnPosition = new(2, 2);
 
         [Header("Grid Settings")]
@@ -140,6 +150,8 @@ namespace GridBattle.Gameplay
 
         private void Awake()
         {
+            if (Application.isPlaying)
+                _current = this;
             Assert.IsNotNull(cellPrefab, "Cell prefab is not set!");
 #if UNITY_EDITOR
             InitializeGrid(debugPlayerConfig, true);
@@ -158,6 +170,16 @@ namespace GridBattle.Gameplay
         {
             _terrainEffects?.Disable();
         }
+
+        private void OnDestroy()
+        {
+            if (_current == this)
+                _current = null;
+        }
+
+        /// <summary>Play Mode runs without a domain reload: start every session without a registered grid.</summary>
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+        private static void ResetStatics() => _current = null;
 
         /// <summary>
         /// Rebuilds the board (without terrain), places the player and the
@@ -256,7 +278,7 @@ namespace GridBattle.Gameplay
                 Spec = CreateSnapshotSpec(),
             };
 
-            var player = FindAnyObjectByType<PlayerCharacter>();
+            var player = PlayerCharacter.Active;
             if (player != null)
             {
                 snapshot.Player = CaptureEntity(player);

@@ -152,9 +152,28 @@ namespace GridBattle.Gameplay.Simulation
 
         private void Start()
         {
-            if (!Prepare()) return;
+            try
+            {
+                if (!Prepare()) return;
 
-            StartBatch(0);
+                StartBatch(0);
+            }
+            catch (Exception exception)
+            {
+                // Nothing can run without a prepared environment and a batch: stop instead of failing every frame.
+                Debug.LogException(exception);
+                FailToStart();
+            }
+        }
+
+        /// <summary>Ends a simulation that could not start: restores the environment and reports no results.</summary>
+        private void FailToStart()
+        {
+            _finished = true;
+            Progress = "failed to start (see the Console)";
+            Restore();
+            _onFinished?.Invoke(_results);
+            Destroy(gameObject);
         }
 
         private void OnDestroy()
@@ -196,6 +215,12 @@ namespace GridBattle.Gameplay.Simulation
         private void OnException(Exception exception)
         {
             Debug.LogException(exception);
+            if (_batch == null)
+            {
+                FailToStart();
+                return;
+            }
+
             _batch.Exceptions++;
             if (_batch.Exceptions > 5)
             {
@@ -214,7 +239,7 @@ namespace GridBattle.Gameplay.Simulation
         {
             var manager = GameStateManager.Instance;
             _runs = RunManager.Instance;
-            _grid = FindAnyObjectByType<GridController>();
+            _grid = GridController.Instance;
             if (manager == null || _runs == null || _grid == null ||
                 !_grid.TryGetComponent(out _turns) || !_grid.TryGetComponent(out _battleController))
             {
@@ -319,6 +344,7 @@ namespace GridBattle.Gameplay.Simulation
             _batchIndex = index;
             _options = _batches[index];
             _batch = new SimulationBatchResult { Options = _options };
+            SimMode.ShowBoard = _options.ShowBoard;
             _jobs.Clear();
             _jobIndex = 0;
             _runActive = false;
@@ -523,7 +549,7 @@ namespace GridBattle.Gameplay.Simulation
         {
             if (_battleController.IsOver) return false;
 
-            var player = FindAnyObjectByType<PlayerCharacter>();
+            var player = PlayerCharacter.Active;
             if (player == null || player.IsDead) return false;
             if (_turns.CurrentTurn != ETurnOwner.Player || TurnBlockers.IsBlocked) return false;
 

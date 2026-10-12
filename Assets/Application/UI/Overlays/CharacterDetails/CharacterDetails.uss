@@ -1,0 +1,72 @@
+/*
+ * Character details (interface 4.3): opened by a character card of the class selection. Portrait, name and
+ * unlock state, then a scrollable sheet (description, base attributes, starting skills) and the Back / Play
+ * buttons. Rows use the shared .info-* components.
+ */
+#overlay-background {
+    flex-grow: 1;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+}
+
+#character-window {
+    width: 200px;
+    height: 320px;
+    flex-shrink: 1;
+}
+
+.character-header {
+    flex-direction: row;
+    align-items: center;
+    flex-shrink: 0;
+    margin-bottom: var(--spacing-md);
+}
+
+.character-header__image {
+    width: 32px;
+    height: 32px;
+    flex-shrink: 0;
+    margin-right: 6px;
+}
+
+.character-header__texts {
+    flex-grow: 1;
+    flex-shrink: 1;
+}
+
+.character-header__name {
+    margin: 0;
+    padding: 0;
+    font-size: var(--font-size-title);
+    color: var(--color-primary);
+    white-space: normal;
+    -unity-text-align: middle-left;
+}
+
+.character-header__status {
+    margin: 0;
+    padding: 0;
+    font-size: var(--font-size-hud);
+    color: var(--color-text-dim);
+    white-space: normal;
+    -unity-text-align: middle-left;
+}
+
+#character-scroll {
+    flex-grow: 1;
+    flex-shrink: 1;
+    width: 100%;
+}
+
+#character-buttons {
+    flex-direction: row;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: var(--spacing-md);
+}
+
+#container #character-buttons .text-button {
+    min-width: 72px;
+    margin: 0 3px;
+}

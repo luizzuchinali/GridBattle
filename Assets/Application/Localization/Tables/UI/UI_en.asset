@@ -530,6 +530,26 @@ MonoBehaviour:
     m_Localized: OK
     m_Metadata:
       m_Items: []
+  - m_Id: 2743379220570112
+    m_Localized: New game
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2743379317039104
+    m_Localized: Back
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2743379317039105
+    m_Localized: Play
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2743379317039106
+    m_Localized: Starting skills
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2743379321233408
+    m_Localized: Starting values. Talents improve them during the run.
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

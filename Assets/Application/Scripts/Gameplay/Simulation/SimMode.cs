@@ -24,6 +24,12 @@ namespace GridBattle.Gameplay.Simulation
         /// </summary>
         public static ulong SeedOverride { get; set; }
 
+        /// <summary>
+        /// The screen flow may show the battle screen (board and HUD) during the simulation, so a person sees the
+        /// bot play instead of the start screen. Set by the runner from its options; only what is drawn changes.
+        /// </summary>
+        public static bool ShowBoard { get; set; }
+
         /// <summary>Turns the mode on. Called by the runner; always pair it with <see cref="End"/>.</summary>
         public static void Begin()
         {
@@ -36,6 +42,7 @@ namespace GridBattle.Gameplay.Simulation
         {
             IsActive = false;
             SeedOverride = 0UL;
+            ShowBoard = false;
         }
 
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
@@ -43,6 +50,7 @@ namespace GridBattle.Gameplay.Simulation
         {
             IsActive = false;
             SeedOverride = 0UL;
+            ShowBoard = false;
         }
     }
 }

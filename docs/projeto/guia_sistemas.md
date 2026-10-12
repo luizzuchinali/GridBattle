@@ -42,7 +42,7 @@ Perfil (entre runs): classes liberadas, glossário, recordes, opções, dicas vi
 | Interface | HUD, telas, modais, toque longo | `Settings/Hud/`, `Settings/Screens/`, `Settings/Modals/`, `Settings/Input/`, `Assets/Application/UI/` |
 | Áudio | Efeitos e músicas por contexto | `Settings/Audio/AudioLibrary` |
 | Idiomas | Textos em inglês, espanhol e português | `Assets/Application/Localization/` |
-| Simulador de balanceamento | Bot que joga runs completas e gera um relatório (seção 8) | `Settings/Simulation/BalanceSimulationSettings` |
+| Simulador de balanceamento | Bot que joga runs completas e gera um relatório ([[simulador_balanceamento]]) | `Settings/Simulation/BalanceSimulationSettings` |
 
 ## 2. Conceitos que valem para tudo
 
@@ -109,9 +109,11 @@ Perfil (entre runs): classes liberadas, glossário, recordes, opções, dicas vi
    - `skills`: skills iniciais (toda classe começa com ao menos uma: Golpe,
      Nova de Gelo, Adaga Envenenada);
    - `talentPool`: talentos próprios da classe.
-3. Textos: Display Name e Description na tabela `Content`.
+3. Textos: Display Name e Description na tabela `Content`. A descrição
+   aparece na janela de detalhes do personagem (seleção de personagem).
 4. Adicione a classe em `GameStateManager > Playable Characters` (cena) e um
-   retrato no menu principal.
+   card na seleção de personagem (`MainMenuScreen.uxml`, dentro de
+   `#character-selection`, e `MainMenuScreenController.BindClass`).
 
 ### Inimigo
 1. `Create > GridBattle > Characters > Enemy Config`.
@@ -170,6 +172,12 @@ Perfil (entre runs): classes liberadas, glossário, recordes, opções, dicas vi
      personagem; *Unlimited Range* = qualquer célula;
    - **cooldown**: ações do jogador entre usos;
    - **quem é afetado**: inimigos, aliados ou todos;
+   - **Ignores Line Of Sight**: a skill não precisa ver o alvo (obstáculos e
+     personagens no caminho não bloqueiam); por exemplo, algo lançado por
+     cima. As outras só miram células em linha de visão;
+   - **Requires Affected Target**: só deixa mirar onde atinge alguém.
+     Desligado em todas: a skill pode ser mirada em qualquer célula do
+     alcance (o destaque cobre todo o alcance);
    - **efeitos extras**: aplicar estados, curar, teletransportar,
      empurrar ou puxar (ver abaixo).
 3. Para quem fica a skill:
@@ -303,7 +311,8 @@ compartilhado, para os talentos da classe aparecerem mais. 1 desliga o efeito.
 1. `Create > GridBattle > Terrain > Terrain Definition`.
 2. Campos:
    - tipo: obstáculo, perigo ou bônus;
-   - se bloqueia movimento e se bloqueia a área de skills;
+   - se bloqueia movimento, se bloqueia a área de skills e se bloqueia a
+     **linha de visão** (só para quem bloqueia movimento, como a Rocha);
    - **gatilho**: ao entrar, no início ou no fim do turno de quem está na
      célula;
    - dano e estados aplicados;
@@ -334,6 +343,7 @@ compartilhado, para os talentos da classe aparecerem mais. 1 desliga o efeito.
 | Curva de XP e nível máximo | `Progression/ProgressionSettings` | XP do nível 1→2, acréscimo por nível, nível máximo, sobra de XP, vida recuperada a cada nível (`levelUpHealFraction`, 1 = vida cheia) |
 | Ofertas de talento | `Talents/TalentOfferSettings` | opções por oferta, rerolls, banimentos e pulos por run, peso de sinergia, limite de talentos de skill, pool compartilhado |
 | Fórmula de dano | `Combat/CombatSettings` | defesa fixa ou %, dano mínimo, arredondamento, métricas de distância |
+| Linha de visão das skills | `Combat/CombatSettings` + cada skill e terreno | `skillsNeedLineOfSight` (liga a regra), `charactersBlockLineOfSight` (personagens bloqueiam); `ignoresLineOfSight` em cada skill; `blocksLineOfSight` em cada terreno |
 | Cura, custo do nó de talento, estados entre batalhas | `Run/RunSettings` | também a seed de depuração e o salvamento automático |
 | Liberação de classes e glossário | `Meta/MetaSettings` + `battlesToUnlock` de cada classe | batalhas de runs perdidas contam, inimigos não vistos como "?", desistir conta como derrota, dicas, métricas |
 | Toque longo | `Input/GameplayInputSettings` | tempo do toque longo |
@@ -343,6 +353,12 @@ compartilhado, para os talentos da classe aparecerem mais. 1 desliga o efeito.
 
 ## 5. Como o jogo flui
 
+- **Menu:**
+  1. A tela inicial ("toque para jogar") leva ao menu principal: Novo jogo,
+     Continuar (só com uma run em andamento), Glossário e Opções.
+  2. Novo jogo mostra a seleção de personagem. Tocar num card abre os
+     detalhes da classe (descrição, atributos, skills iniciais); "Jogar"
+     começa a run (com uma run em andamento, pede confirmação antes).
 - **Run:**
   1. O jogador escolhe uma classe liberada.
   2. A run nasce com uma seed: o mapa e todas as batalhas são gerados nesse
@@ -401,162 +417,29 @@ recomeçar do zero, apague os três.
 - **Repetir um cenário:** `RunSettings > Debug Seed`.
 - **Itens de teste:** `ConsumableSettings > Debug Starting Consumables` (só
   fora de uma run).
+- **Validar o conteúdo:** `GridBattle > Validate Content` confere, sem mudar
+  nada: textos faltando em algum idioma, chaves de texto usadas no código que
+  não existem na tabela, referências vazias (skills, efeitos, pools, ações de
+  IA), talentos que nunca são oferecidos, inimigos que nunca aparecem, telas
+  mal configuradas, ícones faltando e assets fora do banco de conteúdo. Cada
+  problema sai no Console; clique para selecionar o asset. Rode depois de criar
+  ou mudar conteúdo.
 - **Checagens dos talentos:** `GridBattle > Talents > Run Checks`. **Ritmo de
   níveis:** `GridBattle > Talents > Simulate XP Progression`.
 - **Simulador de balanceamento:** joga runs completas sozinho e mede o
-  balanceamento. Veja a seção 8.
+  balanceamento. Veja [[simulador_balanceamento]].
 - **Ver a navegação de UI ao vivo:** `Window > ZS > UI Navigation Debugger`.
 
 ## 8. Simulador de balanceamento
 
-O simulador joga **runs completas** com as regras reais do jogo, sem
-animações, sons, dicas nem salvamento. Um bot escolhe os nós do mapa, luta as
-batalhas e escolhe os talentos. Serve para medir o balanceamento e comparar
-versões: muda-se um asset, roda-se de novo e comparam-se os números.
+O simulador joga runs completas sozinho, com as regras reais, e gera um
+relatório para comparar versões do balanceamento. Rodar:
+`GridBattle > Simulation > Run Balance Simulation` (opções em
+`Settings/Simulation/BalanceSimulationSettings`).
 
-> O bot é simples: não foge, não planeja e não usa o terreno a seu favor.
-> Um jogador vence mais que ele. Use os números para **comparar** versões do
-> balanceamento, não como a taxa de vitória esperada de um jogador.
-
-### Rodando pelo menu
-
-1. Abra a cena `Assets/Scenes/SampleScene.unity` (a única do jogo).
-2. Ajuste as opções em `GridBattle > Simulation > Select Settings Asset`
-   (abre `Settings/Simulation/BalanceSimulationSettings`; o asset é criado no
-   primeiro uso).
-3. `GridBattle > Simulation > Run Balance Simulation`. O editor entra em
-   Play Mode, mostra uma barra de progresso (com **Cancel**) e sai do Play
-   Mode no fim. São cerca de 5 runs por segundo.
-4. `GridBattle > Simulation > Open Output Folder` abre a pasta dos
-   resultados. Com `Log Summary` ligado, o resumo também sai no Console.
-
-O simulador **não grava** `run.json`, `metrics.jsonl` nem o perfil real
-(usa um perfil temporário, apagado no fim). Uma run salva antes continua lá.
-
-### Opções (`BalanceSimulationSettings`)
-
-| Grupo | Campo | O que faz |
-|---|---|---|
-| Lote | `Label` | Nome do lote, usado no relatório e no nome da pasta |
-| | `Classes` | Classes simuladas (vazio = todas as jogáveis) |
-| | `Runs Per Class` | Runs completas por classe (30–50 dá números estáveis) |
-| | `Start Seed` | Seed da primeira run; a run *i* usa `Start Seed + i` em todas as classes, então as classes jogam os **mesmos mapas** |
-| | `Bot Seed` | Seed dos sorteios do próprio bot (separada da run) |
-| Mapa | `Policy` | `Easy`, `Normal` ou `Hard` (prefere essa dificuldade) ou `Mixed` (sorteia) |
-| | `Heal Below Hp Fraction` | Vai a um nó de cura quando a vida está abaixo dessa fração |
-| | `Talent Node Min Hp Fraction` | Só entra em nó de talento (que custa vida) acima dessa fração |
-| | `Battle/Heal/Talent/Consumable Weight` | Chance relativa de cada tipo de nó no resto das escolhas |
-| Talentos | `Policy` | `FirstOption` (primeira opção), `HighestSynergy` (mais tags em comum com a build) ou `Random` |
-| | `Reroll/Ban/Skip Without Synergy` | Usa reroll, banimento ou pulo quando nenhuma opção combina com a build |
-| | `Preferred Talents` | Nomes de assets de talento que o bot pega sempre que aparecem, antes da política (mede uma build, por exemplo os talentos de empurrar e puxar) |
-| Batalha | `Use Skills`, `Use Consumables` | Desligue para medir só o ataque básico |
-| | `Skill Min Targets` | Usa uma skill de área quando acerta pelo menos esse número de inimigos (ou mata, ou causa mais dano que o ataque básico) |
-| | `Potion/Support Item/Heal Skill Hp Fraction` | Vida abaixo da qual usa poções, itens de suporte e skills de cura |
-| | `Area Item Min Targets` | Inimigos mínimos para usar uma bomba |
-| | `Displace Out Of Reach Value`, `Displace Pull In Value`, `Displace Terrain State Value` | Valor, em vida, de empurrar para fora do alcance um inimigo que poderia atacar, de puxar um atirador para dentro do alcance e de cada estado do terreno onde o inimigo é mandado (ou do qual é tirado, se for de bônus). O dano de colisão e de terreno já conta como dano |
-| | `Hazard Penalty`, `Bonus Reward` | Quanto o bot evita células de perigo e procura células de bônus |
-| | `Focus Role Order` | Papéis que o bot mata primeiro (por nome do asset do papel) |
-| | `Rush Role Names` | Papéis que o bot vai buscar mesmo podendo atacar outro (ex.: invocador) |
-| Modo assistido | `Restore Hp Before Battle` | Enche a vida antes de cada batalha: mede **só a dificuldade das lutas**, sem o desgaste da run |
-| Limites | `Max Turns Per Battle`, `Stuck Frames`, `Max Seconds Per Run`, `Max Failed Actions` | Batalhas ou runs que passam disso são abortadas e aparecem no relatório |
-| Velocidade | `Action Budget Ms`, `Time Scale`, `Uncap Frame Rate` | Ritmo da simulação (não muda as regras) |
-| Saída | `Output Folder`, `Write Csv`, `Log Summary` | Pasta dentro de `persistentDataPath`, CSVs e resumo no Console |
-
-### O relatório
-
-Cada lote cria `persistentDataPath/Simulation/<data>_<rótulo>/` (no Windows,
-`%USERPROFILE%/AppData/LocalLow/Zuchinali Softworks/GridBattle/Simulation`):
-
-- **`summary.md`**, para ler:
-  - saúde da simulação (runs abortadas, exceções, erros no Console; tudo
-    deve ser 0);
-  - **resultado por classe**: taxa de vitória com intervalo de confiança de
-    95%, profundidade e nível médios, batalhas vencidas, talentos, uso de
-    skills e itens;
-  - **onde as runs terminam** (andar da morte), a distribuição das mortes e
-    a vitória contra o chefe, e o **nível ao entrar em cada andar**;
-  - **batalhas por faixa de andares**: inimigos, papéis diferentes, terreno,
-    invocações e uso de skills e empurrões em cada parte da run;
-  - **batalhas por andar** e por dificuldade: dano recebido (em % da vida
-    máxima), ações por batalha, XP planejado e ganho;
-  - **XP por nó**: mínimo, média e máximo por andar e dificuldade, e as
-    **inversões** (uma batalha mais fácil dando mais XP que uma mais difícil
-    no mesmo andar; deve ser 0);
-  - **inimigos**: quem causa mais dano, quem termina as runs, dano por papel
-    e por tipo (ataque básico, espinhos, terreno...);
-  - **talentos** oferecidos e escolhidos (com a parcela de talentos de classe e
-    de genéricos por run), **skills** usadas, **consumíveis**
-    e **terreno** ativado;
-  - **empurrar e puxar**: por classe, por run, quantos inimigos e quantas
-    vezes o jogador foram deslocados, colisões, dano de colisão causado e
-    sofrido, abates por colisão e terrenos que reagiram na hora.
-- **`runs.csv`** (uma linha por run) e **`battles.csv`** (uma linha por
-  batalha), para planilhas.
-
-### Fluxo de trabalho sugerido
-
-1. Rode um lote de referência antes de mudar qualquer coisa (por exemplo,
-   `Label = antes`, 50 runs por classe, `Mixed`).
-2. Mude os assets (orçamento, escala, XP, skills, talentos...).
-3. Rode de novo com as **mesmas seeds** (`Label = depois`) e compare os dois
-   `summary.md`. Com as mesmas seeds, a diferença vem só da mudança.
-4. Para separar "lutas difíceis demais" de "desgaste de vida entre lutas",
-   compare com um lote de `Restore Hp Before Battle` ligado.
-5. Para avaliar a escolha de risco e recompensa, rode a mesma classe com o
-   mapa em `Easy` e em `Hard`.
-
-### Rodando por script (vários lotes de uma vez)
-
-Num arquivo `.cs` fora de `Assets/`, rodado pela CLI `unity`
-(`unity command run_script --file MeuLote.cs --entry MeuLote.Run`). O
-editor entra e sai do Play Mode sozinho:
-
-```csharp
-using GridBattle.Editor.Simulation;
-using GridBattle.Gameplay.Entities;
-using GridBattle.Gameplay.Simulation;
-
-public static class MeuLote
-{
-    public static string Run()
-    {
-        var dificil = BalanceSimulation.LoadOptions();   // cópia das opções do asset
-        dificil.Label = "guerreiro-dificil";
-        dificil.RunsPerClass = 50;
-        dificil.Map.Policy = EMapPolicy.Hard;
-        dificil.SetClasses(new[] { ECharacter.Warrior });
-
-        var assistido = dificil.Clone();
-        assistido.Label = "guerreiro-assistido";
-        assistido.RestoreHpBeforeBattle = true;
-
-        BalanceSimulation.RunBatches(new[] { dificil, assistido }, "resultado.txt");
-        return "iniciado";
-    }
-}
-```
-
-- `RunBatches` roda todos os lotes numa sessão de Play Mode e escreve, além
-  das pastas de cada lote, uma **tabela comparando os lotes**
-  (`<data>_comparison.md`).
-- O arquivo opcional (`resultado.txt`, na pasta temporária do sistema)
-  recebe os resumos quando tudo termina. Um script pode esperar por ele para
-  saber que a simulação acabou.
-- `BalanceSimulation.Run(opções)` roda um lote só.
-
-### Ferramenta complementar: progressão de XP
-
-`GridBattle > Talents > Simulate XP Progression` não joga as batalhas: só
-gera 300 mapas e soma o XP de caminhos que preferem batalhas fáceis, normais
-ou difíceis. Ela mostra, em segundos, o nível que cada caminho alcança antes
-do chefe. Use-a para ajustar a curva de XP e o XP das batalhas; use o
-simulador para tudo que depende das lutas.
-
-### Ao criar sistemas novos
-
-Todo efeito visual, espera por tempo, som, dica, modal, métrica ou salvamento
-novo precisa ser ignorado quando `SimMode.IsActive` (ver `AGENTS.md`). Sem
-isso, o simulador trava esperando uma animação ou grava arquivos reais.
+Tudo sobre ele (como funciona, opções, relatório, fluxo de trabalho, uso por
+script e cuidados ao criar sistemas novos) está em
+[[simulador_balanceamento]].
 
 ## 9. Pendências conhecidas
 - **Fonte pixel com acentos:** precisa de uma nova fonte (decisão de arte).

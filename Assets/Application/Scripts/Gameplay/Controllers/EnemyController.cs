@@ -38,7 +38,7 @@ namespace GridBattle.Gameplay.Controllers
             if (Owner.IsDead) return;
 
             if (_target == null)
-                _target = FindAnyObjectByType<PlayerCharacter>();
+                _target = PlayerCharacter.Active;
             if (_target == null) return;
 
             var config = Owner.EnemyConfig;

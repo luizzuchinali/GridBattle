@@ -1,0 +1,15 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:zs="ZS.UI" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/Application/UI/Overlays/CharacterDetails/CharacterDetails.uss?fileID=7433441132597879392&amp;guid=e3a5fe811a5cf924e989d875419e1c2d&amp;type=3#CharacterDetails"/>
+    <zs:SafeArea name="container" picking-mode="Ignore" class="container overlay-screen">
+        <ui:VisualElement name="overlay-background">
+            <ui:VisualElement name="character-window" class="window-frame">
+                <ui:VisualElement name="character-header" class="character-header" picking-mode="Ignore"/>
+                <ui:ScrollView name="character-scroll" class="slim-scroll" mode="Vertical" horizontal-scroller-visibility="Hidden" vertical-scroller-visibility="Auto" touch-scroll-type="Clamped"/>
+                <ui:VisualElement name="character-buttons">
+                    <ui:Button name="character-back-button" text="Back" class="text-button"/>
+                    <ui:Button name="character-play-button" text="Play" class="text-button"/>
+                </ui:VisualElement>
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </zs:SafeArea>
+</ui:UXML>

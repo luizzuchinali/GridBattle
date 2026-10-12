@@ -25,6 +25,8 @@ MonoBehaviour:
   collisionHitCharacterDamage: 6
   collisionIgnoresDefense: 1
   edgeCountsAsCollision: 1
+  skillsNeedLineOfSight: 1
+  charactersBlockLineOfSight: 1
   movementMetric: 0
   attackMetric: 0
   skillRangeMetric: 1

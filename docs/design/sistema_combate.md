@@ -632,12 +632,39 @@ grid e as de terreno que bloqueia áreas de skill são descartadas.
 O resultado não tem duplicatas e sai ordenado por linha e depois coluna, uma
 ordem canônica que mantém determinísticos os acertos (e os sorteios de crítico).
 
+### Linha de visão
+
+Desde 2026-10-12 (pedido do usuário), uma skill precisa **ver** a célula onde é
+mirada (`SkillTargeting.HasLineOfSight`, regra em `Rules/LineOfSight`):
+
+- a linha vai do centro da célula do lançador ao centro da célula alvo; toda
+  célula que ela cruza no meio do caminho bloqueia a visão quando tem
+  **terreno que bloqueia a visão** (`TerrainDefinition.blocksLineOfSight`; só
+  vale para terreno que bloqueia movimento, ou seja, a Rocha) ou, com
+  `CombatSettings.charactersBlockLineOfSight` ligado, um **personagem vivo**
+  (inimigo ou aliado);
+- as células das pontas nunca bloqueiam: dá para mirar a própria pedra ou o
+  inimigo da frente;
+- encostar só no canto de uma célula não a cruza, então um vizinho na
+  diagonal é sempre visível. A regra é simétrica: A vê B se e só se B vê A;
+- não precisam de visão: skills com `ignoresLineOfSight` (Bola de Fogo,
+  lançada por cima; Tempestade Elétrica, raio do céu) e skills centradas no
+  lançador. `CombatSettings.skillsNeedLineOfSight` desliga a regra toda;
+- a visão vale para a **mira**, não para a área: uma área continua atingindo
+  as células dela (o terreno só tira células da área com "Bloqueia área de
+  skill");
+- os destaques de alcance, a IA dos inimigos e o bot do simulador usam a mesma
+  regra.
+
 ### Uso
 
 Uma skill pode ser usada (`SkillTargeting.CanUse`) quando o lançador está vivo,
 nenhum estado impede skills, a skill está pronta (sem cooldown) **e** a célula
-alvo é válida: dentro do grid, no alcance, com ao menos um afetado (se a skill
-exige) e aceita pelos efeitos (um teleporte precisa de uma célula livre). Um uso
+alvo é válida: dentro do grid, no alcance, **em linha de visão** (ver acima),
+com ao menos um afetado (só se a skill exige: `requiresAffectedTarget`,
+desligado em todas desde 2026-10-12, para a skill poder ser mirada em qualquer
+célula e o destaque cobrir todo o alcance) e aceita pelos efeitos (um
+teleporte precisa de uma célula livre). Um uso
 inválido não faz nada e **não consome o turno**.
 
 `SkillDefinition.Execute`: animação de ataque (skills ofensivas, quando o alvo
@@ -1044,6 +1071,7 @@ Terrain Definition`), que é só dado:
 | Tipo | `Obstacle` (célula bloqueada), `Hazard` (perigo) ou `Bonus` |
 | Bloqueia movimento | ninguém anda para dentro, ocupa, nasce nem é teleportado para a célula; sempre ligado nos obstáculos |
 | Bloqueia área de skill | as áreas de skill pulam a célula, então ninguém sobre ela é atingido (desligado) |
+| Bloqueia linha de visão | skills não podem ser miradas através da célula; só vale para terreno que bloqueia movimento (ligado: a Rocha bloqueia; fogo, pântano e bônus não) |
 | Gatilho | quando o efeito se aplica: ao entrar, no início ou no fim do turno de quem está sobre ela (`ETerrainTrigger`) |
 | Dano | dano do tipo `Terrain` à entidade sobre a célula |
 | Estados | estados aplicados à entidade, sem fonte |

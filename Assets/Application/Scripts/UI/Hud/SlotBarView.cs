@@ -88,7 +88,7 @@ namespace GridBattle.UI.Hud
         /// <summary>Takes the current player and its controller from the scene (null when there is none).</summary>
         protected void FindPlayer()
         {
-            Player = UnityEngine.Object.FindAnyObjectByType<PlayerCharacter>();
+            Player = PlayerCharacter.Active;
             Controller = Player != null ? Player.GetComponent<PlayerCharacterController>() : null;
         }
 

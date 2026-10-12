@@ -3,7 +3,6 @@ using GridBattle.Core;
 using GridBattle.Data;
 using GridBattle.Gameplay.Entities;
 using GridBattle.Gameplay.Meta;
-using GridBattle.Gameplay.Stats;
 using GridBattle.Gameplay.Talents;
 using GridBattle.Managers.Audio;
 using GridBattle.UI.Hud;
@@ -36,19 +35,6 @@ namespace GridBattle.UI.Overlays
     public sealed class GlossaryController : ViewController
     {
         private const string ActiveTabClass = "tab-button--active";
-
-        /// <summary>Attributes an enemy detail always lists (base values).</summary>
-        private static readonly EAttribute[] BasicAttributes =
-        {
-            EAttribute.MaxHp, EAttribute.WalkRange, EAttribute.AttackRange, EAttribute.BasicDamage, EAttribute.Defense,
-        };
-
-        /// <summary>Attributes an enemy detail lists only when their base value is not zero.</summary>
-        private static readonly EAttribute[] OptionalAttributes =
-        {
-            EAttribute.CritChance, EAttribute.DefensePenetration, EAttribute.SkillDamageBonus, EAttribute.SkillRange,
-            EAttribute.CooldownReduction,
-        };
 
         private EGlossaryTab _tab;
         private PlayerCharacterConfig _classDetail;
@@ -422,35 +408,11 @@ namespace GridBattle.UI.Overlays
 
             // Base values: the ones the enemy has before the depth scaling of the battle.
             SummaryRows.AddSection(content, HudText.Get("details.attributes"));
-            foreach (var attribute in BasicAttributes)
-                AddAttributeRow(content, enemy, attribute);
-
-            foreach (var attribute in OptionalAttributes)
-            {
-                if (Mathf.Abs(enemy.GetBaseAttribute(attribute)) <= 0.0001f) continue;
-
-                AddAttributeRow(content, enemy, attribute);
-                if (attribute == EAttribute.CritChance)
-                    AddAttributeRow(content, enemy, EAttribute.CritMultiplier);
-            }
-
+            SummaryRows.AddBaseAttributes(content, enemy);
             SummaryRows.AddText(content, HudText.Get("glossary.base_values"));
 
             SummaryRows.AddSection(content, HudText.Get("details.skills"));
-            var hasSkill = false;
-            foreach (var skill in enemy.Skills)
-            {
-                if (skill == null) continue;
-
-                hasSkill = true;
-                SummaryRows.AddRow(content, skill.GetDisplayName(), string.Empty, skill.Icon);
-                var description = skill.GetDescription();
-                if (!string.IsNullOrEmpty(description))
-                    SummaryRows.AddText(content, description);
-            }
-
-            if (!hasSkill)
-                SummaryRows.AddText(content, HudText.Get("details.none"));
+            SummaryRows.AddSkills(content, enemy.Skills);
 
             var hasState = false;
             foreach (var grant in enemy.InitialStates)
@@ -472,12 +434,6 @@ namespace GridBattle.UI.Overlays
                 if (!string.IsNullOrEmpty(description))
                     SummaryRows.AddText(content, description);
             }
-        }
-
-        private static void AddAttributeRow(VisualElement content, EnemyConfig enemy, EAttribute attribute)
-        {
-            SummaryRows.AddRow(content, HudText.Get(EntityDetailsModel.GetAttributeKey(attribute)),
-                EntityDetailsModel.FormatAttribute(attribute, enemy.GetBaseAttribute(attribute)));
         }
 
         // ------------------------------------------------------------------------------------ building blocks

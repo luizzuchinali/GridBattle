@@ -311,7 +311,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 10290604507137
-    m_Localized: Your HP carries over to the next battle. It only recovers at heal nodes or through your build, so keep an eye on it when planning your route.
+    m_Localized: Your HP carries over to the next battle. It fully recovers when you level up, and also at heal nodes or through your build, so keep an eye on it when planning your route.
     m_Metadata:
       m_Items: []
   - m_Id: 10290717753344
@@ -1620,6 +1620,18 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 472301472710657
     m_Localized: +12 max HP per rank.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2743378687893504
+    m_Localized: Frontline brawler with the most HP of the three. Fights up close, grows stronger when surrounded and slams enemies into walls and into each other with his shield.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2743378734030848
+    m_Localized: 'Controls the battlefield from a distance: freezes, burns and pushes groups of enemies. Has little HP, so keep away from the front line.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2743378734030849
+    m_Localized: Assassin who wears enemies down with poison, strikes isolated targets hard and drags foes to where they are weakest.
     m_Metadata:
       m_Items: []
   references:

@@ -1619,6 +1619,18 @@ MonoBehaviour:
     m_Key: talent.nimble.desc
     m_Metadata:
       m_Items: []
+  - m_Id: 2743378687893504
+    m_Key: class.knight.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2743378734030848
+    m_Key: class.mage.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2743378734030849
+    m_Key: class.rogue.desc
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

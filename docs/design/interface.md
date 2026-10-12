@@ -18,7 +18,8 @@ Interface em UI Toolkit, em orientação retrato no mobile (ver 8.1). Os control
 | Usar skill | Toque no botão da skill na barra de skills (parte inferior da tela); as células de alcance são destacadas, e um toque na célula alvo usa a skill. Tocar de novo no botão da skill cancela. |
 | Usar consumível | Toque no botão do item na barra de itens, acima da barra de skills. Não consome a ação do turno, e só um consumível pode ser usado por turno (ver 2.8). ❓ Se o item precisa de alvo (valor inicial: depende do item; a bomba tem alvo, e a poção e o tônico não). |
 | Escolher nó no mapa | Toque em um nó disponível mostra a prévia (tipo, XP total, papéis dos inimigos e terreno); um botão de confirmar entra no nó. Tocar em outro nó troca a prévia. |
-| Escolher talento | Toque em um dos 3 talentos oferecidos. Botões de reroll, banir e pular na mesma tela. |
+| Mirar skill | Toque no botão da skill: o destaque mostra todas as células do alcance que ela vê (linha de visão), vazias ou não; toque numa delas para usar. |
+| Escolher talento | Toque em um dos 3 talentos oferecidos. Botões de reroll, banir e pular na mesma tela. Cada carta mostra só o próprio talento: ícone, nome, nível do talento, descrição e a skill que ele libera (decisão de 2026-10-12: sem indicar se combina com a build; configurável em `ModalsSettings.showBuildMatchOnCards`). |
 | Ver detalhes de uma entidade | Toque longo (*long tap*) em uma célula com uma entidade (o jogador ou um inimigo); no PC, clique com o botão direito do mouse. Mostra os detalhes dela: atributos, skills e os estados ativos com a duração restante; no caso de inimigos, também o papel e o comportamento. Os detalhes abrem em uma janela própria, que só fecha quando o jogador clica no X da janela (soltar o dedo ou o botão não fecha). Enquanto a janela está aberta, o jogo não aceita ações. Abrir ou fechar a janela não consome o turno nem faz nenhuma ação no jogo. O toque curto no mobile e o clique esquerdo no PC continuam sendo andar ou atacar. |
 | Abrir menu | Botão de menu na HUD. |
 | Abrir glossário | Botão no menu principal, no mapa e no menu de pausa (ver 2.7). |
@@ -45,7 +46,8 @@ Interface em UI Toolkit, em orientação retrato no mobile (ver 8.1). Os control
 
 ## 4.3 Menus
 - **Tela inicial:** toque para começar (já implementada).
-- **Menu principal e seleção de classe:** as classes bloqueadas mostram o progresso de liberação (por exemplo, "7/15 batalhas", ver 3.2). Acesso ao glossário e às opções.
+- **Menu principal:** Novo jogo, Continuar (só aparece com uma run em andamento que pode ser retomada), Glossário e Opções.
+- **Seleção de personagem:** aparece só depois de "Novo jogo", com um card por classe e "Voltar". As classes bloqueadas mostram o progresso de liberação (por exemplo, "7/15 batalhas", ver 3.2). Tocar num card abre os **detalhes do personagem**: retrato, descrição, atributos iniciais e skills iniciais, com "Voltar" e "Jogar" (classe bloqueada: mostra o progresso e não tem "Jogar"). "Jogar" com uma run em andamento pede confirmação, porque a run atual é descartada (decisão de 2026-10-12).
 - **Mapa:** nós, caminho percorrido, prévia do nó e botão de confirmar.
 - **Batalha:** grid e HUD.
 - **Detalhes da entidade:** janela aberta por toque longo (mobile) ou clique direito (PC) em uma entidade, fechada pelo X da janela (ver 4.1).

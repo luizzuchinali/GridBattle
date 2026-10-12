@@ -16,7 +16,7 @@ namespace GridBattle.Gameplay.Controllers
         protected virtual void Awake()
         {
             Owner = GetComponent<TCharacter>();
-            Grid = FindAnyObjectByType<GridController>();
+            Grid = GridController.Instance;
         }
     }
 }

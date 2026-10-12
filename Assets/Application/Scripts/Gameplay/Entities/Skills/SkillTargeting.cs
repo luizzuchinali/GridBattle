@@ -131,8 +131,8 @@ namespace GridBattle.Gameplay.Entities.Skills
 
         /// <summary>
         /// Whether the target cell is a valid aim for the skill: inside the grid,
-        /// in range, the effects accept it and (when the skill requires it) at least
-        /// one character would be affected. Ignores cooldown and restrictions
+        /// in range, in sight (see <see cref="HasLineOfSight"/>), the effects accept it and (when the skill requires
+        /// it) at least one character would be affected. Ignores cooldown and restrictions
         /// (see <see cref="CanSelect"/>).
         /// </summary>
         public static bool IsValidTarget(GridController grid, Character caster, SkillDefinition skill,
@@ -145,6 +145,7 @@ namespace GridBattle.Gameplay.Entities.Skills
         {
             if (!grid.IsValidPosition(targetPos)) return false;
             if (!IsTargetInRange(caster, skill, targetPos)) return false;
+            if (!HasLineOfSight(grid, caster, skill, targetPos)) return false;
 
             var context = CreateContext(grid, caster, skill, targetPos);
             if (skill.Skill.RequiresAffectedTarget && context.Affected.Count == 0) return false;
@@ -156,6 +157,20 @@ namespace GridBattle.Gameplay.Entities.Skills
             }
 
             return true;
+        }
+
+        /// <summary>
+        /// Whether the skill can see the target cell: always for skills that ignore line of sight, self-centered
+        /// skills and when the rule is off (<see cref="CombatSettings.SkillsNeedLineOfSight"/>); otherwise nothing
+        /// may block the line from the caster to the cell (<see cref="LineOfSight"/>).
+        /// </summary>
+        public static bool HasLineOfSight(GridController grid, Character caster, in EffectiveSkill skill,
+            Vector2Int targetPos)
+        {
+            if (!CombatResolver.Settings.SkillsNeedLineOfSight || skill.IgnoresLineOfSight || skill.IsSelfCentered)
+                return true;
+
+            return LineOfSight.IsClear(grid, caster.CurrentGridPos, targetPos);
         }
 
         /// <summary>

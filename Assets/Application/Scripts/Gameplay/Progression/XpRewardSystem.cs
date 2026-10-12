@@ -38,7 +38,7 @@ namespace GridBattle.Gameplay.Progression
             var enemyConfig = enemy.EnemyConfig;
             if (enemyConfig == null) return;
 
-            var player = FindAnyObjectByType<PlayerCharacter>();
+            var player = PlayerCharacter.Active;
             if (player == null) return;
 
             var xpToNextLevel = player.XpToNextLevel;

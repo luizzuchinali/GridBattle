@@ -35,6 +35,7 @@ MonoBehaviour:
   kind: 2
   blocksMovement: 0
   blocksSkillArea: 0
+  blocksLineOfSight: 1
   trigger: 2
   damage: 0
   states:

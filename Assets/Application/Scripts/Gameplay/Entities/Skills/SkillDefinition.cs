@@ -114,10 +114,15 @@ namespace GridBattle.Gameplay.Entities.Skills
         private ESkillTargetFilter affects = ESkillTargetFilter.Enemies;
 
         [SerializeField]
-        [Tooltip("The skill can only be used if at least one character would be affected " +
-                 "(an invalid action does not consume the turn). Turn off for skills that work on empty cells " +
-                 "(e.g. a teleport).")]
-        private bool requiresAffectedTarget = true;
+        [Tooltip("The skill can only be aimed where at least one character would be affected. Off (default, " +
+                 "decision of 2026-10-12): it can be aimed at any cell in range and in sight, so the range highlight " +
+                 "covers every cell and not only the enemies.")]
+        private bool requiresAffectedTarget;
+
+        [SerializeField]
+        [Tooltip("The skill does not need a line of sight to the aimed cell: obstacles and characters in between do " +
+                 "not block it (e.g. a lobbed fireball, lightning from the sky). Self-centered skills never need it.")]
+        private bool ignoresLineOfSight;
 
         [Header("Cooldown")]
         [SerializeField]
@@ -139,6 +144,7 @@ namespace GridBattle.Gameplay.Entities.Skills
         public int Range => range;
         public bool UnlimitedRange => unlimitedRange;
         public ESkillTargetFilter Affects => affects;
+        public bool IgnoresLineOfSight => ignoresLineOfSight;
         public bool RequiresAffectedTarget => requiresAffectedTarget;
         public int Cooldown => cooldown;
         public IReadOnlyList<SkillEffect> Effects => effects;

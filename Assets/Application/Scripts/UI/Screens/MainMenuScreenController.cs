@@ -16,26 +16,46 @@ using ZS.UI.Navigation;
 namespace GridBattle.UI.Screens
 {
     /// <summary>
-    /// Main menu and class selection (interface 4.3): each portrait button raises CharacterChoosenEvent. Classes
-    /// that are not unlocked yet look locked, show their progress ("Mage: 7/15 battles") and cannot be picked.
-    /// "Continue" resumes the saved run, "Glossary" and "Options" raise requests for their modals.
+    /// Main menu (interface 4.3), in two states of the same view:
+    /// <list type="bullet">
+    /// <item><b>Title</b> (when the menu opens): New game, Continue (only with a run in progress that can resume,
+    /// <see cref="RunManager.HasContinuableRun"/>), Glossary and Options.</item>
+    /// <item><b>Class selection</b> (after New game): one card per class and Back. Tapping a card raises
+    /// <see cref="CharacterDetailsRequestedEvent"/>; the details window shows the class and starts the run with
+    /// Play. Classes that are not unlocked yet look locked and list their progress ("Mage: 7/15 battles").</item>
+    /// </list>
+    /// The two states share one view because the class cards are animated by the layer's Animator through fixed
+    /// element paths (<c>#container/#character-selection/...</c>), which a page host would break.
     /// </summary>
     [Preserve]
     public sealed class MainMenuScreenController : ViewController
     {
         private const string LockedClass = "portrait-button--locked";
         private const string LockClass = "portrait-lock";
-        private const int WobbleStepMs = 45;
 
         private readonly List<ClassSlot> _slots = new();
         private Label _titleLabel;
+        private VisualElement _characterSelection;
         private VisualElement _lockedInfo;
+        private VisualElement _menuButtons;
+        private Button _newGameButton;
         private Button _continueButton;
         private Button _glossaryButton;
         private Button _optionsButton;
+        private Button _backButton;
+        private bool _selectingClass;
+
+        /// <summary>The "New game" button (null until the UI loads).</summary>
+        public Button NewGameButton => _newGameButton;
 
         /// <summary>The "Continue" button (null until the UI loads).</summary>
         public Button ContinueButton => _continueButton;
+
+        /// <summary>The "Back" button of the class selection (null until the UI loads).</summary>
+        public Button BackButton => _backButton;
+
+        /// <summary>Whether the class selection is showing (false: the title menu).</summary>
+        public bool IsSelectingClass => _selectingClass;
 
         /// <summary>Whether the class of the button is shown locked.</summary>
         public bool IsClassLocked(ECharacter character)
@@ -47,6 +67,20 @@ namespace GridBattle.UI.Screens
             }
 
             return false;
+        }
+
+        /// <summary>Shows the class selection (what New game does).</summary>
+        public void ShowClassSelection()
+        {
+            _selectingClass = true;
+            ApplyState();
+        }
+
+        /// <summary>Shows the title menu (what Back does).</summary>
+        public void ShowTitle()
+        {
+            _selectingClass = false;
+            ApplyState();
         }
 
         protected override void OnCreate()
@@ -65,11 +99,20 @@ namespace GridBattle.UI.Screens
         {
             _slots.Clear();
             _titleLabel = root.Q<Label>("select-class-label");
+            _characterSelection = root.Q<VisualElement>("character-selection");
             _lockedInfo = root.Q<VisualElement>("locked-info");
+            _menuButtons = root.Q<VisualElement>("menu-buttons");
 
             BindClass(root, "knight-btn", ECharacter.Warrior);
             BindClass(root, "mage-btn", ECharacter.Mage);
             BindClass(root, "rogue-btn", ECharacter.Rogue);
+
+            _newGameButton = root.Q<Button>("new-game-btn");
+            _newGameButton.OnClick(() =>
+            {
+                AudioManager.Play(ESfx.ButtonTap);
+                ShowClassSelection();
+            });
 
             _continueButton = root.Q<Button>("continue-btn");
             _continueButton.OnClick(() =>
@@ -92,13 +135,31 @@ namespace GridBattle.UI.Screens
                 EventBus.Raise(new OptionsRequestedEvent());
             });
 
+            _backButton = root.Q<Button>("back-btn");
+            _backButton.OnClick(() =>
+            {
+                AudioManager.Play(ESfx.ButtonTap);
+                ShowTitle();
+            });
+
             Refresh();
         }
 
         protected override void OnEnter(object args)
         {
-            // The menu is shown again after every run: the save, the unlocks and the progress may have changed.
+            // The menu always opens on the title. It is shown again after every run: the save, the unlocks and the
+            // progress may have changed.
+            _selectingClass = false;
             Refresh();
+        }
+
+        /// <summary>The back action leaves the class selection for the title menu.</summary>
+        protected override bool OnBack()
+        {
+            if (!_selectingClass) return false;
+
+            ShowTitle();
+            return true;
         }
 
         private void OnProfileChanged(ProfileChangedEvent e)
@@ -114,16 +175,11 @@ namespace GridBattle.UI.Screens
             var slot = new ClassSlot { Character = character, Button = button };
             _slots.Add(slot);
 
+            // Locked classes open their details too: the window shows how to unlock them (and has no Play button).
             button.RegisterCallback<ClickEvent>(_ =>
             {
-                if (slot.Locked)
-                {
-                    AudioManager.Play(ESfx.ButtonTap);
-                    Wobble(button);
-                    return;
-                }
-
-                EventBus.Raise(new CharacterChoosenEvent(character));
+                AudioManager.Play(ESfx.ButtonTap);
+                EventBus.Raise(new CharacterDetailsRequestedEvent(character));
             });
         }
 
@@ -133,12 +189,14 @@ namespace GridBattle.UI.Screens
             if (_titleLabel == null) return;
 
             _titleLabel.text = HudText.Get("menu.select_class");
+            _newGameButton.text = HudText.Get("menu.new_game");
             _continueButton.text = HudText.Get("menu.continue");
             _glossaryButton.text = HudText.Get("menu.glossary");
             _optionsButton.text = HudText.Get("menu.options");
+            _backButton.text = HudText.Get("menu.back");
 
             var runs = RunManager.Instance;
-            _continueButton.SetDisplayed(runs != null && runs.HasSavedRun);
+            _continueButton.SetDisplayed(runs != null && runs.HasContinuableRun);
 
             _lockedInfo.Clear();
             var manager = GameStateManager.Instance;
@@ -157,7 +215,19 @@ namespace GridBattle.UI.Screens
                 _lockedInfo.Add(line);
             }
 
-            _lockedInfo.SetDisplayed(_lockedInfo.childCount > 0);
+            ApplyState();
+        }
+
+        /// <summary>Shows the elements of the current state (title menu or class selection) and hides the others.</summary>
+        private void ApplyState()
+        {
+            if (_titleLabel == null) return;
+
+            _menuButtons.SetDisplayed(!_selectingClass);
+            _titleLabel.SetDisplayed(_selectingClass);
+            _characterSelection.SetDisplayed(_selectingClass);
+            _backButton.SetDisplayed(_selectingClass);
+            _lockedInfo.SetDisplayed(_selectingClass && _lockedInfo.childCount > 0);
         }
 
         private static void SetLockIcon(ClassSlot slot)
@@ -174,18 +244,6 @@ namespace GridBattle.UI.Screens
             var icon = new Image { sprite = ScreensSettings.Current.LockIcon, pickingMode = PickingMode.Ignore };
             icon.AddToClassList(LockClass);
             slot.Button.Add(icon);
-        }
-
-        /// <summary>Small shake of a locked class that was tapped.</summary>
-        private static void Wobble(VisualElement element)
-        {
-            var offsets = new[] { -2f, 2f, -1f, 1f, 0f };
-            var index = 0;
-            element.schedule.Execute(() =>
-            {
-                element.style.translate = new Translate(offsets[index], 0);
-                index++;
-            }).Every(WobbleStepMs).Until(() => index >= offsets.Length);
         }
 
         private sealed class ClassSlot

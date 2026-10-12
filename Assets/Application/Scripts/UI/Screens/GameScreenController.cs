@@ -131,7 +131,7 @@ namespace GridBattle.UI.Screens
         /// </summary>
         private void UpdateXpBarFromPlayer()
         {
-            var player = Object.FindAnyObjectByType<PlayerCharacter>();
+            var player = PlayerCharacter.Active;
             if (player == null) return;
 
             XpBar.SetState(player.Level, player.CurrentXp, player.XpToNextLevel);

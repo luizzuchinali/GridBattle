@@ -311,7 +311,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 10290604507137
-    m_Localized: "Sua vida se mant\xE9m na pr\xF3xima batalha. Ela s\xF3 se recupera em n\xF3s de cura ou pela sua build; fique de olho ao planejar sua rota."
+    m_Localized: "Sua vida se mant\xE9m na pr\xF3xima batalha. Ela se recupera toda ao subir de n\xEDvel, e tamb\xE9m em n\xF3s de cura ou pela sua build; fique de olho ao planejar sua rota."
     m_Metadata:
       m_Items: []
   - m_Id: 10290717753344
@@ -1620,6 +1620,18 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 472301472710657
     m_Localized: "+12 de vida m\xE1xima por n\xEDvel."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2743378687893504
+    m_Localized: "Brig\xE3o da linha de frente, com a maior vida dos tr\xEAs. Luta de perto, fica mais forte cercado de inimigos e arremessa os oponentes contra obst\xE1culos e uns contra os outros com o escudo."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2743378734030848
+    m_Localized: "Controla o campo de batalha \xE0 dist\xE2ncia: congela, queima e empurra grupos de inimigos. Tem pouca vida, ent\xE3o fique longe da linha de frente."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2743378734030849
+    m_Localized: "Assassino que desgasta os inimigos com veneno, golpeia forte alvos isolados e arrasta os oponentes para onde s\xE3o mais fracos."
     m_Metadata:
       m_Items: []
   references:

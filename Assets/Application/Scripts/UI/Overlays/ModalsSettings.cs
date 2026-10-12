@@ -33,6 +33,11 @@ namespace GridBattle.UI.Overlays
         [Tooltip("Small window of a contextual tutorial tip: opened by TutorialTipRequestedEvent.")]
         private ViewDefinition tutorialTipView;
 
+        [SerializeField]
+        [Tooltip("Character details of the class selection (description, attributes, starting skills, Play): " +
+                 "opened by CharacterDetailsRequestedEvent.")]
+        private ViewDefinition characterDetailsView;
+
         [Header("Talent choice (interface 4.1)")]
         [SerializeField]
         [Tooltip("Skipping an offer asks for confirmation first (the level's talent is lost).")]
@@ -48,6 +53,12 @@ namespace GridBattle.UI.Overlays
         [Min(0)]
         [Tooltip("Milliseconds between one card and the next fading in when an offer is shown, rerolled or a talent is banned. 0 = all at once.")]
         private int cardStaggerMs = 70;
+
+        [SerializeField]
+        [Tooltip("Each talent card also shows whether it combines with the build (a badge with the shared synergy " +
+                 "tags and a highlighted card). Off (default, user decision 2026-10-12): a card shows only the " +
+                 "talent's own information (icon, name, rank, description, the skill it unlocks).")]
+        private bool showBuildMatchOnCards;
 
         [Header("Glossary (interface 4.3)")]
         [SerializeField]
@@ -68,7 +79,7 @@ namespace GridBattle.UI.Overlays
 
         [Header("Icons (placeholders)")]
         [SerializeField]
-        [Tooltip("Badge of a talent option that combines with the build.")]
+        [Tooltip("Badge of a talent option that combines with the build (only with Show Build Match On Cards).")]
         private Sprite buildMatchIcon;
 
         [SerializeField]
@@ -80,9 +91,11 @@ namespace GridBattle.UI.Overlays
         public ViewDefinition GlossaryView => glossaryView;
         public ViewDefinition OptionsView => optionsView;
         public ViewDefinition TutorialTipView => tutorialTipView;
+        public ViewDefinition CharacterDetailsView => characterDetailsView;
         public bool ConfirmSkip => confirmSkip;
         public float AcquireEffectSeconds => acquireEffectSeconds;
         public int CardStaggerMs => cardStaggerMs;
+        public bool ShowBuildMatchOnCards => showBuildMatchOnCards;
         public bool AllowGlossaryDuringTalentChoice => allowGlossaryDuringTalentChoice;
         public bool ConfirmGiveUp => confirmGiveUp;
         public bool ShowTipsOverTalentChoice => showTipsOverTalentChoice;

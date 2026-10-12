@@ -89,7 +89,7 @@ namespace GridBattle.Gameplay.Meta
                     enemies.Add(Describe(enemy.Config));
             }
 
-            var player = UnityEngine.Object.FindAnyObjectByType<PlayerCharacter>();
+            var player = PlayerCharacter.Active;
             MetricsRecorder.Record("battle_started", new
             {
                 @class = player != null && player.Config != null ? Describe(player.Config) : null,
@@ -175,7 +175,7 @@ namespace GridBattle.Gameplay.Meta
             if (battle.Ended) return;
 
             battle.Ended = true;
-            var player = UnityEngine.Object.FindAnyObjectByType<PlayerCharacter>();
+            var player = PlayerCharacter.Active;
             battle.PlayerHp = player != null ? Mathf.Max(0, player.Current) : 0;
             battle.PlayerMaxHp = player != null ? player.MaxHp : 0;
             _ = WriteSummaryNextFrame(battle, e.Victory);

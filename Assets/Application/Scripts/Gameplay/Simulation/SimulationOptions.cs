@@ -335,6 +335,11 @@ namespace GridBattle.Gameplay.Simulation
         private int actionBudgetMs = 25;
 
         [SerializeField]
+        [Tooltip("Shows the battle board and the HUD while the simulation runs, instead of the start screen. Only " +
+                 "what is drawn changes: animations, sounds, the other screens and the results stay as they are.")]
+        private bool showBoard = true;
+
+        [SerializeField]
         [Min(0.1f)]
         [Tooltip("Time.timeScale during the simulation (the game rules do not depend on time).")]
         private float timeScale = 1f;
@@ -370,6 +375,7 @@ namespace GridBattle.Gameplay.Simulation
         public float MaxSecondsPerRun { get => maxSecondsPerRun; set => maxSecondsPerRun = value; }
         public int MaxFailedActions { get => maxFailedActions; set => maxFailedActions = value; }
         public int ActionBudgetMs { get => actionBudgetMs; set => actionBudgetMs = value; }
+        public bool ShowBoard { get => showBoard; set => showBoard = value; }
         public float TimeScale { get => timeScale; set => timeScale = value; }
         public bool UncapFrameRate { get => uncapFrameRate; set => uncapFrameRate = value; }
         public string OutputFolder { get => outputFolder; set => outputFolder = value; }

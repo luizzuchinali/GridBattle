@@ -17,9 +17,11 @@ MonoBehaviour:
   glossaryView: {fileID: 11400000, guid: baf77663f3f20ce43bda4a3ec04b6abf, type: 2}
   optionsView: {fileID: 11400000, guid: 697ea7b369f0e7c4cb3743a9948fe4c8, type: 2}
   tutorialTipView: {fileID: 11400000, guid: 257199499d9fc2b468bff153a068ce06, type: 2}
+  characterDetailsView: {fileID: 11400000, guid: 509c4020aa919374da250761fe8ca29d, type: 2}
   confirmSkip: 1
   acquireEffectSeconds: 0.35
   cardStaggerMs: 70
+  showBuildMatchOnCards: 0
   allowGlossaryDuringTalentChoice: 0
   confirmGiveUp: 1
   showTipsOverTalentChoice: 1

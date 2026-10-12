@@ -88,7 +88,7 @@ namespace GridBattle.Managers
         private void Start()
         {
             // The grid built by the editor (debug) before this component subscribed.
-            if (GlobalTurn == 0 && FindAnyObjectByType<PlayerCharacter>() != null)
+            if (GlobalTurn == 0 && PlayerCharacter.Active != null)
                 BeginBattle(1);
         }
 
@@ -146,7 +146,7 @@ namespace GridBattle.Managers
             GlobalTurn++;
             EventBus.Raise(new GlobalTurnStartedEvent(GlobalTurn));
 
-            var player = FindAnyObjectByType<PlayerCharacter>();
+            var player = PlayerCharacter.Active;
             if (player != null)
                 BeginEntityTurn(player);
 
@@ -169,7 +169,7 @@ namespace GridBattle.Managers
         {
             SetTurn(ETurnOwner.Enemies);
 
-            var player = FindAnyObjectByType<PlayerCharacter>();
+            var player = PlayerCharacter.Active;
             if (player != null && !player.IsDead)
                 EndEntityTurn(player);
 
@@ -246,7 +246,7 @@ namespace GridBattle.Managers
         private static List<EnemyController> GetEnemiesInActingOrder()
         {
             var enemies = new List<EnemyController>(FindObjectsByType<EnemyController>(FindObjectsInactive.Exclude));
-            var player = FindAnyObjectByType<PlayerCharacter>();
+            var player = PlayerCharacter.Active;
             if (player == null) return enemies;
 
             var playerPos = player.CurrentGridPos;

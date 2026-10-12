@@ -41,7 +41,7 @@ namespace GridBattle.UI.Hud
             }
 
             if (_grid == null)
-                _grid = UnityEngine.Object.FindAnyObjectByType<GridController>();
+                _grid = GridController.Instance;
 
             var selected = Controller != null && Controller.SelectedConsumableSlot == index;
             var disabled = IsInactive ||

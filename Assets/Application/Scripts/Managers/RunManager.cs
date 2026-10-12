@@ -57,6 +57,10 @@ namespace GridBattle.Managers
         private PlayerCharacterConfig _class;
         private MapNodeState _selectedNode;
 
+        /// <summary>Write time of the save at the last <see cref="HasContinuableRun"/> check, and its answer.</summary>
+        private System.DateTime _continuableCheckTime;
+        private bool _continuableCheckResult;
+
         /// <summary>A node's battle is on the board (set before the board is built, cleared when it ends).</summary>
         private bool _battleActive;
 
@@ -82,8 +86,32 @@ namespace GridBattle.Managers
         /// <summary>The run manager of the scene, or null before it woke up.</summary>
         public static RunManager Instance => _instance;
 
-        /// <summary>Whether a run save exists on disk (<see cref="ContinueRun"/> would load it).</summary>
+        /// <summary>Whether a run save exists on disk (it may still be unusable: see <see cref="HasContinuableRun"/>).</summary>
         public bool HasSavedRun => SaveSystem.Exists(SaveFileName);
+
+        /// <summary>
+        /// Whether there is a run in progress that <see cref="ContinueRun"/> can resume: the save loads, is not
+        /// finished, is complete and its class exists. Reads the file only when it changed since the last check;
+        /// nothing is changed on disk.
+        /// </summary>
+        public bool HasContinuableRun
+        {
+            get
+            {
+                var path = SaveSystem.GetPath(SaveFileName);
+                if (!System.IO.File.Exists(path)) return false;
+
+                var writeTime = System.IO.File.GetLastWriteTimeUtc(path);
+                if (writeTime != _continuableCheckTime)
+                {
+                    _continuableCheckTime = writeTime;
+                    _continuableCheckResult = SaveSystem.TryLoad(SaveFileName, out RunState run) &&
+                                              IsResumable(run) && FindSavedClass(run) != null;
+                }
+
+                return _continuableCheckResult;
+            }
+        }
 
         /// <summary>
         /// The run in progress, or the one that just ended (phase Finished) until the next run starts; null before
@@ -144,7 +172,7 @@ namespace GridBattle.Managers
 
                 if (_battleActive)
                 {
-                    var player = FindAnyObjectByType<PlayerCharacter>();
+                    var player = PlayerCharacter.Active;
                     if (player != null)
                         return player.MaxHp;
                 }
@@ -277,16 +305,14 @@ namespace GridBattle.Managers
             if (!SaveSystem.TryLoad(SaveFileName, out RunState run))
                 return false;
 
-            if (run.Phase == ERunPhase.Finished || run.Map == null || run.Map.Nodes.Count == 0 ||
-                run.Random == null || run.Player == null)
+            if (!IsResumable(run))
             {
                 Debug.LogWarning("The saved run is finished or unusable; it was deleted.", this);
                 SaveSystem.Delete(SaveFileName);
                 return false;
             }
 
-            var database = GameDatabase.Instance;
-            var playerClass = database != null ? database.Get<PlayerCharacterConfig>(run.ClassId) : null;
+            var playerClass = FindSavedClass(run);
             if (playerClass == null)
             {
                 Debug.LogError($"The saved run's class '{run.ClassId}' was not found in the GameDatabase.", this);
@@ -302,6 +328,19 @@ namespace GridBattle.Managers
             DiscardRun(false);
             BeginRun(run, playerClass, true);
             return true;
+        }
+
+        /// <summary>Whether a loaded save holds a run that can resume (not finished and with every part it needs).</summary>
+        private static bool IsResumable(RunState run) =>
+            run != null && run.Phase != ERunPhase.Finished && run.Map != null && run.Map.Nodes.Count > 0 &&
+            run.Random != null && run.Player != null;
+
+        /// <summary>The class of a saved run, or null when the game database does not know it.</summary>
+        [CanBeNull]
+        private static PlayerCharacterConfig FindSavedClass(RunState run)
+        {
+            var database = GameDatabase.Instance;
+            return database != null ? database.Get<PlayerCharacterConfig>(run.ClassId) : null;
         }
 
         /// <summary>
@@ -788,7 +827,7 @@ namespace GridBattle.Managers
                 return;
             }
 
-            var player = FindAnyObjectByType<PlayerCharacter>();
+            var player = PlayerCharacter.Active;
             if (player != null)
                 PlayerRunStateApplier.Capture(player, _run.Player, RunSettings.Current);
 
@@ -1034,7 +1073,7 @@ namespace GridBattle.Managers
         private GridController GetGrid()
         {
             if (_grid == null)
-                _grid = FindAnyObjectByType<GridController>();
+                _grid = GridController.Instance;
             return _grid;
         }
 

@@ -127,6 +127,8 @@ namespace GridBattle.Gameplay.Entities.Skills
         /// <summary>Whether the skill is centered on the caster (authored range 0, not unlimited).</summary>
         public bool IsSelfCentered => Skill.IsSelfCentered;
 
+        public bool IgnoresLineOfSight => Skill.IgnoresLineOfSight;
+
         /// <summary>The skill's push or pull effect (the first one), or null.</summary>
         public DisplaceSkillEffect FindDisplacement()
         {

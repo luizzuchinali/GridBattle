@@ -311,7 +311,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 10290604507137
-    m_Localized: "Tu vida se mantiene en la siguiente batalla. Solo se recupera en nodos de curaci\xF3n o con tu build; vig\xEDlala al planear tu ruta."
+    m_Localized: "Tu vida se mantiene en la siguiente batalla. Se recupera por completo al subir de nivel, y tambi\xE9n en nodos de curaci\xF3n o con tu build; vig\xEDlala al planear tu ruta."
     m_Metadata:
       m_Items: []
   - m_Id: 10290717753344
@@ -1620,6 +1620,18 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 472301472710657
     m_Localized: "+12 de vida m\xE1xima por rango."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2743378687893504
+    m_Localized: "Luchador de primera l\xEDnea, con la mayor vida de los tres. Pelea cuerpo a cuerpo, se fortalece rodeado de enemigos y los estrella contra obst\xE1culos y entre s\xED con su escudo."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2743378734030848
+    m_Localized: "Controla el campo de batalla a distancia: congela, quema y empuja a grupos de enemigos. Tiene poca vida, as\xED que mantente lejos de la primera l\xEDnea."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2743378734030849
+    m_Localized: "Asesino que desgasta a los enemigos con veneno, golpea fuerte a los objetivos aislados y arrastra a los rivales a donde son m\xE1s d\xE9biles."
     m_Metadata:
       m_Items: []
   references:

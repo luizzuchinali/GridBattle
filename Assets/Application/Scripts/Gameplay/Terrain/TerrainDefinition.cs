@@ -28,6 +28,12 @@ namespace GridBattle.Gameplay.Terrain
         [Tooltip("Open question (grid_e_terreno.md): skill areas skip this cell, so no one on it is affected. Off by default.")]
         private bool blocksSkillArea;
 
+        [SerializeField]
+        [Tooltip("Skills cannot be aimed through this cell (line of sight). Only terrain that blocks movement " +
+                 "(obstacles such as rocks) can block sight; turn it off for low obstacles. Skills marked " +
+                 "'Ignores Line Of Sight' are never blocked.")]
+        private bool blocksLineOfSight = true;
+
         [Header("Effect")]
         [SerializeField]
         [Tooltip("Open question (grid_e_terreno.md): when the effect applies. Default: at the end of the standing character's own turn.")]
@@ -70,6 +76,9 @@ namespace GridBattle.Gameplay.Terrain
 
         /// <summary>Whether skill areas skip the cell.</summary>
         public bool BlocksSkillArea => blocksSkillArea;
+
+        /// <summary>Whether skills cannot be aimed through the cell (only terrain that blocks movement can).</summary>
+        public bool BlocksLineOfSight => blocksLineOfSight && BlocksMovement;
 
         public ETerrainTrigger Trigger => trigger;
         public int Damage => damage;

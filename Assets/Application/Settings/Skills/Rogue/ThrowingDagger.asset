@@ -39,7 +39,8 @@ MonoBehaviour:
   range: 3
   unlimitedRange: 0
   affects: 0
-  requiresAffectedTarget: 1
+  requiresAffectedTarget: 0
+  ignoresLineOfSight: 0
   cooldown: 1
   effects: []
   references:

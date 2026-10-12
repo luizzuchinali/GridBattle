@@ -104,7 +104,7 @@ de 1 run em 10 no começo e melhora com conhecimento e builds.
 - **G1 concluído.** O simulador (`Gameplay/Simulation`, `Editor/Simulation`)
   joga runs completas com as regras reais, cerca de 5 a 10 runs por segundo.
   Com ele desligado, a partida determinística continua idêntica. Uso:
-  [[guia_sistemas]], seção 8.
+  [[simulador_balanceamento]].
 - **Linha de base** (50 runs por classe, seeds 1000–1049, mapa misto, valores
   de 11 andares num mapa de 30):
   - nenhuma vitória; morte em média no andar 6,1 (Guerreiro), 4,6 (Mago) e

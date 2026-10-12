@@ -10,6 +10,29 @@ namespace GridBattle.Gameplay.Entities
 {
     public class PlayerCharacter : Character
     {
+        /// <summary>Player characters alive in the scene, in creation order (one outside board rebuilds).</summary>
+        private static readonly List<PlayerCharacter> Live = new();
+
+        /// <summary>
+        /// The player character on the board, or null when there is none. In Play Mode it is kept by the character
+        /// itself (registered on Awake, removed on OnDestroy), so systems never search the scene for it; outside
+        /// Play Mode (editor tools) it falls back to a scene search.
+        /// </summary>
+        public static PlayerCharacter Active
+        {
+            get
+            {
+                if (!Application.isPlaying) return FindAnyObjectByType<PlayerCharacter>();
+
+                for (var i = Live.Count - 1; i >= 0; i--)
+                {
+                    if (Live[i] != null) return Live[i];
+                }
+
+                return null;
+            }
+        }
+
         public int Level { get; private set; } = 1;
         public int CurrentXp { get; private set; }
 
@@ -81,13 +104,20 @@ namespace GridBattle.Gameplay.Entities
         protected override void Awake()
         {
             base.Awake();
+            if (Application.isPlaying)
+                Live.Add(this);
             EventBus.Subscribe<GlobalTurnStartedEvent>(OnGlobalTurnStarted);
         }
 
         private void OnDestroy()
         {
+            Live.Remove(this);
             EventBus.Unsubscribe<GlobalTurnStartedEvent>(OnGlobalTurnStarted);
         }
+
+        /// <summary>Play Mode runs without a domain reload: start every session with an empty list.</summary>
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+        private static void ResetStatics() => Live.Clear();
 
         private void OnGlobalTurnStarted(GlobalTurnStartedEvent e)
         {

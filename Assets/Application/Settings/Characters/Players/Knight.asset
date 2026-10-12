@@ -24,10 +24,10 @@ MonoBehaviour:
     m_LocalVariables: []
   description:
     m_TableReference:
-      m_TableCollectionName: 
+      m_TableCollectionName: Content
     m_TableEntryReference:
       m_KeyId: 0
-      m_Key: 
+      m_Key: class.knight.desc
     m_FallbackState: 0
     m_WaitForCompletion: 0
     m_LocalVariables: []
@@ -47,6 +47,8 @@ MonoBehaviour:
   skillRange: 0
   cooldownReduction: 0
   canBeDisplaced: 1
+  immuneStates: []
+  maxHpPercentDamageMultiplier: 1
   skills:
   - {fileID: 11400000, guid: 4bb8f2044b811214fbdcf69ebc8ef3b4, type: 2}
   initialStates: []

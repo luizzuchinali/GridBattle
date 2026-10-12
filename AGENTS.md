@@ -32,7 +32,9 @@ jogador escolhe **talentos**, que concedem estados e liberam skills.
 Documentação de design (Obsidian, em português) em `docs/`: o [[GDD]] e os
 subdocumentos de `docs/design/`. A referência do combate implementado é
 `docs/design/sistema_combate.md`, que deve ficar em sincronia com o código.
-O guia de uso dos sistemas pelo editor é `docs/projeto/guia_sistemas.md`. O plano e os
+O guia de uso dos sistemas pelo editor é `docs/projeto/guia_sistemas.md`
+(o simulador de balanceamento tem o seu: `docs/projeto/simulador_balanceamento.md`;
+o resumo das mudanças está em `docs/projeto/resumo_das_mudancas.md`). O plano e os
 valores padrão das perguntas em aberto ficam em `docs/planos/`. **Não use nada
 de `docs/propostas/`** (são rascunhos não aprovados).
 
@@ -74,7 +76,7 @@ Assets/
 │   │   ├── Settings/                                       PanelSettings, WorldPanelSettings, PanelTextSettings
 │   │   ├── Layers/*.asset                                  UILayerDefinition (uma por painel)
 │   │   ├── Screens/{Start,MainMenu,Game,Map,RunEnd,Victory}/   <Tela>.uxml + .uss + <Tela>View.asset (ViewDefinition)
-│   │   ├── Overlays/{Menu,EntityDetails,ConsumableOffer,Confirm,TalentChoice,Glossary,Options,TutorialTip}/
+│   │   ├── Overlays/{Menu,EntityDetails,ConsumableOffer,Confirm,TalentChoice,Glossary,Options,TutorialTip,CharacterDetails}/
 │   │   ├── Background/, Transitions/, Animations/
 │   └── Scripts/                    ← ver tabela abaixo
 ├── ZS/UI/                          ← framework reutilizável de navegação (ver Assets/ZS/UI/README.md)
@@ -95,7 +97,7 @@ O namespace segue a pasta: `GridBattle.<Pasta>[.<Subpasta>]`.
 | `Core/` | `GridBattle.Core` | `Loc` (textos localizados), `SaveSystem` (JSON atômico) |
 | `Core/Randomness/` | `…Core.Randomness` | `Rng` (SplitMix64), `RunRandom` (fluxos `ERandomStream` + `Derive`), `GameRandom` (fluxos da run ativa) |
 | `Data/` | `GridBattle.Data` | `GameDefinition` (id = GUID), `DisplayableDefinition` (nome/descrição localizados + ícone), `GameDatabase`, `GameSettings` + `IGameSettings`, `SubclassPicker` |
-| `Editor/` | `GridBattle.Editor[.…]` | `GameDatabaseBuilder`, `GridControllerEditor`, `Drawers/SubclassPickerDrawer`, `Localization/LocalizationTableTool`, `Tools/PlaceholderIcons`, `Talents/{TalentChecks,XpProgressionSimulator}`, `Simulation/BalanceSimulation` (menu e Play Mode do simulador) |
+| `Editor/` | `GridBattle.Editor[.…]` | `GameDatabaseBuilder`, `GridControllerEditor`, `Drawers/SubclassPickerDrawer`, `Localization/LocalizationTableTool`, `Tools/PlaceholderIcons`, `Tools/ContentValidator` (`GridBattle > Validate Content`), `Talents/{TalentChecks,XpProgressionSimulator}`, `Simulation/BalanceSimulation` (menu e Play Mode do simulador) |
 | `Managers/` | `GridBattle.Managers` | `GameStateManager` (classes jogáveis), `RunManager` (a run), `TurnManager` (turnos), `GameConfigManager` |
 | `Managers/Audio/` | `…Managers.Audio` | `AudioManager` (autoinicializado), `AudioLibrary`, `ESfx`, `EMusicContext`, `AudioEventHooks` |
 | `Gameplay/` | `GridBattle.Gameplay` | `GridController`, `Cell`, `BattleController` (vitória/derrota), `CellContentHealthBar`, `EncounterConfig`, `ETurnOwner`, `GameplayInput(Settings)` |
@@ -103,7 +105,7 @@ O namespace segue a pasta: `GridBattle.<Pasta>[.<Subpasta>]`.
 | `Gameplay/States/` (+`Effects/`) | `…Gameplay.States[.Effects]` | `StateDefinition`, `StateEffect` (ganchos: atributos, turnos, dano causado e recebido, bônus de dano condicional, modificadores de skill) e efeitos (`SkillModifierEffect`, `ConditionalDamageEffect`, `OnKillEffect`, `ApplyStateOnHitEffect`, ...), `StateGrant`, `StateInstance`, `StateContainer` |
 | `Gameplay/Combat/` | `…Gameplay.Combat` | `CombatSettings`, `DamageCalculator`, `CombatResolver` (`Adjust`, `PredictDamage`), `DamageContext` (+`DamageAdjustment`, `EDamageKindMask`), `HitResult`, `DisplacementResolver` (aplica e prevê empurrões e puxões) |
 | `Gameplay/Turns/` | `…Gameplay.Turns` | `TurnBlockers` |
-| `Gameplay/Rules/` | `…Gameplay.Rules` | `GridRules`, `GridDistance`, `Displacement` (regras puras de empurrar e puxar: direção, caminho, colisão) |
+| `Gameplay/Rules/` | `…Gameplay.Rules` | `GridRules`, `GridDistance`, `Displacement` (regras puras de empurrar e puxar: direção, caminho, colisão), `LineOfSight` (linha de visão das skills) |
 | `Gameplay/Movement/` | `…Gameplay.Movement` | `GridMovementAnimator`, `GridEffectsAnimator`, `GridMovementSettings` |
 | `Gameplay/Entities/` | `…Gameplay.Entities` | `GridEntity` → `Character` → `PlayerCharacter` / `Enemy`; `CharacterView`, `EnemyIconsView`, `CharacterFactory`, `CharacterScaling`, `ECharacter` |
 | `Gameplay/Entities/Configs/` | `…Gameplay.Entities` ⚠️ | `CharacterConfig`, `EnemyConfig`, `PlayerCharacterConfig` (**exceção**: namespace sem `Configs`) |
@@ -126,7 +128,7 @@ O namespace segue a pasta: `GridBattle.<Pasta>[.<Subpasta>]`.
 | `UI/Screens/` | `…UI.Screens` | controladores das telas (Start, MainMenu, Game, Map, RunEnd, Victory), `ScreensSettings` |
 | `UI/Hud/` | `…UI.Hud` | `SkillBarView`, `ItemBarView`, `DepthView`, `EntityDetailsModel`, `HudText`, `HudSettings` |
 | `UI/Map/` | `…UI.Map` | `MapGraphView`, `MapLinesElement`, `MapHudView`, `NodePreviewView` |
-| `UI/Overlays/` | `…UI.Overlays` | controladores dos modais (menu/pausa, detalhes, oferta de consumível, confirmação, talento, glossário, opções, dicas), `ModalsSettings` |
+| `UI/Overlays/` | `…UI.Overlays` | controladores dos modais (menu/pausa, detalhes, oferta de consumível, confirmação, talento, glossário, opções, dicas, detalhes do personagem), `ModalsSettings` |
 | `UI/Background/`, `UI/Vfx/`, `UI/Events/` | `…UI.*` | fundo, orbs de XP, eventos de UI |
 
 ### Objetos da cena
@@ -148,8 +150,10 @@ dicas, métricas) e `TalentBootstrap` (talentos).
 
 ```
 Telas (GameFlowController + ZS.UI)
-  Start → MainMenu (classes bloqueadas com progresso, Continuar, Glossário, Opções)
-  escolha de classe → RunManager.StartNewRun → MapOpenedEvent → tela do Mapa
+  Start → MainMenu: menu inicial (Novo jogo, Continuar só com RunManager.HasContinuableRun, Glossário, Opções)
+     Novo jogo → seleção de personagem (mesma view; classes bloqueadas com progresso, Voltar)
+     card → CharacterDetailsRequestedEvent → modal de detalhes → Jogar → CharacterChoosenEvent
+     (com run em andamento, confirmação) → RunManager.StartNewRun → MapOpenedEvent → tela do Mapa
   nó escolhido (SelectNode = prévia; EnterNode = confirma)
      batalha/chefe → BattleStartedEvent → tela Game (HUD)  → vitória → mapa | chefe → Vitória
      cura / consumível / talento → resolvidos no mapa (modais) → mapa
@@ -260,6 +264,19 @@ Morte de inimigo
   `EDamageKind.Collision` (valores em `CombatSettings`) atribuído ao lançador,
   terreno da célula final reage na hora (`GridController.ApplyForcedTerrain`).
   Personagem imóvel: `CharacterConfig.canBeDisplaced = false` (o chefe).
+- **Mira de skills**: célula no alcance e em **linha de visão**
+  (`SkillTargeting.HasLineOfSight` → `Rules/LineOfSight`: centro a centro;
+  terreno com `blocksLineOfSight` e personagens vivos no caminho bloqueiam,
+  as pontas não; canto não conta; simétrica). Skills com `ignoresLineOfSight`
+  e centradas no lançador não precisam; `CombatSettings.skillsNeedLineOfSight`
+  e `charactersBlockLineOfSight` configuram. `requiresAffectedTarget` está
+  desligado em todas: a skill mira qualquer célula válida (destaque em todo o
+  alcance).
+- **Jogador e grid atuais**: `PlayerCharacter.Active` e
+  `GridController.Instance` (registrados pelos próprios objetos; fora do Play
+  Mode caem numa busca na cena). Não use `FindAnyObjectByType` para eles. As
+  buscas de inimigos (`FindObjectsByType<Enemy>`) continuam onde estão: a ordem
+  delas pode influenciar a IA e o bot.
 - **Determinismo**: todo sorteio de lógica usa os fluxos da run
   (`GameRandom.Stream(ERandomStream.X)` ou `RunRandom.Derive(...)` para
   sorteios por chave). `UnityEngine.Random` só para efeitos visuais.
@@ -289,6 +306,8 @@ Morte de inimigo
   existentes em `Cell`, `GridMovementAnimator`, `GridEffectsAnimator`,
   `TurnManager`, `XpOrbsVfx`, `AudioManager`, `RunManager`,
   `GameFlowController`). Com o modo desligado, o jogo não muda.
+  Com `SimulationOptions.showBoard` (`SimMode.ShowBoard`) a única tela que o
+  fluxo abre é a de batalha, para quem estiver olhando ver o tabuleiro.
 - Cada parte da UI que conhece nomes/medidas do UXML fica encapsulada numa
   classe (ex.: `XpBarView`, `SkillBarView`); outros sistemas usam essa API.
 - Criação de personagens passa sempre por `CharacterFactory` /
@@ -359,7 +378,8 @@ Morte de inimigo
   `*-btn`, `overlay-background`, `skill-bar`, `item-bar`, `hud-depth*`,
   `close-button`, `details-*`, `map-*`, `node-<id>`, `preview-*`,
   `confirm-button`, `summary-*`, `offer-*`, `confirm-*`, `continue-btn`,
-  `glossary-btn`, `options-btn`, `locked-info`; e os caminhos do Animator do
+  `new-game-btn`, `back-btn`, `select-class-label`, `menu-buttons`,
+  `glossary-btn`, `options-btn`, `locked-info`, `character-*`; e os caminhos do Animator do
   menu (`#container/#character-selection/#<x>-btn/#<x>-image`). Não mude nome
   nem hierarquia sem atualizar o código/clip.
 - Não use `<Template>`/`<Instance>` onde há seletor `>` ou caminho de Animator.
@@ -399,13 +419,16 @@ Morte de inimigo
 | Novo talento | `Create > GridBattle > Talents > Talent` (classes permitidas, nível, pré-requisitos, tags, `maxRank`, estados, skill) e coloque no `talentPool` da classe ou no pool compartilhado de `TalentOfferSettings`. O peso dos que só vêm do pool compartilhado é multiplicado por `sharedPoolWeightMultiplier` (0,5). |
 | Talento que modifica uma skill da classe | Estado com `Skill Modifier Effect` (skills, dano fixo/%, passos de área, alcance, redução de cooldown, empurrão, duração de estados, efeitos anexados; valores por pilha, `repeatAttachedPerStack`) + talento com `maxRank` (posto = pilha) e a skill (ou o talento que a libera) nos pré-requisitos. Ver `docs/projeto/guia_sistemas.md`. |
 | Passiva condicional de classe | Estado com `Conditional Damage Effect` (causado ou recebido; tipos de dano; condição: por inimigo adjacente, sem adjacente, alvo com estado nocivo ou com um estado, andou no turno anterior, alvo isolado, vida cheia), `On Kill Effect` ou `Apply State On Hit Effect`; talento como acima. Condição nova: `EDamageCondition` + `ConditionalDamageEffect.Evaluate`. |
+| Skill que não precisa de linha de visão | Marque `Ignores Line Of Sight` na skill (algo lançado por cima, um raio do céu). |
+| Terreno que bloqueia (ou não) a visão | `Blocks Line Of Sight` no `TerrainDefinition` (só vale para terreno que bloqueia movimento; desligue para obstáculos baixos). |
+| Conferir conteúdo novo | `GridBattle > Validate Content` (textos nos 3 idiomas, chaves de texto do código, referências vazias, talentos fora dos pools, inimigos que não aparecem, telas, ícones, banco de conteúdo). |
 | Novo consumível | `Create > GridBattle > Consumables > Consumable Definition` (alvo, área, efeitos, peso) e adicione ao pool de `ConsumableSettings`. |
 | Novo terreno | `Create > GridBattle > Terrain > Terrain Definition` (tipo, bloqueio, gatilho, dano/estados, visual) e adicione ao pool de `TerrainGenerationSettings`. |
 | Nova dica de tutorial | `TutorialTipDefinition` com o `ETutorialTrigger` + `TutorialService.Notify(gatilho)` no ponto do jogo. |
 | Novo personagem jogável | `Player Character Config` (`prefab = PlayerCharacter.prefab`, `characterClass`, `battlesToUnlock`, `talentPool`, skills iniciais); adicione em `GameStateManager.playableCharacters` e um botão no menu. |
 | Ajustar mapa / batalhas | `Settings/Map/MapGenerationSettings` (andares, andares de referência do balanceamento, nós, tipos, dificuldades) e `BattleGenerationSettings` (pool, ameaça, orçamento, escala, XP, limites, chefe). |
 | Ajustar XP e níveis | `Settings/Progression/ProgressionSettings` (curva e nível máximo); XP das batalhas em `BattleGenerationSettings` (fonte `ThreatBudget`, XP por ponto de ameaça, crescimento por profundidade, multiplicador por dificuldade). Confira com `GridBattle > Talents > Simulate XP Progression`. |
-| Medir o balanceamento | `GridBattle > Simulation > Run Balance Simulation` (opções no asset `Settings/Simulation/BalanceSimulationSettings`): runs completas por classe com bots, relatório em `persistentDataPath/Simulation/<data>_<rótulo>/` (`summary.md`, `runs.csv`, `battles.csv`). |
+| Medir o balanceamento | `GridBattle > Simulation > Run Balance Simulation` (opções no asset `Settings/Simulation/BalanceSimulationSettings`): runs completas por classe com bots, relatório em `persistentDataPath/Simulation/<data>_<rótulo>/` (`summary.md`, `runs.csv`, `battles.csv`). Guia completo: `docs/projeto/simulador_balanceamento.md`. |
 | Ajustar combate | `Settings/Combat/CombatSettings` (defesa, dano mínimo, métricas, colisão de empurrões e puxões). |
 | Ajustar run | `Settings/Run/RunSettings` (cura, custo do nó de talento, estados entre batalhas, seed de depuração, `autoEnterFirstNode`). |
 | Adicionar som | Arraste clipes na entrada do `ESfx`/`EMusicContext` em `Settings/Audio/AudioLibrary`. |
@@ -451,6 +474,7 @@ Morte de inimigo
 ## Verificação
 
 Testes do framework: `unity command run_tests --mode EditMode --filter ZS.UI.Tests --filter_type assembly`.
+Conteúdo: `GridBattle > Validate Content` (ou `ContentValidator.Run()` por script) deve dar 0 erros.
 Checagens dos talentos (inclui o resolvedor de skills e as passivas de classe do G3): menu `GridBattle > Talents > Run Checks`; simulação de
 XP: `GridBattle > Talents > Simulate XP Progression`; simulação de runs
 completas: `GridBattle > Simulation > Run Balance Simulation` (ou
@@ -469,6 +493,9 @@ O Unity Editor costuma estar aberto e acessível pela CLI `unity` (pacote
   dos inimigos fixada só durante o teste; compare com a execução de
   referência. Agende passos por `Time.time` (o loop do Play Mode trava com o
   Editor sem foco).
+- **Prova de regressão de refatoração com o simulador** (usada em 2026-10-12):
+  rode lotes antes e depois com as mesmas seeds e compare `runs.csv` e
+  `battles.csv` sem as colunas `ms` e `frames`: têm de ser idênticos.
 - **Prova de regressão com conteúdo novo desligado** (usada no G3): antes de
   rodar o simulador, volte os pools de talentos de cada classe e o peso dos
   genéricos ao que eram, **só em memória** (reflexão, sem `SetDirty`, e restaure
@@ -483,6 +510,37 @@ O Unity Editor costuma estar aberto e acessível pela CLI `unity` (pacote
 ## Histórico de refatorações
 
 Registre aqui toda mudança estrutural (mais recente primeiro).
+
+### 2026-10-12 — Menu, talentos, linha de visão e manutenção
+Pedidos do usuário; resumo para leitura em `docs/projeto/resumo_das_mudancas.md`.
+- **Menu principal:** menu inicial (Novo jogo, Continuar só com
+  `RunManager.HasContinuableRun`, Glossário, Opções) e seleção de personagem na
+  mesma view (o Animator dos cards exige `#container/#character-selection`);
+  card → `CharacterDetailsRequestedEvent` → modal `CharacterDetails`
+  (`CharacterDetailsController`, `ModalsSettings.characterDetailsView`) →
+  Jogar → `CharacterChoosenEvent`. Descrições provisórias das classes.
+  `RunManager.HasContinuableRun` valida o save (com cache por data do arquivo).
+- **Carta de talento:** sem o selo "combina com a build"
+  (`ModalsSettings.showBuildMatchOnCards`, desligado).
+- **Linha de visão e mira livre** (mudança de mecânica pedida): `LineOfSight`,
+  `TerrainDefinition.blocksLineOfSight`, `CombatSettings.skillsNeedLineOfSight`
+  / `charactersBlockLineOfSight`, `SkillDefinition.ignoresLineOfSight` (Bola de
+  Fogo, Tempestade Elétrica); `requiresAffectedTarget` desligado em todas.
+- **Manutenção (sem mudar o jogo; simulador idêntico com as mesmas seeds,
+  partida determinística idêntica, `TalentChecks` 7777/7777, `ZS.UI` 14/14):**
+  - `PlayerCharacter.Active` e `GridController.Instance` no lugar de 19 buscas
+    na cena;
+  - `ContentValidator` (`GridBattle > Validate Content`);
+  - `SummaryRows.AddBaseAttributes/AddSkills` compartilhados pelo glossário e
+    pelos detalhes do personagem;
+  - `MapLinesElement.Clear` → `ClearConnections` (escondia o
+    `VisualElement.Clear`);
+  - dica de tutorial da vida corrigida (a vida volta toda ao subir de nível).
+- **Simulador:** `SimulationOptions.showBoard` (mostra o tabuleiro e a HUD
+  enquanto roda; resultados idênticos); um erro na preparação encerra a
+  simulação com aviso em vez de travar em "starting".
+- **Docs:** `docs/projeto/simulador_balanceamento.md` (guia do simulador) e
+  `docs/projeto/resumo_das_mudancas.md` (resumo das mudanças).
 
 ### 2026-10-06 — Balanceamento G5/G6 (interrompido; balanceamento pausado)
 O agente parou no meio do ajuste e o usuário pausou o balanceamento (o jogo

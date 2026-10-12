@@ -23,8 +23,8 @@ namespace GridBattle.UI.Map
         /// <summary>Number of connections drawn.</summary>
         public int ConnectionCount => _connections.Count;
 
-        /// <summary>Removes every connection.</summary>
-        public void Clear()
+        /// <summary>Removes every connection (the children, if any, stay: see <see cref="VisualElement.Clear"/>).</summary>
+        public void ClearConnections()
         {
             _connections.Clear();
             MarkDirtyRepaint();

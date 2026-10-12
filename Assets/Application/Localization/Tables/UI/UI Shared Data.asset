@@ -527,6 +527,26 @@ MonoBehaviour:
     m_Key: tip.ok
     m_Metadata:
       m_Items: []
+  - m_Id: 2743379220570112
+    m_Key: menu.new_game
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2743379317039104
+    m_Key: menu.back
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2743379317039105
+    m_Key: character.play
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2743379317039106
+    m_Key: character.starting_skills
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2743379321233408
+    m_Key: character.base_values
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

@@ -47,6 +47,7 @@ Ver também: [[plano_implementacao_gdd]], [[perguntas_em_aberto]].
 | Pergunta | Documento | Valor |
 |---|---|---|
 | A skill inicial ocupa um dos 6 espaços | classes_e_skills | Sim |
+| Skill só mira onde atinge alguém | classes_e_skills | Não: toda skill mira qualquer célula do alcance em linha de visão (decisão do usuário, 2026-10-12; `requiresAffectedTarget`) |
 | Redução de cooldown: unidade e mínimo | estados_e_atributos | Em ações; cooldown mínimo 1 para skills que têm cooldown |
 | Cooldowns entre batalhas | — | Zerados a cada batalha (`RunSettings`) |
 | Habilidades dos inimigos | inimigos | Mesma regra das skills: "N ações entre usos" |
@@ -73,6 +74,7 @@ Ver também: [[plano_implementacao_gdd]], [[perguntas_em_aberto]].
 |---|---|---|
 | Quando o efeito é aplicado | grid_e_terreno | No fim do turno de quem está na célula |
 | Bloqueia área de skill | grid_e_terreno | Não |
+| Bloqueia a linha de visão das skills | grid_e_terreno | Sim para a Rocha (terreno que bloqueia movimento); personagens vivos no caminho também bloqueiam (`CombatSettings.charactersBlockLineOfSight`). Bola de Fogo e Tempestade Elétrica ignoram (decisão do usuário, 2026-10-12) |
 | Afeta jogador e inimigos | grid_e_terreno | Sim, igualmente |
 | Quantidade por profundidade | grid_e_terreno | Faixas a partir dos andares 1 (nada), 4, 10, 16 e 22, com mais obstáculos, perigos e bônus no fim da run (andar 22+: 2–4 obstáculos, 2–3 perigos, 0–2 bônus) (ajuste G5/G6 interrompido, ponto de partida; ver [[plano_balanceamento]]) |
 | Tipos | grid_e_terreno | Rocha (obstáculo), Fogo (4 de dano), Pântano (Envenenado 3), Santuário (Regeneração 3), Pedra de proteção (Escudo 2) |
@@ -124,6 +126,8 @@ Ver também: [[plano_implementacao_gdd]], [[perguntas_em_aberto]].
 | Como banir | interface 4.1 | Modo de banir: tocar em Banir e depois no talento |
 | Confirmação ao pular talento e ao desistir | interface 4.3 | Sim (`ModalsSettings.confirmSkip/confirmGiveUp`) |
 | Dicas sobre a escolha de talento | interface 4.4 | Sim; nunca sob outro modal |
+| Descrição das classes | classes_e_skills | Provisória, a partir da identidade do G3: Guerreiro brigão da linha de frente, Mago controle de área, Ladino assassino com veneno (`class.<id>.desc`, tabela `Content`) |
+| Carta de talento mostra se combina com a build | interface 4.1 | Não: a carta mostra só o próprio talento (decisão do usuário, 2026-10-12; `ModalsSettings.showBuildMatchOnCards`) |
 
 ## XP, nível e talentos (`Settings/Progression`, `Settings/Talents`)
 

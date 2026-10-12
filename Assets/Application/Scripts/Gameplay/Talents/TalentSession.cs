@@ -582,7 +582,7 @@ namespace GridBattle.Gameplay.Talents
             return live != null && !live.IsDead ? live : null;
         }
 
-        private static PlayerCharacter DefaultLivePlayer() => UnityEngine.Object.FindAnyObjectByType<PlayerCharacter>();
+        private static PlayerCharacter DefaultLivePlayer() => PlayerCharacter.Active;
 
         private void SaveRun()
         {

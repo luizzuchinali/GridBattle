@@ -42,9 +42,15 @@
     flex-direction: row;
 }
 
+#container #new-game-btn,
 #container #continue-btn {
     min-width: 168px;
     margin-bottom: var(--spacing-md);
+}
+
+#container #back-btn {
+    min-width: 82px;
+    margin-top: 14px;
 }
 
 #container #menu-buttons-row .text-button {

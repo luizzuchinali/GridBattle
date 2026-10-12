@@ -67,6 +67,7 @@ namespace GridBattle.UI.Flow
         private object _targetArgs;
         private bool _hasTarget;
         private bool _confirmingNewRun;
+        private bool _showingCharacterDetails;
 
         private readonly List<PendingModal> _pendingModals = new();
 
@@ -98,6 +99,7 @@ namespace GridBattle.UI.Flow
         {
             EventBus.Subscribe<StartScreenTapEvent>(OnStartScreenTap);
             EventBus.Subscribe<CharacterChoosenEvent>(OnCharacterChoosen);
+            EventBus.Subscribe<CharacterDetailsRequestedEvent>(OnCharacterDetailsRequested);
             EventBus.Subscribe<ContinueRunRequestedEvent>(OnContinueRequested);
             EventBus.Subscribe<MainMenuRequestedEvent>(OnMainMenuRequested);
             EventBus.Subscribe<RunStartedEvent>(OnRunStarted);
@@ -116,6 +118,7 @@ namespace GridBattle.UI.Flow
         {
             EventBus.Unsubscribe<StartScreenTapEvent>(OnStartScreenTap);
             EventBus.Unsubscribe<CharacterChoosenEvent>(OnCharacterChoosen);
+            EventBus.Unsubscribe<CharacterDetailsRequestedEvent>(OnCharacterDetailsRequested);
             EventBus.Unsubscribe<ContinueRunRequestedEvent>(OnContinueRequested);
             EventBus.Unsubscribe<MainMenuRequestedEvent>(OnMainMenuRequested);
             EventBus.Unsubscribe<RunStartedEvent>(OnRunStarted);
@@ -166,7 +169,7 @@ namespace GridBattle.UI.Flow
             var config = manager.FindPlayableCharacter(e.Character);
             if (config == null || !ProfileService.IsClassUnlocked(config)) return;
 
-            if (runs.HasSavedRun && confirmOverlay != null && Navigator != null)
+            if (runs.HasContinuableRun && confirmOverlay != null && Navigator != null)
             {
                 _confirmingNewRun = true;
                 var request = new ConfirmRequest(HudText.Get("menu.new_run.title"), HudText.Get("menu.new_run.message"));
@@ -189,10 +192,38 @@ namespace GridBattle.UI.Flow
             manager.StartRun(e.Character);
         }
 
+        /// <summary>
+        /// A character card was tapped: the details window opens; Play there starts a new run with the class (the
+        /// same path as <see cref="CharacterChoosenEvent"/>, with the confirmation over a run in progress).
+        /// </summary>
+        private async void OnCharacterDetailsRequested(CharacterDetailsRequestedEvent e)
+        {
+            var view = ModalsSettings.Current.CharacterDetailsView;
+            var manager = GameStateManager.Instance;
+            if (view == null || Navigator == null || manager == null || _showingCharacterDetails) return;
+
+            var config = manager.FindPlayableCharacter(e.Character);
+            if (config == null) return;
+
+            _showingCharacterDetails = true;
+            bool play;
+            try
+            {
+                play = await Navigator.ShowModal<bool>(view, config);
+            }
+            finally
+            {
+                _showingCharacterDetails = false;
+            }
+
+            if (play)
+                EventBus.Raise(new CharacterChoosenEvent(e.Character));
+        }
+
         private void OnContinueRequested(ContinueRunRequestedEvent e)
         {
             var runs = RunManager.Instance;
-            if (runs == null || !runs.HasSavedRun) return;
+            if (runs == null || !runs.HasContinuableRun) return;
 
             runs.ContinueRun();
         }
@@ -277,7 +308,8 @@ namespace GridBattle.UI.Flow
         /// <summary>Makes <paramref name="screen"/> the target screen and navigates there as soon as possible.</summary>
         private void ShowScreen(ViewDefinition screen, object args = null)
         {
-            if (screen == null || SimMode.IsActive) return;
+            // The simulation shows no screen, except the battle screen when it was asked to show the board.
+            if (screen == null || (SimMode.IsActive && !(SimMode.ShowBoard && screen == gameScreen))) return;
 
             _targetScreen = screen;
             _targetArgs = args;

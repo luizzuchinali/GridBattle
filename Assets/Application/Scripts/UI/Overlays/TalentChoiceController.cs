@@ -16,9 +16,9 @@ namespace GridBattle.UI.Overlays
     /// <summary>
     /// Talent choice (GDD Mechanic 3, interface 4.1): opens over the battle or the map when a level is reached or
     /// a talent node is entered, while the game is paused by the talent session. Shows the level (or "Talent
-    /// node"), one card per option (icon, name, rank, description, "fits your build" and "new skill" badges) and
-    /// the tools with the uses left: reroll, ban (a mode: tap Ban, then the card to ban; tap Ban again to cancel)
-    /// and skip (after a confirmation). Every answer goes through <see cref="TalentService"/>; the window only
+    /// node"), one card per option (icon, name, rank, description and a "new skill" badge; the "fits your build"
+    /// badge only with <see cref="ModalsSettings.ShowBuildMatchOnCards"/>) and the tools with the uses left:
+    /// reroll, ban (a mode: tap Ban, then the card to ban; tap Ban again to cancel) and skip (after a confirmation). Every answer goes through <see cref="TalentService"/>; the window only
     /// redraws from the talent events. It cannot be closed by the back action or the backdrop: it closes when the
     /// last pending offer is resolved, after a short acquisition effect (visual only, the game resumes at once).
     /// </summary>
@@ -323,9 +323,10 @@ namespace GridBattle.UI.Overlays
         private Button CreateCard(TalentOption option, int index)
         {
             var talent = option.Talent;
+            var showMatch = option.MatchesBuild && ModalsSettings.Current.ShowBuildMatchOnCards;
             var card = new Button { name = "talent-card-" + index, text = string.Empty };
             card.AddToClassList("talent-card");
-            card.EnableInClassList(MatchClass, option.MatchesBuild);
+            card.EnableInClassList(MatchClass, showMatch);
             card.EnableInClassList(BanClass, _banMode);
 
             var top = new VisualElement { pickingMode = PickingMode.Ignore };
@@ -364,12 +365,12 @@ namespace GridBattle.UI.Overlays
             top.Add(texts);
             card.Add(top);
 
-            if (option.MatchesBuild || option.UnlocksSkill)
+            if (showMatch || option.UnlocksSkill)
             {
                 var badges = new VisualElement { pickingMode = PickingMode.Ignore };
                 badges.AddToClassList("talent-card__badges");
 
-                if (option.MatchesBuild)
+                if (showMatch)
                 {
                     var tags = new List<string>();
                     foreach (var tag in option.SharedTags)

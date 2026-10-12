@@ -49,6 +49,8 @@ Valores atuais das três classes, como estão implementados no jogo (um asset de
 
 As nove skills da tabela estão implementadas como assets (`Settings/Skills/<Classe>`), e os valores atuais dos assets estão em [[sistema_combate]].
 
+**Decisão (2026-10-12): linha de visão e mira livre.** As skills precisam ver a célula onde são miradas: obstáculos (Rocha) e personagens no caminho bloqueiam. Bola de Fogo (lançada por cima) e Tempestade Elétrica (raio do céu) ignoram a linha de visão; skills centradas no personagem não precisam dela. Toda skill pode ser mirada em qualquer célula do alcance (não só onde há inimigos), para o destaque cobrir todo o alcance. Regras em [[sistema_combate]].
+
 **Decisão (2026-10-05): toda classe começa com ao menos uma skill.** Golpe (Guerreiro), Nova de Gelo (Mago) e Adaga Envenenada (Ladino) são as skills iniciais. As demais são liberadas pelos talentos da coluna Trait. Criomancia e Mãos Ligeiras, que liberavam as skills que viraram iniciais, passaram a ser talentos de reforço (+15% de dano de skill). O Golpe foi reajustado para dano em área frontal (`PERPENDICULAR` de tamanho 3).
 
 ### Guerreiro
