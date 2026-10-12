@@ -36,10 +36,6 @@
     margin-left: var(--spacing-sm);
 }
 
-#container .slot-bar > .slot-button:first-child {
-    margin-left: 0;
-}
-
 /* Slot looks (set by code, see HudSlot): selected, disabled and empty. */
 #container .slot-button--selected {
     background-image: var(--skin-slot-selected);

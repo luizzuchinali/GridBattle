@@ -12,6 +12,7 @@
                     <ui:Button name="talent-ban-button" text="Ban" class="text-button talent-tool"/>
                     <ui:Button name="talent-skip-button" text="Skip" class="text-button talent-tool"/>
                 </ui:VisualElement>
+                <ui:Label name="talent-tools-hint" text="Each use shows an ad." picking-mode="Ignore"/>
             </ui:VisualElement>
         </ui:VisualElement>
     </zs:SafeArea>

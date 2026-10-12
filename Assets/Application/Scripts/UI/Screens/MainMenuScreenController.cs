@@ -3,6 +3,7 @@ using GridBattle.Core;
 using GridBattle.Gameplay.Entities;
 using GridBattle.Gameplay.Events;
 using GridBattle.Gameplay.Meta;
+using GridBattle.Gameplay.Monetization;
 using GridBattle.Managers;
 using GridBattle.Managers.Audio;
 using GridBattle.UI.Events;
@@ -42,6 +43,7 @@ namespace GridBattle.UI.Screens
         private Button _continueButton;
         private Button _glossaryButton;
         private Button _optionsButton;
+        private Button _removeAdsButton;
         private Button _backButton;
         private bool _selectingClass;
 
@@ -87,12 +89,14 @@ namespace GridBattle.UI.Screens
         {
             Loc.LocaleChanged += Refresh;
             EventBus.Subscribe<ProfileChangedEvent>(OnProfileChanged);
+            EventBus.Subscribe<MonetizationChangedEvent>(OnMonetizationChanged);
         }
 
         protected override void OnDestroy()
         {
             Loc.LocaleChanged -= Refresh;
             EventBus.Unsubscribe<ProfileChangedEvent>(OnProfileChanged);
+            EventBus.Unsubscribe<MonetizationChangedEvent>(OnMonetizationChanged);
         }
 
         protected override void OnBind(VisualElement root)
@@ -135,6 +139,13 @@ namespace GridBattle.UI.Screens
                 EventBus.Raise(new OptionsRequestedEvent());
             });
 
+            _removeAdsButton = root.Q<Button>("remove-ads-btn");
+            _removeAdsButton.OnClick(() =>
+            {
+                AudioManager.Play(ESfx.ButtonTap);
+                EventBus.Raise(new RemoveAdsRequestedEvent());
+            });
+
             _backButton = root.Q<Button>("back-btn");
             _backButton.OnClick(() =>
             {
@@ -167,6 +178,12 @@ namespace GridBattle.UI.Screens
             Refresh();
         }
 
+        private void OnMonetizationChanged(MonetizationChangedEvent e)
+        {
+            if (_removeAdsButton != null)
+                _removeAdsButton.SetDisplayed(MonetizationService.CanOfferRemoveAds);
+        }
+
         private void BindClass(VisualElement root, string buttonName, ECharacter character)
         {
             var button = root.Q<Button>(buttonName);
@@ -193,6 +210,8 @@ namespace GridBattle.UI.Screens
             _continueButton.text = HudText.Get("menu.continue");
             _glossaryButton.text = HudText.Get("menu.glossary");
             _optionsButton.text = HudText.Get("menu.options");
+            _removeAdsButton.text = HudText.Get("menu.remove_ads");
+            _removeAdsButton.SetDisplayed(MonetizationService.CanOfferRemoveAds);
             _backButton.text = HudText.Get("menu.back");
 
             var runs = RunManager.Instance;

@@ -85,6 +85,18 @@ está em [[guia_sistemas]].
   continua selecionando.
 - **Mira livre:** toda skill pode ser mirada em qualquer célula do alcance
   que ela vê, e o destaque cobre todo o alcance, não só os inimigos.
+- **Visual das skills e itens (protótipo):** cada skill, e também a Bomba,
+  mostra o que faz no tabuleiro:
+  - um gesto de quem usa (investida ou brilho);
+  - um projétil, quando existe (bola de fogo, adaga, bomba, gancho);
+  - um efeito curto em cada célula da área, numa ordem que desenha a forma
+    (onda a partir do centro, linha que se afasta, corte que varre).
+
+  O número de dano, a reação, a morte e os orbs de XP esperam o golpe chegar
+  na célula. A arte é provisória, desenhada por código. Ela cabe num quadrado
+  da largura da célula, então serve para linhas e colunas sem desenhar duas
+  vezes. É só aparência: o simulador e a partida de referência deram
+  resultados idênticos.
 - **Manutenção sem mudar o jogo:**
   - um ponto único para "o jogador atual" e "o grid", no lugar de 19
     buscas espalhadas pela cena;
@@ -96,6 +108,62 @@ está em [[guia_sistemas]].
 - **Simulador:** mostra o tabuleiro e a HUD enquanto roda (antes ficava a
   tela "toque para jogar" por cima), e não trava mais em "starting" se algo
   der errado no começo.
+
+### Área de seleção das skills (2026-10-12)
+
+Pedido seu: além da área de efeito, cada skill tem uma **área de seleção** (onde pode ser mirada), como no
+Dofus:
+- **forma:** círculo, linha (cruz), diagonal, estrela ou quadrado;
+- **alcance mínimo e máximo**;
+- **alcance modificável ou fixo**;
+- **casa alvo:** qualquer, vazia ou com personagem.
+
+Configuração:
+- **Guerreiro:** mira em cruz, como o Iop (Golpe e Golpe de Escudo em linha, alcance 1 fixo; Investida com
+  Escudo em linha, 1-2).
+- **Mago:** círculos de 1-3; a Nova de Gelo continua podendo ser centrada no Mago.
+- **Ladino:** linhas (Adaga Envenenada, Linha Venenosa, Gancho de 2-4), estrela na Adaga de Arremesso e
+  círculo na Bomba de Fumaça.
+
+O destaque de mira, a IA e a janela de detalhes ("Alcance: 1-3, em linha") seguem a configuração. Tudo é
+mudado no asset de cada skill.
+
+### Monetização (2026-10-12)
+
+Implementação da seção 7 do GDD, com as suas decisões: Android e iOS, cobrança pela Google Play e pela App
+Store, privacidade só com a estrutura pronta, e as três melhorias (aviso antes do anúncio, oferta depois do
+anúncio e botão no menu principal).
+
+- **Anúncio forçado:**
+  - **Quando:** ao voltar ao mapa depois de uma batalha ou de um nó sem luta, e na tela de fim de run.
+  - **Nunca:** na batalha.
+  - **Aviso:** "Pausa para anúncio — começa em 3..." antes de cada um.
+  - **Frequência:**
+    - nenhum nas 10 primeiras pausas;
+    - os 3 primeiros a cada 6 pausas;
+    - depois a cada 4;
+    - pelo menos 3 minutos entre dois.
+- **Anúncio recompensado** (sua decisão, no lugar da recarga): trocar, banir ou pular mostra antes um
+  anúncio. O uso só acontece se ele for assistido até o fim e conta no limite da run como sempre. Sem
+  anúncio disponível, a ferramenta funciona mesmo assim.
+- **Remover anúncios:**
+  - **Onde:** menu principal, Opções e tela de derrota, além de abrir sozinha a cada 3 anúncios (1 vez por
+    sessão).
+  - **O que dá:** os anúncios forçados acabam e as ferramentas deixam de mostrar anúncio, com o **mesmo
+    limite** de quem assiste.
+  - **Restaurar compras:** botão para trocar de aparelho ou reinstalar.
+- **No PC** não há anúncios nem loja, e as ferramentas funcionam sem anúncio.
+- **Resetar o jogo:** em build de desenvolvimento e no Editor, *Opções > Desenvolvimento > Resetar o jogo* apaga
+  a run, o perfil (com a compra), os contadores de anúncios e as métricas, e volta ao menu.
+- **No Editor**, anúncio e loja são de teste (tela preta "Anúncio de teste"). Os SDKs reais (LevelPlay e
+  Unity IAP) já estão instalados e entram no celular.
+- **Falta você:**
+  - criar o app e os blocos de anúncio no LevelPlay e preencher as chaves;
+  - criar o produto `remove_ads` nas lojas;
+  - criar o perfil de build do iOS;
+  - decidir a tela de consentimento e o ATT.
+
+  O passo a passo está em [[habilitar_anuncios_e_compras]].
 
 ## 4. Balanceamento (pausado em 2026-10-06)
 
@@ -126,6 +194,8 @@ porque o jogo ainda vai mudar. O que falta e como retomar está em
 | Checagens dos talentos | Conferir se talentos, pools, textos e efeitos estão coerentes | `GridBattle > Talents > Run Checks` |
 | Banco de conteúdo | Reconstruir a lista de todos os assets do jogo (acontece sozinho) | `GridBattle > Rebuild Game Database` |
 | Batalha rápida | Testar uma batalha sem passar pelo mapa | objeto `Grid` na cena, botão **Reset grid** |
+| Visuais provisórios | Redesenhar a arte provisória das skills e criar os visuais que faltam | `GridBattle > Vfx > Generate Placeholder Visuals`; ver [[guia_sistemas]] |
+| Monetização | Configurar anúncios e a compra; testar sem loja (marcar a compra, zerar os contadores) | `GridBattle > Monetization`; ver [[monetizacao]] |
 | Repetir uma run | Usar sempre a mesma seed | `Run/RunSettings > Debug Seed` |
 | Navegação da UI ao vivo | Ver telas e modais abertos | `Window > ZS > UI Navigation Debugger` |
 
@@ -148,12 +218,17 @@ porque o jogo ainda vai mudar. O que falta e como retomar está em
 
 - **Fonte pixel com acentos:** a fonte atual só tem letras sem acento
   (decisão de arte).
-- **Conteúdo provisório:** inimigos de exemplo, chefe, talentos e ícones
-  existem para os sistemas funcionarem; substitua pelos definitivos sem
-  mudar código.
+- **Conteúdo provisório:** inimigos de exemplo, chefe, talentos, ícones e
+  visuais das skills existem para os sistemas funcionarem; substitua pelos
+  definitivos sem mudar código.
 - **Áudio:** falta colocar os clipes.
 - **Balanceamento:** pausado; os números atuais são ponto de partida.
-- **Anúncios e compras:** fora do escopo por enquanto.
+- **Monetização:** implementada. Faltam:
+  - as chaves do LevelPlay e o produto nas lojas;
+  - o perfil de build do iOS;
+  - a tela de consentimento e o ATT.
+
+  Ver [[monetizacao]].
 
 ## 8. Cuidados ao testar no Editor
 

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using GridBattle.Gameplay.Entities;
 using GridBattle.Gameplay.Progression;
 using UnityEngine;
 
@@ -16,6 +17,9 @@ namespace GridBattle.Gameplay.Events
     {
         private readonly Action<XpPacket> _collect;
 
+        /// <summary>The enemy that dropped the XP (already logically dead, still on screen for its death effect).</summary>
+        public GridEntity Source { get; }
+
         /// <summary>
         /// World-space position the XP came from.
         /// </summary>
@@ -25,8 +29,10 @@ namespace GridBattle.Gameplay.Events
 
         public bool IsPresented { get; private set; }
 
-        public XpRewardDroppedEvent(Vector3 origin, IReadOnlyList<XpPacket> packets, Action<XpPacket> collect)
+        public XpRewardDroppedEvent(GridEntity source, Vector3 origin, IReadOnlyList<XpPacket> packets,
+            Action<XpPacket> collect)
         {
+            Source = source;
             Origin = origin;
             Packets = packets;
             _collect = collect;

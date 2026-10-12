@@ -187,6 +187,17 @@ namespace GridBattle.Gameplay.Movement
 
         private float Speed => Mathf.Max(0.01f, SpeedMultiplier);
 
+        /// <summary>
+        /// Seconds the entity's next hit reaction will wait (0 when none is queued), without consuming it: the cell
+        /// shows the damage number at the same moment.
+        /// </summary>
+        public float PeekPendingDelay(GridEntity entity)
+        {
+            return entity != null && _pendingHits.TryGetValue(entity, out var pending) && Time.time - pending.Time < 1f
+                ? pending.Delay
+                : 0f;
+        }
+
         private void TakePending(GridEntity entity, out float delay, out Vector3 direction)
         {
             // A pending hit older than a second belongs to an attack that never landed.

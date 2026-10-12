@@ -41,6 +41,8 @@ namespace GridBattle.Gameplay.Consumables
 
             user.RegisterConsumableUse();
             inventory.RemoveAt(slot);
+            if (consumable.Visual != null)
+                grid.PlayActionVisual(consumable.Visual, user, context.TargetPos, context.AreaCells, context.Affected);
             consumable.Execute(context);
 
             EventBus.Raise(new ConsumableUsedEvent(user, consumable, context.TargetPos, context.AreaCells,

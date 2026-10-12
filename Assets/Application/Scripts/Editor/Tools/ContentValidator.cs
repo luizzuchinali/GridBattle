@@ -13,9 +13,11 @@ using GridBattle.Gameplay.Entities;
 using GridBattle.Gameplay.Entities.Roles;
 using GridBattle.Gameplay.Entities.Skills;
 using GridBattle.Gameplay.Map;
+using GridBattle.Gameplay.Monetization;
 using GridBattle.Gameplay.States;
 using GridBattle.Gameplay.Talents;
 using GridBattle.Gameplay.Terrain;
+using GridBattle.UI.Overlays;
 using UnityEditor;
 using UnityEditor.Localization;
 using UnityEngine;
@@ -88,7 +90,10 @@ namespace GridBattle.Editor.Tools
                 CheckTalents(issues, database);
                 CheckEnemyAppearance(issues, database);
                 CheckSettingsPools(issues);
+                CheckSkillSelection(issues, database);
             }
+
+            CheckMonetization(issues);
 
             var checkedViews = CheckViews(issues);
             var checkedKeys = CheckCodeTextKeys(issues);
@@ -345,6 +350,44 @@ namespace GridBattle.Editor.Tools
             var consumables = GameSettings.Get<ConsumableSettings>();
             if (consumables != null && consumables.Pool.Any(c => c == null))
                 Add(issues, ESeverity.Error, "Consumable Settings: the pool has an empty entry.", consumables);
+        }
+
+        /// <summary>A skill whose minimum range passes its maximum cannot be aimed anywhere.</summary>
+        private static void CheckSkillSelection(List<Issue> issues, GameDatabase database)
+        {
+            foreach (var skill in database.GetAll<SkillDefinition>())
+            {
+                if (skill == null || skill.IsSelfCentered || skill.UnlimitedRange) continue;
+                if (skill.MinRange > skill.Range)
+                    Add(issues, ESeverity.Error, $"{Describe(skill)}: the minimum range ({skill.MinRange}) is larger than the maximum ({skill.Range}).", skill);
+            }
+        }
+
+        /// <summary>
+        /// Monetization (GDD 7): the windows are set, and every mobile platform that is on has its LevelPlay App
+        /// Key and ad units and a product id (a note while they are empty: the game then runs without ads there).
+        /// </summary>
+        private static void CheckMonetization(List<Issue> issues)
+        {
+            var modals = GameSettings.Get<ModalsSettings>();
+            if (modals != null && (modals.RemoveAdsView == null || modals.AdNoticeView == null || modals.SimulatedAdView == null))
+                Add(issues, ESeverity.Warning, "Modals Settings: a monetization view (remove ads, ad notice, simulated ad) is empty.", modals);
+
+            var settings = GameSettings.Get<MonetizationSettings>();
+            if (settings == null) return;
+
+            if ((settings.EnabledOnAndroid || settings.EnabledOnIos) && string.IsNullOrEmpty(settings.RemoveAdsProductId))
+                Add(issues, ESeverity.Warning, "Monetization Settings: the remove ads product id is empty (the purchase is off).", settings);
+
+            if (settings.EnabledOnAndroid && (string.IsNullOrEmpty(settings.AndroidAppKey) ||
+                                              string.IsNullOrEmpty(settings.AndroidInterstitialAdUnitId) ||
+                                              string.IsNullOrEmpty(settings.AndroidRewardedAdUnitId)))
+                Add(issues, ESeverity.Note, "Monetization Settings: the Android LevelPlay App Key or ad unit ids are empty (no ads on Android until they are filled).", settings);
+
+            if (settings.EnabledOnIos && (string.IsNullOrEmpty(settings.IosAppKey) ||
+                                          string.IsNullOrEmpty(settings.IosInterstitialAdUnitId) ||
+                                          string.IsNullOrEmpty(settings.IosRewardedAdUnitId)))
+                Add(issues, ESeverity.Note, "Monetization Settings: the iOS LevelPlay App Key or ad unit ids are empty (no ads on iOS until they are filled).", settings);
         }
 
         /// <summary>Every screen, modal and page definition has its UXML and a controller type that exists.</summary>

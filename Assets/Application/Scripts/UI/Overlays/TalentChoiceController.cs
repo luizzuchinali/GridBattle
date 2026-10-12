@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using GridBattle.Core;
 using GridBattle.Gameplay.Events;
+using GridBattle.Gameplay.Monetization;
 using GridBattle.Gameplay.Run;
 using GridBattle.Gameplay.Talents;
 using GridBattle.Managers.Audio;
@@ -18,7 +19,10 @@ namespace GridBattle.UI.Overlays
     /// a talent node is entered, while the game is paused by the talent session. Shows the level (or "Talent
     /// node"), one card per option (icon, name, rank, description and a "new skill" badge; the "fits your build"
     /// badge only with <see cref="ModalsSettings.ShowBuildMatchOnCards"/>) and the tools with the uses left:
-    /// reroll, ban (a mode: tap Ban, then the card to ban; tap Ban again to cancel) and skip (after a confirmation). Every answer goes through <see cref="TalentService"/>; the window only
+    /// reroll, ban (a mode: tap Ban, then the card to ban; tap Ban again to cancel) and skip (after a confirmation),
+    /// Each use of a tool first shows a rewarded ad and happens only when it is watched to the end (GDD 7, user
+    /// decision 2026-10-12; free after the remove ads purchase and without ads); a line under the tools says so.
+    /// Every answer goes through <see cref="TalentService"/>; the window only
     /// redraws from the talent events. It cannot be closed by the back action or the backdrop: it closes when the
     /// last pending offer is resolved, after a short acquisition effect (visual only, the game resumes at once).
     /// </summary>
@@ -39,6 +43,7 @@ namespace GridBattle.UI.Overlays
         private TalentOffer _pendingOffer;
         private bool _banMode;
         private bool _askingSkip;
+        private bool _payingTool;
         private bool _resolved;
         private bool _exited;
         private int _chosenIndex = -1;
@@ -53,6 +58,7 @@ namespace GridBattle.UI.Overlays
         private Button _rerollButton;
         private Button _banButton;
         private Button _skipButton;
+        private Label _toolsHint;
 
         /// <summary>The offer on screen (null when there is none).</summary>
         public TalentOffer Offer => _offer;
@@ -69,6 +75,11 @@ namespace GridBattle.UI.Overlays
         public Button RerollButton => _rerollButton;
         public Button BanButton => _banButton;
         public Button SkipButton => _skipButton;
+        /// <summary>The line under the tools ("each use shows an ad").</summary>
+        public Label ToolsHint => _toolsHint;
+
+        /// <summary>A tool's ad is on screen: the window waits for it.</summary>
+        public bool IsPayingTool => _payingTool;
 
         protected override void OnCreate()
         {
@@ -76,6 +87,7 @@ namespace GridBattle.UI.Overlays
             EventBus.Subscribe<TalentOfferChangedEvent>(OnOfferChanged);
             EventBus.Subscribe<TalentAcquiredEvent>(OnTalentAcquired);
             EventBus.Subscribe<TalentOfferResolvedEvent>(OnOfferResolved);
+            EventBus.Subscribe<MonetizationChangedEvent>(OnMonetizationChanged);
             Loc.LocaleChanged += OnLocaleChanged;
         }
 
@@ -85,6 +97,7 @@ namespace GridBattle.UI.Overlays
             EventBus.Unsubscribe<TalentOfferChangedEvent>(OnOfferChanged);
             EventBus.Unsubscribe<TalentAcquiredEvent>(OnTalentAcquired);
             EventBus.Unsubscribe<TalentOfferResolvedEvent>(OnOfferResolved);
+            EventBus.Unsubscribe<MonetizationChangedEvent>(OnMonetizationChanged);
             Loc.LocaleChanged -= OnLocaleChanged;
             CancelScheduled();
         }
@@ -100,6 +113,7 @@ namespace GridBattle.UI.Overlays
             _rerollButton = root.Q<Button>("talent-reroll-button");
             _banButton = root.Q<Button>("talent-ban-button");
             _skipButton = root.Q<Button>("talent-skip-button");
+            _toolsHint = root.Q<Label>("talent-tools-hint");
 
             _rerollButton.OnClick(OnRerollClicked);
             _banButton.OnClick(OnBanClicked);
@@ -118,6 +132,7 @@ namespace GridBattle.UI.Overlays
             _resolved = false;
             _banMode = false;
             _askingSkip = false;
+            _payingTool = false;
             _chosenIndex = -1;
 
             // The service always holds the latest version of the open offer (the event's may be stale).
@@ -437,7 +452,8 @@ namespace GridBattle.UI.Overlays
             var rerolls = _offer != null ? _offer.RerollsLeft : 0;
             var bans = _offer != null ? _offer.BansLeft : 0;
             var skips = _offer != null ? _offer.SkipsLeft : 0;
-            var live = _offer != null && !_resolved;
+            var adMode = MonetizationService.TalentToolAdMode;
+            var live = _offer != null && !_resolved && !_payingTool && adMode != ETalentToolAdMode.Unavailable;
 
             _rerollButton.text = HudText.Format("talent.reroll", rerolls);
             _rerollButton.SetEnabled(live && _offer.CanReroll && !_banMode);
@@ -448,6 +464,11 @@ namespace GridBattle.UI.Overlays
 
             _skipButton.text = HudText.Format("talent.skip", skips);
             _skipButton.SetEnabled(live && _offer.CanSkip && !_banMode);
+
+            _toolsHint.text = adMode == ETalentToolAdMode.Unavailable
+                ? HudText.Get("talent.tools_ad_unavailable")
+                : HudText.Get("talent.tools_ad_hint");
+            _toolsHint.SetDisplayed(adMode == ETalentToolAdMode.Ad || adMode == ETalentToolAdMode.Unavailable);
         }
 
         private void SetBanMode(bool on)
@@ -462,7 +483,36 @@ namespace GridBattle.UI.Overlays
 
         // ------------------------------------------------------------------------------------ input
 
-        private bool CanAct => _offer != null && !_resolved && !_askingSkip && !_exited;
+        private bool CanAct => _offer != null && !_resolved && !_askingSkip && !_payingTool && !_exited;
+
+        /// <summary>
+        /// Pays for one use of a tool (GDD 7): the rewarded ad plays first unless the tools are free. True when the
+        /// use may happen now; the window is still on the same offer.
+        /// </summary>
+        private async Awaitable<bool> PayForToolAsync()
+        {
+            _payingTool = true;
+            RefreshTools();
+            bool paid;
+            try
+            {
+                paid = await MonetizationService.PayForTalentToolAsync();
+            }
+            finally
+            {
+                _payingTool = false;
+                if (!_exited)
+                    RefreshTools();
+            }
+
+            return paid && !_exited && !_resolved && _offer != null;
+        }
+
+        private void OnMonetizationChanged(MonetizationChangedEvent e)
+        {
+            if (!_exited)
+                RefreshTools();
+        }
 
         private void OnCardClicked(int index)
         {
@@ -471,10 +521,7 @@ namespace GridBattle.UI.Overlays
             AudioManager.Play(ESfx.ButtonTap);
             if (_banMode)
             {
-                // The ban redraws the offer (TalentOfferChangedEvent); if it fails the mode just ends.
-                var banned = TalentService.Ban(index);
-                if (!banned)
-                    SetBanMode(false);
+                BanAfterAd(index);
                 return;
             }
 
@@ -483,12 +530,20 @@ namespace GridBattle.UI.Overlays
                 _chosenIndex = -1;
         }
 
-        private void OnRerollClicked()
+        /// <summary>The ban redraws the offer (TalentOfferChangedEvent); if the ad or the ban fails the mode just ends.</summary>
+        private async void BanAfterAd(int index)
+        {
+            if (!await PayForToolAsync() || !TalentService.Ban(index))
+                SetBanMode(false);
+        }
+
+        private async void OnRerollClicked()
         {
             if (!CanAct || !_offer.CanReroll || _banMode) return;
 
             AudioManager.Play(ESfx.ButtonTap);
-            TalentService.Reroll();
+            if (await PayForToolAsync())
+                TalentService.Reroll();
         }
 
         private void OnBanClicked()
@@ -523,7 +578,8 @@ namespace GridBattle.UI.Overlays
                 if (!confirmed || _exited || _resolved || _offer == null) return;
             }
 
-            TalentService.Skip();
+            if (await PayForToolAsync())
+                TalentService.Skip();
         }
     }
 }

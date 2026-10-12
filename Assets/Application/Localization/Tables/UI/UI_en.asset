@@ -682,6 +682,188 @@ MonoBehaviour:
     m_Localized: Sweep
     m_Metadata:
       m_Items: []
+  - m_Id: 2830511800918016
+    m_Localized: Ad break
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2830511880609792
+    m_Localized: Starting in {0}...
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2830511880609793
+    m_Localized: You can remove ads in the Options.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2830511880609794
+    m_Localized: TEST AD
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2830511880609795
+    m_Localized: Forced ad
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2830511880609796
+    m_Localized: Rewarded ad
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2830511880609797
+    m_Localized: '{0}s'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2830511880609798
+    m_Localized: Simulated in the Editor. On a phone the ad comes from LevelPlay.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2830511880609799
+    m_Localized: Close
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2830511880609800
+    m_Localized: Remove ads
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2830511880609801
+    m_Localized: '- No more ads between nodes.
+
+      - Reroll, ban and skip without watching an ad (the same limit per run for everyone).'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2830511880609802
+    m_Localized: Thank you for supporting the game!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2830511880609803
+    m_Localized: Buy for {0}
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2830511880609804
+    m_Localized: Buy
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2830511880609805
+    m_Localized: Restore purchases
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2830511880609806
+    m_Localized: Connecting to the store...
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2830511880609807
+    m_Localized: The store is not available right now.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2830511880609808
+    m_Localized: Waiting for the store...
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2830511880609809
+    m_Localized: The purchase is waiting for approval.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2830511880609810
+    m_Localized: Ads removed.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2830511880609811
+    m_Localized: The purchase did not go through.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2830511880609812
+    m_Localized: Purchase cancelled.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2830511880609813
+    m_Localized: Purchase restored.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2830511880609814
+    m_Localized: No purchase to restore.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2830511880609815
+    m_Localized: Could not restore the purchases.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2830511880609816
+    m_Localized: Remove ads
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2830511880609817
+    m_Localized: Ads
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2830511880609818
+    m_Localized: Remove ads
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2830511880609819
+    m_Localized: Ads removed
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2836121330196480
+    m_Localized: Development
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2836121414082560
+    m_Localized: Reset the game
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2836121414082561
+    m_Localized: Reset the game?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2836121414082562
+    m_Localized: Erases the run in progress, the profile (classes, glossary, records, tips, options), the remove ads purchase on this device and the metrics. It cannot be undone.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2836121414082563
+    m_Localized: Reset
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2837351943184384
+    m_Localized: Each reroll, ban or skip shows an ad.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2837352010293248
+    m_Localized: 'Ad unavailable: the tools are waiting for an ad.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2839385073328128
+    m_Localized: '{0}-{1}'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2839385153019904
+    m_Localized: '{0}, {1}'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2839385153019905
+    m_Localized: in line
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2839385153019906
+    m_Localized: diagonal
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2839385153019907
+    m_Localized: line and diagonal
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2839385153019908
+    m_Localized: square
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2839385153019909
+    m_Localized: Target
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2839385153019910
+    m_Localized: Empty cell
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2839385153019911
+    m_Localized: A character
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

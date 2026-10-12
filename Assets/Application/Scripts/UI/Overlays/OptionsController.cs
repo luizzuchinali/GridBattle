@@ -1,6 +1,10 @@
 using GridBattle.Core;
+using GridBattle.Gameplay.Events;
 using GridBattle.Gameplay.Meta;
+using GridBattle.Gameplay.Monetization;
+using GridBattle.Managers;
 using GridBattle.Managers.Audio;
+using GridBattle.UI.Events;
 using GridBattle.UI.Hud;
 using UnityEngine;
 using UnityEngine.Scripting;
@@ -13,7 +17,10 @@ namespace GridBattle.UI.Overlays
     /// <summary>
     /// Options (interface 4.3, GDD 5.2 and 8.1): language (automatic, English, Spanish, Brazilian Portuguese), music
     /// and effects volume, and the tutorial tips (on/off when <see cref="MetaSettings.AllowDisablingTips"/> allows
-    /// it, plus "show tips again"). Everything goes through <see cref="ProfileService"/>: the language applies at
+    /// it, plus "show tips again") and, where the store sells it, the remove ads purchase (GDD 7: the button opens
+    /// its window; after the purchase it only says the ads are removed). Development builds also get "Reset the
+    /// game" (<see cref="GameReset"/>, after a confirmation). Everything goes through
+    /// <see cref="ProfileService"/>: the language applies at
     /// once and every open view redraws from <see cref="Loc.LocaleChanged"/>; a volume is applied while the
     /// slider is dragged and written to the profile when it is released (or when the window closes). Opened by
     /// the flow on <c>OptionsRequestedEvent</c>; closes with its X button or the back action.
@@ -40,6 +47,11 @@ namespace GridBattle.UI.Overlays
         private Slider _sfxSlider;
         private Button _tipsToggle;
         private Button _tipsReset;
+        private Label _adsLabel;
+        private Button _removeAdsButton;
+        private Label _devLabel;
+        private Button _resetButton;
+        private bool _confirmingReset;
         private readonly Button[] _languageButtons = new Button[4];
         private bool _musicDirty;
         private bool _sfxDirty;
@@ -48,6 +60,8 @@ namespace GridBattle.UI.Overlays
         public Slider SfxSlider => _sfxSlider;
         public Button TipsToggle => _tipsToggle;
         public Button TipsResetButton => _tipsReset;
+        public Button RemoveAdsButton => _removeAdsButton;
+        public Button ResetButton => _resetButton;
 
         /// <summary>Button of a language: 0 = automatic, 1 = English, 2 = Spanish, 3 = Brazilian Portuguese.</summary>
         public Button GetLanguageButton(int index) => _languageButtons[index];
@@ -55,11 +69,13 @@ namespace GridBattle.UI.Overlays
         protected override void OnCreate()
         {
             Loc.LocaleChanged += Render;
+            EventBus.Subscribe<MonetizationChangedEvent>(OnMonetizationChanged);
         }
 
         protected override void OnDestroy()
         {
             Loc.LocaleChanged -= Render;
+            EventBus.Unsubscribe<MonetizationChangedEvent>(OnMonetizationChanged);
             CommitVolumes();
         }
 
@@ -93,6 +109,12 @@ namespace GridBattle.UI.Overlays
 
             _tipsToggle.OnClick(OnTipsToggleClicked);
             _tipsReset.OnClick(OnTipsResetClicked);
+            _adsLabel = root.Q<Label>("options-ads-label");
+            _removeAdsButton = root.Q<Button>("options-remove-ads-button");
+            _removeAdsButton.OnClick(OnRemoveAdsClicked);
+            _devLabel = root.Q<Label>("options-dev-label");
+            _resetButton = root.Q<Button>("options-reset-button");
+            _resetButton.OnClick(OnResetClicked);
             root.Q<Button>("options-close-button").OnClick(OnCloseClicked);
 
             // The dim background swallows every pointer event: nothing behind the window reacts.
@@ -234,6 +256,57 @@ namespace GridBattle.UI.Overlays
             _tipsToggle.EnableInClassList(ActiveClass, ProfileService.TipsEnabled);
             _tipsReset.text = HudText.Get("options.tips_reset");
             _tipsReset.SetEnabled(ProfileService.State.TipsSeen.Count > 0);
+
+            var store = MonetizationService.StoreSupported || MonetizationService.AdsRemoved;
+            _adsLabel.SetDisplayed(store);
+            _removeAdsButton.SetDisplayed(store);
+            _adsLabel.text = HudText.Get("options.ads");
+            _removeAdsButton.text = MonetizationService.AdsRemoved
+                ? HudText.Get("options.ads_removed")
+                : HudText.Get("options.remove_ads");
+            _removeAdsButton.SetEnabled(!MonetizationService.AdsRemoved);
+
+            _devLabel.SetDisplayed(GameReset.IsAvailable);
+            _resetButton.SetDisplayed(GameReset.IsAvailable);
+            _devLabel.text = HudText.Get("options.dev");
+            _resetButton.text = HudText.Get("options.reset_game");
+        }
+
+        /// <summary>Development builds: erases everything after a confirmation (it cannot be undone).</summary>
+        private async void OnResetClicked()
+        {
+            var view = ModalsSettings.Current.ConfirmView;
+            if (!GameReset.IsAvailable || _confirmingReset || view == null) return;
+
+            AudioManager.Play(ESfx.ButtonTap);
+            _confirmingReset = true;
+            bool confirmed;
+            try
+            {
+                var request = new ConfirmRequest(HudText.Get("reset.title"), HudText.Get("reset.message"),
+                    HudText.Get("reset.confirm"));
+                confirmed = await Context.Navigator.ShowModal<bool>(view, request);
+            }
+            finally
+            {
+                _confirmingReset = false;
+            }
+
+            if (!confirmed) return;
+
+            GameReset.ResetEverything();
+            Render();
+        }
+
+        private void OnRemoveAdsClicked()
+        {
+            AudioManager.Play(ESfx.ButtonTap);
+            EventBus.Raise(new RemoveAdsRequestedEvent());
+        }
+
+        private void OnMonetizationChanged(MonetizationChangedEvent e)
+        {
+            Render();
         }
 
         private static string FormatPercent(float value) => Mathf.RoundToInt(value * 100f) + "%";

@@ -12,5 +12,6 @@
         </ui:VisualElement>
         <ui:ScrollView name="summary-scroll" class="slim-scroll run-summary__scroll" mode="Vertical" horizontal-scroller-visibility="Hidden" vertical-scroller-visibility="Auto" touch-scroll-type="Clamped"/>
         <ui:Button name="summary-menu-button" text="Main menu" class="text-button"/>
+        <ui:Button name="summary-remove-ads-button" text="Remove ads" class="text-button"/>
     </zs:SafeArea>
 </ui:UXML>

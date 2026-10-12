@@ -1,0 +1,12 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:zs="ZS.UI" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/Application/UI/Overlays/AdNotice/AdNotice.uss?fileID=7433441132597879392&amp;guid=9bc712b8a1194170bbcc8aabe2f670dd&amp;type=3#AdNotice"/>
+    <zs:SafeArea name="container" picking-mode="Ignore" class="container overlay-screen">
+        <ui:VisualElement name="overlay-background">
+            <ui:VisualElement name="ad-notice-window" class="window-frame">
+                <ui:Label name="ad-notice-title" text="Ad break" picking-mode="Ignore"/>
+                <ui:Label name="ad-notice-countdown" text="Starting in 3..." picking-mode="Ignore"/>
+                <ui:Label name="ad-notice-hint" text="Remove ads in the Options." picking-mode="Ignore"/>
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </zs:SafeArea>
+</ui:UXML>

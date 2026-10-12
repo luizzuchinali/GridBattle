@@ -682,6 +682,186 @@ MonoBehaviour:
     m_Localized: Varredura
     m_Metadata:
       m_Items: []
+  - m_Id: 2830511800918016
+    m_Localized: "Pausa para an\xFAncio"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2830511880609792
+    m_Localized: "Come\xE7a em {0}..."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2830511880609793
+    m_Localized: "Voc\xEA pode remover os an\xFAncios nas Op\xE7\xF5es."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2830511880609794
+    m_Localized: "AN\xDANCIO DE TESTE"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2830511880609795
+    m_Localized: "An\xFAncio obrigat\xF3rio"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2830511880609796
+    m_Localized: "An\xFAncio com recompensa"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2830511880609797
+    m_Localized: '{0}s'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2830511880609798
+    m_Localized: "Simulado no Editor. No celular o an\xFAncio vem do LevelPlay."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2830511880609799
+    m_Localized: Fechar
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2830511880609800
+    m_Localized: "Remover an\xFAncios"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2830511880609801
+    m_Localized: "- Sem an\xFAncios entre os n\xF3s.\n- Troque, bana e pule sem assistir a an\xFAncios (o mesmo limite por run para todos)."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2830511880609802
+    m_Localized: Obrigado por apoiar o jogo!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2830511880609803
+    m_Localized: Comprar por {0}
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2830511880609804
+    m_Localized: Comprar
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2830511880609805
+    m_Localized: Restaurar compras
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2830511880609806
+    m_Localized: "Conectando \xE0 loja..."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2830511880609807
+    m_Localized: "A loja n\xE3o est\xE1 dispon\xEDvel agora."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2830511880609808
+    m_Localized: Aguardando a loja...
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2830511880609809
+    m_Localized: "A compra est\xE1 aguardando aprova\xE7\xE3o."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2830511880609810
+    m_Localized: "An\xFAncios removidos."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2830511880609811
+    m_Localized: "A compra n\xE3o foi conclu\xEDda."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2830511880609812
+    m_Localized: Compra cancelada.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2830511880609813
+    m_Localized: Compra restaurada.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2830511880609814
+    m_Localized: Nenhuma compra para restaurar.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2830511880609815
+    m_Localized: "N\xE3o foi poss\xEDvel restaurar as compras."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2830511880609816
+    m_Localized: "Remover an\xFAncios"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2830511880609817
+    m_Localized: "An\xFAncios"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2830511880609818
+    m_Localized: "Remover an\xFAncios"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2830511880609819
+    m_Localized: "An\xFAncios removidos"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2836121330196480
+    m_Localized: Desenvolvimento
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2836121414082560
+    m_Localized: Resetar o jogo
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2836121414082561
+    m_Localized: Resetar o jogo?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2836121414082562
+    m_Localized: "Apaga a run em andamento, o perfil (classes, gloss\xE1rio, recordes, dicas, op\xE7\xF5es), a remo\xE7\xE3o de an\xFAncios neste aparelho e as m\xE9tricas. N\xE3o d\xE1 para desfazer."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2836121414082563
+    m_Localized: Resetar
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2837351943184384
+    m_Localized: "Cada troca, banimento ou pulo mostra um an\xFAncio."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2837352010293248
+    m_Localized: "An\xFAncio indispon\xEDvel: as ferramentas aguardam um an\xFAncio."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2839385073328128
+    m_Localized: '{0}-{1}'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2839385153019904
+    m_Localized: '{0}, {1}'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2839385153019905
+    m_Localized: em linha
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2839385153019906
+    m_Localized: na diagonal
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2839385153019907
+    m_Localized: linha e diagonal
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2839385153019908
+    m_Localized: em quadrado
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2839385153019909
+    m_Localized: Alvo
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2839385153019910
+    m_Localized: Casa vazia
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2839385153019911
+    m_Localized: Um personagem
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

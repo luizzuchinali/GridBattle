@@ -8,7 +8,8 @@ status: concluído
 # Plano de implementação do GDD
 
 Implementação do [[GDD]] e dos documentos de `docs/design/`. **Não usa nada de
-`docs/propostas/`.** Monetização (anúncios e compra) fica fora por enquanto.
+`docs/propostas/`.** Monetização (anúncios e compra) ficou fora deste plano; foi implementada depois, em
+2026-10-12 (ver [[monetizacao]]).
 
 Regras gerais:
 
@@ -110,7 +111,7 @@ documentos de design são atualizados.
   - fonte pixel com acentos (decisão de arte);
   - conteúdo provisório (inimigos de exemplo, chefe, talentos, ícones);
   - clipes de áudio;
-  - monetização (fora do escopo);
+  - monetização (fora do escopo deste plano; implementada em 2026-10-12, ver [[monetizacao]]);
   - o ajuste final do balanceamento.
 - Nada foi commitado (pedido do usuário).
 

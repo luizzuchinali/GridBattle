@@ -36,12 +36,17 @@ MonoBehaviour:
   damage: 10
   areaShape: 0
   areaSize: 3
+  selectionShape: 0
+  minRange: 1
   range: 3
+  rangeModifiable: 1
   unlimitedRange: 0
+  targetCell: 0
   affects: 0
   requiresAffectedTarget: 0
   ignoresLineOfSight: 0
   cooldown: 3
+  visual: {fileID: 11400000, guid: 86ac907ee200f4a4d840844969aa0bbf, type: 2}
   effects: []
   references:
     version: 2

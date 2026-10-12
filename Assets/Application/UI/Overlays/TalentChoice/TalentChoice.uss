@@ -180,3 +180,14 @@
     padding: 0 2px;
     font-size: var(--font-size-hud);
 }
+
+/* Under the tools (GDD 7): each use shows a rewarded ad first; hidden when the tools are free. */
+#talent-tools-hint {
+    flex-shrink: 0;
+    margin: 2px 0 0 0;
+    padding: 0;
+    font-size: var(--font-size-hud);
+    color: var(--color-text-dim);
+    white-space: normal;
+    -unity-text-align: middle-center;
+}

@@ -3,7 +3,9 @@ using GridBattle.Core;
 using GridBattle.Data;
 using GridBattle.Gameplay.Entities;
 using GridBattle.Gameplay.Entities.Skills;
+using GridBattle.Gameplay.Events;
 using GridBattle.Gameplay.Meta;
+using GridBattle.Gameplay.Monetization;
 using GridBattle.Gameplay.Run;
 using GridBattle.Managers;
 using GridBattle.Managers.Audio;
@@ -11,6 +13,7 @@ using GridBattle.UI.Events;
 using GridBattle.UI.Hud;
 using UnityEngine;
 using UnityEngine.UIElements;
+using ZS.UI;
 using ZS.UI.Navigation;
 
 namespace GridBattle.UI.Screens
@@ -33,6 +36,7 @@ namespace GridBattle.UI.Screens
         private Label _classLevel;
         private ScrollView _scroll;
         private Button _menuButton;
+        private Button _removeAdsButton;
 
         /// <summary>The summary shown (null until the screen is entered).</summary>
         public RunSummary Summary => _summary;
@@ -52,11 +56,26 @@ namespace GridBattle.UI.Screens
         protected override void OnCreate()
         {
             Loc.LocaleChanged += Render;
+            EventBus.Subscribe<MonetizationChangedEvent>(OnMonetizationChanged);
         }
 
         protected override void OnDestroy()
         {
             Loc.LocaleChanged -= Render;
+            EventBus.Unsubscribe<MonetizationChangedEvent>(OnMonetizationChanged);
+        }
+
+        private void OnMonetizationChanged(MonetizationChangedEvent e)
+        {
+            RefreshRemoveAds();
+        }
+
+        private void RefreshRemoveAds()
+        {
+            if (_removeAdsButton == null) return;
+
+            _removeAdsButton.text = HudText.Get("menu.remove_ads");
+            _removeAdsButton.SetDisplayed(MonetizationService.CanOfferRemoveAds);
         }
 
         protected override void OnBind(VisualElement root)
@@ -73,6 +92,14 @@ namespace GridBattle.UI.Screens
             {
                 AudioManager.Play(ESfx.ButtonTap);
                 EventBus.Raise(new MainMenuRequestedEvent());
+            });
+
+            // Only the defeat screen has it (GDD 7: the remove ads offer at the end of a run).
+            _removeAdsButton = root.Q<Button>("summary-remove-ads-button");
+            _removeAdsButton?.OnClick(() =>
+            {
+                AudioManager.Play(ESfx.ButtonTap);
+                EventBus.Raise(new RemoveAdsRequestedEvent());
             });
 
             Render();
@@ -98,6 +125,7 @@ namespace GridBattle.UI.Screens
 
         private void Render()
         {
+            RefreshRemoveAds();
             if (_title == null) return;
 
             var summary = _summary;

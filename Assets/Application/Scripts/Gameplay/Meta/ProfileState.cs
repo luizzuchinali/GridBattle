@@ -47,6 +47,9 @@ namespace GridBattle.Gameplay.Meta
         public List<string> TipsSeen = new();
 
         public OptionsState Options = new();
+
+        /// <summary>Forced ads and the remove ads purchase (GDD 7).</summary>
+        public MonetizationProfileState Monetization = new();
     }
 
     /// <summary>Results of the player with one class (GDD 2.2).</summary>
@@ -95,5 +98,25 @@ namespace GridBattle.Gameplay.Meta
 
         /// <summary>Whether contextual tutorial tips are shown.</summary>
         public bool TipsEnabled = true;
+    }
+
+    /// <summary>
+    /// What monetization remembers about the player (GDD 7): the remove ads purchase (a local copy of the store
+    /// entitlement, checked again with the store at startup) and the counters of the forced ad frequency ramp.
+    /// </summary>
+    [Serializable]
+    public sealed class MonetizationProfileState
+    {
+        /// <summary>The remove ads purchase was made (no forced ads, and the talent tools need no ad).</summary>
+        public bool AdsRemoved;
+
+        /// <summary>Pauses of the run counted in total (nodes completed and runs ended), for the grace period.</summary>
+        public int PausesCounted;
+
+        /// <summary>Pauses counted since the last forced ad.</summary>
+        public int PausesSinceForcedAd;
+
+        /// <summary>Forced ads shown in total (the first ones use the early, lower frequency).</summary>
+        public int ForcedAdsShown;
     }
 }

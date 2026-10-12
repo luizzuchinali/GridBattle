@@ -568,11 +568,40 @@ Uma skill tem:
 | Dano | dano fixo a cada afetado, antes da escala do atacante, do bônus de skills, do crítico e da defesa |
 | Forma da área | `Circle`, `Cross`, `Linear`, `Cone`, `Arc` ou `Perpendicular` |
 | Tamanho da área | ímpar, de 1 a 9 |
-| Alcance | distância (Manhattan) do lançador à célula alvo, mais o atributo Alcance de skills; 0 = centrada no próprio lançador; ou ilimitado (qualquer célula) |
+| Área de seleção | onde a skill pode ser mirada (`ESkillSelectionShape`, como no Dofus): `Circle` (todas as casas no alcance, um losango pela métrica de alcance de skill), `Line` (só a linha e a coluna do lançador, em cruz), `Diagonal`, `Star` (linha e diagonal) ou `Square`; a distância é contada ao longo da forma |
+| Alcance mínimo e máximo | `minRange` (0 = a própria casa também) e `range`; o máximo soma o atributo Alcance de skills quando `rangeModifiable` está ligado; `range` 0 = centrada no próprio lançador; ou ilimitado (sem máximo; a forma e o mínimo continuam valendo) |
+| Célula alvo | qualquer casa, casa vazia ou casa com personagem vivo (`ESkillTargetCell`) |
 | Afeta | inimigos, aliados, aliados e o próprio, só o próprio ou todos (`ESkillTargetFilter`) |
 | Exige alvo | só pode ser usada se atingir ao menos um personagem (desligue para skills que funcionam em célula vazia) |
 | Cooldown | ações entre usos (0 = sem cooldown) |
 | Efeitos | resultados que não são dano, aplicados depois do dano: aplicar estados, curar, teleportar ou empurrar/puxar (`SkillEffect`) |
+
+Área de seleção (pedido do usuário, 2026-10-12, no estilo do Dofus):
+
+```
+Círculo         Linha (cruz)    Diagonal        Estrela         Quadrado
+. . X . .       . . X . .       X . . . X       X . X . X       X X X X X
+. X X X .       . . X . .       . X . X .       . X X X .       X X X X X
+X X @ X X       X X @ X X       . . @ . .       X X @ X X       X X @ X X
+. X X X .       . . X . .       . X . X .       . X X X .       X X X X X
+. . X . .       . . X . .       X . . . X       X . X . X       X X X X X
+```
+(alcance 2; `@` = quem usa; com alcance mínimo 1, o `@` sai; com mínimo 2, saem também as casas vizinhas)
+
+| Skill | Seleção | Alcance | Por quê |
+|---|---|---|---|
+| Golpe, Golpe de Escudo (Guerreiro) | Linha | 1, fixo | corpo a corpo em cruz, como o Iop |
+| Investida com Escudo (Guerreiro) | Linha | 1-2, fixo | avança em linha reta |
+| Bola de Fogo, Rajada de Vento, Tempestade Elétrica (Mago) | Círculo | 1-3 | não miram a própria casa |
+| Nova de Gelo (Mago) | Círculo | 0-2 | pode ser centrada no próprio Mago |
+| Adaga Envenenada, Linha Venenosa (Ladino) | Linha | 1-4, 1-5 | a área em linha segue a linha mirada |
+| Adaga de Arremesso (Ladino) | Estrela | 1-3 | arremesso em linha ou diagonal |
+| Gancho (Ladino), Gancho do Goblin Arpoador | Linha | 2-4 | puxa em linha; puxar quem já está ao lado não faz nada |
+| Bomba de Fumaça (Ladino) | Círculo | 0-1 | |
+| Onda de Choque (chefe) | centrada no chefe | 0 | |
+
+O destaque de mira, a IA dos inimigos e o bot do simulador seguem a mesma regra; a janela de detalhes
+mostra "Alcance: 1-3, em linha".
 
 As skills de deslocamento (Golpe de Escudo, Rajada de Vento, Gancho, o Gancho do
 Goblin Arpoador e a Onda de Choque do chefe) usam o efeito `Displace`, descrito
@@ -660,7 +689,8 @@ mirada (`SkillTargeting.HasLineOfSight`, regra em `Rules/LineOfSight`):
 
 Uma skill pode ser usada (`SkillTargeting.CanUse`) quando o lançador está vivo,
 nenhum estado impede skills, a skill está pronta (sem cooldown) **e** a célula
-alvo é válida: dentro do grid, no alcance, **em linha de visão** (ver acima),
+alvo é válida: dentro do grid, **na área de seleção** (forma, alcance mínimo e máximo; regras puras em
+`Rules/SkillSelection`), com o conteúdo que a skill pede (casa vazia ou ocupada), **em linha de visão** (ver acima),
 com ao menos um afetado (só se a skill exige: `requiresAffectedTarget`,
 desligado em todas desde 2026-10-12, para a skill poder ser mirada em qualquer
 célula e o destaque cobrir todo o alcance) e aceita pelos efeitos (um

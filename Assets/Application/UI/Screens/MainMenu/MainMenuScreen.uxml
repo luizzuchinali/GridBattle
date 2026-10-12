@@ -25,6 +25,7 @@
                 <ui:Button name="glossary-btn" text="Glossary" class="text-button"/>
                 <ui:Button name="options-btn" text="Options" class="text-button"/>
             </ui:VisualElement>
+            <ui:Button name="remove-ads-btn" text="Remove ads" class="text-button"/>
         </ui:VisualElement>
     </zs:SafeArea>
 </ui:UXML>

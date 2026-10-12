@@ -23,7 +23,8 @@ namespace GridBattle.Core
 
         public static bool Exists(string fileName) => File.Exists(GetPath(fileName));
 
-        public static void Save<T>(string fileName, T data)
+        /// <summary>Writes <paramref name="data"/> atomically. Returns false (and logs) when the file could not be written.</summary>
+        public static bool Save<T>(string fileName, T data)
         {
             var path = GetPath(fileName);
             var temp = path + ".tmp";
@@ -34,10 +35,12 @@ namespace GridBattle.Core
                     File.Replace(temp, path, null);
                 else
                     File.Move(temp, path);
+                return true;
             }
             catch (Exception exception)
             {
                 Debug.LogError($"Failed to save '{fileName}': {exception}");
+                return false;
             }
         }
 

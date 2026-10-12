@@ -832,7 +832,7 @@ namespace GridBattle.Editor.Talents
                 AssertEqual(settings.RoundValue(skill.Damage * holder.Scaling.DamageMultiplier), effective.Damage,
                     $"{skill.name}: damage");
                 AssertEqual(effective.Damage, skill.GetDamageFor(holder), $"{skill.name}: GetDamageFor goes through the resolver");
-                AssertEqual(skill.Range + holder.Stats.GetInt(Gameplay.Stats.EAttribute.SkillRange),
+                AssertEqual(skill.Range + (skill.RangeModifiable ? holder.Stats.GetInt(Gameplay.Stats.EAttribute.SkillRange) : 0),
                     SkillTargeting.GetMaxRange(holder, skill), $"{skill.name}: max range");
             }
 

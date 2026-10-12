@@ -42,6 +42,7 @@ MonoBehaviour:
   requiresAffectedTarget: 0
   ignoresLineOfSight: 0
   cooldown: 3
+  visual: {fileID: 11400000, guid: fcf04db3d83eed546961ef04942491ba, type: 2}
   effects:
   - rid: 8661860384129155158
   references:

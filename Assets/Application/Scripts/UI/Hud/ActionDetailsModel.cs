@@ -62,8 +62,12 @@ namespace GridBattle.UI.Hud
             if (effective.Damage > 0)
                 model.Add(HudText.Get("details.action.damage"), FormatDamage(effective.Damage, owner));
 
-            model.Add(HudText.Get("details.action.range"), FormatRange(effective.IsSelfCentered, effective.UnlimitedRange,
+            model.Add(HudText.Get("details.action.range"), FormatSkillRange(effective,
                 owner != null ? SkillTargeting.GetMaxRange(owner, effective) : effective.Range));
+            if (effective.TargetCell != ESkillTargetCell.Any)
+                model.Add(HudText.Get("details.action.target_cell"), effective.TargetCell == ESkillTargetCell.Empty
+                    ? HudText.Get("details.target_cell.empty")
+                    : HudText.Get("details.target_cell.occupied"));
             model.Add(HudText.Get("details.action.area"), FormatArea(effective.AreaShape, effective.AreaSize));
             model.Add(HudText.Get("details.action.targets"), GetTargetsText(skill.Affects));
 
@@ -135,6 +139,33 @@ namespace GridBattle.UI.Hud
             var value = damage * (1f + owner.Stats.Get(EAttribute.SkillDamageBonus)) *
                         Mathf.Max(0f, 1f + owner.Stats.Get(EAttribute.DamageDealt));
             return CombatResolver.Settings.RoundValue(value).ToString();
+        }
+
+        /// <summary>
+        /// The selection area of a skill: "3", "1–3" with a minimum range, "any cell", plus the shape when it is not
+        /// a circle ("1–3, in line").
+        /// </summary>
+        private static string FormatSkillRange(in EffectiveSkill skill, int maxRange)
+        {
+            if (skill.IsSelfCentered) return HudText.Get("details.action.range_self");
+
+            string distance;
+            if (skill.UnlimitedRange)
+                distance = HudText.Get("details.action.range_any");
+            else if (skill.MinRange > 0 && skill.MinRange < maxRange)
+                distance = HudText.Format("details.action.range_min_max", skill.MinRange, maxRange);
+            else
+                distance = maxRange.ToString();
+
+            var shape = skill.SelectionShape switch
+            {
+                ESkillSelectionShape.Line => HudText.Get("details.selection.line"),
+                ESkillSelectionShape.Diagonal => HudText.Get("details.selection.diagonal"),
+                ESkillSelectionShape.Star => HudText.Get("details.selection.star"),
+                ESkillSelectionShape.Square => HudText.Get("details.selection.square"),
+                _ => null,
+            };
+            return shape == null ? distance : HudText.Format("details.action.range_shape", distance, shape);
         }
 
         private static string FormatRange(bool selfCentered, bool unlimited, int range)

@@ -281,6 +281,24 @@ namespace GridBattle.Gameplay
 
         private void HandleContentHpChanged(DamageReceiveData data)
         {
+            // The bar and the number wait for the impact of the attack or skill that caused them (its lunge or its
+            // visual), like the hit reaction does. Only visual: the HP itself already changed.
+            var grid = _content != null ? GetComponentInParent<GridController>() : null;
+            var delay = grid != null && !SimMode.IsActive ? grid.GetPendingImpactDelay(_content) : 0f;
+            if (delay <= 0f)
+            {
+                ShowHpChange(data);
+                return;
+            }
+
+            LMotion.Create(0f, 1f, delay)
+                .WithOnComplete(() => ShowHpChange(data))
+                .Bind(_ => { })
+                .AddTo(gameObject);
+        }
+
+        private void ShowHpChange(DamageReceiveData data)
+        {
             cellContentHealthBar.UpdateHp(data.CurrentHp, data.MaxHp);
 
             if (data.Damage > 0)

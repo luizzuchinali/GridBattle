@@ -1,0 +1,12 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:zs="ZS.UI" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/Application/UI/Overlays/SimulatedAd/SimulatedAd.uss?fileID=7433441132597879392&amp;guid=7d5f37e496bd4cdcae402f1683d99ccd&amp;type=3#SimulatedAd"/>
+    <zs:SafeArea name="container" class="container overlay-screen simulated-ad">
+        <ui:VisualElement name="simulated-ad-screen">
+            <ui:Label name="simulated-ad-title" text="TEST AD" picking-mode="Ignore"/>
+            <ui:Label name="simulated-ad-kind" text="Forced ad" picking-mode="Ignore"/>
+            <ui:Label name="simulated-ad-countdown" text="3" picking-mode="Ignore"/>
+            <ui:Label name="simulated-ad-note" text="Simulated in the Editor." picking-mode="Ignore"/>
+            <ui:Button name="simulated-ad-close-button" text="Close" class="text-button"/>
+        </ui:VisualElement>
+    </zs:SafeArea>
+</ui:UXML>

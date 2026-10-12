@@ -1,0 +1,40 @@
+/*
+ * Notice before a forced ad (GDD 7): a small window with a countdown; it cannot be closed. The hint about the
+ * remove ads purchase only shows while the purchase can be made.
+ */
+#overlay-background {
+    flex-grow: 1;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+}
+
+#ad-notice-window {
+    width: 170px;
+    align-items: center;
+}
+
+#ad-notice-title {
+    margin: 0 0 4px 0;
+    padding: 0;
+    font-size: var(--font-size-title);
+    color: var(--color-primary);
+    -unity-text-align: middle-center;
+}
+
+#ad-notice-countdown {
+    margin: 0;
+    padding: 0;
+    font-size: var(--font-size-body);
+    color: var(--color-text);
+    -unity-text-align: middle-center;
+}
+
+#ad-notice-hint {
+    margin: 6px 0 0 0;
+    padding: 0;
+    font-size: var(--font-size-hud);
+    color: var(--color-text-dim);
+    white-space: normal;
+    -unity-text-align: middle-center;
+}

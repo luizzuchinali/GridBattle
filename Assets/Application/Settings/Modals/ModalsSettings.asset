@@ -18,6 +18,9 @@ MonoBehaviour:
   optionsView: {fileID: 11400000, guid: 697ea7b369f0e7c4cb3743a9948fe4c8, type: 2}
   tutorialTipView: {fileID: 11400000, guid: 257199499d9fc2b468bff153a068ce06, type: 2}
   characterDetailsView: {fileID: 11400000, guid: 509c4020aa919374da250761fe8ca29d, type: 2}
+  removeAdsView: {fileID: 11400000, guid: d8782b045a9d4ca6b09d0341805de329, type: 2}
+  adNoticeView: {fileID: 11400000, guid: 7838e3af18bd4ada950fb80aed3a89c3, type: 2}
+  simulatedAdView: {fileID: 11400000, guid: 0b90c1e0620849048c7ad85bd74cf241, type: 2}
   confirmSkip: 1
   acquireEffectSeconds: 0.35
   cardStaggerMs: 70

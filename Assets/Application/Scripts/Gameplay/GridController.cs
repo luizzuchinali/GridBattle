@@ -64,6 +64,10 @@ namespace GridBattle.Gameplay
 
         private readonly GridMovementAnimator _movementAnimator = new();
         private readonly GridEffectsAnimator _effectsAnimator = new();
+        private ActionVisualPlayer _visualPlayer;
+
+        /// <summary>Plays the visuals of skills and items (created on first use).</summary>
+        private ActionVisualPlayer VisualPlayer => _visualPlayer ??= new ActionVisualPlayer(this);
         private Cell[,] _cells;
         private TerrainEffects _terrainEffects;
         private int _blockedCellCount;
@@ -88,7 +92,8 @@ namespace GridBattle.Gameplay
         public BattleSpec CurrentBattleSpec => _battleSpec;
 
         /// <summary>Whether any entity is still playing a movement or combat animation.</summary>
-        public bool IsAnimatingMovement => _movementAnimator.IsAnimating || _effectsAnimator.IsAnimating;
+        public bool IsAnimatingMovement =>
+            _movementAnimator.IsAnimating || _effectsAnimator.IsAnimating || (_visualPlayer != null && _visualPlayer.IsAnimating);
 
         /// <summary>Completes when every movement, attack, hit and death animation has finished.</summary>
         public async Awaitable WaitForMovementsAsync(CancellationToken cancellationToken)
@@ -105,6 +110,7 @@ namespace GridBattle.Gameplay
             {
                 _movementAnimator.SpeedMultiplier = value;
                 _effectsAnimator.SpeedMultiplier = value;
+                VisualPlayer.SpeedMultiplier = value;
             }
         }
 
@@ -122,6 +128,20 @@ namespace GridBattle.Gameplay
         }
 
         public void PlayHitAnimation(GridEntity entity) => _effectsAnimator.PlayHit(entity, movementSettings);
+
+        /// <summary>
+        /// Plays the look of a skill or an item (<see cref="ActionVisualDefinition"/>): gesture, projectile and the
+        /// effect on each cell of <paramref name="area"/>. Call before applying the damage, so the hit reactions and
+        /// damage numbers of <paramref name="affected"/> wait for the impact on their cells. Visual only.
+        /// </summary>
+        public void PlayActionVisual(ActionVisualDefinition visual, GridEntity caster, Vector2Int targetPos,
+            IReadOnlyList<Vector2Int> area, IEnumerable<Character> affected)
+        {
+            VisualPlayer.Play(visual, caster, targetPos, area, affected, movementSettings);
+        }
+
+        /// <summary>Seconds the next hit reaction of <paramref name="entity"/> waits for its impact (0 = none queued).</summary>
+        public float GetPendingImpactDelay(GridEntity entity) => _effectsAnimator.PeekPendingDelay(entity);
 
         /// <summary>
         /// Seconds the slide of a pushed or pulled character takes over <paramref name="cells"/> cells at normal speed

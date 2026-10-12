@@ -55,7 +55,7 @@ namespace GridBattle.Gameplay.Progression
             var blocker = holdsTurn ? TurnBlockers.Acquire("XP delivery") : null;
             var pending = packets.Length;
 
-            var drop = new XpRewardDroppedEvent(enemy.transform.position, packets, packet =>
+            var drop = new XpRewardDroppedEvent(enemy, enemy.transform.position, packets, packet =>
             {
                 if (player != null)
                     player.GainXp(packet.Amount);

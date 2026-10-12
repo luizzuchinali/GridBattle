@@ -682,6 +682,186 @@ MonoBehaviour:
     m_Localized: Barrido
     m_Metadata:
       m_Items: []
+  - m_Id: 2830511800918016
+    m_Localized: Pausa publicitaria
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2830511880609792
+    m_Localized: Empieza en {0}...
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2830511880609793
+    m_Localized: Puedes quitar los anuncios en Opciones.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2830511880609794
+    m_Localized: ANUNCIO DE PRUEBA
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2830511880609795
+    m_Localized: Anuncio obligatorio
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2830511880609796
+    m_Localized: Anuncio con recompensa
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2830511880609797
+    m_Localized: '{0}s'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2830511880609798
+    m_Localized: "Simulado en el Editor. En el tel\xE9fono el anuncio viene de LevelPlay."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2830511880609799
+    m_Localized: Cerrar
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2830511880609800
+    m_Localized: Quitar anuncios
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2830511880609801
+    m_Localized: "- Sin anuncios entre los nodos.\n- Repite, veta y omite sin ver anuncios (el mismo l\xEDmite por partida para todos)."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2830511880609802
+    m_Localized: "\xA1Gracias por apoyar el juego!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2830511880609803
+    m_Localized: Comprar por {0}
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2830511880609804
+    m_Localized: Comprar
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2830511880609805
+    m_Localized: Restaurar compras
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2830511880609806
+    m_Localized: Conectando con la tienda...
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2830511880609807
+    m_Localized: "La tienda no est\xE1 disponible ahora."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2830511880609808
+    m_Localized: Esperando a la tienda...
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2830511880609809
+    m_Localized: "La compra espera aprobaci\xF3n."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2830511880609810
+    m_Localized: Anuncios quitados.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2830511880609811
+    m_Localized: "La compra no se complet\xF3."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2830511880609812
+    m_Localized: Compra cancelada.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2830511880609813
+    m_Localized: Compra restaurada.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2830511880609814
+    m_Localized: No hay compras para restaurar.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2830511880609815
+    m_Localized: No se pudieron restaurar las compras.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2830511880609816
+    m_Localized: Quitar anuncios
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2830511880609817
+    m_Localized: Anuncios
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2830511880609818
+    m_Localized: Quitar anuncios
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2830511880609819
+    m_Localized: Anuncios quitados
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2836121330196480
+    m_Localized: Desarrollo
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2836121414082560
+    m_Localized: Reiniciar el juego
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2836121414082561
+    m_Localized: "\xBFReiniciar el juego?"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2836121414082562
+    m_Localized: "Borra la partida en curso, el perfil (clases, glosario, r\xE9cords, consejos, opciones), la compra para quitar anuncios en este dispositivo y las m\xE9tricas. No se puede deshacer."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2836121414082563
+    m_Localized: Reiniciar
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2837351943184384
+    m_Localized: "Cada repetici\xF3n, veto u omisi\xF3n muestra un anuncio."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2837352010293248
+    m_Localized: 'Anuncio no disponible: las herramientas esperan un anuncio.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2839385073328128
+    m_Localized: '{0}-{1}'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2839385153019904
+    m_Localized: '{0}, {1}'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2839385153019905
+    m_Localized: "en l\xEDnea"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2839385153019906
+    m_Localized: en diagonal
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2839385153019907
+    m_Localized: "l\xEDnea y diagonal"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2839385153019908
+    m_Localized: en cuadrado
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2839385153019909
+    m_Localized: Objetivo
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2839385153019910
+    m_Localized: "Casilla vac\xEDa"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2839385153019911
+    m_Localized: Un personaje
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

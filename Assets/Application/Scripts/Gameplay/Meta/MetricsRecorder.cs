@@ -106,6 +106,25 @@ namespace GridBattle.Gameplay.Meta
 
         public static void ClearContext() => Context.Clear();
 
+        /// <summary>Drops the buffered lines and deletes the metrics file and its rotated copy (development reset).</summary>
+        public static void DeleteFiles()
+        {
+            Buffer.Clear();
+            Context.Clear();
+            foreach (var path in new[] { FilePath, SaveSystem.GetPath(RotatedFileName) })
+            {
+                try
+                {
+                    if (File.Exists(path))
+                        File.Delete(path);
+                }
+                catch (Exception exception)
+                {
+                    Debug.LogWarning($"Could not delete '{path}': {exception.Message}");
+                }
+            }
+        }
+
         /// <summary>Writes the buffered lines to the file (rotating it when it grew past the size limit).</summary>
         public static void Flush()
         {

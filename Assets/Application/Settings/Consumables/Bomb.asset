@@ -40,6 +40,7 @@ MonoBehaviour:
   affects: 0
   effects:
   - rid: 8661860369686331455
+  visual: {fileID: 11400000, guid: 6fc2999831a23c0409f1da34c3bcb060, type: 2}
   dropWeight: 2
   showInGlossary: 0
   references:

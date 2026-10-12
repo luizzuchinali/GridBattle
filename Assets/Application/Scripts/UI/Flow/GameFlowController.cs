@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using GridBattle.Gameplay.Events;
 using GridBattle.Gameplay.Meta;
+using GridBattle.Gameplay.Monetization;
 using GridBattle.Gameplay.Run;
 using GridBattle.Gameplay.Simulation;
 using GridBattle.Gameplay.Talents;
@@ -17,8 +18,14 @@ namespace GridBattle.UI.Flow
     /// <summary>
     /// Game-specific screen flow: translates game/UI events into navigation on the UIRoot. Start → main menu →
     /// map → battle (HUD) → map ... → end of run (defeat, given up or victory) → main menu, plus the modals the
-    /// flow opens (pause menu, consumable offer, new-run confirmation, talent choice, glossary, options and the
-    /// contextual tutorial tips).
+    /// flow opens (pause menu, consumable offer, new-run confirmation, talent choice, glossary, options, the
+    /// contextual tutorial tips and the monetization windows of GDD 7: remove ads, the notice before a forced ad
+    /// and the screen of a test ad).
+    /// <para>
+    /// Forced ads: when <see cref="MonetizationService"/> has one pending, it shows on the next safe screen (map,
+    /// end of run, main menu; never the battle) once nothing else is going on: no transition, no modal, no tip or
+    /// offer waiting. The notice comes first, and now and then the remove ads window after the ad.
+    /// </para>
     /// <para>
     /// The run manager has no UI and decides when the run moves on; this class only follows its events. Screen
     /// changes are requests for a <i>target screen</i>: if a transition is running the target waits for it and is
@@ -77,6 +84,9 @@ namespace GridBattle.UI.Flow
         /// <summary>A talent offer opened while the navigator was busy: its window opens as soon as it is idle.</summary>
         private bool _talentOfferPending;
 
+        /// <summary>A forced ad is going on (notice, ad, remove ads offer): tips and waiting modals hold.</summary>
+        private bool _adSequenceRunning;
+
         private Navigator Navigator => _uiRoot != null ? _uiRoot.Navigator : null;
 
         /// <summary>The screen the flow is heading to (or showing), for tests and debugging.</summary>
@@ -112,6 +122,9 @@ namespace GridBattle.UI.Flow
             EventBus.Subscribe<GlossaryRequestedEvent>(OnGlossaryRequested);
             EventBus.Subscribe<OptionsRequestedEvent>(OnOptionsRequested);
             EventBus.Subscribe<TutorialTipRequestedEvent>(OnTutorialTipRequested);
+            EventBus.Subscribe<RemoveAdsRequestedEvent>(OnRemoveAdsRequested);
+            EventBus.Subscribe<AdShowStartedEvent>(OnAdShowStarted);
+            EventBus.Subscribe<GameResetEvent>(OnGameReset);
         }
 
         private void OnDisable()
@@ -131,6 +144,9 @@ namespace GridBattle.UI.Flow
             EventBus.Unsubscribe<GlossaryRequestedEvent>(OnGlossaryRequested);
             EventBus.Unsubscribe<OptionsRequestedEvent>(OnOptionsRequested);
             EventBus.Unsubscribe<TutorialTipRequestedEvent>(OnTutorialTipRequested);
+            EventBus.Unsubscribe<RemoveAdsRequestedEvent>(OnRemoveAdsRequested);
+            EventBus.Unsubscribe<AdShowStartedEvent>(OnAdShowStarted);
+            EventBus.Unsubscribe<GameResetEvent>(OnGameReset);
         }
 
         private void LateUpdate()
@@ -138,6 +154,7 @@ namespace GridBattle.UI.Flow
             // Tips wait a frame: the events raised in the same call (a level up opens the talent window right
             // after its tip is requested) register first, so a tip never opens under the window it explains.
             PumpTips();
+            PumpForcedAd();
         }
 
         private void OnDestroy()
@@ -248,7 +265,18 @@ namespace GridBattle.UI.Flow
 
         private void OnRunEnded(RunEndedEvent e)
         {
+            // The development reset ends the run on its way to the main menu: no end of run screen.
+            if (GameReset.IsResetting) return;
+
             ShowScreen(e.Victory ? victoryScreen : runEndScreen, e.Summary);
+        }
+
+        /// <summary>The development reset erased everything: nothing waiting is shown and the main menu opens.</summary>
+        private void OnGameReset(GameResetEvent e)
+        {
+            _pendingModals.Clear();
+            DropWaitingModals();
+            ShowScreen(mainMenuScreen);
         }
 
         private void OnConsumableOffer(ConsumableOfferEvent e)
@@ -301,6 +329,23 @@ namespace GridBattle.UI.Flow
             if (e.Tip == null || _tipQueue.Contains(e.Tip)) return;
 
             _tipQueue.Enqueue(e.Tip);
+        }
+
+        private void OnRemoveAdsRequested(RemoveAdsRequestedEvent e)
+        {
+            var view = ModalsSettings.Current.RemoveAdsView;
+            if (view == null || Navigator == null || IsModalOpen(view)) return;
+
+            _ = Navigator.ShowModal<bool>(view);
+        }
+
+        /// <summary>A test ad (Editor) draws nothing by itself: its screen covers everything until it ends.</summary>
+        private void OnAdShowStarted(AdShowStartedEvent e)
+        {
+            var view = ModalsSettings.Current.SimulatedAdView;
+            if (!e.Simulated || view == null || Navigator == null) return;
+
+            _ = Navigator.ShowModal<bool>(view, e);
         }
 
         // ------------------------------------------------------------------------------------ navigation
@@ -371,7 +416,8 @@ namespace GridBattle.UI.Flow
         private void FlushPendingModals()
         {
             var navigator = Navigator;
-            if (_pendingModals.Count == 0 || navigator == null || navigator.IsTransitioning || _hasTarget) return;
+            if (_pendingModals.Count == 0 || navigator == null || navigator.IsTransitioning || _hasTarget ||
+                _adSequenceRunning) return;
 
             var current = navigator.Current;
             if (current == null || current.Definition != mapScreen) return;
@@ -405,7 +451,7 @@ namespace GridBattle.UI.Flow
         /// </summary>
         private void PumpTips()
         {
-            if (_tipQueue.Count == 0) return;
+            if (_tipQueue.Count == 0 || _adSequenceRunning || MonetizationService.IsShowingAd) return;
 
             var navigator = Navigator;
             var view = ModalsSettings.Current.TutorialTipView;
@@ -429,6 +475,52 @@ namespace GridBattle.UI.Flow
 
                 _ = navigator.ShowModal(view, tip);
                 return;
+            }
+        }
+
+        /// <summary>
+        /// Shows the pending forced ad (GDD 7) when the screen allows it: the map, an end of run screen or the main
+        /// menu (never the battle), no transition running, no modal open and nothing else waiting to open.
+        /// </summary>
+        private void PumpForcedAd()
+        {
+            if (_adSequenceRunning || !MonetizationService.HasPendingForcedAd) return;
+
+            var navigator = Navigator;
+            if (navigator == null || navigator.IsTransitioning || _hasTarget) return;
+
+            var current = navigator.Current;
+            if (current == null || !IsAdSafeScreen(current.Definition)) return;
+            if (navigator.Modals.Count > 0 || _pendingModals.Count > 0 || _talentOfferPending || _tipQueue.Count > 0)
+                return;
+
+            RunForcedAd();
+        }
+
+        private bool IsAdSafeScreen(ViewDefinition screen) =>
+            screen == mapScreen || screen == runEndScreen || screen == victoryScreen || screen == mainMenuScreen;
+
+        /// <summary>The notice, the ad and, every few ads, the remove ads window.</summary>
+        private async void RunForcedAd()
+        {
+            if (!MonetizationService.TryTakeForcedAd()) return;
+
+            _adSequenceRunning = true;
+            try
+            {
+                var modals = ModalsSettings.Current;
+                var seconds = MonetizationSettings.Current.NoticeSeconds;
+                if (modals.AdNoticeView != null && seconds > 0)
+                    await Navigator.ShowModal<bool>(modals.AdNoticeView, seconds);
+
+                var shown = await MonetizationService.ShowForcedAdAsync();
+                if (shown && modals.RemoveAdsView != null && MonetizationService.TakeRemoveAdsOffer())
+                    await Navigator.ShowModal<bool>(modals.RemoveAdsView);
+            }
+            finally
+            {
+                _adSequenceRunning = false;
+                Reconcile();
             }
         }
 

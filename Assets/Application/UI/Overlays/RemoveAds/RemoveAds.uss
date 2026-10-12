@@ -1,0 +1,55 @@
+/*
+ * Remove ads (GDD 7, interface 4.3): what the purchase gives, its price from the store, Buy and Restore
+ * purchases (required by Apple), and the outcome of the last purchase or restore.
+ */
+#overlay-background {
+    flex-grow: 1;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+}
+
+#remove-ads-window {
+    width: 190px;
+    align-items: stretch;
+}
+
+#remove-ads-title {
+    margin: 0 0 6px 0;
+    padding: 0;
+    font-size: var(--font-size-title);
+    color: var(--color-primary);
+    white-space: normal;
+    -unity-text-align: middle-center;
+}
+
+#remove-ads-text {
+    margin: 0 0 6px 0;
+    padding: 0;
+    font-size: var(--font-size-body);
+    color: var(--color-text);
+    white-space: normal;
+    -unity-text-align: middle-left;
+}
+
+#remove-ads-status {
+    margin: 0 0 6px 0;
+    padding: 0;
+    font-size: var(--font-size-hud);
+    color: var(--color-text-dim);
+    white-space: normal;
+    -unity-text-align: middle-center;
+}
+
+#remove-ads-status.remove-ads-status--good {
+    color: var(--color-good);
+}
+
+#remove-ads-status.remove-ads-status--bad {
+    color: var(--color-bad);
+}
+
+#container #remove-ads-buy-button,
+#container #remove-ads-restore-button {
+    margin: 2px 0;
+}

@@ -679,6 +679,186 @@ MonoBehaviour:
     m_Key: details.shape.perpendicular
     m_Metadata:
       m_Items: []
+  - m_Id: 2830511800918016
+    m_Key: ads.notice.title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2830511880609792
+    m_Key: ads.notice.countdown
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2830511880609793
+    m_Key: ads.notice.hint
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2830511880609794
+    m_Key: ads.simulated.title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2830511880609795
+    m_Key: ads.simulated.interstitial
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2830511880609796
+    m_Key: ads.simulated.rewarded
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2830511880609797
+    m_Key: ads.simulated.countdown
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2830511880609798
+    m_Key: ads.simulated.note
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2830511880609799
+    m_Key: ads.simulated.close
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2830511880609800
+    m_Key: remove_ads.title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2830511880609801
+    m_Key: remove_ads.text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2830511880609802
+    m_Key: remove_ads.owned_text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2830511880609803
+    m_Key: remove_ads.buy
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2830511880609804
+    m_Key: remove_ads.buy_no_price
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2830511880609805
+    m_Key: remove_ads.restore
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2830511880609806
+    m_Key: remove_ads.loading
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2830511880609807
+    m_Key: remove_ads.unavailable
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2830511880609808
+    m_Key: remove_ads.purchasing
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2830511880609809
+    m_Key: remove_ads.deferred
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2830511880609810
+    m_Key: remove_ads.owned
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2830511880609811
+    m_Key: remove_ads.failed
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2830511880609812
+    m_Key: remove_ads.cancelled
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2830511880609813
+    m_Key: remove_ads.restored
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2830511880609814
+    m_Key: remove_ads.nothing_restored
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2830511880609815
+    m_Key: remove_ads.restore_failed
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2830511880609816
+    m_Key: menu.remove_ads
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2830511880609817
+    m_Key: options.ads
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2830511880609818
+    m_Key: options.remove_ads
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2830511880609819
+    m_Key: options.ads_removed
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2836121330196480
+    m_Key: options.dev
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2836121414082560
+    m_Key: options.reset_game
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2836121414082561
+    m_Key: reset.title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2836121414082562
+    m_Key: reset.message
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2836121414082563
+    m_Key: reset.confirm
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2837351943184384
+    m_Key: talent.tools_ad_hint
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2837352010293248
+    m_Key: talent.tools_ad_unavailable
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2839385073328128
+    m_Key: details.action.range_min_max
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2839385153019904
+    m_Key: details.action.range_shape
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2839385153019905
+    m_Key: details.selection.line
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2839385153019906
+    m_Key: details.selection.diagonal
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2839385153019907
+    m_Key: details.selection.star
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2839385153019908
+    m_Key: details.selection.square
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2839385153019909
+    m_Key: details.action.target_cell
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2839385153019910
+    m_Key: details.target_cell.empty
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2839385153019911
+    m_Key: details.target_cell.occupied
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

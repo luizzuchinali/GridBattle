@@ -41,9 +41,9 @@ Total: 84 perguntas.
 - [ ] **Modelo:** Se o modelo é o mesmo no PC e no mobile.
 - [ ] **Anúncios forçados:** Quais outros momentos de transição.
 - [ ] **Rampa de frequência:** Valores de X, duração da fase inicial e se a contagem é por nós, por batalhas vencidas ou por tempo (em avaliação: contar por batalhas e impor um tempo mínimo entre anúncios, porque os nós de cura e de consumível são instantâneos).
-- [ ] **Anúncio recompensado (opcional):** Limite de recargas e se ele pode ser pedido durante a pausa da escolha de talento no meio da batalha (é uma ação iniciada pelo jogador, mas ocorre em batalha).
+- [x] **Anúncio recompensado:** decidido em 2026-10-12: em vez de recarregar, cada uso das ferramentas mostra antes um anúncio recompensado e conta no limite da run; vale também no meio da batalha.
 - [ ] **Remoção de anúncios:** Preço e se qualquer compra também remove os anúncios forçados.
-- [ ] **Ética de monetização:** Definir um teto de recargas igual para quem assiste a anúncios e para quem comprou a remoção, para que o dinheiro não compre poder.
+- [x] **Ética de monetização:** decidido em 2026-10-12: o limite de usos das ferramentas é o mesmo para quem assiste e para quem comprou; a compra só tira os anúncios.
 
 ### [[GDD#8.1 Especificações|8.1 Especificações]]
 

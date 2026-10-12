@@ -48,6 +48,7 @@ Ver também: [[plano_implementacao_gdd]], [[perguntas_em_aberto]].
 |---|---|---|
 | A skill inicial ocupa um dos 6 espaços | classes_e_skills | Sim |
 | Skill só mira onde atinge alguém | classes_e_skills | Não: toda skill mira qualquer célula do alcance em linha de visão (decisão do usuário, 2026-10-12; `requiresAffectedTarget`) |
+| Área de seleção das skills (pedido do usuário, 2026-10-12) | sistema_combate | Estilo Dofus: Guerreiro em linha (cruz), alcance fixo; Mago em círculo 1-3 (Nova 0-2); Ladino em linha (Adaga Envenenada, Linha Venenosa, Gancho 2-4), estrela (Adaga de Arremesso) e círculo (Bomba de Fumaça); Gancho do Goblin em linha 2-4. Provisório |
 | Redução de cooldown: unidade e mínimo | estados_e_atributos | Em ações; cooldown mínimo 1 para skills que têm cooldown |
 | Cooldowns entre batalhas | — | Zerados a cada batalha (`RunSettings`) |
 | Habilidades dos inimigos | inimigos | Mesma regra das skills: "N ações entre usos" |
@@ -149,6 +150,26 @@ Ver também: [[plano_implementacao_gdd]], [[perguntas_em_aberto]].
 | Nó de talento conta como nível | xp_e_niveis | Não; dá só o talento, escolhido entre os talentos do nível atual + 1 (`talentNodeLevelBonus`) |
 | Talentos de classe (G3) | talentos_e_oferta, classes_e_skills | 14 (Guerreiro), 17 (Mago) e 23 (Ladino) talentos próprios, 24 a 42 postos: modificadores das skills da classe e passivas exclusivas; níveis mínimos de 2 a 13; encadeados por pré-requisitos. **Provisórios** (tabelas em sistema_combate) | `Settings/Talents/<Classe>` |
 | Talentos de exemplo | talentos_e_oferta, classes_e_skills | As 6 traits que liberam as skills da tabela 6.2 (Criomancia e Mãos Ligeiras viraram reforço: +15% de dano de skill, porque Nova de Gelo e Adaga Envenenada são iniciais) e 15 genéricos (um por atributo, os estados do documento e +opções/+rerolls/+banimentos): **provisórios** |
+
+## Monetização (`Settings/Monetization/MonetizationSettings`, GDD 7)
+
+Implementada em 2026-10-12 (pedido do usuário). Detalhes e passo a passo em [[monetizacao]].
+
+| Pergunta | Documento | Valor | Onde |
+|---|---|---|---|
+| Modelo no PC e no mobile | GDD 7 | Mobile: anúncios (LevelPlay) e compra (Unity IAP). PC: sem anúncios nem loja, ferramentas sem anúncio com o mesmo limite (decisão do usuário: Android e iOS) | `enabledOnAndroid/Ios`, `editorMode` |
+| Outros momentos do anúncio forçado | GDD 7 | Depois de batalha vencida, depois de nó sem luta e no fim da run | `afterBattle`, `afterNonCombatNode`, `atRunEnd` |
+| Rampa de frequência: contagem | GDD 7 | Por pausa (nó concluído ou run encerrada), no perfil, com tempo mínimo entre anúncios | `MonetizationProfileState` |
+| Rampa de frequência: valores | GDD 7 | Carência de 10 pausas; os 3 primeiros anúncios a cada 6 pausas; depois a cada 4; mínimo de 180 s | `graceNodes`, `earlyAdCount`, `earlyIntervalNodes`, `normalIntervalNodes`, `minSecondsBetweenAds` |
+| Anúncio recompensado e ferramentas | GDD 7, talentos_e_oferta | **Decisão do usuário (2026-10-12):** cada uso de trocar, banir ou pular mostra antes um anúncio recompensado e só acontece se ele for assistido até o fim; conta no limite da run de sempre, igual para quem assiste e para quem comprou (ética) | `talentToolsNeedAd` |
+| Ferramentas na escolha de talento no meio da batalha | GDD 7 | Com anúncio também (é o jogador quem pede) | — |
+| Ferramenta sem anúncio disponível | — | Funciona sem anúncio (sem internet, sem anúncio carregado) | `allowToolsWithoutAd` |
+| Preço e "qualquer compra remove anúncios" | GDD 7 | Preço definido nas lojas; há uma compra só (não consumível `remove_ads`) | `removeAdsProductId` |
+| Áudio durante os anúncios | GDD 5.2 | O som do jogo pausa | `pauseAudioDuringAds` |
+| Anúncio pendente ao fechar o app | GDD 8.1 | Nada é salvo; a ferramenta só é usada depois que o anúncio entrega a recompensa | — |
+| Aviso antes do anúncio forçado (melhoria aprovada) | — | 3 segundos, sem como fechar | `noticeSeconds` |
+| Oferta depois do anúncio (melhoria aprovada) | — | A cada 3 anúncios forçados, no máximo 1 vez por sessão | `offerEveryNthAd`, `maxOffersPerSession` |
+| Privacidade (GDPR/LGPD, CCPA, COPPA, ATT) | — | Nada repassado (decisão do usuário: deixar a estrutura pronta) | campos *Privacy* |
 
 ## Mapa: escolha de risco e recompensa
 - Novo (`MapGenerationSettings.diversifyBattleChoices`, ligado): quando um nó

@@ -54,28 +54,31 @@ As nove skills da tabela estão implementadas como assets (`Settings/Skills/<Cla
 **Decisão (2026-10-05): toda classe começa com ao menos uma skill.** Golpe (Guerreiro), Nova de Gelo (Mago) e Adaga Envenenada (Ladino) são as skills iniciais. As demais são liberadas pelos talentos da coluna Trait. Criomancia e Mãos Ligeiras, que liberavam as skills que viraram iniciais, passaram a ser talentos de reforço (+15% de dano de skill). O Golpe foi reajustado para dano em área frontal (`PERPENDICULAR` de tamanho 3).
 
 ### Guerreiro
-| Skill | Tipo | Dano | Área | Tamanho | Alcance | Cooldown | Trait |
-|---|---|---|---|---|---|---|---|
-| Golpe | OFENSIVA | 10 | PERPENDICULAR | 3 | 1 | 1 | Inicial |
-| Investida com Escudo | OFENSIVA | 12 | LINEAR | 3 | 2 | 3 | Muralha |
-| Golpe de Escudo (acréscimo de balanceamento) | OFENSIVA | 8 | CIRCLE | 1 | 1 | 3 | Força Bruta |
+| Skill | Tipo | Dano | Área | Tamanho | Seleção | Alcance | Cooldown | Trait |
+|---|---|---|---|---|---|---|---|---|
+| Golpe | OFENSIVA | 10 | PERPENDICULAR | 3 | LINHA | 1 (fixo) | 1 | Inicial |
+| Investida com Escudo | OFENSIVA | 12 | LINEAR | 3 | LINHA | 1-2 (fixo) | 3 | Muralha |
+| Golpe de Escudo (acréscimo de balanceamento) | OFENSIVA | 8 | CIRCLE | 1 | LINHA | 1 (fixo) | 3 | Força Bruta |
 
 ### Mago
-| Skill | Tipo | Dano | Área | Tamanho | Alcance | Cooldown | Trait |
-|---|---|---|---|---|---|---|---|
-| Bola de Fogo | OFENSIVA | 10 | CIRCLE | 3 | — | 3 | Grimório |
-| Nova de Gelo | OFENSIVA | 8 | CIRCLE | 3 | 2 | 2 | Inicial |
-| Tempestade Elétrica | OFENSIVA | 14 | CONE | 3 | 3 | 4 | Conjurador de Tempestades |
-| Rajada de Vento (acréscimo de balanceamento) | OFENSIVA | 4 | CIRCLE | 3 | 3 | 3 | Domínio do Vento |
+| Skill | Tipo | Dano | Área | Tamanho | Seleção | Alcance | Cooldown | Trait |
+|---|---|---|---|---|---|---|---|---|
+| Bola de Fogo | OFENSIVA | 10 | CIRCLE | 3 | CÍRCULO | 1-3 | 3 | Grimório |
+| Nova de Gelo | OFENSIVA | 8 | CIRCLE | 3 | CÍRCULO | 0-2 | 2 | Inicial |
+| Tempestade Elétrica | OFENSIVA | 14 | CONE | 3 | CÍRCULO | 1-3 | 4 | Conjurador de Tempestades |
+| Rajada de Vento (acréscimo de balanceamento) | OFENSIVA | 4 | CIRCLE | 3 | CÍRCULO | 1-3 | 3 | Domínio do Vento |
 
 ### Ladino
-| Skill | Tipo | Dano | Área | Tamanho | Alcance | Cooldown | Trait |
-|---|---|---|---|---|---|---|---|
-| Adaga de Arremesso | OFENSIVA | 6 | CIRCLE | 1 | 3 | 1 | Arsenal Oculto |
-| Bomba de Fumaça | OFENSIVA | 5 | CROSS | 1 | 1 | 2 | Mestre das Sombras |
-| Adaga Envenenada | OFENSIVA | 7 | LINEAR | 3 | 4 | 2 | Inicial |
-| Linha Venenosa | OFENSIVA | 9 | LINEAR | 5 | 5 | 3 | Mestre do Veneno |
-| Gancho (acréscimo de balanceamento) | OFENSIVA | 4 | CIRCLE | 1 | 4 | 3 | Gancho de Abordagem |
+| Skill | Tipo | Dano | Área | Tamanho | Seleção | Alcance | Cooldown | Trait |
+|---|---|---|---|---|---|---|---|---|
+| Adaga de Arremesso | OFENSIVA | 6 | CIRCLE | 1 | ESTRELA | 1-3 | 1 | Arsenal Oculto |
+| Bomba de Fumaça | OFENSIVA | 5 | CROSS | 1 | CÍRCULO | 0-1 | 2 | Mestre das Sombras |
+| Adaga Envenenada | OFENSIVA | 7 | LINEAR | 3 | LINHA | 1-4 | 2 | Inicial |
+| Linha Venenosa | OFENSIVA | 9 | LINEAR | 5 | LINHA | 1-5 | 3 | Mestre do Veneno |
+| Gancho (acréscimo de balanceamento) | OFENSIVA | 4 | CIRCLE | 1 | LINHA | 2-4 | 3 | Gancho de Abordagem |
+
+A coluna **Seleção** é a área onde a skill pode ser mirada (pedido do usuário, 2026-10-12, no estilo do
+Dofus; ver [[sistema_combate]]). "Fixo" = o atributo Alcance de skills não aumenta o alcance.
 
 #### Skills de deslocamento (acréscimo de balanceamento, 2026-10-06, G4)
 

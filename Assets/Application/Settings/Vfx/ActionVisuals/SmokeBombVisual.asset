@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b3fcdc5ee1f2f8d4684b11dfc6985562, type: 3}
+  m_Name: SmokeBombVisual
+  m_EditorClassIdentifier: Assembly-CSharp::GridBattle.Gameplay.Movement.ActionVisualDefinition
+  casterGesture: 0
+  glowColor: {r: 1, g: 1, b: 1, a: 1}
+  projectileFrames:
+  - {fileID: 21300000, guid: 3aec0068eff4b4f4989d91a236d5dbb8, type: 3}
+  - {fileID: 21300000, guid: 1bedc383fb43ee84985908ebdc4fc174, type: 3}
+  projectileCellsPerSecond: 8
+  projectileArc: 0.4
+  projectileFacesDirection: 0
+  cellFrames:
+  - {fileID: 21300000, guid: 5c8d11aebfc69684a9bb967acd1eece3, type: 3}
+  - {fileID: 21300000, guid: 9aabca08e9cc9fc42a671a0506e9c2e8, type: 3}
+  - {fileID: 21300000, guid: 34beb8d61c74c704aab5d26b6aa98a94, type: 3}
+  - {fileID: 21300000, guid: b697d6973df436646a4a4f372271cf27, type: 3}
+  frameSeconds: 0.06
+  impactFrame: 1
+  order: 1
+  stepSeconds: 0.05
+  cellFacing: 0
+  dropPixels: 0
+  lingerSeconds: 0.4
+  tint: {r: 1, g: 1, b: 1, a: 1}

@@ -38,6 +38,19 @@ namespace GridBattle.UI.Overlays
                  "opened by CharacterDetailsRequestedEvent.")]
         private ViewDefinition characterDetailsView;
 
+        [SerializeField]
+        [Tooltip("Remove ads purchase (GDD 7): opened by RemoveAdsRequestedEvent (main menu, options, end of run) " +
+                 "and, now and then, after a forced ad.")]
+        private ViewDefinition removeAdsView;
+
+        [SerializeField]
+        [Tooltip("Notice with a countdown before a forced ad (MonetizationSettings.NoticeSeconds).")]
+        private ViewDefinition adNoticeView;
+
+        [SerializeField]
+        [Tooltip("Screen of a test ad in the Editor (MonetizationSettings: Simulated). Real ads draw themselves.")]
+        private ViewDefinition simulatedAdView;
+
         [Header("Talent choice (interface 4.1)")]
         [SerializeField]
         [Tooltip("Skipping an offer asks for confirmation first (the level's talent is lost).")]
@@ -92,6 +105,9 @@ namespace GridBattle.UI.Overlays
         public ViewDefinition OptionsView => optionsView;
         public ViewDefinition TutorialTipView => tutorialTipView;
         public ViewDefinition CharacterDetailsView => characterDetailsView;
+        public ViewDefinition RemoveAdsView => removeAdsView;
+        public ViewDefinition AdNoticeView => adNoticeView;
+        public ViewDefinition SimulatedAdView => simulatedAdView;
         public bool ConfirmSkip => confirmSkip;
         public float AcquireEffectSeconds => acquireEffectSeconds;
         public int CardStaggerMs => cardStaggerMs;

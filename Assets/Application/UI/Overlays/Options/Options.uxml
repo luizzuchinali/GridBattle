@@ -25,6 +25,10 @@
                     <ui:Label name="options-tips-label" text="Tips" class="options-section" picking-mode="Ignore"/>
                     <ui:Button name="options-tips-toggle" text="Tips: On" class="text-button option-choice"/>
                     <ui:Button name="options-tips-reset" text="Show tips again" class="text-button option-choice"/>
+                    <ui:Label name="options-ads-label" text="Ads" class="options-section" picking-mode="Ignore"/>
+                    <ui:Button name="options-remove-ads-button" text="Remove ads" class="text-button option-choice"/>
+                    <ui:Label name="options-dev-label" text="Development" class="options-section" picking-mode="Ignore"/>
+                    <ui:Button name="options-reset-button" text="Reset the game" class="text-button option-choice"/>
                 </ui:ScrollView>
                 <ui:Button name="options-close-button" text="X" class="slot-button corner-close-button"/>
             </ui:VisualElement>

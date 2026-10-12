@@ -1,0 +1,52 @@
+/*
+ * Test ad of the Editor (GDD 7): a black screen that covers everything while a simulated ad plays, with its
+ * kind, a countdown and a button that closes it early (a rewarded ad then gives no reward). On a device the
+ * LevelPlay SDK shows the real ad instead.
+ */
+#container.simulated-ad {
+    background-color: rgb(0, 0, 0);
+}
+
+#simulated-ad-screen {
+    flex-grow: 1;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+}
+
+#simulated-ad-title {
+    margin: 0 0 6px 0;
+    padding: 0;
+    font-size: var(--font-size-title);
+    color: var(--color-primary);
+    -unity-text-align: middle-center;
+}
+
+#simulated-ad-kind {
+    margin: 0;
+    padding: 0;
+    font-size: var(--font-size-body);
+    color: var(--color-text);
+    -unity-text-align: middle-center;
+}
+
+#simulated-ad-countdown {
+    margin: 10px 0;
+    padding: 0;
+    font-size: var(--font-size-title);
+    color: var(--color-text);
+    -unity-text-align: middle-center;
+}
+
+#simulated-ad-note {
+    margin: 0 16px 10px 16px;
+    padding: 0;
+    font-size: var(--font-size-hud);
+    color: var(--color-text-dim);
+    white-space: normal;
+    -unity-text-align: middle-center;
+}
+
+#container #simulated-ad-close-button {
+    min-width: 80px;
+}

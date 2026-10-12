@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using GridBattle.Data;
 using GridBattle.Gameplay.Entities.Skills;
+using GridBattle.Gameplay.Movement;
 using UnityEngine;
 
 namespace GridBattle.Gameplay.Consumables
@@ -64,6 +65,11 @@ namespace GridBattle.Gameplay.Consumables
                  "would change something (e.g. damage needs a character in the area).")]
         private List<ConsumableEffect> effects = new();
 
+        [Header("Look")]
+        [SerializeField]
+        [Tooltip("How the item looks when used (gesture, projectile, effect on each cell of the area). Empty = no effect. Visual only.")]
+        private ActionVisualDefinition visual;
+
         [Header("Obtaining")]
         [SerializeField]
         [Min(0)]
@@ -82,6 +88,7 @@ namespace GridBattle.Gameplay.Consumables
         public int AreaSize => areaSize;
         public ESkillTargetFilter Affects => affects;
         public IReadOnlyList<ConsumableEffect> Effects => effects;
+        public ActionVisualDefinition Visual => visual;
         public float DropWeight => dropWeight;
         public bool ShowInGlossary => showInGlossary;
 

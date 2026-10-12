@@ -1,0 +1,15 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:zs="ZS.UI" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/Application/UI/Overlays/RemoveAds/RemoveAds.uss?fileID=7433441132597879392&amp;guid=bda8082a69064e9ab38a7e4b26b27adf&amp;type=3#RemoveAds"/>
+    <zs:SafeArea name="container" picking-mode="Ignore" class="container overlay-screen">
+        <ui:VisualElement name="overlay-background">
+            <ui:VisualElement name="remove-ads-window" class="window-frame">
+                <ui:Label name="remove-ads-title" text="Remove ads" picking-mode="Ignore"/>
+                <ui:Label name="remove-ads-text" text="No forced ads." picking-mode="Ignore"/>
+                <ui:Label name="remove-ads-status" picking-mode="Ignore"/>
+                <ui:Button name="remove-ads-buy-button" text="Buy" class="text-button"/>
+                <ui:Button name="remove-ads-restore-button" text="Restore purchases" class="text-button"/>
+                <ui:Button name="remove-ads-close-button" text="X" class="slot-button corner-close-button"/>
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </zs:SafeArea>
+</ui:UXML>

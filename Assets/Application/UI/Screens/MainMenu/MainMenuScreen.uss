@@ -42,10 +42,12 @@
     flex-direction: row;
 }
 
+/* Every gap of the title menu is --spacing-md: the top margin of .text-button is cleared, or the gap above
+   Continue would be that margin plus this one. */
 #container #new-game-btn,
 #container #continue-btn {
     min-width: 168px;
-    margin-bottom: var(--spacing-md);
+    margin: 0 0 var(--spacing-md) 0;
 }
 
 #container #back-btn {
@@ -56,4 +58,10 @@
 #container #menu-buttons-row .text-button {
     min-width: 82px;
     margin: 0 var(--spacing-sm);
+}
+
+/* Remove ads (GDD 7): under Glossary / Options, only while the store sells the purchase. */
+#container #remove-ads-btn {
+    min-width: 168px;
+    margin-top: var(--spacing-md);
 }

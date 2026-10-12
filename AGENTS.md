@@ -23,6 +23,7 @@ jogador escolhe **talentos**, que concedem estados e liberam skills.
 | Textos | Unity Localization 1.5 (tabelas `UI` e `Content`; idiomas `en`, `es`, `pt-BR`) |
 | Salvamento | JSON (Newtonsoft) em `Application.persistentDataPath`: `run.json`, `profile.json`, `metrics.jsonl` |
 | Tweens | LitMotion (`LMotion`) |
+| Monetização | Unity LevelPlay 9.5 (*Ads Mediation*, `com.unity.services.levelplay`: intersticial + recompensado) e Unity IAP 5.4 (`com.unity.purchasing`: compra não consumível `remove_ads`); Mobile Dependency Resolver para as dependências nativas. Só Android e iOS; no Editor, anúncios e loja de teste |
 | Input | Input System (`InputSystemUIInputModule`) + `IPointer*Handler` nas células |
 | Texto no mundo | TextMeshPro (dano flutuante das células) |
 | Assemblies | Jogo: `Assembly-CSharp`/`-Editor` (sem `.asmdef`). Framework: `ZS.UI`, `ZS.UI.Editor`, `ZS.UI.Tests`, `ZS.UI.Samples` |
@@ -34,6 +35,8 @@ subdocumentos de `docs/design/`. A referência do combate implementado é
 `docs/design/sistema_combate.md`, que deve ficar em sincronia com o código.
 O guia de uso dos sistemas pelo editor é `docs/projeto/guia_sistemas.md`
 (o simulador de balanceamento tem o seu: `docs/projeto/simulador_balanceamento.md`;
+a monetização também: `docs/projeto/monetizacao.md`, com o passo a passo dos painéis e dos builds em
+`docs/projeto/habilitar_anuncios_e_compras.md`;
 o resumo das mudanças está em `docs/projeto/resumo_das_mudancas.md`). O plano e os
 valores padrão das perguntas em aberto ficam em `docs/planos/`. **Não use nada
 de `docs/propostas/`** (são rascunhos não aprovados).
@@ -71,15 +74,20 @@ Assets/
 │   │   ├── Meta/, Audio/, Input/, Hud/, Screens/, Modals/  MetaSettings, AudioLibrary, GameplayInputSettings, HudSettings, ScreensSettings, ModalsSettings (views dos modais)
 │   │   ├── Encounters/DefaultEncounter.asset               inimigos da batalha de depuração (grid montado no editor)
 │   │   ├── Vfx/XpOrbsVfxSettings.asset, Movement/GridMovementSettings.asset
+│   │   ├── Vfx/ActionVisuals/                              ActionVisualDefinition (visual de cada skill e da Bomba; provisórios gerados)
+│   │   ├── Monetization/MonetizationSettings.asset         anúncios, compra, rampa de frequência, privacidade, modo do Editor
 │   ├── UI/                         ← UI Toolkit organizada por feature
 │   │   ├── Theme/                                          GridBattle.tss, Tokens.uss, Base.uss, Components.uss
 │   │   ├── Settings/                                       PanelSettings, WorldPanelSettings, PanelTextSettings
 │   │   ├── Layers/*.asset                                  UILayerDefinition (uma por painel)
 │   │   ├── Screens/{Start,MainMenu,Game,Map,RunEnd,Victory}/   <Tela>.uxml + .uss + <Tela>View.asset (ViewDefinition)
-│   │   ├── Overlays/{Menu,EntityDetails,ConsumableOffer,Confirm,TalentChoice,Glossary,Options,TutorialTip,CharacterDetails}/
+│   │   ├── Overlays/{Menu,EntityDetails,ConsumableOffer,Confirm,TalentChoice,Glossary,Options,TutorialTip,CharacterDetails,RemoveAds,AdNotice,SimulatedAd}/
 │   │   ├── Background/, Transitions/, Animations/
 │   └── Scripts/                    ← ver tabela abaixo
 ├── ZS/UI/                          ← framework reutilizável de navegação (ver Assets/ZS/UI/README.md)
+├── LevelPlay/Editor/, LevelPlay/Resources/                 gerados pelo pacote Ads Mediation (dependências nativas; LevelPlayMediationSettings: permissão AD_ID ligada)
+├── MobileDependencyResolver/                               resolvedor das dependências nativas (importado pelo LevelPlay)
+├── Plugins/Android/                                        mainTemplate.gradle e gradleTemplate.properties (criados pelo resolvedor)
 ├── AddressableAssetsData/                                  gerado pelo Unity Localization (tabelas são Addressables)
 ├── Scenes/SampleScene.unity
 ├── Resources/Fonts & Materials/                            fontes TMP e a fonte pixel da UI (ThaleahFat)
@@ -97,16 +105,16 @@ O namespace segue a pasta: `GridBattle.<Pasta>[.<Subpasta>]`.
 | `Core/` | `GridBattle.Core` | `Loc` (textos localizados), `SaveSystem` (JSON atômico) |
 | `Core/Randomness/` | `…Core.Randomness` | `Rng` (SplitMix64), `RunRandom` (fluxos `ERandomStream` + `Derive`), `GameRandom` (fluxos da run ativa) |
 | `Data/` | `GridBattle.Data` | `GameDefinition` (id = GUID), `DisplayableDefinition` (nome/descrição localizados + ícone), `GameDatabase`, `GameSettings` + `IGameSettings`, `SubclassPicker` |
-| `Editor/` | `GridBattle.Editor[.…]` | `GameDatabaseBuilder`, `GridControllerEditor`, `Drawers/SubclassPickerDrawer`, `Localization/LocalizationTableTool`, `Tools/PlaceholderIcons`, `Tools/ContentValidator` (`GridBattle > Validate Content`), `Talents/{TalentChecks,XpProgressionSimulator}`, `Simulation/BalanceSimulation` (menu e Play Mode do simulador) |
-| `Managers/` | `GridBattle.Managers` | `GameStateManager` (classes jogáveis), `RunManager` (a run), `TurnManager` (turnos), `GameConfigManager` |
+| `Editor/` | `GridBattle.Editor[.…]` | `GameDatabaseBuilder`, `GridControllerEditor`, `Drawers/SubclassPickerDrawer`, `Localization/LocalizationTableTool`, `Tools/PlaceholderIcons`, `Tools/VfxPlaceholders` (`GridBattle > Vfx > Generate Placeholder Visuals`), `Tools/MonetizationMenu` (`GridBattle > Monetization`), `Tools/ContentValidator` (`GridBattle > Validate Content`), `Talents/{TalentChecks,XpProgressionSimulator}`, `Simulation/BalanceSimulation` (menu e Play Mode do simulador) |
+| `Managers/` | `GridBattle.Managers` | `GameStateManager` (classes jogáveis), `RunManager` (a run), `TurnManager` (turnos), `GameConfigManager`, `GameReset` (reset total, só em build de desenvolvimento) |
 | `Managers/Audio/` | `…Managers.Audio` | `AudioManager` (autoinicializado), `AudioLibrary`, `ESfx`, `EMusicContext`, `AudioEventHooks` |
 | `Gameplay/` | `GridBattle.Gameplay` | `GridController`, `Cell`, `BattleController` (vitória/derrota), `CellContentHealthBar`, `EncounterConfig`, `ETurnOwner`, `GameplayInput(Settings)` |
 | `Gameplay/Stats/` | `…Gameplay.Stats` | `EAttribute`, `AttributeModifier`, `CharacterStats` |
 | `Gameplay/States/` (+`Effects/`) | `…Gameplay.States[.Effects]` | `StateDefinition`, `StateEffect` (ganchos: atributos, turnos, dano causado e recebido, bônus de dano condicional, modificadores de skill) e efeitos (`SkillModifierEffect`, `ConditionalDamageEffect`, `OnKillEffect`, `ApplyStateOnHitEffect`, ...), `StateGrant`, `StateInstance`, `StateContainer` |
 | `Gameplay/Combat/` | `…Gameplay.Combat` | `CombatSettings`, `DamageCalculator`, `CombatResolver` (`Adjust`, `PredictDamage`), `DamageContext` (+`DamageAdjustment`, `EDamageKindMask`), `HitResult`, `DisplacementResolver` (aplica e prevê empurrões e puxões) |
 | `Gameplay/Turns/` | `…Gameplay.Turns` | `TurnBlockers` |
-| `Gameplay/Rules/` | `…Gameplay.Rules` | `GridRules`, `GridDistance`, `Displacement` (regras puras de empurrar e puxar: direção, caminho, colisão), `LineOfSight` (linha de visão das skills) |
-| `Gameplay/Movement/` | `…Gameplay.Movement` | `GridMovementAnimator`, `GridEffectsAnimator`, `GridMovementSettings` |
+| `Gameplay/Rules/` | `…Gameplay.Rules` | `GridRules`, `GridDistance`, `Displacement` (regras puras de empurrar e puxar: direção, caminho, colisão), `LineOfSight` (linha de visão das skills), `SkillSelection` (área de seleção das skills: forma, alcance mínimo e máximo) |
+| `Gameplay/Movement/` | `…Gameplay.Movement` | `GridMovementAnimator`, `GridEffectsAnimator`, `GridMovementSettings`, `ActionVisualDefinition` (+`ECasterGesture`, `EVisualCellOrder`, `EVisualFacing`: visual de skill/item) e `ActionVisualPlayer` (toca o visual) |
 | `Gameplay/Entities/` | `…Gameplay.Entities` | `GridEntity` → `Character` → `PlayerCharacter` / `Enemy`; `CharacterView`, `EnemyIconsView`, `CharacterFactory`, `CharacterScaling`, `ECharacter` |
 | `Gameplay/Entities/Configs/` | `…Gameplay.Entities` ⚠️ | `CharacterConfig`, `EnemyConfig`, `PlayerCharacterConfig` (**exceção**: namespace sem `Configs`) |
 | `Gameplay/Entities/Skills/` | `…Entities.Skills` | `SkillDefinition`, `EffectiveSkill` (+`SkillModifiers`: os números de uma skill para um lançador), `SkillEffect` (+`DisplaceSkillEffect`), `SkillArea`, `SkillTargeting`, `SkillCooldowns`, `SkillSettings` |
@@ -120,6 +128,7 @@ O namespace segue a pasta: `GridBattle.<Pasta>[.<Subpasta>]`.
 | `Gameplay/Talents/` | `…Gameplay.Talents` | `TalentDefinition`, `SynergyTagDefinition`, `TalentOfferSettings` (inclui `sharedPoolWeightMultiplier`), `TalentOfferGenerator`, `TalentRules`, `TalentSession`, `TalentService`, `TalentApplier`, `TalentRunModifier`, `TalentBootstrap` |
 | `Gameplay/Map/` | `…Gameplay.Map` | `MapGenerator`, `MapValidator`, `MapRules`, `BattleGenerator` (+`ThreatCalculator`), `MapGenerationSettings`, `BattleGenerationSettings` |
 | `Gameplay/Run/` | `…Gameplay.Run` | `RunState` (modelo salvo), `RunSettings`, `RunSummary`, `PlayerRunStateApplier`, `RunPlayerHooks` (+`IRunPlayerModifier`), `StateSnapshots` |
+| `Gameplay/Monetization/` | `…Gameplay.Monetization` | monetização (GDD 7): `MonetizationService` (autoinicializado; anúncio forçado pendente, anúncio antes de cada uso das ferramentas de talento, compra), `ForcedAdRules` (rampa de frequência, pura), `MonetizationSettings`, provedores de anúncio (`LevelPlayAdsProvider`, `SimulatedAdsProvider`, `NoAdsProvider` em `AdProviders.cs`) e de loja (`UnityIapRemoveAdsStore`, `SimulatedRemoveAdsStore`, `NoRemoveAdsStore` em `RemoveAdsStores.cs`) |
 | `Gameplay/Simulation/` | `…Gameplay.Simulation` | simulador de balanceamento: `SimMode` (modo sem animações, sons, UI nem salvamento), `SimulationRunner`, bots (`BattleBot`, `MapPolicy`, `TalentPolicy`), `SimulationCollector`, `SimulationReport`, `SimulationOptions`, `BalanceSimulationSettings` |
 | `Gameplay/Meta/` | `…Gameplay.Meta` | `ProfileService`/`ProfileState`, `GlossaryService`, `TutorialService` + `TutorialTipDefinition`, `MetricsRecorder`, `MetaSettings`, `MetaBootstrap` |
 | `Gameplay/Events/` | `…Gameplay.Events` | eventos de gameplay |
@@ -128,7 +137,7 @@ O namespace segue a pasta: `GridBattle.<Pasta>[.<Subpasta>]`.
 | `UI/Screens/` | `…UI.Screens` | controladores das telas (Start, MainMenu, Game, Map, RunEnd, Victory), `ScreensSettings` |
 | `UI/Hud/` | `…UI.Hud` | `SkillBarView`, `ItemBarView` (toque longo nos botões abre os detalhes), `DepthView`, `EntityDetailsModel` (+`EntityDetailsRequest`: célula, skill ou item), `ActionDetailsModel` (ficha de skill e item), `HudText`, `HudSettings` |
 | `UI/Map/` | `…UI.Map` | `MapGraphView`, `MapLinesElement`, `MapHudView`, `NodePreviewView` |
-| `UI/Overlays/` | `…UI.Overlays` | controladores dos modais (menu/pausa, detalhes, oferta de consumível, confirmação, talento, glossário, opções, dicas, detalhes do personagem), `ModalsSettings` |
+| `UI/Overlays/` | `…UI.Overlays` | controladores dos modais (menu/pausa, detalhes, oferta de consumível, confirmação, talento, glossário, opções, dicas, detalhes do personagem, remover anúncios, aviso de anúncio, anúncio de teste), `ModalsSettings` |
 | `UI/Background/`, `UI/Vfx/`, `UI/Events/` | `…UI.*` | fundo, orbs de XP, eventos de UI |
 
 ### Objetos da cena
@@ -144,7 +153,8 @@ O namespace segue a pasta: `GridBattle.<Pasta>[.<Subpasta>]`.
 
 Serviços sem objeto na cena (autoinicializados por
 `[RuntimeInitializeOnLoadMethod]`): `AudioManager`, `MetaBootstrap` (perfil,
-dicas, métricas) e `TalentBootstrap` (talentos).
+dicas, métricas), `TalentBootstrap` (talentos) e `MonetizationService`
+(anúncios e compra).
 
 ## Fluxos principais
 
@@ -197,6 +207,16 @@ XP e talentos
     → TalentOfferOpenedEvent → modal de talento → Choose/Reroll/Ban/Skip
   talento: estados permanentes com SourceId = id do talento (+pilhas = rank), skill liberada vai para a barra;
     reaplicado a cada batalha por IRunPlayerModifier
+
+Monetização (MonetizationService, GDD 7)
+  NodeCompletedEvent / RunEndedEvent → conta uma pausa no perfil → ForcedAdRules.IsDue (carência, fase
+    inicial, frequência normal, tempo mínimo) → anúncio forçado pendente
+  GameFlowController (mapa, fim de run ou menu parados, sem modal) → aviso (AdNotice) → intersticial
+    → a cada N anúncios, janela de remover anúncios
+  janela de talento: trocar/banir (ao tocar a carta)/pular → PayForTalentToolAsync → recompensado
+    assistido até o fim → TalentService.Reroll/Ban/Skip (conta o uso; grátis depois da compra, sem anúncios
+    ou sem anúncio disponível)
+  compra: pedido pendente → perfil marca AdsRemoved e salva → só então ConfirmPurchase
 
 Morte de inimigo
   Character.Die → desocupa a célula → CharacterDiedEvent → flash/fade → Destroy
@@ -264,7 +284,10 @@ Morte de inimigo
   `EDamageKind.Collision` (valores em `CombatSettings`) atribuído ao lançador,
   terreno da célula final reage na hora (`GridController.ApplyForcedTerrain`).
   Personagem imóvel: `CharacterConfig.canBeDisplaced = false` (o chefe).
-- **Mira de skills**: célula no alcance e em **linha de visão**
+- **Mira de skills**: célula na **área de seleção** (`Rules/SkillSelection`, estilo Dofus: forma
+  `ESkillSelectionShape` Círculo/Linha/Diagonal/Estrela/Quadrado, `minRange` e `range` contados ao longo
+  da forma, `rangeModifiable` para o atributo Alcance de skills), com o conteúdo pedido
+  (`ESkillTargetCell`: qualquer, vazia, ocupada) e em **linha de visão**
   (`SkillTargeting.HasLineOfSight` → `Rules/LineOfSight`: centro a centro;
   terreno com `blocksLineOfSight` e personagens vivos no caminho bloqueiam,
   as pontas não; canto não conta; simétrica). Skills com `ignoresLineOfSight`
@@ -290,6 +313,16 @@ Morte de inimigo
   acompanham. Para segurar o fluxo de turno, use `TurnBlockers.Acquire(motivo)`
   (dispose para liberar). Entrada do jogador é ignorada enquanto houver
   bloqueio (`GameplayInput.IsBlocked`).
+- **Visual de skills e itens** (`ActionVisualDefinition`, campo `visual` da
+  skill e do consumível): gesto de quem usa, projétil opcional e efeito em cada
+  célula da área numa ordem que desenha a forma. `SkillDefinition.Execute` e
+  `ConsumableExecutor` chamam `GridController.PlayActionVisual` **antes** do
+  dano; cada personagem atingido tem a reação enfileirada para o impacto na sua
+  célula (`QueueImpactAnimation`). O número de dano (`Cell`), o efeito de morte
+  e os orbs de XP leem esse atraso (`GridController.GetPendingImpactDelay`).
+  Arte num quadrado da largura da célula (serve para linhas e colunas),
+  desenhada virada para a direita e girada só em passos de 90°. Nenhuma regra
+  lê o visual.
 
 ### Responsabilidades
 
@@ -305,7 +338,7 @@ Morte de inimigo
   salvamento novo deve ser ignorado quando `SimMode.IsActive` (veja os
   existentes em `Cell`, `GridMovementAnimator`, `GridEffectsAnimator`,
   `TurnManager`, `XpOrbsVfx`, `AudioManager`, `RunManager`,
-  `GameFlowController`). Com o modo desligado, o jogo não muda.
+  `GameFlowController`, `ActionVisualPlayer`, `MonetizationService`). Com o modo desligado, o jogo não muda.
   Com `SimulationOptions.showBoard` (`SimMode.ShowBoard`) a única tela que o
   fluxo abre é a de batalha, para quem estiver olhando ver o tabuleiro.
 - Cada parte da UI que conhece nomes/medidas do UXML fica encapsulada numa
@@ -371,6 +404,9 @@ Morte de inimigo
   `.hud-tile`, `.stat-bar`, `.mini-slot`, `.overlay-screen`, ...). Regras que
   sobrescrevem o tema de botões do Unity usam escopo `#container`.
 - USS de tela só com o layout específico; `#id` só para ajustes únicos.
+- O UI Toolkit **não tem pseudo-classes estruturais** (`:first-child`, `:last-child`, `:nth-child`, `:not`):
+  a regra inteira é descartada, com um aviso no console. Para tratar o primeiro ou o último item, ponha uma
+  classe pelo código.
 - Nomenclatura: kebab-case; modificadores com `--`; classes do framework com
   prefixo `zs-`.
 - **Contratos de nome** (usados por código): `container`, `menu-button`,
@@ -379,7 +415,9 @@ Morte de inimigo
   `close-button`, `details-*`, `map-*`, `node-<id>`, `preview-*`,
   `confirm-button`, `summary-*`, `offer-*`, `confirm-*`, `continue-btn`,
   `new-game-btn`, `back-btn`, `select-class-label`, `menu-buttons`,
-  `glossary-btn`, `options-btn`, `locked-info`, `character-*`; e os caminhos do Animator do
+  `glossary-btn`, `options-btn`, `locked-info`, `character-*`, `remove-ads-*`,
+  `ad-notice-*`, `simulated-ad-*`, `talent-tools-hint`, `options-ads-label`,
+  `options-remove-ads-button`, `summary-remove-ads-button`, `options-dev-label`, `options-reset-button`; e os caminhos do Animator do
   menu (`#container/#character-selection/#<x>-btn/#<x>-image`). Não mude nome
   nem hierarquia sem atualizar o código/clip.
 - Não use `<Template>`/`<Instance>` onde há seletor `>` ou caminho de Animator.
@@ -412,7 +450,7 @@ Morte de inimigo
 | Novo inimigo | `Create > GridBattle > Characters > Enemy Config`: sprite/animator (ou `tint` sobre arte existente), atributos, `prefab = Enemy.prefab`, `behavior`, `role`, `behaviorDescription`, `xpReward`, estados iniciais. Textos na tabela `Content`. Para aparecer nas batalhas: entrada no pool de `BattleGenerationSettings` (profundidade mín./máx., peso). |
 | Novo comportamento de IA | Subclasse de `EnemyAction` (ou `EnemyAbilityAction`, que já tem cooldown na `EnemyMemory`) + asset; combine num `EnemyBehavior`. |
 | Novo papel de inimigo | `Create > GridBattle > AI > Enemy Role` (ícone 8×8, fator de ameaça, conta como linha de frente). |
-| Nova skill | `Create > GridBattle > Skills > Skill Definition`: tipo, dano, forma/tamanho de área, alcance, cooldown, alvos, efeitos. Inicial de classe: lista `skills` do `PlayerCharacterConfig`; liberada por talento: `unlockedSkill` do talento; de inimigo: `skills` do `EnemyConfig`. |
+| Nova skill | `Create > GridBattle > Skills > Skill Definition`: tipo, dano, forma/tamanho de área, área de seleção (forma, alcance mínimo e máximo, alcance modificável, célula alvo), cooldown, alvos, efeitos. Inicial de classe: lista `skills` do `PlayerCharacterConfig`; liberada por talento: `unlockedSkill` do talento; de inimigo: `skills` do `EnemyConfig`. |
 | Skill que empurra ou puxa | Skill normal com o efeito `Displace` na lista de efeitos: modo (longe do lançador, em direção ao lançador ou longe do centro da área) e distância. Ele roda depois do dano; colisão e terreno seguem `CombatSettings`. Para inimigos, `UseSkills` só a usa quando o resultado previsto vale a pena (`DisplacementAiWeights` no asset `UseSkills`). |
 | Personagem imóvel (chefe) | Desmarque `canBeDisplaced` no `CharacterConfig`: empurrões e puxões não o movem, mas ele ainda bloqueia e leva o dano de quem é lançado contra ele. Imunidades: `immuneStates` (estados ignorados, `StateContainer.Apply` devolve nulo) e `maxHpPercentDamageMultiplier` (parte do dano periódico que depende da vida máxima). |
 | Novo estado | `Create > GridBattle > States > State Definition` + efeitos no dropdown (atributos, dano/cura periódicos, espinhos, roubo de vida, escudo, restrições, modificadores da run). |
@@ -423,6 +461,7 @@ Morte de inimigo
 | Terreno que bloqueia (ou não) a visão | `Blocks Line Of Sight` no `TerrainDefinition` (só vale para terreno que bloqueia movimento; desligue para obstáculos baixos). |
 | Conferir conteúdo novo | `GridBattle > Validate Content` (textos nos 3 idiomas, chaves de texto do código, referências vazias, talentos fora dos pools, inimigos que não aparecem, telas, ícones, banco de conteúdo). |
 | Novo consumível | `Create > GridBattle > Consumables > Consumable Definition` (alvo, área, efeitos, peso) e adicione ao pool de `ConsumableSettings`. |
+| Visual de skill ou item | `Create > GridBattle > Vfx > Action Visual` (gesto, projétil, quadros por célula, ordem, quadro do impacto, direção, queda, permanência) e ligue no campo `Visual` da skill/consumível. Provisórios: `GridBattle > Vfx > Generate Placeholder Visuals` (redesenha os PNGs e reescreve os visuais provisórios; só liga onde o campo está vazio). Ver `docs/projeto/guia_sistemas.md`. |
 | Novo terreno | `Create > GridBattle > Terrain > Terrain Definition` (tipo, bloqueio, gatilho, dano/estados, visual) e adicione ao pool de `TerrainGenerationSettings`. |
 | Nova dica de tutorial | `TutorialTipDefinition` com o `ETutorialTrigger` + `TutorialService.Notify(gatilho)` no ponto do jogo. |
 | Novo personagem jogável | `Player Character Config` (`prefab = PlayerCharacter.prefab`, `characterClass`, `battlesToUnlock`, `talentPool`, skills iniciais); adicione em `GameStateManager.playableCharacters` e um botão no menu. |
@@ -431,6 +470,7 @@ Morte de inimigo
 | Medir o balanceamento | `GridBattle > Simulation > Run Balance Simulation` (opções no asset `Settings/Simulation/BalanceSimulationSettings`): runs completas por classe com bots, relatório em `persistentDataPath/Simulation/<data>_<rótulo>/` (`summary.md`, `runs.csv`, `battles.csv`). Guia completo: `docs/projeto/simulador_balanceamento.md`. |
 | Ajustar combate | `Settings/Combat/CombatSettings` (defesa, dano mínimo, métricas, colisão de empurrões e puxões). |
 | Ajustar run | `Settings/Run/RunSettings` (cura, custo do nó de talento, estados entre batalhas, seed de depuração, `autoEnterFirstNode`). |
+| Ajustar a monetização | `Settings/Monetization/MonetizationSettings` (chaves e blocos do LevelPlay, produto da loja, momentos e rampa dos anúncios forçados, aviso, oferta, privacidade, modo do Editor); recargas por run em `TalentOfferSettings`. Testes sem loja: `GridBattle > Monetization > Testing`. Ver `docs/projeto/monetizacao.md`. |
 | Adicionar som | Arraste clipes na entrada do `ESfx`/`EMusicContext` em `Settings/Audio/AudioLibrary`. |
 | Novo texto | Entrada nas tabelas `UI`/`Content` (`Window > Asset Management > Localization Tables`) nos 3 idiomas. |
 | Nova tela/modal | UXML + USS em `UI/Screens|Overlays/<Nome>/`; `ViewController` em `Scripts/UI/...`; `ViewDefinition` (Instantiate na `ScreensLayer` ou na camada de modais); navegue a partir do `GameFlowController`. |
@@ -454,6 +494,8 @@ Morte de inimigo
   arquivos podem ser do jogo de verdade de quem desenvolve: antes do teste,
   guarde uma cópia dos que existem; depois, restaure as cópias e apague só
   os que o teste criou. O simulador não grava nenhum deles.
+- **Resetar o jogo** (*Opções > Desenvolvimento*, `GameReset`) no Editor apaga o perfil, o save e as
+  métricas **reais** de quem desenvolve. Em testes automáticos, guarde e restaure os arquivos como acima.
 - **O Editor é compartilhado**: antes de entrar em Play Mode por script,
   confira se ele já está em Play Mode sem um teste seu rodando (alguém pode
   estar jogando) e não o interrompa sem avisar.
@@ -466,8 +508,8 @@ Morte de inimigo
   (`ThaleahFat_TTF SDF.asset`, `LiberationSans SDF - Fallback.asset`).
   Reverta antes de commitar se não for intencional.
 - Conteúdo marcado como **provisório** (inimigos de exemplo, chefe,
-  talentos, ícones gerados) existe para os sistemas funcionarem: substitua
-  pelos definitivos sem mudar código.
+  talentos, ícones e visuais de skills gerados) existe para os sistemas
+  funcionarem: substitua pelos definitivos sem mudar código.
 - Mudanças de gameplay devem ser deliberadas: refatorações precisam manter o
   jogo idêntico (ver Verificação).
 
@@ -504,12 +546,103 @@ O Unity Editor costuma estar aberto e acessível pela CLI `unity` (pacote
   muda o jogo base.
 - Fluxos de UI: scripts que clicam com `SimulateClick` e tiram screenshots
   (`ScreenCapture.CaptureScreenshot`) para conferir 216×384.
+- Monetização: no Editor (`Editor Mode = Simulated`) o anúncio é a tela de teste e a compra é simulada. Um
+  script de Play Mode pode levar o perfil até um anúncio devido (contadores de `MonetizationService.State`)
+  e disparar `NodeCompletedEvent`. Só `MonetizationService` escuta esse evento.
 - Para provar que UI/USS/UXML não mudaram: script que grava a árvore visual de
   cada painel (`worldBound` + `resolvedStyle`) por estado e compara.
 
 ## Histórico de refatorações
 
 Registre aqui toda mudança estrutural (mais recente primeiro).
+
+### 2026-10-12 — Área de seleção das skills (estilo Dofus)
+Pedido do usuário: além da área de efeito, a área onde a skill pode ser mirada, configurável como no Dofus.
+- `Rules/SkillSelection` (puro): `ESkillSelectionShape` (Circle, Line, Diagonal, Star, Square), distância ao
+  longo da forma, alcance mínimo e máximo; `ESkillTargetCell` (Any, Empty, Occupied).
+- `SkillDefinition`: `selectionShape`, `minRange`, `rangeModifiable` e `targetCell` (padrões = o
+  comportamento anterior); `EffectiveSkill` os expõe; `SkillTargeting.IsTargetInRange` e
+  `IsTargetCellAccepted` os aplicam (mira do jogador, destaques, IA, bot). Ficha da skill: "Alcance: 1-3, em
+  linha". `ContentValidator` acusa mínimo maior que o máximo.
+- Configuração (mudança de mecânica pedida; ver `docs/design/sistema_combate.md`): Guerreiro em linha com
+  alcance fixo, Mago em círculo 1-3 (Nova 0-2), Ladino em linha/estrela, Ganchos em linha 2-4.
+- Verificado: com os padrões, partida determinística e simulador idênticos; com a configuração, partida
+  idêntica (não usa skills), `TalentChecks` 7777/7777 e teste de Play Mode das formas (14 verificações).
+  O simulador mudou (Guerreiro 13% → 0% e 40% → 17%; Mago e Ladino quase iguais). **Sem balanceamento:**
+  decisão do usuário, as skills e os números ainda vão mudar.
+
+### 2026-10-12 — Monetização (GDD 7)
+Pedido do usuário: anúncios e compra de remoção de anúncios como no GDD. Decisões do usuário:
+- Android e iOS;
+- cobrança pela Google Play e pela App Store (Unity IAP, não D2C);
+- privacidade só com a estrutura pronta;
+- as melhorias aprovadas: aviso antes do anúncio, oferta depois do anúncio e botão no menu principal.
+
+Guia em `docs/projeto/monetizacao.md`.
+- **Pacotes:**
+  - `com.unity.services.levelplay` 9.5.1 e `com.unity.purchasing` 5.4.4;
+  - o Mobile Dependency Resolver importado pelo LevelPlay (`Assets/MobileDependencyResolver`,
+    `Assets/LevelPlay`, templates de Gradle em `Assets/Plugins/Android`, `ProjectSettings/GvhProjectSettings.xml`);
+  - permissão AD_ID ligada em `LevelPlayMediationSettings`.
+- **Lógica** (`Gameplay/Monetization`):
+  - `MonetizationService` se autoinicializa e escolhe os provedores pela plataforma: SDKs no
+    Android/iOS, teste ou SDK no Editor (`EEditorMonetizationMode`), nada no PC;
+  - conta pausas (`NodeCompletedEvent`, `RunEndedEvent`) no `ProfileState.Monetization`;
+  - `ForcedAdRules` decide o anúncio devido;
+  - pausa o `AudioListener` durante anúncios.
+- **Ferramentas de talento com anúncio** (decisão do usuário, no lugar da recarga feita antes):
+  - `MonetizationService.PayForTalentToolAsync` mostra o recompensado antes de cada uso de trocar, banir ou
+    pular;
+  - a regra de talento não mudou: o `TalentService` conta o uso como sempre, e o bot do simulador o chama
+    direto, sem anúncio;
+  - `MonetizationSettings.talentToolsNeedAd` e `allowToolsWithoutAd`.
+- **Compra:**
+  - grava o perfil antes de `ConfirmPurchase`;
+  - `SaveSystem.Save` e `ProfileService.Save` passaram a devolver se gravaram.
+- **UI:**
+  - modais `RemoveAds`, `AdNotice` e `SimulatedAd` (`ModalsSettings`);
+  - na janela de talento, uma linha avisando que cada uso mostra um anúncio (`talent-tools-hint`);
+  - "Remover anúncios" no menu principal, nas Opções e no fim de run (`RemoveAdsRequestedEvent`);
+  - o `GameFlowController` mostra o anúncio forçado pendente em tela parada (mapa, fim de run, menu).
+- **Editor:**
+  - `Tools/MonetizationMenu` (marcar ou desmarcar a compra, zerar os contadores);
+  - o `ContentValidator` confere as views e avisa (nota) quando faltam as chaves do LevelPlay.
+- **Reset de desenvolvimento** (pedido do usuário): `Managers/GameReset` (só com `Debug.isDebugBuild`:
+  Editor e Development Build) encerra a run pelo caminho do "Desistir", apaga o save, o perfil, as métricas
+  (`MetricsRecorder.DeleteFiles`) e o estado de anúncios da sessão (`MonetizationService.OnProfileReset`),
+  aplica as opções padrão e emite `GameResetEvent` (o `GameFlowController` vai ao menu principal, sem a
+  tela de fim de run). Botão em *Opções > Desenvolvimento*, com confirmação. Teste de Play Mode: 15 de 15.
+- **Menu principal:** todos os espaços entre os botões com `--spacing-md` (o "Continuar" tinha 2 px a mais
+  em cima).
+- **USS:** removida de `Components.uss` a regra `.slot-bar > .slot-button:first-child`. O UI Toolkit não
+  suporta `:first-child`, então ela nunca valeu (só gerava o aviso "Unknown pseudo class"). A tela não muda:
+  o primeiro botão das barras continua com a margem de 2 px.
+- **Verificado:**
+  - teste de Play Mode com 31 de 31 verificações (anúncio forçado com aviso, tempo mínimo, oferta,
+    compra, restauração, botões, trocar e banir com anúncio, anúncio fechado antes, pular grátis depois da
+    compra);
+  - partida determinística idêntica a `trace4.txt`;
+  - simulador idêntico (180 runs);
+  - `TalentChecks` 7777/7777, `ZS.UI` 14/14, validador sem erros.
+
+### 2026-10-12 — Protótipo de visuais de skills e itens
+Pedido do usuário (recomendação para células retangulares: peças pequenas por
+célula em vez de uma animação da ação inteira). Só visual.
+- `Gameplay/Movement/ActionVisualDefinition` (asset `Create > GridBattle >
+  Vfx > Action Visual`) e `ActionVisualPlayer` (criado pelo `GridController`;
+  `IsAnimatingMovement` e `AnimationSpeed` o incluem; ignorado em `SimMode`).
+- `SkillDefinition.visual` (seção *Look*) e `ConsumableDefinition.visual`:
+  com visual, a skill o toca no lugar da investida; sem ele, nada muda.
+- Impacto sincronizado: `GridEffectsAnimator.PeekPendingDelay` /
+  `GridController.GetPendingImpactDelay`; `Cell` atrasa a barra de vida e o
+  número de dano; `XpOrbsVfx` esconde os orbs até o impacto
+  (`XpRewardDroppedEvent.Source`, o inimigo que morreu).
+- Arte provisória: `Editor/Tools/VfxPlaceholders` desenha quadros 24×24 em
+  `Art/Sprites/Placeholders/Vfx/` e cria `Settings/Vfx/ActionVisuals/<Nome>Visual.asset`
+  para as 14 skills e a Bomba.
+- Verificado: partida determinística idêntica a `trace4.txt`; simulador
+  (180 runs, seeds 1000–1029, duas políticas) idêntico ao lote anterior;
+  validador com 0 problemas; capturas em Play Mode de cada visual.
 
 ### 2026-10-12 — Menu, talentos, linha de visão e manutenção
 Pedidos do usuário; resumo para leitura em `docs/projeto/resumo_das_mudancas.md`.

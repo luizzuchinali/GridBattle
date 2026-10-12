@@ -33,6 +33,7 @@ Perfil (entre runs): classes liberadas, glossário, recordes, opções, dicas vi
 | Atributos e estados | Vida, dano, crítico, defesa... e estados (buffs/debuffs) com duração | configs dos personagens, `Settings/States/` |
 | Combate | Fórmula de dano, defesa, crítico, distâncias | `Settings/Combat/CombatSettings` |
 | Skills | Ações ativas com área, alcance e cooldown | `Settings/Skills/` |
+| Visual das ações | Como skills e itens aparecem no tabuleiro (gesto, projétil, efeito por célula) | `Settings/Vfx/ActionVisuals/` |
 | Inimigos e IA | Papéis, comportamentos, ações (curar, invocar, manter distância...) | `Settings/AI/` |
 | Terreno | Obstáculos, células de perigo e de bônus | `Settings/Terrain/` |
 | Consumíveis | Itens de uso único, sem gastar a ação | `Settings/Consumables/` |
@@ -43,6 +44,7 @@ Perfil (entre runs): classes liberadas, glossário, recordes, opções, dicas vi
 | Áudio | Efeitos e músicas por contexto | `Settings/Audio/AudioLibrary` |
 | Idiomas | Textos em inglês, espanhol e português | `Assets/Application/Localization/` |
 | Simulador de balanceamento | Bot que joga runs completas e gera um relatório ([[simulador_balanceamento]]) | `Settings/Simulation/BalanceSimulationSettings` |
+| Monetização | Anúncios forçados nas pausas da run, anúncio recompensado antes de cada uso das ferramentas de talento e compra de remoção de anúncios ([[monetizacao]]) | `Settings/Monetization/MonetizationSettings` |
 
 ## 2. Conceitos que valem para tudo
 
@@ -92,6 +94,8 @@ Perfil (entre runs): classes liberadas, glossário, recordes, opções, dicas vi
   no mesmo caminho** (mesmo nome) ou aponte o campo *Icon* do asset para o
   sprite novo. Ícones que aparecem no mundo (sobre inimigos) devem ter 8×8;
   os de interface, 16×16 (escala sempre inteira, pixel perfect).
+- Os visuais de skills e itens também são provisórios, desenhados por código
+  (ver [Visual de uma skill ou item](#visual-de-uma-skill-ou-item)).
 
 ## 3. Criando conteúdo
 
@@ -168,8 +172,34 @@ Perfil (entre runs): classes liberadas, glossário, recordes, opções, dicas vi
    - **dano** (fixo);
    - **forma da área**: Circle, Cross, Linear, Cone, Arc ou Perpendicular;
    - **tamanho**: ímpar, de 1 a 9;
-   - **alcance**: distância Manhattan até o alvo. 0 = centrada no próprio
-     personagem; *Unlimited Range* = qualquer célula;
+   - **área de seleção** (onde a skill pode ser mirada, como no Dofus; a área de efeito é outra coisa,
+     desenhada em volta da casa mirada):
+     - *Selection Shape*:
+       - *Circle*: todas as casas no alcance (um losango);
+       - *Line*: só a linha e a coluna de quem usa (cruz, o "lançar em linha" do Dofus);
+       - *Diagonal*: só as diagonais;
+       - *Star*: linha e diagonal;
+       - *Square*: o quadrado inteiro.
+
+       A distância é contada ao longo da forma (um passo na diagonal vale 1).
+     - *Min Range*: menor distância mirável. 0 = a própria casa também; 1 = não a própria casa; 2 = nem
+       as vizinhas;
+     - *Range*: maior distância. 0 = centrada no próprio personagem;
+     - *Range Modifiable*: o atributo Alcance de skills soma ao máximo ("alcance modificável" do Dofus;
+       desligue para golpes corpo a corpo). Talentos que mudam o alcance da skill valem sempre;
+     - *Unlimited Range*: sem máximo (a forma e o mínimo continuam valendo);
+     - *Target Cell*: qualquer casa, casa vazia (teleporte, armadilha) ou casa com personagem;
+
+     ```
+     Círculo         Linha (cruz)    Diagonal        Estrela         Quadrado
+     . . X . .       . . X . .       X . . . X       X . X . X       X X X X X
+     . X X X .       . . X . .       . X . X .       . X X X .       X X X X X
+     X X @ X X       X X @ X X       . . @ . .       X X @ X X       X X @ X X
+     . X X X .       . . X . .       . X . X .       . X X X .       X X X X X
+     . . X . .       . . X . .       X . . . X       X . X . X       X X X X X
+     ```
+     (alcance 2; `@` = quem usa; com alcance mínimo 1, o `@` sai; com mínimo 2, saem também as casas vizinhas)
+
    - **cooldown**: ações do jogador entre usos;
    - **quem é afetado**: inimigos, aliados ou todos;
    - **Ignores Line Of Sight**: a skill não precisa ver o alvo (obstáculos e
@@ -179,7 +209,10 @@ Perfil (entre runs): classes liberadas, glossário, recordes, opções, dicas vi
      Desligado em todas: a skill pode ser mirada em qualquer célula do
      alcance (o destaque cobre todo o alcance);
    - **efeitos extras**: aplicar estados, curar, teletransportar,
-     empurrar ou puxar (ver abaixo).
+     empurrar ou puxar (ver abaixo);
+   - **Visual** (seção *Look*): como a skill aparece no tabuleiro (ver
+     [Visual de uma skill ou item](#visual-de-uma-skill-ou-item)). Vazio =
+     a investida do ataque básico nas skills ofensivas.
 3. Para quem fica a skill:
    - skill inicial da classe: lista `skills` da classe;
    - liberada por talento: campo `unlockedSkill` do talento;
@@ -302,10 +335,77 @@ compartilhado, para os talentos da classe aparecerem mais. 1 desliga o efeito.
    - alvo: *Self* (usado na hora) ou *Cell* (escolhe uma célula, com alcance e
      área como uma skill);
    - efeitos: curar, causar dano ou aplicar estados;
-   - peso de sorteio.
+   - peso de sorteio;
+   - **Visual**: como o item aparece no tabuleiro (a Bomba voa em arco e
+     explode na área).
 3. Adicione ao pool de `Settings/Consumables/ConsumableSettings`. Lá também
    ficam o número de espaços, o que fazer com o inventário cheio, quantas
    opções o nó de consumível oferece e o limite de um por turno.
+
+### Visual de uma skill ou item
+A aparência de uma skill ou de um item é um asset à parte, o **Action
+Visual** (`Create > GridBattle > Vfx > Action Visual`), ligado no campo
+*Visual* da skill ou do consumível. É só aparência: as regras nunca o leem e
+o simulador o ignora.
+
+Em vez de uma animação da ação inteira, ele monta a ação com peças pequenas.
+Uma animação inteira teria de ser desenhada duas vezes, para linhas e para
+colunas, porque a célula é retangular.
+
+1. **Caster**: o gesto de quem usa:
+   - *Lunge*: a investida do ataque básico;
+   - *Glow*: pisca na cor *Glow Color* (magias e itens);
+   - *None*: nada.
+2. **Projectile** (opcional): quadros de algo que voa de quem usa até a
+   célula mirada:
+   - velocidade em células por segundo;
+   - *Arc*: altura do arco, em células (a bomba usa cerca de 0,6);
+   - *Faces Direction*: gira para a direção do voo (desligue para coisas
+     redondas).
+3. **Effect on each cell of the area**: quadros tocados em **cada célula da
+   área**, numa ordem que desenha a forma:
+   - *Order*:
+     - *Simultaneous*: todas juntas;
+     - *Ripple From Target*: em onda a partir da célula mirada (explosões);
+     - *Away From Caster*: da célula mais perto para a mais longe (linhas,
+       cones);
+     - *Sweep*: de um lado para o outro, atravessando a direção do golpe
+       (cortes em arco).
+   - *Step Seconds*: intervalo entre um passo da ordem e o próximo; *Frame
+     Seconds*: duração de cada quadro;
+   - *Impact Frame*: o quadro em que o golpe acerta. A reação de quem é
+     atingido, o número de dano, o efeito de morte e os orbs de XP esperam
+     esse quadro na célula da pessoa;
+   - *Cell Facing*:
+     - *None*: arte redonda;
+     - *Caster To Target*: cortes e estocadas;
+     - *Away From Target*: empurrões a partir do centro. O vento da Rajada
+       aponta para onde cada inimigo é empurrado.
+
+     A reação de quem é atingido segue a mesma direção.
+   - *Drop Pixels*: o efeito cai de cima antes de tocar (raio);
+   - *Linger Seconds*: o último quadro fica e some aos poucos (fumaça,
+     veneno);
+   - *Tint*: cor multiplicada sobre os quadros.
+
+**Arte:**
+- cada quadro cabe num **quadrado da largura da célula** (hoje 24×24, PPU
+  100, filtro *Point*), centrado. A mesma arte serve para linhas e colunas;
+- arte com direção é desenhada **virada para a direita**, e o jogo a gira em
+  passos de 90°. Nunca há rotação em outros ângulos nem escala fracionária
+  (pixel perfect).
+
+**Provisórios:** `GridBattle > Vfx > Generate Placeholder Visuals`:
+- desenha quadros simples (impacto, fogo, gelo, veneno, fumaça, raio, vento,
+  corte, onda, orbe, bomba, adaga e gancho) em `Art/Sprites/Placeholders/Vfx/`;
+- cria um Action Visual por skill e um para a Bomba em
+  `Settings/Vfx/ActionVisuals/`;
+- só liga um visual onde o campo *Visual* está vazio; a sua escolha é
+  mantida.
+
+⚠️ A cada execução, o gerador **redesenha os PNGs e reescreve os campos dos
+visuais provisórios**. Para a arte final, crie sprites e visuais com outros
+nomes (ou troque os PNGs e não rode o gerador de novo).
 
 ### Terreno
 1. `Create > GridBattle > Terrain > Terrain Definition`.
@@ -431,6 +531,18 @@ recomeçar do zero, apague os três.
 - **Simulador de balanceamento:** joga runs completas sozinho e mede o
   balanceamento. Veja [[simulador_balanceamento]].
 - **Ver a navegação de UI ao vivo:** `Window > ZS > UI Navigation Debugger`.
+- **Resetar o jogo (build de desenvolvimento e Editor):** *Opções > Desenvolvimento > Resetar o jogo*, depois
+  de confirmar:
+  - encerra a run em andamento e apaga o save;
+  - apaga o perfil (classes, glossário, recordes, dicas vistas, opções, a compra de remover anúncios e os
+    contadores de anúncios) e as métricas;
+  - volta ao menu principal.
+
+  No Editor, apaga os **seus** arquivos. Uma compra feita numa conta de loja volta na próxima consulta à
+  loja. A opção não existe em build de produção.
+- **Monetização no Editor:** anúncios e loja de teste (`MonetizationSettings > Editor Mode`). O menu
+  `GridBattle > Monetization > Testing` marca ou desmarca a compra no perfil e zera os contadores dos
+  anúncios forçados.
 
 ## 8. Simulador de balanceamento
 
@@ -443,7 +555,21 @@ Tudo sobre ele (como funciona, opções, relatório, fluxo de trabalho, uso por
 script e cuidados ao criar sistemas novos) está em
 [[simulador_balanceamento]].
 
-## 9. Pendências conhecidas
+## 9. Monetização
+
+Anúncios do Unity LevelPlay e compra pelo Unity IAP (Google Play e App Store), só no Android e no iOS:
+- **anúncio forçado** nas pausas da run (nunca na batalha), com carência, fase inicial com pouca frequência,
+  frequência normal, tempo mínimo e um aviso antes;
+- **anúncio recompensado** antes de cada uso de trocar, banir ou pular: o uso só acontece se o anúncio for
+  assistido até o fim e conta no limite da run como sempre;
+- **remoção de anúncios** no menu, nas Opções e na tela de derrota. Depois da compra, as ferramentas
+  funcionam sem anúncio, com o mesmo limite.
+
+Tudo é configurado em `Settings/Monetization/MonetizationSettings`. Como funciona e os valores iniciais
+estão em [[monetizacao]]. O passo a passo para ligar os anúncios e a compra de verdade (painéis, chaves,
+builds, testes no celular, privacidade) está em [[habilitar_anuncios_e_compras]].
+
+## 10. Pendências conhecidas
 - **Fonte pixel com acentos:** precisa de uma nova fonte (decisão de arte).
 - **Conteúdo provisório:** inimigos de exemplo, chefe, talentos e ícones
   existem para os sistemas funcionarem e devem ser substituídos pelos
@@ -453,5 +579,11 @@ script e cuidados ao criar sistemas novos) está em
   [[valores_padrao_em_aberto]]). O que foi feito, a última medição e o que
   falta (inclusive a ferramenta de metas e ajuste automático com uma janela
   para uso humano) estão em `docs/planos/plano_balanceamento.md`.
-- **Monetização (anúncios e compra):** fora do escopo por enquanto.
+- **Monetização:** implementada (ver [[monetizacao]]). Faltam:
+  - as chaves do LevelPlay e o produto nas lojas;
+  - o perfil de build do iOS;
+  - a tela de consentimento e o ATT (decisão sua).
 - **Áudio:** sistema pronto, sem clipes.
+- **Visual das skills e itens:** protótipo com arte provisória desenhada por
+  código. Falta avaliar jogando e trocar pela arte final; os inimigos sem
+  visual próprio (ataque básico) continuam com a investida.

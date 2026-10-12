@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using GridBattle.Gameplay.Combat;
+using GridBattle.Gameplay.Rules;
 using UnityEngine;
 
 namespace GridBattle.Gameplay.Entities.Skills
@@ -123,6 +124,18 @@ namespace GridBattle.Gameplay.Entities.Skills
         public ESkillAreaShape AreaShape => Skill.AreaShape;
 
         public bool UnlimitedRange => Skill.UnlimitedRange;
+
+        /// <summary>The authored selection area (modifiers never change it; the maximum range is <see cref="Range"/>).</summary>
+        public ESkillSelectionShape SelectionShape => Skill.SelectionShape;
+
+        /// <summary>Smallest distance of a cell that can be aimed at.</summary>
+        public int MinRange => Skill.MinRange;
+
+        /// <summary>The caster's Skill Range attribute adds to the maximum range.</summary>
+        public bool RangeModifiable => Skill.RangeModifiable;
+
+        /// <summary>What must be on the aimed cell.</summary>
+        public ESkillTargetCell TargetCell => Skill.TargetCell;
 
         /// <summary>Whether the skill is centered on the caster (authored range 0, not unlimited).</summary>
         public bool IsSelfCentered => Skill.IsSelfCentered;

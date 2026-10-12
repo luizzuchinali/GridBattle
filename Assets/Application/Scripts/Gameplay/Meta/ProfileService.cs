@@ -69,12 +69,15 @@ namespace GridBattle.Gameplay.Meta
             EventBus.Raise(new ProfileChangedEvent(EProfileChange.Loaded));
         }
 
-        /// <summary>Writes the profile to disk. Every change through this service already does it.</summary>
-        public static void Save()
+        /// <summary>
+        /// Writes the profile to disk. Every change through this service already does it. Returns false when the
+        /// file could not be written (the purchase flow waits for a saved profile before confirming an order).
+        /// </summary>
+        public static bool Save()
         {
-            if (_state == null) return;
+            if (_state == null) return false;
 
-            SaveSystem.Save(_fileName, _state);
+            return SaveSystem.Save(_fileName, _state);
         }
 
         /// <summary>

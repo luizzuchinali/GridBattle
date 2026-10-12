@@ -1,4 +1,5 @@
 using System;
+using GridBattle.Gameplay;
 using GridBattle.Gameplay.Events;
 using GridBattle.Gameplay.Simulation;
 using GridBattle.UI.Screens;
@@ -53,6 +54,11 @@ namespace GridBattle.UI.Vfx
                 _camera = Camera.main;
             if (_camera == null) return;
 
+            // The orbs appear when the killing blow lands on screen: a projectile or an area effect may still be on
+            // its way to the enemy's cell (the same wait as its damage number and death effect).
+            var grid = GridController.Instance;
+            var hiddenFor = e.Source != null && grid != null ? grid.GetPendingImpactDelay(e.Source) : 0f;
+
             var start = RuntimePanelUtils.CameraTransformWorldToPanel(layer.panel, e.Origin, _camera);
             for (var i = 0; i < e.Packets.Count; i++)
             {
@@ -60,14 +66,18 @@ namespace GridBattle.UI.Vfx
                 var end = track.GetPoint(packet.ProgressAfter);
                 var control = (start + end) / 2f + new Vector2(0f, -settings.ArcHeight);
 
-                LaunchOrb(layer, start, control, end, i * settings.StaggerDelay, () => e.Collect(packet));
+                LaunchOrb(layer, start, control, end, hiddenFor, i * settings.StaggerDelay, () => e.Collect(packet));
             }
 
             e.MarkPresented();
         }
 
-        private void LaunchOrb(VisualElement layer, Vector2 start, Vector2 control, Vector2 end, float delay,
-            Action onArrived)
+        /// <summary>
+        /// Adds an orb at <paramref name="start"/>, hidden for <paramref name="hiddenFor"/> seconds; it waits there
+        /// <paramref name="delay"/> more seconds and then flies to <paramref name="end"/>.
+        /// </summary>
+        private void LaunchOrb(VisualElement layer, Vector2 start, Vector2 control, Vector2 end, float hiddenFor,
+            float delay, Action onArrived)
         {
             var orb = new VisualElement();
             orb.pickingMode = PickingMode.Ignore;
@@ -77,9 +87,16 @@ namespace GridBattle.UI.Vfx
             orb.style.backgroundImage = new StyleBackground(settings.OrbSprite);
             SetPosition(orb, start);
             layer.Add(orb);
+            if (hiddenFor > 0f)
+            {
+                orb.visible = false;
+                LMotion.Create(0f, 1f, hiddenFor)
+                    .WithOnComplete(() => orb.visible = true)
+                    .Bind(_ => { });
+            }
 
             LMotion.Create(0f, 1f, settings.FlightDuration)
-                .WithDelay(delay)
+                .WithDelay(hiddenFor + delay)
                 .WithEase(settings.FlightEase)
                 .WithOnComplete(() =>
                 {

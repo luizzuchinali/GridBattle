@@ -726,7 +726,7 @@ PlayerSettings:
   webEnableSubmoduleStrippingCompatibility: 0
   webProgressiveAssetLoading: 0
   scriptingDefineSymbols:
-    Android: 
+    Android: LEVELPLAY_DEPENDENCIES_INSTALLED
     EmbeddedLinux: 
     GameCoreScarlett: 
     GameCoreXboxOne: 

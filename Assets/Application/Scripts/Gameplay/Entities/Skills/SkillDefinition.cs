@@ -2,6 +2,8 @@ using System.Collections.Generic;
 using GridBattle.Data;
 using GridBattle.Gameplay.Combat;
 using GridBattle.Gameplay.Events;
+using GridBattle.Gameplay.Movement;
+using GridBattle.Gameplay.Rules;
 using UnityEngine;
 
 namespace GridBattle.Gameplay.Entities.Skills
@@ -65,7 +67,8 @@ namespace GridBattle.Gameplay.Entities.Skills
 
     /// <summary>
     /// An active skill (GDD Mechanic 7 / section 6): a reusable action with a
-    /// cooldown, a range to pick the target cell and an area of effect around it.
+    /// cooldown, a selection area to pick the target cell (shape, minimum and maximum range, line of sight, what
+    /// must be on the cell, as in Dofus) and an area of effect around it.
     /// Fully data-driven: damage, area, range, cooldown and who is affected are
     /// Inspector fields, and non-damage results (states, healing, teleport) are
     /// composed from <see cref="SkillEffect"/>s. Players and enemies share the same
@@ -99,16 +102,39 @@ namespace GridBattle.Gameplay.Entities.Skills
         [Tooltip("Size of the area (odd number, 1 to 9). 1 = only the target cell.")]
         private int areaSize = 1;
 
-        [Header("Targeting")]
+        [Header("Selection area (where it can be aimed)")]
+        [SerializeField]
+        [Tooltip("Cells the skill can be aimed at around the caster. Circle: every cell in range (a diamond by the " +
+                 "skill range metric). Line: only the caster's row and column, a cross (Dofus 'cast in line'). " +
+                 "Diagonal: only the diagonals. Star: line and diagonal. Square: every cell of the square around the " +
+                 "caster. Distances are counted along the shape.")]
+        private ESkillSelectionShape selectionShape = ESkillSelectionShape.Circle;
+
         [SerializeField]
         [Min(0)]
-        [Tooltip("Maximum distance (skill range metric, Manhattan by default) from the caster to the target cell, " +
-                 "plus the caster's Skill Range attribute. 0 = self-centered (the target is the caster's own cell).")]
+        [Tooltip("Smallest distance of a cell that can be aimed at (Dofus minimum range). 0 = the caster's own cell " +
+                 "too; 1 = not the own cell; 2 = not the adjacent cells either.")]
+        private int minRange;
+
+        [SerializeField]
+        [Min(0)]
+        [Tooltip("Largest distance from the caster to the target cell, plus the caster's Skill Range attribute when " +
+                 "Range Modifiable is on. 0 = self-centered (the target is the caster's own cell).")]
         private int range = 1;
 
         [SerializeField]
-        [Tooltip("The target cell can be anywhere on the grid (ignores Range).")]
+        [Tooltip("The caster's Skill Range attribute adds to the maximum range (Dofus 'modifiable range'). Talent " +
+                 "modifiers of the skill always apply.")]
+        private bool rangeModifiable = true;
+
+        [SerializeField]
+        [Tooltip("The target cell can be anywhere on the shape (no maximum range; the minimum still applies).")]
         private bool unlimitedRange;
+
+        [SerializeField]
+        [Tooltip("What must be on the aimed cell: anything, no character (Dofus 'free cell': teleports, traps) or a " +
+                 "living character.")]
+        private ESkillTargetCell targetCell = ESkillTargetCell.Any;
 
         [SerializeField]
         private ESkillTargetFilter affects = ESkillTargetFilter.Enemies;
@@ -130,6 +156,12 @@ namespace GridBattle.Gameplay.Entities.Skills
         [Tooltip("Player actions between uses (enemy turns for enemies). 0 = no cooldown.")]
         private int cooldown = 1;
 
+        [Header("Look")]
+        [SerializeField]
+        [Tooltip("How the skill looks when used (gesture, projectile, effect on each cell of the area). Empty = the " +
+                 "attack lunge for offensive skills. Visual only.")]
+        private ActionVisualDefinition visual;
+
         [Header("Effects")]
         [SerializeReference]
         [SubclassPicker]
@@ -142,12 +174,17 @@ namespace GridBattle.Gameplay.Entities.Skills
         public ESkillAreaShape AreaShape => areaShape;
         public int AreaSize => areaSize;
         public int Range => range;
+        public ESkillSelectionShape SelectionShape => selectionShape;
+        public int MinRange => minRange;
+        public bool RangeModifiable => rangeModifiable;
+        public ESkillTargetCell TargetCell => targetCell;
         public bool UnlimitedRange => unlimitedRange;
         public ESkillTargetFilter Affects => affects;
         public bool IgnoresLineOfSight => ignoresLineOfSight;
         public bool RequiresAffectedTarget => requiresAffectedTarget;
         public int Cooldown => cooldown;
         public IReadOnlyList<SkillEffect> Effects => effects;
+        public ActionVisualDefinition Visual => visual;
 
         /// <summary>True for skills centered on the caster (range 0, not unlimited).</summary>
         public bool IsSelfCentered => !unlimitedRange && range == 0;
@@ -175,8 +212,11 @@ namespace GridBattle.Gameplay.Entities.Skills
             // The numbers (damage, area, effects) are the caster's effective ones: authored + talent modifiers.
             var context = SkillTargeting.CreateContext(grid, caster, EffectiveSkill.Resolve(caster, this), targetPos);
 
-            // Before the damage, so the target's hit reaction lands on the impact.
-            if (type == ESkillType.Offensive && targetPos != caster.CurrentGridPos)
+            // Before the damage, so the hit reactions land on the impact: the skill's own look when it has one,
+            // else the attack lunge of offensive skills.
+            if (visual != null)
+                grid.PlayActionVisual(visual, caster, targetPos, context.AreaCells, context.Affected);
+            else if (type == ESkillType.Offensive && targetPos != caster.CurrentGridPos)
                 grid.PlayAttackAnimation(caster, targetPos);
 
             DealDamage(context);
@@ -214,6 +254,12 @@ namespace GridBattle.Gameplay.Entities.Skills
             areaSize = Mathf.Clamp(areaSize, MinAreaSize, MaxAreaSize);
             if (areaSize % 2 == 0)
                 areaSize++;
+
+            // A self-centered skill aims at the caster's cell; otherwise the minimum cannot pass the maximum.
+            if (IsSelfCentered)
+                minRange = 0;
+            else if (!unlimitedRange)
+                minRange = Mathf.Min(minRange, range);
         }
 #endif
     }

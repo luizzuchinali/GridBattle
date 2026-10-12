@@ -18,20 +18,23 @@ namespace GridBattle.Gameplay.Entities.Skills
     /// </summary>
     public static class SkillTargeting
     {
-        /// <summary>Maximum selection distance: the skill's range plus the caster's Skill Range attribute.</summary>
+        /// <summary>
+        /// Maximum selection distance: the skill's range (with talent modifiers) plus the caster's Skill Range
+        /// attribute when the skill's range is modifiable.
+        /// </summary>
         public static int GetMaxRange(Character caster, SkillDefinition skill) =>
             GetMaxRange(caster, EffectiveSkill.Resolve(caster, skill));
 
         /// <inheritdoc cref="GetMaxRange(Character, SkillDefinition)"/>
         public static int GetMaxRange(Character caster, in EffectiveSkill skill)
         {
-            return skill.Range + caster.Stats.GetInt(EAttribute.SkillRange);
+            return skill.Range + (skill.RangeModifiable ? caster.Stats.GetInt(EAttribute.SkillRange) : 0);
         }
 
         /// <summary>
-        /// Whether the target cell is close enough to the caster. Self-centered
-        /// skills (range 0) only accept the caster's own cell; unlimited ones accept
-        /// any cell. Does not check the grid bounds.
+        /// Whether the target cell is in the skill's selection area (<see cref="SkillSelection"/>): on its shape and
+        /// between its minimum and maximum range. Self-centered skills (range 0) only accept the caster's own cell;
+        /// unlimited ones have no maximum. Does not check the grid bounds.
         /// </summary>
         public static bool IsTargetInRange(Character caster, SkillDefinition skill, Vector2Int targetPos) =>
             IsTargetInRange(caster, EffectiveSkill.Resolve(caster, skill), targetPos);
@@ -39,11 +42,20 @@ namespace GridBattle.Gameplay.Entities.Skills
         /// <inheritdoc cref="IsTargetInRange(Character, SkillDefinition, Vector2Int)"/>
         public static bool IsTargetInRange(Character caster, in EffectiveSkill skill, Vector2Int targetPos)
         {
-            if (skill.UnlimitedRange) return true;
             if (skill.IsSelfCentered) return targetPos == caster.CurrentGridPos;
 
-            return GridDistance.IsWithin(CombatResolver.Settings.SkillRangeMetric, caster.CurrentGridPos, targetPos,
-                GetMaxRange(caster, skill));
+            var max = skill.UnlimitedRange ? -1 : GetMaxRange(caster, skill);
+            return SkillSelection.IsSelectable(skill.SelectionShape, CombatResolver.Settings.SkillRangeMetric,
+                caster.CurrentGridPos, targetPos, skill.MinRange, max);
+        }
+
+        /// <summary>Whether the aimed cell holds what the skill asks for (<see cref="ESkillTargetCell"/>).</summary>
+        public static bool IsTargetCellAccepted(GridController grid, in EffectiveSkill skill, Vector2Int targetPos)
+        {
+            if (skill.TargetCell == ESkillTargetCell.Any) return true;
+
+            var occupied = grid.GetContent(targetPos) is Character character && !character.IsDead;
+            return skill.TargetCell == ESkillTargetCell.Occupied ? occupied : !occupied;
         }
 
         /// <summary>Cells of the skill's area (inside the grid) when aimed at <paramref name="targetPos"/>.</summary>
@@ -131,7 +143,8 @@ namespace GridBattle.Gameplay.Entities.Skills
 
         /// <summary>
         /// Whether the target cell is a valid aim for the skill: inside the grid,
-        /// in range, in sight (see <see cref="HasLineOfSight"/>), the effects accept it and (when the skill requires
+        /// in the selection area, holding what the skill asks for (<see cref="ESkillTargetCell"/>), in sight (see
+        /// <see cref="HasLineOfSight"/>), the effects accept it and (when the skill requires
         /// it) at least one character would be affected. Ignores cooldown and restrictions
         /// (see <see cref="CanSelect"/>).
         /// </summary>
@@ -145,6 +158,7 @@ namespace GridBattle.Gameplay.Entities.Skills
         {
             if (!grid.IsValidPosition(targetPos)) return false;
             if (!IsTargetInRange(caster, skill, targetPos)) return false;
+            if (!IsTargetCellAccepted(grid, skill, targetPos)) return false;
             if (!HasLineOfSight(grid, caster, skill, targetPos)) return false;
 
             var context = CreateContext(grid, caster, skill, targetPos);
