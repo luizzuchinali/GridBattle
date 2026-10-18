@@ -46,6 +46,11 @@ MonoBehaviour:
   requiresAffectedTarget: 0
   ignoresLineOfSight: 0
   cooldown: 1
+  telegraphed: 0
+  windupTurns: 1
+  canMoveWhileWindingUp: 0
+  cancelledByDisplacement: 0
+  interruptibleByStates: 1
   visual: {fileID: 11400000, guid: 828e1c3f352bf6b4884fc489091483b4, type: 2}
   effects: []
   references:

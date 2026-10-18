@@ -32,6 +32,8 @@ namespace GridBattle.Gameplay.AI.Actions
         public float PreferredDistance => preferredDistance;
         public bool PreferTargetInAttackRange => preferTargetInAttackRange;
 
+        public override bool IsMovement => true;
+
         public override bool TryExecute(in EnemyTurnContext context)
         {
             var self = context.Self;

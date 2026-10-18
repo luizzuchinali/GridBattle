@@ -314,7 +314,7 @@ Perfil (entre runs): classes liberadas, glossário, recordes, opções, dicas vi
    - **Applies To**: tipos de dano (padrão: ataque básico e skill);
    - **Condition**: sempre, por inimigo adjacente (teto em *Max Count*), sem
      inimigo adjacente, oponente com estado nocivo, oponente com um dos
-     *States*, portador andou (ou não) no turno anterior, oponente isolado,
+     *States*, portador andou (ou não) neste turno antes do golpe, oponente isolado,
      oponente com vida cheia;
    - **Percent** (e **Flat**, só no dano causado) por contagem e por pilha.
 2. Para recompensas ao matar use **On Kill Effect** (cura, reduz cooldowns, dá
@@ -469,9 +469,13 @@ nomes (ou troque os PNGs e não rode o gerador de novo).
   5. A run termina com vitória no chefe, derrota ou desistência. A tela final
      mostra o resumo e as classes liberadas.
 - **Batalha:**
-  - Cada ação do jogador consome a vez: andar, atacar ou usar skill. Usar
-    consumível não consome, no máximo um por turno.
-  - Depois que o jogador age, cada inimigo age, o mais próximo primeiro.
+  - Em cada turno o jogador anda uma vez, age uma vez (ataque ou skill) e pode
+    usar um consumível, em qualquer ordem. O turno só acaba sozinho quando nada
+    disso é mais possível; senão, com "Encerrar turno" (sempre visível) ou
+    tocando no próprio personagem. Dá para desfazer o andar enquanto não agiu.
+  - Toque longo num inimigo mostra até onde ele alcança no próximo turno.
+  - Depois, cada inimigo anda e age, um de cada vez, o mais próximo primeiro.
+  - O jogo ficou mais difícil com essa regra e o balanceamento está pendente.
   - A batalha acaba quando todos os inimigos morrem, sem limite de turnos.
 - **Turno de cada personagem:**
   - no início, efeitos periódicos (veneno, regeneração) e terreno de início

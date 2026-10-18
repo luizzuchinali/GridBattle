@@ -23,13 +23,21 @@ namespace GridBattle.Gameplay.Simulation
     /// Deterministic: enemies are always looked at in the same order and every tie is broken with the bot's own
     /// <see cref="Rng"/> (never the run's streams).
     /// <para>
-    /// Policy of a turn, in this order: (1) consumables, which do not take the action: healing below a HP fraction,
+    /// Priorities of a turn: (1) consumables, which take neither the walk nor the action: healing below a HP fraction,
     /// bombs on clusters or kills, support items below a HP fraction; (2) an attack that kills (most kills, then the
     /// most wanted roles, then the most damage, then the basic attack to save the skill); (3) a defensive skill that
     /// heals when the HP is low; (4) a rush toward an enemy of a rush role (a summoner) that nothing reaches this
     /// turn; (5) a skill when it hits several enemies or out-damages the basic attack, else the basic attack on the
     /// most wanted enemy (role order, then the lowest HP); (6) a defensive skill that buffs the caster when enemies
-    /// are close; (7) a step toward the best target, avoiding hazard cells and liking bonus ones.
+    /// are close; (7) without any action, a step toward the best target, avoiding hazard cells and liking bonus ones.
+    /// </para>
+    /// <para>
+    /// A turn has a walk and an action, so the bot chooses a pair: every cell it can walk to (and its own) is tried
+    /// with <see cref="GridController.ProbePosition"/>, the best action from each one is found with the priorities
+    /// above (kills first, then expected damage, minus the terrain cost of the cell; staying wins ties) and the walk is
+    /// made first when the best pair needs it. After acting without walking it steps toward the next
+    /// target when nothing is in reach any more, then ends the turn. One call plays as much of the turn as it can: a
+    /// level up that pauses the game in the middle is answered first and the next call goes on.
     /// </para>
     /// <para>
     /// Skills that push or pull (<see cref="DisplaceSkillEffect"/>) are valued with the same prediction the game
@@ -54,7 +62,7 @@ namespace GridBattle.Gameplay.Simulation
         private readonly BattleBotOptions _options;
         private readonly Rng _rng;
         private readonly List<Enemy> _enemies = new();
-        private int _actionsRaised;
+        private readonly List<SkillTelegraph> _telegraphs = new();
         private int _turnsInBattle;
         private int _rushStreak;
         private bool _subscribed;
@@ -68,7 +76,6 @@ namespace GridBattle.Gameplay.Simulation
         {
             _options = options ?? new BattleBotOptions();
             _rng = rng ?? new Rng(1UL);
-            EventBus.Subscribe<PlayerActionEvent>(OnPlayerAction);
             EventBus.Subscribe<BattleStartedEvent>(OnBattleStarted);
             _subscribed = true;
         }
@@ -78,11 +85,8 @@ namespace GridBattle.Gameplay.Simulation
             if (!_subscribed) return;
 
             _subscribed = false;
-            EventBus.Unsubscribe<PlayerActionEvent>(OnPlayerAction);
             EventBus.Unsubscribe<BattleStartedEvent>(OnBattleStarted);
         }
-
-        private void OnPlayerAction(PlayerActionEvent e) => _actionsRaised++;
 
         private void OnBattleStarted(BattleStartedEvent e)
         {
@@ -91,67 +95,208 @@ namespace GridBattle.Gameplay.Simulation
         }
 
         /// <summary>
-        /// Plays the player's turn: items first (they are free), then the one action. Returns false when the bot
-        /// found no legal action at all (the player cannot move, attack or use a skill).
+        /// Plays the player's turn (see the class summary). Returns false only without a player or a board; ending
+        /// the turn is always a legal answer.
         /// </summary>
         public bool TakeTurn(GridController grid, PlayerCharacter player)
         {
             if (grid == null || player == null || player.IsDead) return false;
             if (!player.TryGetComponent(out PlayerCharacterController controller)) return false;
 
+            return TakeMoveAndActTurn(grid, player, controller);
+        }
+
+        // ------------------------------------------------------------------------------------ walk and act
+
+        /// <summary>A pair of the turn: where to stand (the own cell = no walk) and the action from there.</summary>
+        private sealed class TurnPair
+        {
+            public Vector2Int Cell;
+            public ActionOption Option;
+            public float Value;
+        }
+
+        /// <summary>The turn with a walk and an action (see the class summary). Always returns true.</summary>
+        private bool TakeMoveAndActTurn(GridController grid, PlayerCharacter player,
+            PlayerCharacterController controller)
+        {
+            if (GameplayInput.IsBlocked) return true;
+
             CollectEnemies(player);
             if (_enemies.Count == 0) return true;
-            _turnsInBattle++;
 
-            if (Trace != null)
+            if (controller.CanMove && controller.CanAct && !controller.HasStartedTurn)
             {
-                var list = new System.Text.StringBuilder();
-                foreach (var enemy in _enemies)
-                    list.Append($" {enemy.name}@{enemy.CurrentGridPos.x},{enemy.CurrentGridPos.y}:{enemy.Current}");
-                Trace($"hp {player.Current}/{player.MaxHp} at {player.CurrentGridPos.x},{player.CurrentGridPos.y} " +
-                      $"enemies{list}");
+                _turnsInBattle++;
+                Trace?.Invoke($"hp {player.Current}/{player.MaxHp} at {player.CurrentGridPos.x},{player.CurrentGridPos.y}");
+                if (_options.UseConsumables)
+                {
+                    TryUseConsumable(grid, player, controller);
+                    CollectEnemies(player);
+                    if (_enemies.Count == 0 || player.IsDead) return true;
+                }
             }
 
-            if (_options.UseConsumables)
+            if (controller.CanAct && !TryActWithBestPair(grid, player, controller) && controller.CanMove)
+                TryMove(grid, player);
+
+            if (GameplayInput.IsBlocked || player.IsDead) return true;
+
+            CollectEnemies(player);
+            if (_enemies.Count == 0) return true;
+
+            // Acted from where it stood: out of a telegraphed area, else a step toward the next target when nothing
+            // is in reach any more.
+            if (controller.CanMove && !controller.CanAct && TelegraphCost(player, player.CurrentGridPos) > 0f)
+                TryLeaveTelegraph(grid, player);
+            if (controller.CanMove && !controller.CanAct && !AnyEnemyInAttackRange(grid, player))
+                TryMove(grid, player);
+
+            if (!GameplayInput.IsBlocked)
+                controller.EndTurn();
+            return true;
+        }
+
+        /// <summary>
+        /// Picks and plays the best pair: a kill (from any cell), a healing skill when the HP is low, a rush toward a
+        /// rush role enemy (then the best action from there), the best attack (from any cell), a buff. False when there
+        /// is no action at all.
+        /// </summary>
+        private bool TryActWithBestPair(GridController grid, PlayerCharacter player, PlayerCharacterController controller)
+        {
+            var origin = player.CurrentGridPos;
+            var candidates = new List<Vector2Int> { origin };
+            if (controller.CanMove)
             {
-                TryUseConsumable(grid, player, controller);
+                var size = grid.Size;
+                for (var y = 0; y < size.y; y++)
+                {
+                    for (var x = 0; x < size.x; x++)
+                    {
+                        var cell = new Vector2Int(x, y);
+                        if (cell != origin && GridRules.CanWalkTo(grid, player, cell))
+                            candidates.Add(cell);
+                    }
+                }
+            }
+
+            TurnPair kill = null;
+            TurnPair attack = null;
+            List<ActionOption> here = null;
+            foreach (var cell in candidates)
+            {
+                var cost = cell == origin ? 0f : TerrainCost(grid, player, cell) * 3f;
+                if (cost >= LethalCost) continue;
+                cost += TelegraphCost(player, cell);
+
+                var options = new List<ActionOption>();
+                using (cell == origin ? null : grid.ProbePosition(player, cell))
+                {
+                    BuildBasicOptions(grid, player, options);
+                    if (_options.UseSkills)
+                        BuildSkillOptions(grid, player, options);
+                }
+
+                if (cell == origin)
+                    here = options;
+
+                var killOption = PickKill(options);
+                if (killOption != null && (kill == null || CompareKills(killOption, kill.Option) > 0 ||
+                                           (CompareKills(killOption, kill.Option) == 0 && cost < kill.Value - Epsilon)))
+                    kill = new TurnPair { Cell = cell, Option = killOption, Value = cost };
+
+                var attackOption = PickAttack(options);
+                if (attackOption == null) continue;
+
+                var value = attackOption.Expected + attackOption.Bonus - cost;
+                if (attack == null || value > attack.Value + Epsilon)
+                    attack = new TurnPair { Cell = cell, Option = attackOption, Value = value };
+            }
+
+            if (kill != null) return PlayPair(grid, player, controller, kill);
+
+            if (_options.UseSkills && TryUtilitySkill(grid, player, controller, true)) return true;
+
+            if (controller.CanMove && here != null && _rushStreak < _options.RushMaxStreak && TryRush(grid, player, here))
+            {
+                _rushStreak++;
                 CollectEnemies(player);
-                if (_enemies.Count == 0 || player.IsDead) return true;
+                return TryActHere(grid, player, controller) || !controller.CanAct;
             }
+
+            _rushStreak = 0;
+            if (attack != null) return PlayPair(grid, player, controller, attack);
+
+            return _options.UseSkills && TryUtilitySkill(grid, player, controller, false);
+        }
+
+        /// <summary>Walks to the pair's cell (when it is not the current one) and plays the best action from there.</summary>
+        private bool PlayPair(GridController grid, PlayerCharacter player, PlayerCharacterController controller,
+            TurnPair pair)
+        {
+            if (pair.Cell != player.CurrentGridPos)
+            {
+                var cell = grid.GetCell(pair.Cell);
+                if (cell == null) return false;
+
+                EventBus.Raise(new CellTapEvent { Cell = cell });
+                if (player.CurrentGridPos != pair.Cell) return false;
+
+                Trace?.Invoke($"  walk to {pair.Cell.x},{pair.Cell.y} to act");
+                CollectEnemies(player);
+                return TryActHere(grid, player, controller, pair.Option);
+            }
+
+            return ExecuteTraced(grid, controller, pair.Option);
+        }
+
+        /// <summary>The best action from where the player stands now (the planned one when it is still there).</summary>
+        private bool TryActHere(GridController grid, PlayerCharacter player, PlayerCharacterController controller,
+            ActionOption planned = null)
+        {
+            if (!controller.CanAct || GameplayInput.IsBlocked) return false;
 
             var options = new List<ActionOption>();
             BuildBasicOptions(grid, player, options);
             if (_options.UseSkills)
                 BuildSkillOptions(grid, player, options);
 
-            var chosen = PickKill(options);
-            if (chosen == null)
+            ActionOption chosen = null;
+            if (planned != null)
             {
-                if (_options.UseSkills && TryUtilitySkill(grid, player, controller, true))
-                    return true;
-
-                if (_rushStreak < _options.RushMaxStreak && TryRush(grid, player, options))
+                foreach (var option in options)
                 {
-                    _rushStreak++;
-                    return true;
+                    if (option.Skill == planned.Skill && option.Cell == planned.Cell)
+                    {
+                        chosen = option;
+                        break;
+                    }
                 }
-
-                _rushStreak = 0;
-                chosen = PickAttack(options);
             }
 
-            if (chosen != null && Execute(grid, controller, chosen))
+            chosen ??= PickKill(options) ?? PickAttack(options);
+            return chosen != null && ExecuteTraced(grid, controller, chosen);
+        }
+
+        private bool ExecuteTraced(GridController grid, PlayerCharacterController controller, ActionOption option)
+        {
+            if (!Execute(grid, controller, option)) return false;
+
+            Trace?.Invoke(option.Skill != null
+                ? $"  skill {option.Skill.name} at {option.Cell.x},{option.Cell.y} hits {option.Targets} (kills {option.Kills}, dmg {option.Effective:0})"
+                : $"  attack {option.Cell.x},{option.Cell.y} (kills {option.Kills}, dmg {option.Effective:0})");
+            return true;
+        }
+
+        private bool AnyEnemyInAttackRange(GridController grid, PlayerCharacter player)
+        {
+            foreach (var enemy in _enemies)
             {
-                Trace?.Invoke(chosen.Skill != null
-                    ? $"  skill {chosen.Skill.name} at {chosen.Cell.x},{chosen.Cell.y} hits {chosen.Targets} (kills {chosen.Kills}, dmg {chosen.Effective:0})"
-                    : $"  attack {chosen.Cell.x},{chosen.Cell.y} (kills {chosen.Kills}, dmg {chosen.Effective:0})");
-                return true;
+                if (GridRules.IsInAttackRange(player.CurrentGridPos, enemy.CurrentGridPos, player.AttackDistance))
+                    return true;
             }
 
-            if (_options.UseSkills && TryUtilitySkill(grid, player, controller, false))
-                return true;
-
-            return TryMove(grid, player);
+            return false;
         }
 
         // ------------------------------------------------------------------------------------ enemies
@@ -173,6 +318,77 @@ namespace GridBattle.Gameplay.Simulation
                 var byX = a.CurrentGridPos.x.CompareTo(b.CurrentGridPos.x);
                 return byX != 0 ? byX : string.CompareOrdinal(a.name, b.name);
             });
+
+            _telegraphs.Clear();
+            foreach (var enemy in _enemies)
+            {
+                if (enemy.Telegraph != null)
+                    _telegraphs.Add(enemy.Telegraph);
+            }
+        }
+
+        /// <summary>
+        /// Cost of ending the turn on <paramref name="position"/>: the damage the telegraphed skills marked on it would
+        /// deal to the player (times <see cref="BattleBotOptions.TelegraphDamageWeight"/>), plus a large extra when
+        /// together they would kill it. 0 without telegraphs.
+        /// </summary>
+        private float TelegraphCost(PlayerCharacter player, Vector2Int position)
+        {
+            if (_telegraphs.Count == 0) return 0f;
+
+            var damage = 0;
+            foreach (var telegraph in _telegraphs)
+            {
+                if (telegraph.Contains(position))
+                    damage += Math.Max(1, telegraph.PredictDamage(player));
+            }
+
+            if (damage <= 0) return 0f;
+
+            var cost = damage * _options.TelegraphDamageWeight;
+            return damage >= player.Current ? cost + LethalCost * 0.5f : cost;
+        }
+
+        /// <summary>
+        /// After the action, with the walk still free, the bot leaves a cell a telegraphed skill will hit: it walks to
+        /// the reachable cell with the lowest telegraph and terrain cost (the nearest one on ties).
+        /// </summary>
+        private void TryLeaveTelegraph(GridController grid, PlayerCharacter player)
+        {
+            var here = player.CurrentGridPos;
+            var hereCost = TelegraphCost(player, here);
+            if (hereCost <= 0f) return;
+
+            var size = grid.Size;
+            var bestCost = hereCost;
+            var bestDistance = int.MaxValue;
+            Vector2Int? best = null;
+            for (var y = 0; y < size.y; y++)
+            {
+                for (var x = 0; x < size.x; x++)
+                {
+                    var position = new Vector2Int(x, y);
+                    if (!GridRules.CanWalkTo(grid, player, position)) continue;
+
+                    var cost = TelegraphCost(player, position) + TerrainCost(grid, player, position);
+                    var distance = Math.Abs(position.x - here.x) + Math.Abs(position.y - here.y);
+                    if (cost < bestCost - Epsilon || (best != null && Math.Abs(cost - bestCost) <= Epsilon &&
+                                                       distance < bestDistance))
+                    {
+                        bestCost = cost;
+                        bestDistance = distance;
+                        best = position;
+                    }
+                }
+            }
+
+            if (best == null) return;
+
+            var cell = grid.GetCell(best.Value);
+            if (cell == null) return;
+
+            EventBus.Raise(new CellTapEvent { Cell = cell });
+            Trace?.Invoke($"  dodge to {best.Value.x},{best.Value.y}");
         }
 
         /// <summary>How much the bot wants this enemy dead: its role's tier in the focus order (4 = first), else 0.</summary>
@@ -592,9 +808,9 @@ namespace GridBattle.Gameplay.Simulation
             var cell = grid.GetCell(option.Cell);
             if (cell == null) return false;
 
-            var before = _actionsRaised;
+            var couldAct = controller.CanAct;
             EventBus.Raise(new CellTapEvent { Cell = cell });
-            return _actionsRaised > before;
+            return couldAct && !controller.CanAct;
         }
 
         // ------------------------------------------------------------------------------------ damage prediction
@@ -936,6 +1152,7 @@ namespace GridBattle.Gameplay.Simulation
                         : Math.Max(0, length - attackRange);
                     // A rush goes through hazards: the goal is worth the damage.
                     var cost = approach * 2f + (requireProgress ? LethalTerrainCost(grid, player, position) : TerrainCost(grid, player, position)) +
+                               TelegraphCost(player, position) * 0.5f +
                                Vector2Int.Distance(position, target.CurrentGridPos) * 0.01f;
 
                     if (best == null || cost < bestCost - Epsilon)
@@ -962,10 +1179,10 @@ namespace GridBattle.Gameplay.Simulation
             var cell = grid.GetCell(best.Value);
             if (cell == null) return false;
 
-            var before = _actionsRaised;
+            var start = player.CurrentGridPos;
             EventBus.Raise(new CellTapEvent { Cell = cell });
             Trace?.Invoke($"  {(requireProgress ? "rush" : "walk")} to {best.Value.x},{best.Value.y} toward {target.name}");
-            return _actionsRaised > before;
+            return player.CurrentGridPos != start;
         }
 
         /// <summary>The enemy to walk toward: its role tier (worth some route steps) minus its distance.</summary>

@@ -6,6 +6,7 @@ using GridBattle.Gameplay.Entities.Interfaces;
 using GridBattle.Gameplay.Entities.Skills;
 using GridBattle.Gameplay.Events;
 using GridBattle.Gameplay.Rules;
+using GridBattle.Gameplay.Terrain;
 using UnityEngine;
 
 namespace GridBattle.Gameplay.Controllers
@@ -21,6 +22,19 @@ namespace GridBattle.Gameplay.Controllers
     /// <see cref="Character"/>, <see cref="SkillDefinition"/> and <see cref="ConsumableDefinition"/>.
     /// The cell highlights are event-driven: everything that can change them marks them dirty and
     /// they are recomputed at most once per frame, and only while dirty.
+    /// <para>
+    /// A turn has a walk, an action (basic attack or skill) and one consumable, in any order. After each choice the
+    /// turn ends by itself when none of the three is still possible (<see cref="HasAnythingLeft"/>: used already, or
+    /// nothing to do it with: no cell to walk to, no target and no ready skill with a cell to aim at, no usable item);
+    /// otherwise it waits for <see cref="EndTurn"/> (the End turn button, always shown on the player's turn) or a tap
+    /// on the player's own character. The walk can be taken back
+    /// (<see cref="UndoMove"/>) while the action was not used, no item was used after it and its cell did not
+    /// react (terrain that triggers on entering). Every change raises <see cref="PlayerTurnStateChangedEvent"/>.
+    /// </para>
+    /// <para>
+    /// A long press on an enemy also marks on the grid the cells it can hit on its next turn
+    /// (<see cref="GridRules.GetReachCells"/>) until the next tap.
+    /// </para>
     /// </summary>
     [RequireComponent(typeof(PlayerCharacter))]
     public class PlayerCharacterController : CharacterControllerBase<PlayerCharacter>
@@ -30,6 +44,95 @@ namespace GridBattle.Gameplay.Controllers
         private readonly List<Action> _unsubscribers = new();
         private bool _isMyTurn = true;
         private bool _highlightsDirty = true;
+
+        // This turn: what was used, where the walk started and whether it can be undone.
+        private bool _moved;
+        private bool _acted;
+        private bool _undoable;
+        private Vector2Int _moveStart;
+
+        /// <summary>The enemy whose reach is shown (long press), or null.</summary>
+        private Enemy _inspected;
+
+        /// <summary>The player can walk now (their turn, no walk yet).</summary>
+        public bool CanMove => _isMyTurn && !_moved;
+
+        /// <summary>The player can attack or use a skill now (their turn, no action yet).</summary>
+        public bool CanAct => _isMyTurn && !_acted;
+
+        /// <summary>The player can still use a consumable this turn (their turn and the turn's limit not reached).</summary>
+        public bool CanUseConsumable =>
+            _isMyTurn && Owner.ConsumableUsesThisTurn < ConsumableSettings.Current.MaxUsesPerTurn;
+
+        /// <summary>The walk of this turn can be taken back (see <see cref="UndoMove"/>).</summary>
+        public bool CanUndoMove => _isMyTurn && _moved && _undoable && !_acted;
+
+        /// <summary>The player walked or acted this turn.</summary>
+        public bool HasStartedTurn => _moved || _acted;
+
+        /// <summary>It is the player's turn (until something ends it).</summary>
+        public bool IsMyTurn => _isMyTurn;
+
+        /// <summary>
+        /// Whether the player can still do any of the three things of the turn now: walk (not walked and a cell to
+        /// walk to), act (not acted and an attack target, or a ready skill with a cell to aim at) or use a consumable
+        /// (the turn's limit not reached and an item with a valid target). When none is left after a choice, the turn
+        /// ends by itself.
+        /// </summary>
+        public bool HasAnythingLeft => _isMyTurn && (CanWalkSomewhere() || CanActSomehow() || CanUseAnyItem());
+
+        private bool CanWalkSomewhere()
+        {
+            if (!CanMove) return false;
+
+            var range = Owner.WalkDistance;
+            var origin = Owner.CurrentGridPos;
+            for (var y = -range; y <= range; y++)
+            {
+                for (var x = -range; x <= range; x++)
+                {
+                    if ((x != 0 || y != 0) && GridRules.CanWalkTo(Grid, Owner, origin + new Vector2Int(x, y)))
+                        return true;
+                }
+            }
+
+            return false;
+        }
+
+        private bool CanActSomehow()
+        {
+            if (!CanAct) return false;
+
+            if (GridRules.GetHighlightInfos(Grid, Owner, false, true).Count > 0) return true;
+
+            foreach (var skill in Owner.Skills)
+            {
+                if (skill != null && SkillTargeting.CanSelect(Owner, skill) &&
+                    SkillTargeting.GetTargetableCells(Grid, Owner, skill).Count > 0)
+                    return true;
+            }
+
+            return false;
+        }
+
+        private bool CanUseAnyItem()
+        {
+            if (!CanUseConsumable) return false;
+
+            var inventory = Owner.Inventory;
+            for (var slot = 0; slot < inventory.Slots; slot++)
+            {
+                var item = inventory.Get(slot);
+                if (item != null && ConsumableRules.CanSelect(Grid, Owner, item, _isMyTurn) &&
+                    ConsumableRules.GetTargetableCells(Grid, Owner, item).Count > 0)
+                    return true;
+            }
+
+            return false;
+        }
+
+        /// <summary>The enemy whose reach the grid shows (long press), or null.</summary>
+        public Enemy InspectedEnemy => _inspected != null && !_inspected.IsDead ? _inspected : null;
 
         /// <summary>The skill being aimed, or null when no skill is selected.</summary>
         public SkillDefinition SelectedSkill { get; private set; }
@@ -49,10 +152,12 @@ namespace GridBattle.Gameplay.Controllers
         {
             base.Awake();
             EventBus.Subscribe<CellTapEvent>(OnCellTap);
+            EventBus.Subscribe<CellLongPressEvent>(OnCellLongPress);
             EventBus.Subscribe<TurnChangedEvent>(OnTurnChanged);
 
             // Everything that can change which cells are walkable, attackable or aimable.
             WatchHighlights<EntityEnteredCellEvent>();
+            WatchHighlights<EntityMoveUndoneEvent>();
             WatchHighlights<CharacterDiedEvent>();
             WatchHighlights<EnemySummonedEvent>();
             WatchHighlights<StateAppliedEvent>();
@@ -71,6 +176,7 @@ namespace GridBattle.Gameplay.Controllers
         private void OnDestroy()
         {
             EventBus.Unsubscribe<CellTapEvent>(OnCellTap);
+            EventBus.Unsubscribe<CellLongPressEvent>(OnCellLongPress);
             EventBus.Unsubscribe<TurnChangedEvent>(OnTurnChanged);
             foreach (var unsubscribe in _unsubscribers)
                 unsubscribe();
@@ -125,8 +231,9 @@ namespace GridBattle.Gameplay.Controllers
 
         /// <summary>
         /// The highlights for the current state, computed from scratch: the aimed item's range, else the
-        /// aimed skill's range, else where the player can walk or attack. Pure query (no selection is
-        /// changed, nothing is applied); tests compare it with what the cells show.
+        /// aimed skill's range, else the reach of the enemy inspected by a long press, else where the player can
+        /// walk or attack (what is left of the turn). Pure query (no selection is changed, nothing is applied);
+        /// tests compare it with what the cells show.
         /// </summary>
         public Dictionary<Vector2Int, ECellHighlightType> ComputeHighlights()
         {
@@ -136,7 +243,16 @@ namespace GridBattle.Gameplay.Controllers
             if (SelectedSkill != null)
                 return GridRules.GetSkillHighlightInfos(Grid, Owner, SelectedSkill);
 
-            return GridRules.GetHighlightInfos(Grid, Owner);
+            var inspected = InspectedEnemy;
+            if (inspected != null)
+            {
+                var danger = new Dictionary<Vector2Int, ECellHighlightType>();
+                foreach (var cell in GridRules.GetReachCells(Grid, inspected))
+                    danger[cell] = ECellHighlightType.Danger;
+                return danger;
+            }
+
+            return GridRules.GetHighlightInfos(Grid, Owner, CanMove, CanAct);
         }
 
         /// <summary>
@@ -149,9 +265,96 @@ namespace GridBattle.Gameplay.Controllers
             CancelConsumableSelection();
 
             _isMyTurn = e.IsPlayerTurn;
+            _moved = false;
+            _acted = false;
+            _undoable = false;
+            _inspected = null;
             _highlightsDirty = true;
             if (!_isMyTurn)
                 Grid.HighlightCells(NoHighlights);
+            RaiseTurnState();
+        }
+
+        /// <summary>A long press on an enemy shows the cells it can hit on its next turn, until the next tap.</summary>
+        private void OnCellLongPress(CellLongPressEvent e)
+        {
+            if (e.Cell == null || e.Cell.GetContent() is not Enemy enemy || enemy.IsDead) return;
+
+            _inspected = enemy;
+            _highlightsDirty = true;
+        }
+
+        // ------------------------------------------------------------------------------------ the turn
+
+        /// <summary>
+        /// Ends the player's turn now (the End turn button, or a tap on the player's own character). Returns false
+        /// outside the player's turn or while a window blocks the input.
+        /// </summary>
+        public bool EndTurn()
+        {
+            if (!_isMyTurn || GameplayInput.IsBlocked) return false;
+
+            FinishTurn();
+            return true;
+        }
+
+        /// <summary>
+        /// Takes back the walk of this turn (see <see cref="CanUndoMove"/>): the player hops back to where the turn
+        /// started and can walk again. Nothing was drawn by the walk, so the turn is exactly as before it. Returns
+        /// false when the walk cannot be undone.
+        /// </summary>
+        public bool UndoMove()
+        {
+            if (!CanUndoMove || GameplayInput.IsBlocked || !Grid.IsFreePosition(_moveStart)) return false;
+
+            CancelSkillSelection();
+            CancelConsumableSelection();
+            Grid.UndoMove(Owner, _moveStart);
+            _moved = false;
+            _undoable = false;
+            _highlightsDirty = true;
+            RaiseTurnState();
+            return true;
+        }
+
+        private void OnMoved(Vector2Int from, Vector2Int to)
+        {
+            _moved = true;
+            _moveStart = from;
+
+            // Terrain that reacts on entering (damage, states) already did: that walk cannot be taken back.
+            var terrain = Grid.GetTerrain(to);
+            _undoable = terrain == null || terrain.Trigger != ETerrainTrigger.OnEnter;
+            AfterTurnChoice();
+        }
+
+        private void OnActed()
+        {
+            _acted = true;
+            _undoable = false;
+            AfterTurnChoice();
+        }
+
+        /// <summary>A walk, an action or an item was used: the turn ends by itself when nothing else can be done.</summary>
+        private void AfterTurnChoice()
+        {
+            _highlightsDirty = true;
+            RaiseTurnState();
+            if (_isMyTurn && !HasAnythingLeft)
+                FinishTurn();
+        }
+
+        private void FinishTurn()
+        {
+            CancelSkillSelection();
+            CancelConsumableSelection();
+            EventBus.Raise<PlayerActionEvent>();
+        }
+
+        private void RaiseTurnState()
+        {
+            EventBus.Raise(new PlayerTurnStateChangedEvent(_isMyTurn, CanMove, CanAct, CanUseConsumable, CanUndoMove,
+                HasStartedTurn));
         }
 
         /// <summary>
@@ -172,7 +375,7 @@ namespace GridBattle.Gameplay.Controllers
                 return true;
             }
 
-            if (!OwnsSkill(skill) || !SkillTargeting.CanSelect(Owner, skill)) return false;
+            if (!CanAct || !OwnsSkill(skill) || !SkillTargeting.CanSelect(Owner, skill)) return false;
 
             // Aiming a skill replaces aiming an item.
             CancelConsumableSelection();
@@ -243,9 +446,11 @@ namespace GridBattle.Gameplay.Controllers
         {
             if (!ConsumableExecutor.TryUse(Grid, Owner, slot, targetPos, _isMyTurn)) return false;
 
-            // Using an item replaces any aiming in progress.
+            // Using an item replaces any aiming in progress; the walk before it can no longer be taken back.
             CancelConsumableSelection();
             CancelSkillSelection();
+            _undoable = false;
+            AfterTurnChoice();
             return true;
         }
 
@@ -270,6 +475,13 @@ namespace GridBattle.Gameplay.Controllers
                 return;
             }
 
+            // Any tap puts away the reach of an inspected enemy.
+            if (_inspected != null)
+            {
+                _inspected = null;
+                _highlightsDirty = true;
+            }
+
             if (SelectedConsumable != null)
             {
                 TapWithConsumable(@event.Cell);
@@ -282,19 +494,28 @@ namespace GridBattle.Gameplay.Controllers
                 return;
             }
 
+            // Tapping the player's own character ends the turn.
+            if (@event.Cell.GetContent() == Owner)
+            {
+                FinishTurn();
+                return;
+            }
+
             if (!@event.Cell.HasContent)
             {
-                if (!GridRules.CanWalkTo(Grid, Owner, @event.Cell.GridPosition))
+                if (!CanMove || !GridRules.CanWalkTo(Grid, Owner, @event.Cell.GridPosition))
                 {
                     @event.Cell.PlayRejectFeedback();
                     return;
                 }
 
+                var from = Owner.CurrentGridPos;
                 Grid.MoveEntity(Owner, @event.Cell.GridPosition);
+                OnMoved(from, @event.Cell.GridPosition);
             }
             else
             {
-                if (!GridRules.IsAttackTarget(Grid, Owner, @event.Cell.GridPosition))
+                if (!CanAct || !GridRules.IsAttackTarget(Grid, Owner, @event.Cell.GridPosition))
                 {
                     @event.Cell.PlayRejectFeedback();
                     return;
@@ -306,9 +527,9 @@ namespace GridBattle.Gameplay.Controllers
                     Grid.PlayAttackAnimation(Owner, @event.Cell.GridPosition);
                     Owner.Attack(receiver);
                 }
-            }
 
-            EventBus.Raise<PlayerActionEvent>();
+                OnActed();
+            }
         }
 
         /// <summary>
@@ -330,14 +551,14 @@ namespace GridBattle.Gameplay.Controllers
         private void TapWithSkill(Cell cell)
         {
             // TryUseSkill validates (range, area, cooldown, restrictions) before doing anything.
-            if (!Owner.TryUseSkill(Grid, SelectedSkill, cell.GridPosition))
+            if (!CanAct || !Owner.TryUseSkill(Grid, SelectedSkill, cell.GridPosition))
             {
                 cell.PlayRejectFeedback();
                 return;
             }
 
             CancelSkillSelection();
-            EventBus.Raise<PlayerActionEvent>();
+            OnActed();
         }
 
         /// <summary>
@@ -348,11 +569,11 @@ namespace GridBattle.Gameplay.Controllers
         /// </summary>
         public bool TryUseSkill(SkillDefinition skill, Vector2Int targetPos)
         {
-            if (!_isMyTurn) return false;
+            if (!CanAct) return false;
             if (!Owner.TryUseSkill(Grid, skill, targetPos)) return false;
 
             CancelSkillSelection();
-            EventBus.Raise<PlayerActionEvent>();
+            OnActed();
             return true;
         }
     }

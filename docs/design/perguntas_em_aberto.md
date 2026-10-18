@@ -2,7 +2,7 @@
 tags:
   - design
   - indice
-updated: 2026-10-05
+updated: 2026-10-18
 ---
 # Perguntas em aberto
 
@@ -11,7 +11,9 @@ updated: 2026-10-05
 > As perguntas continuam em aberto, mas cada uma já tem um valor inicial configurável no jogo: ver [[valores_padrao_em_aberto]].
 
 
-Total: 84 perguntas.
+Total: 89 perguntas.
+
+> **Decisões de 2026-10-18** (ver [[GDD]] Mecânica 1, 2.6 e 10): o turno passou a ter andar + agir + um consumível, em qualquer ordem, com fim automático só quando nada mais é possível; o balanceamento desse turno está pendente. Companheiros foram descartados por agora. A loja com moedas foi adiada (os nós de cura, consumível e talento continuam como são; ideia guardada: virariam lojas pagas com moedas das batalhas). Os imprevistos de batalha foram adiados. Habilidades de inimigo podem ser **telegrafadas**, como opção de cada habilidade (substitui "sem telegrafia"; só design, ver [[inimigos#Habilidades telegrafadas]]).
 
 
 ## [[GDD]] (19)
@@ -153,7 +155,7 @@ Total: 84 perguntas.
 - [ ] … final de estados, seus nomes e valores são — a definir.
 - [ ] Reaplicação e acúmulo do mesmo estado, remoção antecipada, e o que acontece com os estados ao mudar de batalha.
 
-## [[inimigos]] (7)
+## [[inimigos]] (12)
 
 
 ### [[inimigos#Mecânica 4: Papéis dos Inimigos|Mecânica 4: Papéis dos Inimigos]]
@@ -165,6 +167,14 @@ Total: 84 perguntas.
 - [ ] Lista final, frequência com que aparecem e se isso se liga a elites e chefes.
 - [ ] **Como são definidos:** Quais atributos e estados valem para os inimigos.
 - [ ] **Interação com outras mecânicas:** Se o sorteio de talentos deve considerar os inimigos que o jogador já viu na run.
+
+### [[inimigos#Habilidades telegrafadas|Habilidades telegrafadas]]
+
+- [ ] Se a opção de telegrafar vale também para as ações de IA (curar, proteger, enfraquecer, invocar) ou só para skills.
+- [ ] Se a prévia do nó indica que a batalha tem inimigos com habilidades telegrafadas.
+- [ ] Se a IA deve mirar pensando na fuga do jogador ou só na célula atual dele.
+- [ ] Se a IA evita a própria área preparada e a dos aliados.
+- [ ] Quanto mais forte uma habilidade telegrafada deve ser que uma imediata.
 
 ### [[inimigos#3.3 NPCs / Inimigos|3.3 NPCs / Inimigos]]
 

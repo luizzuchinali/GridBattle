@@ -19,6 +19,8 @@ Ver também: [[plano_implementacao_gdd]], [[perguntas_em_aberto]].
 
 | Pergunta | Documento | Valor | Onde |
 |---|---|---|---|
+| Decisões de produto de 2026-10-18 | GDD 2.6 e 10 | Companheiros descartados por agora; loja com moedas adiada (nós de cura, consumível e talento como eram; ideia guardada: lojas pagas com moedas das batalhas); imprevistos de batalha adiados. O balanceamento do turno novo está pendente | — |
+| O que cabe num turno | GDD Mecânica 1 | Andar e agir no mesmo turno, mais um consumível (decisão do usuário de 2026-10-18; a regra antiga foi removida), para o jogador e os inimigos. O turno só acaba sozinho quando andar, agir e usar consumível estão usados ou impossíveis (com item utilizável, espera); tocar no próprio personagem ou no botão Encerrar turno (sempre visível na vez do jogador) encerra a qualquer momento. O alcance do toque longo num inimigo conta só o ataque básico. Os inimigos agem um de cada vez, com 0,08 s de pausa entre eles | `PlayerCharacterController`, `EnemyBehavior`, `TurnManager.enemyStagger` |
 | Defesa: fixa ou porcentagem | estados_e_atributos, 2.9 | Fixa (dano − defesa); modo percentual disponível com teto de 80% | `CombatSettings.defenseMode` |
 | Dano mínimo | 2.9 | 1 (quando o dano base > 0) | `CombatSettings.minimumDamage` |
 | Multiplicador de crítico | estados_e_atributos | 2,0 (chance de crítico 0 em todos os personagens hoje) | cada `CharacterConfig` |
@@ -38,7 +40,7 @@ Ver também: [[plano_implementacao_gdd]], [[perguntas_em_aberto]].
 | Empurrar e puxar: direção e parada | plano_balanceamento | 8 vizinhos (ângulo a 45°); para em obstáculo, borda, personagem; ao puxar, para ao lado do lançador; a célula final de perigo ou bônus reage na hora (além do gatilho normal) | `Displacement`, `TerrainEffects` |
 | Bônus condicionais de dano (balanceamento G3) | plano_balanceamento | Estados mudam o dano de golpes mirados (ataque básico e skill) conforme a situação, pela máscara `EDamageKindMask` do efeito; dano periódico, espinhos e terreno só se o efeito pedir; dano exato nunca. Colisões podem ser incluídas (Estilhaçar) | `ConditionalDamageEffect`, `OnKillEffect`, `ApplyStateOnHitEffect` |
 | Adjacência dos bônus condicionais (G3) | plano_balanceamento | Distância 1 pela métrica Chebyshev (8 vizinhos); só personagens vivos | `CombatSettings.adjacencyMetric` |
-| "Andou no turno anterior" (G3) | plano_balanceamento | Andar ou teletransportar conta; ser empurrado ou puxado não. Entra no salvamento da batalha | `Character.MovedLastTurn`, `EntitySnapshot.MovedLastTurn` |
+| "Andou neste turno" (G3; até 2026-10-18 era "no turno anterior") | plano_balanceamento | Andar ou teletransportar conta, antes do golpe; ser empurrado ou puxado não; desfazer o andar desmarca | `Character.MovedThisTurn` |
 | Estados novos (G3, provisórios) | plano_balanceamento | Queimando: 2 por pilha, até 3. Veneno letal: 1 + 5% da vida máxima e −6% de dano causado por pilha, até 5. Congelado: não anda, −20% de dano. Atordoado: não anda, ataca nem usa skills. Exposto: +25% de dano recebido | `Settings/States` |
 | Personagem imóvel | plano_balanceamento | Só o chefe (`canBeDisplaced` desligado): não se move, mas bloqueia e leva o dano de quem for lançado nele | `CharacterConfig.canBeDisplaced` |
 

@@ -1038,37 +1038,41 @@ namespace GridBattle.Editor.Talents
             victim.States.Clear();
             Dispose(brittleHolder);
 
-            // Hit and Run: only after a turn in which the holder moved.
+            // Hit and Run: the walk of the current turn, before the hit, counts; last turn's does not.
             var runner = NewHolder(rogueConfig);
             TalentApplier.ApplyStates(runner, GetTalent("HitAndRun"), 2);
             int PredictRunner() => CombatResolver.PredictDamage(runner, victim, 20, EDamageKind.BasicAttack);
+            runner.BeginTurn();
             var runnerPlain = PredictRunner();
-            runner.BeginTurn();
-            AssertEqual(runnerPlain, PredictRunner(), "Hit and Run: no bonus before any movement");
+            var runnerBonus = Mathf.RoundToInt(runnerPlain * (1f + 2 * PercentOf("HitAndRun")));
+            Assert(runnerBonus > runnerPlain, "Hit and Run gives a bonus");
             runner.RegisterMovement();
-            AssertEqual(runnerPlain, PredictRunner(), "Hit and Run: moving this turn does not count (a turn is one action)");
+            AssertEqual(runnerBonus, PredictRunner(), "Hit and Run rank 2: bonus after walking this turn");
             runner.BeginTurn();
-            AssertEqual(Mathf.RoundToInt(runnerPlain * (1f + 2 * PercentOf("HitAndRun"))), PredictRunner(), "Hit and Run rank 2: bonus on the turn after moving");
-            runner.BeginTurn();
-            AssertEqual(runnerPlain, PredictRunner(), "Hit and Run: the bonus ends after a turn without moving");
+            AssertEqual(runnerPlain, PredictRunner(), "Hit and Run: last turn's walk does not count");
+            runner.RegisterMovement();
+            runner.SetMovedThisTurn(false);
+            AssertEqual(runnerPlain, PredictRunner(), "Hit and Run: an undone walk does not count");
             runner.RegisterMovement();
             runner.RestoreMoved(true);
             runner.BeginTurn();
-            Assert(runner.MovedLastTurn, "a restored 'moved' flag becomes last turn's flag when the turn starts");
+            Assert(runner.MovedLastTurn && !runner.MovedThisTurn, "a restored 'moved' flag becomes last turn's flag when the turn starts");
             Dispose(runner);
 
-            // Arcane Focus: skills only, unless the holder moved last turn.
+            // Arcane Focus: skills only, while the holder has not walked this turn.
             var focus = NewHolder(mageConfig);
             TalentApplier.ApplyStates(focus, GetTalent("ArcaneFocus"), 1);
             focus.BeginTurn();
             var focusPlain = DamageCalculator.Compute(20, EDamageKind.Skill, focus.Stats, victim.Stats, CombatResolver.Settings, null, out _);
             AssertEqual(Mathf.RoundToInt(focusPlain * (1f + PercentOf("ArcaneFocus"))), CombatResolver.PredictDamage(focus, victim, 20, EDamageKind.Skill),
-                "Arcane Focus: bonus on skills when it did not move");
+                "Arcane Focus: bonus on skills while it has not walked this turn");
             AssertEqual(DamageCalculator.Compute(20, EDamageKind.BasicAttack, focus.Stats, victim.Stats, CombatResolver.Settings, null, out _),
                 CombatResolver.PredictDamage(focus, victim, 20, EDamageKind.BasicAttack), "Arcane Focus: basic attacks are not boosted");
             focus.RegisterMovement();
+            AssertEqual(focusPlain, CombatResolver.PredictDamage(focus, victim, 20, EDamageKind.Skill), "Arcane Focus: no bonus after walking this turn");
             focus.BeginTurn();
-            AssertEqual(focusPlain, CombatResolver.PredictDamage(focus, victim, 20, EDamageKind.Skill), "Arcane Focus: no bonus after moving");
+            AssertEqual(Mathf.RoundToInt(focusPlain * (1f + PercentOf("ArcaneFocus"))), CombatResolver.PredictDamage(focus, victim, 20, EDamageKind.Skill),
+                "Arcane Focus: last turn's walk does not matter");
             Dispose(focus);
 
             // Shatter boosts collision damage only.

@@ -40,11 +40,11 @@ namespace GridBattle.Gameplay.States.Effects
         /// <summary>The opponent carries at least one of the listed states (e.g. Poisoned).</summary>
         OpponentHasState,
 
-        /// <summary>The holder walked or teleported during its previous turn ("hit and run").</summary>
-        HolderMovedLastTurn,
+        /// <summary>"Hit and run": the holder walked or teleported earlier in its current turn, before the hit.</summary>
+        HolderMovedThisTurn,
 
-        /// <summary>The holder did not walk during its previous turn (standing still).</summary>
-        HolderDidNotMoveLastTurn,
+        /// <summary>Standing still: the holder has not walked in its current turn when it hits.</summary>
+        HolderDidNotMoveThisTurn,
 
         /// <summary>The opponent has no ally adjacent to it.</summary>
         OpponentIsolated,
@@ -55,7 +55,7 @@ namespace GridBattle.Gameplay.States.Effects
 
     /// <summary>
     /// A passive that changes damage depending on the situation: +15% damage per adjacent enemy, 20% less damage
-    /// taken while surrounded, +30% damage against poisoned targets, +40% right after moving... The condition, the
+    /// taken while surrounded, +30% damage against poisoned targets, +40% after walking this turn... The condition, the
     /// kinds of damage it reacts to and the amount are Inspector fields; the amount is per stack (a talent rank).
     /// Basic attacks and skills by default: periodic damage, thorns, terrain and exact damage are only changed when
     /// the mask says so. The hook is pure, so the AI and the simulation bot see the same numbers
@@ -143,10 +143,10 @@ namespace GridBattle.Gameplay.States.Effects
                     return opponent != null && HasNegativeState(opponent) ? 1 : 0;
                 case EDamageCondition.OpponentHasState:
                     return opponent != null && HasAnyState(opponent) ? 1 : 0;
-                case EDamageCondition.HolderMovedLastTurn:
-                    return holder.MovedLastTurn ? 1 : 0;
-                case EDamageCondition.HolderDidNotMoveLastTurn:
-                    return holder.MovedLastTurn ? 0 : 1;
+                case EDamageCondition.HolderMovedThisTurn:
+                    return holder.MovedThisTurn ? 1 : 0;
+                case EDamageCondition.HolderDidNotMoveThisTurn:
+                    return holder.MovedThisTurn ? 0 : 1;
                 case EDamageCondition.OpponentIsolated:
                     return opponent != null && !opponent.IsDead && !GridRules.HasAdjacentAlly(holder.Grid, opponent) ? 1 : 0;
                 case EDamageCondition.OpponentAtFullHp:

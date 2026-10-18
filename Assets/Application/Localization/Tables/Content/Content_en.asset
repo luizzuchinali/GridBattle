@@ -287,7 +287,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 10290247991296
-    m_Localized: 'Tap a highlighted cell to move or an enemy in range to attack; each action gives the enemies a turn. Defeating them gives XP: fill the bar to level up.'
+    m_Localized: 'Each turn you can walk once and act once (attack or skill), in any order. Tap yourself or End turn to finish; then the enemies walk and act too. Defeating them gives XP: fill the bar to level up.'
     m_Metadata:
       m_Items: []
   - m_Id: 10290373820416
@@ -551,7 +551,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 218487270690817
-    m_Localized: Skills recover 1 action sooner per stack.
+    m_Localized: Skills recover 1 turn sooner per stack.
     m_Metadata:
       m_Items: []
   - m_Id: 218487669149696
@@ -671,7 +671,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 218491670515713
-    m_Localized: Skills recover 1 action sooner per rank.
+    m_Localized: Skills recover 1 turn sooner per rank.
     m_Metadata:
       m_Items: []
   - m_Id: 218491930562560
@@ -1307,7 +1307,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 458950780780545
-    m_Localized: Skills deal +15% damage per rank if you did not move on your last turn.
+    m_Localized: Skills deal +15% damage per rank if you have not walked this turn.
     m_Metadata:
       m_Items: []
   - m_Id: 458951166656512
@@ -1315,7 +1315,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 458951166656513
-    m_Localized: Skills deal +15% damage per rank if you did not move on your last turn.
+    m_Localized: Skills deal +15% damage per rank if you have not walked this turn.
     m_Metadata:
       m_Items: []
   - m_Id: 458951573504000
@@ -1547,7 +1547,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 458961736302593
-    m_Localized: +30% damage per rank on the turn after you moved.
+    m_Localized: +30% damage per rank if you walked earlier this turn, before attacking.
     m_Metadata:
       m_Items: []
   - m_Id: 458962084429824
@@ -1555,7 +1555,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 458962084429825
-    m_Localized: +30% damage per rank on the turn after you moved.
+    m_Localized: +30% damage per rank if you walked earlier this turn, before attacking.
     m_Metadata:
       m_Items: []
   - m_Id: 458962432557056
@@ -1632,6 +1632,22 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 2743378734030849
     m_Localized: Assassin who wears enemies down with poison, strikes isolated targets hard and drags foes to where they are weakest.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4946699310063616
+    m_Localized: Hammer Slam
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4946699347812352
+    m_Localized: Raises the hammer and marks the cells around him. On his next turn he smashes them, hitting everyone on them, his guards too.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4946699561721856
+    m_Localized: Marked area
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4946699561721857
+    m_Localized: 'This enemy is preparing a strike: the marked cells are hit on its next turn. Walk out of the area before then (you can still attack) or stun it to cancel the strike. Long press a marked cell to see the damage.'
     m_Metadata:
       m_Items: []
   references:

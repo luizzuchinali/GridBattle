@@ -864,6 +864,50 @@ MonoBehaviour:
     m_Localized: A character
     m_Metadata:
       m_Items: []
+  - m_Id: 4931173821177856
+    m_Localized: End turn
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4931173888286720
+    m_Localized: Undo
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4946700195061760
+    m_Localized: Everyone else
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4946700203450368
+    m_Localized: Prepared
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4946700203450369
+    m_Localized: in {0} turn
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4946700203450370
+    m_Localized: in {0} turns
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4946700203450371
+    m_Localized: Marked area
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4946700203450372
+    m_Localized: Incoming strike
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4946700203450373
+    m_Localized: Damage to you
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4946700203450374
+    m_Localized: Hits
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4946700203450375
+    m_Localized: Preparing
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

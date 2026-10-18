@@ -287,7 +287,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 10290247991296
-    m_Localized: "Toca una celda resaltada para moverte o a un enemigo al alcance para atacar; cada acci\xF3n da un turno a los enemigos. Derrotarlos da XP: llena la barra para subir de nivel."
+    m_Localized: "En cada turno puedes caminar una vez y actuar una vez (atacar o usar una habilidad), en cualquier orden. T\xF3cate o pulsa Terminar para acabar; luego los enemigos tambi\xE9n caminan y act\xFAan. Derrotarlos da XP: llena la barra para subir de nivel."
     m_Metadata:
       m_Items: []
   - m_Id: 10290373820416
@@ -551,7 +551,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 218487270690817
-    m_Localized: "Las habilidades se recuperan 1 acci\xF3n antes por acumulaci\xF3n."
+    m_Localized: "Las habilidades se recuperan 1 turno antes por acumulaci\xF3n."
     m_Metadata:
       m_Items: []
   - m_Id: 218487669149696
@@ -671,7 +671,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 218491670515713
-    m_Localized: "Las habilidades se recuperan 1 acci\xF3n antes por rango."
+    m_Localized: Las habilidades se recuperan 1 turno antes por rango.
     m_Metadata:
       m_Items: []
   - m_Id: 218491930562560
@@ -1307,7 +1307,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 458950780780545
-    m_Localized: "Las habilidades hacen +15% de da\xF1o por rango si no te moviste en tu \xFAltimo turno."
+    m_Localized: "Las habilidades hacen +15% de da\xF1o por rango si no caminaste en este turno."
     m_Metadata:
       m_Items: []
   - m_Id: 458951166656512
@@ -1315,7 +1315,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 458951166656513
-    m_Localized: "Las habilidades hacen +15% de da\xF1o por rango si no te moviste en tu \xFAltimo turno."
+    m_Localized: "Las habilidades hacen +15% de da\xF1o por rango si no caminaste en este turno."
     m_Metadata:
       m_Items: []
   - m_Id: 458951573504000
@@ -1547,7 +1547,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 458961736302593
-    m_Localized: "+30% de da\xF1o por rango en el turno posterior a moverte."
+    m_Localized: "+30% de da\xF1o por rango si caminaste en este turno antes de atacar."
     m_Metadata:
       m_Items: []
   - m_Id: 458962084429824
@@ -1555,7 +1555,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 458962084429825
-    m_Localized: "+30% de da\xF1o por rango en el turno posterior a moverte."
+    m_Localized: "+30% de da\xF1o por rango si caminaste en este turno antes de atacar."
     m_Metadata:
       m_Items: []
   - m_Id: 458962432557056
@@ -1632,6 +1632,22 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 2743378734030849
     m_Localized: "Asesino que desgasta a los enemigos con veneno, golpea fuerte a los objetivos aislados y arrastra a los rivales a donde son m\xE1s d\xE9biles."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4946699310063616
+    m_Localized: Martillazo
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4946699347812352
+    m_Localized: "Levanta el martillo y marca las casillas a su alrededor. En su siguiente turno las golpea y alcanza a todos los que est\xE9n en ellas, tambi\xE9n a sus guardias."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4946699561721856
+    m_Localized: "\xC1rea marcada"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4946699561721857
+    m_Localized: "Este enemigo prepara un golpe: las casillas marcadas reciben el golpe en su siguiente turno. Sal del \xE1rea antes (todav\xEDa puedes atacar) o at\xFArdelo para cancelar el golpe. Mant\xE9n pulsada una casilla marcada para ver el da\xF1o."
     m_Metadata:
       m_Items: []
   references:

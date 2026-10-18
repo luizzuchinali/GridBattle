@@ -862,6 +862,50 @@ MonoBehaviour:
     m_Localized: Um personagem
     m_Metadata:
       m_Items: []
+  - m_Id: 4931173821177856
+    m_Localized: Encerrar
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4931173888286720
+    m_Localized: Desfazer
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4946700195061760
+    m_Localized: Todos os outros
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4946700203450368
+    m_Localized: Preparada
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4946700203450369
+    m_Localized: em {0} turno
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4946700203450370
+    m_Localized: em {0} turnos
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4946700203450371
+    m_Localized: "\xC1rea marcada"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4946700203450372
+    m_Localized: Golpe preparado
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4946700203450373
+    m_Localized: "Dano em voc\xEA"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4946700203450374
+    m_Localized: Atinge
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4946700203450375
+    m_Localized: Preparando
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

@@ -31,6 +31,9 @@ namespace GridBattle.Gameplay.Meta
         FirstSkill,
 
         /// <summary>The first battle is won (raised automatically on BattleEndedEvent): HP persists between battles.</summary>
-        FirstBattleWon
+        FirstBattleWon,
+
+        /// <summary>An enemy prepares a telegraphed skill for the first time (its cells are marked).</summary>
+        FirstTelegraph
     }
 }

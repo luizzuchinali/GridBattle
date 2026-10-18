@@ -175,9 +175,7 @@
       "daily-notes:Abrir a nota de hoje": false,
       "templates:Inserir modelo": false,
       "command-palette:Abrir paleta de comandos": false,
-      "bases:Criar nova base": false,
-      "obsidian-excalidraw-plugin:New drawing": false,
-      "project-manager:Project manager": false
+      "bases:Criar nova base": false
     }
   },
   "active": "9a7b6c9953f65d08",

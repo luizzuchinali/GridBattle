@@ -49,35 +49,49 @@ namespace GridBattle.Gameplay.Movement
 
         /// <summary>
         /// The attacker advances toward <paramref name="direction"/> (world space)
-        /// and returns. The target's next hit reaction is delayed to the impact
-        /// point (half of the lunge).
+        /// and returns, after <paramref name="startDelay"/> seconds (the end of its own walk, so it never lunges
+        /// mid-hop). The target's next hit reaction is delayed to the impact point (half of the lunge).
         /// </summary>
         public void PlayAttack(GridEntity attacker, GridEntity target, Vector3 direction,
-            GridMovementSettings settings)
+            GridMovementSettings settings, float startDelay = 0f)
         {
             if (settings == null || !Application.isPlaying || SimMode.IsActive || attacker == null) return;
 
             direction.z = 0f;
             direction = direction.sqrMagnitude > 0f ? direction.normalized : Vector3.right;
+            startDelay = Mathf.Max(0f, startDelay);
             var duration = settings.LungeDuration / Speed;
             if (target != null)
-                _pendingHits[target] = new PendingHit(duration * 0.5f, direction);
+                _pendingHits[target] = new PendingHit(startDelay + duration * 0.5f, direction);
 
             Stop(_lunges, attacker);
             var transform = attacker.transform;
-            var basePos = transform.localPosition;
             var worldOffset = direction * (settings.LungePixels / GameConfigManager.Ppu);
             var offset = transform.parent != null
                 ? transform.parent.InverseTransformVector(worldOffset)
                 : worldOffset;
 
-            _lunges[attacker] = LMotion.Create(0f, 1f, duration)
+            // The resting position is read when the lunge starts: a walk may still be moving the attacker until then.
+            var basePos = transform.localPosition;
+            var started = startDelay <= 0f;
+            var total = startDelay + duration;
+            _lunges[attacker] = LMotion.Create(0f, 1f, total)
                 .WithOnComplete(() => transform.localPosition = basePos)
                 .Bind(t =>
                 {
-                    var k = t < 0.5f
-                        ? EaseUtility.Evaluate(t * 2f, Ease.OutQuad)
-                        : 1f - EaseUtility.Evaluate((t - 0.5f) * 2f, Ease.InQuad);
+                    var time = t * total - startDelay;
+                    if (time < 0f) return;
+
+                    if (!started)
+                    {
+                        started = true;
+                        basePos = transform.localPosition;
+                    }
+
+                    var u = Mathf.Clamp01(time / duration);
+                    var k = u < 0.5f
+                        ? EaseUtility.Evaluate(u * 2f, Ease.OutQuad)
+                        : 1f - EaseUtility.Evaluate((u - 0.5f) * 2f, Ease.InQuad);
                     transform.localPosition = basePos + offset * k;
                 })
                 .AddTo(attacker.gameObject);

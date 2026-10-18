@@ -3,7 +3,7 @@ tags:
   - design
   - gdd
 created: 2026-07-12
-updated: 2026-10-05
+updated: 2026-10-18
 ---
 ## Grid Battle (TEMP)
 
@@ -38,10 +38,10 @@ O jogador poderá selecionar dentre X classes para controlar dentro de um sistem
 
 ### 1.4 Unique Selling Points (USPs)
 
-- **Combate em grid por turnos onde cada ação do jogador gera uma reação.** Mover, atacar ou usar uma skill consome o turno, e todos os inimigos respondem em seguida.
+- **Combate em grid por turnos onde cada ação do jogador gera uma reação.** Em cada turno o jogador anda, age (ataque ou skill) e pode usar um consumível; depois todos os inimigos respondem, um de cada vez, andando e agindo também.
 - **Build montada durante a batalha.** O talento é escolhido no momento em que a barra de XP cruza o limiar de nível, com o jogo pausado, inclusive no meio da luta (Mecânica 3). O sorteio é controlável pelo jogador: reroll, banir e pular.
 - **Risco e recompensa no mapa.** Batalhas mais difíceis rendem mais XP, e a vida persiste entre as batalhas, então o jogador decide quanto arriscar para ficar mais forte (Mecânica 2).
-- **Run curta e de uma mão.** Run finita, em retrato, pensada para sessões curtas no celular, com salvamento automático a cada ação (ver 8.1).
+- **Run curta e de uma mão.** Run finita, em retrato, pensada para sessões curtas no celular, com salvamento automático a cada turno (ver 8.1).
 
 ---
 
@@ -78,11 +78,11 @@ O objetivo é montar builds diferentes com as árvores de talento de cada classe
 ### 2.3 Mecânicas Principais
 
 #### Mecânica 1: Combate em Grid por Turnos
-- **Descrição:** O combate acontece num grid de células, com no máximo uma entidade por célula. Cada ação consumida pelo jogador (mover, atacar ou usar skill) é seguida por uma rodada de ações de todos os inimigos. Ações inválidas não consomem o turno. Usar um consumível também não consome a ação (no máximo um por turno; ver 2.8). Jogador e inimigos seguem as mesmas regras de alcance e ocupação.
-- **Entrada do jogador:** Toque em uma célula (andar ou atacar, conforme o conteúdo e o alcance).
-- **Feedback visual/sonoro:** Células destacadas para andar e para atacar, animações de movimento e de ataque, texto de dano flutuante.
+- **Descrição:** O combate acontece num grid de células, com no máximo uma entidade por célula. **Andar e agir no mesmo turno** (decisão de 2026-10-18): em cada turno o jogador anda uma vez e age uma vez (ataque básico ou skill), na ordem que quiser, e depois todos os inimigos fazem o mesmo. O turno só acaba sozinho quando o jogador não consegue fazer mais nada (andar, agir e usar consumível já usados ou impossíveis); senão, acaba no botão "Encerrar turno" (sempre visível na vez dele) ou tocando no próprio personagem. Enquanto não agiu, o jogador pode desfazer o movimento. Ações inválidas não gastam nada. O jogo ficou mais difícil com essa regra (os inimigos também andam e atacam no mesmo turno) e o balanceamento está pendente. Usar um consumível não gasta o andar nem o agir (no máximo um por turno; ver 2.8). Os inimigos agem um de cada vez, cada um terminando o seu turno antes do próximo. Jogador e inimigos seguem as mesmas regras de alcance e ocupação.
+- **Entrada do jogador:** Toque em uma célula (andar ou atacar, conforme o conteúdo e o alcance), toque no próprio personagem ou "Encerrar turno" para terminar a vez, "Desfazer" para voltar o movimento.
+- **Feedback visual/sonoro:** Células destacadas para andar e para atacar (refeitas depois de andar), um pé, uma espada e uma poção que mostram o que ainda resta no turno (andar, agir e o consumível), animações de movimento e de ataque, texto de dano flutuante. No toque longo num inimigo, as células que ele alcança no próximo turno ficam marcadas. As áreas das habilidades telegrafadas ficam marcadas o tempo todo, com uma cor própria de aviso.
 - **Interação com outras mecânicas:** Cada inimigo derrotado concede o seu XP na hora, que leva ao nível e à escolha de talentos. Skills e talentos alteram alcance, dano e comportamento das ações.
-- **Sem telegrafia (decisão de design):** os inimigos não anunciam onde vão atacar. O jogo se mantém como está: o impacto vem principalmente da build do jogador, e não de esquivar de golpes. A variedade entre batalhas vem de outras fontes (papéis dos inimigos, personalidade do grid e inimigos que cobram a build; ver Mecânicas 4, 5 e 6).
+- **Telegrafia opcional por habilidade (decisão de 2026-10-18, substitui "sem telegrafia"; ainda não implementada):** por padrão os inimigos atacam na hora, sem anunciar. Uma habilidade de inimigo pode ser marcada como **telegrafada**: o inimigo a prepara num turno, as células que ela vai atingir ficam marcadas no grid, e ela dispara no turno seguinte dele, nas células marcadas, atingindo quem estiver lá. É uma opção de cada habilidade, não uma regra: o uso esperado é em chefes e elites, e nenhum inimigo é obrigado a ter uma. O impacto continua vindo principalmente da build; a telegrafia acrescenta leitura de posicionamento. Detalhes: [[inimigos#Habilidades telegrafadas]].
 
 #### Mecânica 2: Mapa, Nós e Batalhas
 - **Descrição:** a run é um mapa de nós, no estilo de Slay the Spire. O jogador escolhe o próximo nó, e um nó de batalha leva ao combate no grid. A run é finita (exemplo, não final: cerca de 30 nós) e termina na vitória, ao derrotar o chefe final, ou na morte.
@@ -102,7 +102,7 @@ O objetivo é montar builds diferentes com as árvores de talento de cada classe
 - **Detalhes:** [[talentos_e_oferta]] (oferta, reroll, banir e pular) e [[xp_e_niveis]] (XP e nível).
 
 #### Mecânica 4: Papéis dos Inimigos
-- **Descrição:** cada inimigo tem um papel (corpo a corpo, enxame, atirador, suporte, invocador, controlador) que define como ele se comporta, em vez de todos perseguirem e atacarem. Seguem as mesmas regras de turno, alcance e ocupação do jogador, sem telegrafar ataques, e a prévia do nó mostra os papéis. Detalhes: [[inimigos]].
+- **Descrição:** cada inimigo tem um papel (corpo a corpo, enxame, atirador, suporte, invocador, controlador) que define como ele se comporta, em vez de todos perseguirem e atacarem. Seguem as mesmas regras de turno, alcance e ocupação do jogador; os ataques são imediatos, exceto as habilidades marcadas como telegrafadas (Mecânica 1), e a prévia do nó mostra os papéis. Detalhes: [[inimigos]].
 
 #### Mecânica 5: Personalidade do Grid
 - **Descrição:** o grid de cada batalha pode ter terreno (obstáculos, células de perigo e de bônus) que muda o posicionamento e o valor das skills. O terreno é gerado pela seed e pela profundidade e aparece na prévia do nó. Detalhes: [[grid_e_terreno]].
@@ -125,7 +125,7 @@ O objetivo é montar builds diferentes com as árvores de talento de cada classe
 - **Detalhes:** [[xp_e_niveis]] (XP e nível), [[talentos_e_oferta]] (talentos) e [[classes_e_skills]] (skills).
 
 ### 2.6 Economia
-Não há moeda por enquanto. Os recursos da run são: vida (persiste entre os nós e se recupera em nós de cura), XP (por inimigo derrotado, leva a níveis e talentos), consumíveis (nó de consumível, ver 2.8) e as ferramentas de oferta de talento (reroll, banimento e pular; ver Mecânica 3). O custo do nó de talento ainda é ❓ a definir (ver Mecânica 2). Valor inicial configurável: 15% da vida máxima, sem nunca matar (ver [[valores_padrao_em_aberto]]). Itens ativos e equipáveis estão fora do escopo (ver seção 10).
+Não há moeda por enquanto (decisão de 2026-10-18: a loja com moedas foi adiada; ideia guardada: os nós de cura, consumível e talento virariam lojas, cada uma do seu tipo, pagas com moedas que só viriam das batalhas). Os recursos da run são: vida (persiste entre os nós e se recupera em nós de cura), XP (por inimigo derrotado, leva a níveis e talentos), consumíveis (nó de consumível, ver 2.8) e as ferramentas de oferta de talento (reroll, banimento e pular; ver Mecânica 3). O custo do nó de talento ainda é ❓ a definir (ver Mecânica 2). Valor inicial configurável: 15% da vida máxima, sem nunca matar (ver [[valores_padrao_em_aberto]]). Itens ativos e equipáveis estão fora do escopo (ver seção 10).
 
 ### 2.7 Glossário do Jogo
 
@@ -134,7 +134,7 @@ Não há moeda por enquanto. Os recursos da run são: vida (persiste entre os n�
 - **Descrição:** o jogo tem um glossário que o jogador preenche conforme joga, com as classes liberadas (os talentos já escolhidos aparecem, os demais como "?") e os inimigos já enfrentados (atributos, skills e como agem). Persiste entre runs, no perfil do jogador (8.1). Detalhes: [[meta_progressao_e_perfil]].
 
 ### 2.8 Consumíveis
-- **Descrição:** item de uso único obtido no nó de consumível. Só pode ser usado em batalha, não consome a ação do turno e só um pode ser usado por turno, o que o torna muito valioso. Detalhes: [[consumiveis]].
+- **Descrição:** item de uso único obtido no nó de consumível. Só pode ser usado em batalha, não gasta o andar nem o agir do turno e só um pode ser usado por turno, o que o torna muito valioso. Detalhes: [[consumiveis]].
 
 ### 2.9 Balanceamento e Fórmulas
 - **Princípio:** a dificuldade vem da profundidade no mapa e o poder do jogador vem do nível (XP). A geração é determinística por seed, então o balanceamento pode ser simulado antes de implementar.
@@ -293,6 +293,9 @@ Esta seção cobre apenas as métricas de design, usadas para balancear o jogo. 
 
 - Itens ativos e equipáveis — fora do escopo por enquanto; podem voltar em uma versão futura. Os consumíveis (nó de consumível no mapa) entram no escopo.
 - Skills detalhadas — serão revistas no futuro, após o jogo base funcionar.
+- Companheiros (aliados que lutam junto com o jogador) — descartados por agora (decisão de 2026-10-18).
+- Loja com moedas — adiada (decisão de 2026-10-18). Os nós de cura, consumível e talento continuam como são. Ideia guardada: virariam lojas pagas com moedas vindas das batalhas.
+- Imprevistos de batalha (eventos no meio da luta, como desabamento, fogo que se espalha e baú) — adiados (decisão de 2026-10-18), junto com o ajuste de skills para ganharem do ataque básico e os inimigos que resistem ao ataque básico.
 - Acessibilidade — nenhum recurso planejado no momento; será revista quando o jogo base estiver funcionando.
 - Cronograma e riscos — não serão tratados neste documento.
 

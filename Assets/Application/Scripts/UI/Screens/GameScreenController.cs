@@ -1,6 +1,7 @@
 using GridBattle.Core;
 using GridBattle.Gameplay;
 using GridBattle.Gameplay.Entities;
+using GridBattle.Gameplay.Entities.Skills;
 using GridBattle.Gameplay.Events;
 using GridBattle.Managers.Audio;
 using GridBattle.UI.Events;
@@ -20,6 +21,7 @@ namespace GridBattle.UI.Screens
     public sealed class GameScreenController : ViewController
     {
         private DepthView _depthView;
+        private TurnActionsView _turnActions;
         private SkillBarView _skillBar;
         private ItemBarView _itemBar;
         private int _depth;
@@ -80,6 +82,7 @@ namespace GridBattle.UI.Screens
             DisposeBars();
             _skillBar = new SkillBarView(root.Q<VisualElement>("skill-bar"), ShowDetails);
             _itemBar = new ItemBarView(root.Q<VisualElement>("item-bar"), ShowDetails);
+            _turnActions = new TurnActionsView(root);
         }
 
         private void OnXpChanged(PlayerXpChangedEvent e)
@@ -93,24 +96,28 @@ namespace GridBattle.UI.Screens
             _depthView?.SetDepth(_depth);
         }
 
+        /// <summary>The walk-and-act row of the HUD (foot, sword, Undo, End turn).</summary>
+        public TurnActionsView TurnActions => _turnActions;
+
         private void OnLocaleChanged()
         {
             _depthView?.RefreshTexts();
+            _turnActions?.RefreshTexts();
         }
 
         /// <summary>
-        /// A long tap (or right click) on a cell: opens the details of its entity and terrain, when there is
-        /// something to show.
+        /// A long tap (or right click) on a cell: opens the details of its entity, its terrain and the telegraphed
+        /// skills marked on it, when there is something to show.
         /// </summary>
         private void OnCellLongPress(CellLongPressEvent e)
         {
             if (e.Cell == null) return;
 
             var character = e.Cell.GetContent() as Character;
-            var terrain = e.Cell.Terrain;
-            if (character == null && terrain == null) return;
+            var request = new EntityDetailsRequest(character, e.Cell.Terrain, SkillTelegraph.GetAt(e.Cell.GridPosition));
+            if (!request.HasContent) return;
 
-            ShowDetails(new EntityDetailsRequest(character, terrain));
+            ShowDetails(request);
         }
 
         /// <summary>
@@ -131,6 +138,8 @@ namespace GridBattle.UI.Screens
 
         private void DisposeBars()
         {
+            _turnActions?.Dispose();
+            _turnActions = null;
             _skillBar?.Dispose();
             _skillBar = null;
             _itemBar?.Dispose();

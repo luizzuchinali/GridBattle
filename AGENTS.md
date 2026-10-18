@@ -113,15 +113,15 @@ O namespace segue a pasta: `GridBattle.<Pasta>[.<Subpasta>]`.
 | `Gameplay/States/` (+`Effects/`) | `…Gameplay.States[.Effects]` | `StateDefinition`, `StateEffect` (ganchos: atributos, turnos, dano causado e recebido, bônus de dano condicional, modificadores de skill) e efeitos (`SkillModifierEffect`, `ConditionalDamageEffect`, `OnKillEffect`, `ApplyStateOnHitEffect`, ...), `StateGrant`, `StateInstance`, `StateContainer` |
 | `Gameplay/Combat/` | `…Gameplay.Combat` | `CombatSettings`, `DamageCalculator`, `CombatResolver` (`Adjust`, `PredictDamage`), `DamageContext` (+`DamageAdjustment`, `EDamageKindMask`), `HitResult`, `DisplacementResolver` (aplica e prevê empurrões e puxões) |
 | `Gameplay/Turns/` | `…Gameplay.Turns` | `TurnBlockers` |
-| `Gameplay/Rules/` | `…Gameplay.Rules` | `GridRules`, `GridDistance`, `Displacement` (regras puras de empurrar e puxar: direção, caminho, colisão), `LineOfSight` (linha de visão das skills), `SkillSelection` (área de seleção das skills: forma, alcance mínimo e máximo) |
+| `Gameplay/Rules/` | `…Gameplay.Rules` | `GridRules` (inclui `GetReachCells`: alcance de um inimigo no próximo turno), `GridDistance`, `Displacement` (regras puras de empurrar e puxar: direção, caminho, colisão), `LineOfSight` (linha de visão das skills), `SkillSelection` (área de seleção das skills: forma, alcance mínimo e máximo) |
 | `Gameplay/Movement/` | `…Gameplay.Movement` | `GridMovementAnimator`, `GridEffectsAnimator`, `GridMovementSettings`, `ActionVisualDefinition` (+`ECasterGesture`, `EVisualCellOrder`, `EVisualFacing`: visual de skill/item) e `ActionVisualPlayer` (toca o visual) |
 | `Gameplay/Entities/` | `…Gameplay.Entities` | `GridEntity` → `Character` → `PlayerCharacter` / `Enemy`; `CharacterView`, `EnemyIconsView`, `CharacterFactory`, `CharacterScaling`, `ECharacter` |
 | `Gameplay/Entities/Configs/` | `…Gameplay.Entities` ⚠️ | `CharacterConfig`, `EnemyConfig`, `PlayerCharacterConfig` (**exceção**: namespace sem `Configs`) |
 | `Gameplay/Entities/Skills/` | `…Entities.Skills` | `SkillDefinition`, `EffectiveSkill` (+`SkillModifiers`: os números de uma skill para um lançador), `SkillEffect` (+`DisplaceSkillEffect`), `SkillArea`, `SkillTargeting`, `SkillCooldowns`, `SkillSettings` |
 | `Gameplay/Entities/Roles/` | `…Entities.Roles` | `EnemyRoleDefinition` |
 | `Gameplay/Entities/Interfaces/` | `…Entities.Interfaces` | `IDamageReceiver`, `IAttacker`, `IWalker` |
-| `Gameplay/Controllers/` | `…Gameplay.Controllers` | `CharacterControllerBase<T>`, `PlayerCharacterController` (toque, skills, itens, destaques), `EnemyController` (IA + memória) |
-| `Gameplay/AI/` (+`Actions/`) | `…Gameplay.AI[.Actions]` | `EnemyBehavior`, `EnemyAction`, `EnemyMemory`, `EnemyTurnContext`; ações (`UseSkills`, `BasicAttack`, `ChaseTarget`, `KeepDistance`, `ApplyStateToTarget`, `HealAlly`, `BuffAlly`, `Summon`); `DisplacementScoring` (valor de um empurrão/puxão para a IA, pesos em `UseSkills`) |
+| `Gameplay/Controllers/` | `…Gameplay.Controllers` | `CharacterControllerBase<T>`, `PlayerCharacterController` (toque, skills, itens, destaques; turno com andar e agir, `UndoMove`, `EndTurn`, alcance do inimigo no toque longo), `EnemyController` (IA + memória) |
+| `Gameplay/AI/` (+`Actions/`) | `…Gameplay.AI[.Actions]` | `EnemyBehavior` (um andar e um agir por turno), `EnemyAction` (`IsMovement`), `EnemyMemory`, `EnemyTurnContext`; ações (`UseSkills`, `BasicAttack`, `ChaseTarget`, `KeepDistance`, `ApplyStateToTarget`, `HealAlly`, `BuffAlly`, `Summon`); `DisplacementScoring` (valor de um empurrão/puxão para a IA, pesos em `UseSkills`) |
 | `Gameplay/Terrain/` | `…Gameplay.Terrain` | `TerrainDefinition`, `TerrainGenerator`, `TerrainEffects`, `TerrainGenerationSettings` |
 | `Gameplay/Consumables/` | `…Gameplay.Consumables` | `ConsumableDefinition`, `ConsumableEffect`, `ConsumableInventory`, `ConsumableRules`, `ConsumableExecutor`, `ConsumableGrant`, `ConsumableSettings` |
 | `Gameplay/Progression/` | `…Gameplay.Progression` | `ProgressionSettings` (curva de XP, nível máximo), `XpRewardSystem`, `XpPacket` |
@@ -135,7 +135,7 @@ O namespace segue a pasta: `GridBattle.<Pasta>[.<Subpasta>]`.
 | `UI/` | `GridBattle.UI` | `XpBarView`, `PixelPerfectPanelScale`, `UiExtensions` (`OnClick`, `SimulateClick`), `LongPressManipulator` (toque longo / clique direito em elementos de UI) |
 | `UI/Flow/` | `…UI.Flow` | `GameFlowController` (eventos → navegação) |
 | `UI/Screens/` | `…UI.Screens` | controladores das telas (Start, MainMenu, Game, Map, RunEnd, Victory), `ScreensSettings` |
-| `UI/Hud/` | `…UI.Hud` | `SkillBarView`, `ItemBarView` (toque longo nos botões abre os detalhes), `DepthView`, `EntityDetailsModel` (+`EntityDetailsRequest`: célula, skill ou item), `ActionDetailsModel` (ficha de skill e item), `HudText`, `HudSettings` |
+| `UI/Hud/` | `…UI.Hud` | `SkillBarView`, `ItemBarView` (toque longo nos botões abre os detalhes), `DepthView`, `TurnActionsView` (pé, espada e poção do que resta no turno, Desfazer e Encerrar turno), `EntityDetailsModel` (+`EntityDetailsRequest`: célula, skill ou item), `ActionDetailsModel` (ficha de skill e item), `HudText`, `HudSettings` |
 | `UI/Map/` | `…UI.Map` | `MapGraphView`, `MapLinesElement`, `MapHudView`, `NodePreviewView` |
 | `UI/Overlays/` | `…UI.Overlays` | controladores dos modais (menu/pausa, detalhes, oferta de consumível, confirmação, talento, glossário, opções, dicas, detalhes do personagem, remover anúncios, aviso de anúncio, anúncio de teste), `ModalsSettings` |
 | `UI/Background/`, `UI/Vfx/`, `UI/Events/` | `…UI.*` | fundo, orbs de XP, eventos de UI |
@@ -183,12 +183,16 @@ Run (RunManager)
     carregar repete o turno com os mesmos sorteios). ContinueRun retoma mapa, nó aberto ou batalha.
 
 Turno (TurnManager)
-  turno global: o jogador age primeiro, depois cada inimigo (mais perto do jogador primeiro; desempate y, x)
+  turno global: o jogador age primeiro, depois cada inimigo, um de cada vez (mais perto do jogador primeiro;
+    desempate y, x): o inimigo anda e age, as animações dele terminam e só então o próximo começa
   turno da entidade: início (EntityTurnStartedEvent; estados: dano/cura periódicos; terreno OnTurnStart)
                      → ação → fim (EntityTurnEndedEvent; terreno OnTurnEnd, cooldowns, memória da IA;
                      depois a duração dos estados cai 1)
-  ação do jogador: tocar célula (andar/atacar) ou usar skill → PlayerActionEvent;
-    consumível NÃO consome a ação (máx. 1 por turno)
+  vez do jogador: anda 1 vez e age 1 vez (ataque básico ou skill), em qualquer ordem, e pode usar 1 consumível;
+    acaba sozinha só quando nada mais é possível (HasAnythingLeft falso depois de uma escolha; com item
+    utilizável espera), ou com Encerrar turno / tocando em si mesmo → PlayerActionEvent;
+    desfazer o andar enquanto não agiu (PlayerCharacterController.UndoMove); PlayerTurnStateChangedEvent a cada
+    mudança; inimigos: um andar e um agir (EnemyBehavior)
   cada passo espera animações (GridController.WaitForMovementsAsync) e TurnBlockers
     (orbs de XP que sobem de nível, escolha de talento, pausa, detalhes, dicas)
   último inimigo ou jogador morre → BattleDecidedEvent (vez = None, ninguém age)
@@ -273,9 +277,21 @@ Morte de inimigo
 - **Passivas condicionais** (`ConditionalDamageEffect`, `OnKillEffect`,
   `ApplyStateOnHitEffect`): os ganchos `ModifyOutgoingDamage` /
   `ModifyIncomingDamage` são **puros** (sem sorteio, sem mudar o jogo), porque a
-  previsão os chama também. "Andou no turno anterior" é
-  `Character.MovedLastTurn` (entra no salvamento); adjacência pela métrica
+  previsão os chama também. "Andou neste turno" é
+  `Character.MovedThisTurn` (antes do golpe; desfazer o andar desmarca); adjacência pela métrica
   `CombatSettings.adjacencyMetric` (`GridRules.CountAdjacentOpponents`).
+- **Turno: andar e agir.** O turno tem um andar e um agir (ataque básico ou
+  skill), em qualquer ordem, mais um consumível. A vez do jogador termina com
+  `PlayerActionEvent` (quando nada mais é possível, no Encerrar turno ou no toque em si
+  mesmo); o que ainda resta fica no `PlayerCharacterController` (`CanMove`,
+  `CanAct`, `CanUseConsumable`, `CanUndoMove`) e sai em
+  `PlayerTurnStateChangedEvent`. Inimigos: `EnemyAction.IsMovement` separa andar
+  de agir, e o `TurnManager` só começa o próximo inimigo depois das animações do
+  anterior. Desfazer o andar usa `GridController.UndoMove` (sem
+  `EntityEnteredCellEvent`); só vale sem gatilho `OnEnter` na célula. O ataque ou
+  o visual de skill de quem acabou de andar espera o fim do pulo
+  (`GridController.GetMovementRemaining`). Recargas contam turnos do dono.
+  "Andou" nos bônus condicionais é `Character.MovedThisTurn`.
 - **Distâncias** só por `GridDistance` com as métricas de `CombatSettings`
   (movimento/ataque euclidianos; alcance de skill Manhattan).
 - **Empurrar e puxar** (deslocamento forçado) só por `Displacement` (regras
@@ -417,7 +433,8 @@ Morte de inimigo
   `new-game-btn`, `back-btn`, `select-class-label`, `menu-buttons`,
   `glossary-btn`, `options-btn`, `locked-info`, `character-*`, `remove-ads-*`,
   `ad-notice-*`, `simulated-ad-*`, `talent-tools-hint`, `options-ads-label`,
-  `options-remove-ads-button`, `summary-remove-ads-button`, `options-dev-label`, `options-reset-button`; e os caminhos do Animator do
+  `options-remove-ads-button`, `summary-remove-ads-button`, `options-dev-label`, `options-reset-button`, `turn-actions`, `turn-move-icon`, `turn-act-icon`, `turn-item-icon`,
+  `undo-move-btn`, `end-turn-btn`; e os caminhos do Animator do
   menu (`#container/#character-selection/#<x>-btn/#<x>-image`). Não mude nome
   nem hierarquia sem atualizar o código/clip.
 - Não use `<Template>`/`<Instance>` onde há seletor `>` ou caminho de Animator.
@@ -448,7 +465,7 @@ Morte de inimigo
 | Quero... | Faça |
 |---|---|
 | Novo inimigo | `Create > GridBattle > Characters > Enemy Config`: sprite/animator (ou `tint` sobre arte existente), atributos, `prefab = Enemy.prefab`, `behavior`, `role`, `behaviorDescription`, `xpReward`, estados iniciais. Textos na tabela `Content`. Para aparecer nas batalhas: entrada no pool de `BattleGenerationSettings` (profundidade mín./máx., peso). |
-| Novo comportamento de IA | Subclasse de `EnemyAction` (ou `EnemyAbilityAction`, que já tem cooldown na `EnemyMemory`) + asset; combine num `EnemyBehavior`. |
+| Novo comportamento de IA | Subclasse de `EnemyAction` (ou `EnemyAbilityAction`, que já tem cooldown na `EnemyMemory`) + asset; combine num `EnemyBehavior`. Ação que só anda: `IsMovement => true` (ela usa o andar do turno, e as outras, o agir). |
 | Novo papel de inimigo | `Create > GridBattle > AI > Enemy Role` (ícone 8×8, fator de ameaça, conta como linha de frente). |
 | Nova skill | `Create > GridBattle > Skills > Skill Definition`: tipo, dano, forma/tamanho de área, área de seleção (forma, alcance mínimo e máximo, alcance modificável, célula alvo), cooldown, alvos, efeitos. Inicial de classe: lista `skills` do `PlayerCharacterConfig`; liberada por talento: `unlockedSkill` do talento; de inimigo: `skills` do `EnemyConfig`. |
 | Skill que empurra ou puxa | Skill normal com o efeito `Displace` na lista de efeitos: modo (longe do lançador, em direção ao lançador ou longe do centro da área) e distância. Ele roda depois do dano; colisão e terreno seguem `CombatSettings`. Para inimigos, `UseSkills` só a usa quando o resultado previsto vale a pena (`DisplacementAiWeights` no asset `UseSkills`). |
@@ -456,7 +473,7 @@ Morte de inimigo
 | Novo estado | `Create > GridBattle > States > State Definition` + efeitos no dropdown (atributos, dano/cura periódicos, espinhos, roubo de vida, escudo, restrições, modificadores da run). |
 | Novo talento | `Create > GridBattle > Talents > Talent` (classes permitidas, nível, pré-requisitos, tags, `maxRank`, estados, skill) e coloque no `talentPool` da classe ou no pool compartilhado de `TalentOfferSettings`. O peso dos que só vêm do pool compartilhado é multiplicado por `sharedPoolWeightMultiplier` (0,5). |
 | Talento que modifica uma skill da classe | Estado com `Skill Modifier Effect` (skills, dano fixo/%, passos de área, alcance, redução de cooldown, empurrão, duração de estados, efeitos anexados; valores por pilha, `repeatAttachedPerStack`) + talento com `maxRank` (posto = pilha) e a skill (ou o talento que a libera) nos pré-requisitos. Ver `docs/projeto/guia_sistemas.md`. |
-| Passiva condicional de classe | Estado com `Conditional Damage Effect` (causado ou recebido; tipos de dano; condição: por inimigo adjacente, sem adjacente, alvo com estado nocivo ou com um estado, andou no turno anterior, alvo isolado, vida cheia), `On Kill Effect` ou `Apply State On Hit Effect`; talento como acima. Condição nova: `EDamageCondition` + `ConditionalDamageEffect.Evaluate`. |
+| Passiva condicional de classe | Estado com `Conditional Damage Effect` (causado ou recebido; tipos de dano; condição: por inimigo adjacente, sem adjacente, alvo com estado nocivo ou com um estado, andou neste turno, alvo isolado, vida cheia), `On Kill Effect` ou `Apply State On Hit Effect`; talento como acima. Condição nova: `EDamageCondition` + `ConditionalDamageEffect.Evaluate`. |
 | Skill que não precisa de linha de visão | Marque `Ignores Line Of Sight` na skill (algo lançado por cima, um raio do céu). |
 | Terreno que bloqueia (ou não) a visão | `Blocks Line Of Sight` no `TerrainDefinition` (só vale para terreno que bloqueia movimento; desligue para obstáculos baixos). |
 | Conferir conteúdo novo | `GridBattle > Validate Content` (textos nos 3 idiomas, chaves de texto do código, referências vazias, talentos fora dos pools, inimigos que não aparecem, telas, ícones, banco de conteúdo). |
@@ -555,6 +572,51 @@ O Unity Editor costuma estar aberto e acessível pela CLI `unity` (pacote
 ## Histórico de refatorações
 
 Registre aqui toda mudança estrutural (mais recente primeiro).
+
+### 2026-10-18 — Andar e agir no mesmo turno
+Mudança de mecânica pedida (o Luiz quer saber se o combate fica divertido); docs em
+`docs/design/sistema_combate.md`, GDD Mecânica 1 e `docs/design/interface.md`.
+- **Regra nova e única:** o turno tem um andar e um agir (ataque básico ou skill), em qualquer ordem, mais um
+  consumível. A primeira versão tinha a opção `CombatSettings.actionEconomy` com a regra antiga (`SingleAction`);
+  com ela, o simulador reproduziu a linha de base (runs.csv e battles.csv idênticos, 90 runs, mesmas seeds). Depois
+  o Luiz pediu para remover o modo antigo: a opção e os caminhos de código dele saíram.
+- **Jogador** (`PlayerCharacterController`):
+  - o turno acaba sozinho só quando andar, agir e usar consumível estão usados ou impossíveis (`HasAnythingLeft`,
+    pedido do Luiz: sem itens, andar + agir encerra; com item utilizável, espera), com `EndTurn()` (botão Encerrar
+    turno, sempre visível na vez do jogador) ou tocando em si mesmo (encerra a qualquer momento, inclusive para
+    esperar);
+  - `UndoMove()` volta o andar enquanto não agiu, sem item usado depois e sem terreno `OnEnter` na célula
+    (`GridController.UndoMove`, `EntityMoveUndoneEvent`);
+  - `PlayerTurnStateChangedEvent` (andar, agir, consumível, desfazer) a cada mudança;
+  - `PlayerActionEvent` passou a significar "a vez do jogador acabou".
+- **Destaques:** `GridRules.GetHighlightInfos(grid, personagem, podeAndar, podeAgir)`. Toque longo num inimigo marca
+  `ECellHighlightType.Danger` nas células de `GridRules.GetReachCells` (andar + ataque básico) até o próximo toque.
+- **HUD:** `UI/Hud/TurnActionsView`, entre o grid e a barra de itens:
+  - pé, espada e poção (`Art/Sprites/Placeholders/UI/TurnMove|TurnAct|TurnItem.png`, tokens `--skin-turn-*`);
+  - Desfazer e Encerrar turno no `GameScreen.uxml`;
+  - a barra de skills fica inativa depois de agir.
+- **Inimigos:**
+  - `EnemyAction.IsMovement` (ChaseTarget e KeepDistance);
+  - o `EnemyBehavior` faz até 2 passadas na lista, um andar e um agir;
+  - o `TurnManager` faz um inimigo de cada vez, esperando as animações dele (`EEnemyTurnPacing` removido; sobrou a
+    pausa `enemyStagger`).
+- **Animação:**
+  - `GridMovementAnimator.GetRemaining`;
+  - o avanço do ataque (`GridEffectsAnimator.PlayAttack`, atraso inicial) e os visuais de skill
+    (`ActionVisualPlayer`) de quem acabou de andar esperam o pulo terminar.
+- **Talentos:**
+  - Bate e Corre e Foco Arcano usam `EDamageCondition.HolderMovedThisTurn`/`HolderDidNotMoveThisTurn` (renomeados,
+    mesmos valores nos assets) e leem `Character.MovedThisTurn`;
+  - textos atualizados nos 3 idiomas, além da dica da primeira batalha e de Recuperação Rápida.
+- **Salvamento:** continua no início do turno; a primeira escolha fecha a janela de XP do salvamento (`RunManager`).
+- **Simulador:** o `BattleBot` escolhe pares (andar, agir) com `GridController.ProbePosition` (consulta sem mover nada).
+- **Verificado:**
+  - `TalentChecks` 7778/7778, `ZS.UI` 14/14, validador sem erros, console limpo;
+  - teste de Play Mode do fluxo do turno 18/18 (inclui a vez que espera com item utilizável);
+  - inimigos sequenciais em Play Mode (15 turnos de inimigo, nenhum começou com animação em andamento);
+  - capturas da HUD.
+- **Resultado no simulador** (sem balanceamento): vitórias de 0–3% e profundidade média da morte de 12–14 (antes:
+  0/20/13% e 20–24), porque os inimigos também andam e atacam.
 
 ### 2026-10-12 — Área de seleção das skills (estilo Dofus)
 Pedido do usuário: além da área de efeito, a área onde a skill pode ser mirada, configurável como no Dofus.

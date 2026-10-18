@@ -22,7 +22,10 @@ namespace GridBattle.Gameplay
         Walk,
 
         /// <summary>A cell the selected skill can be aimed at.</summary>
-        SkillRange
+        SkillRange,
+
+        /// <summary>A cell an inspected enemy can hit on its next turn (walking and attacking).</summary>
+        Danger
     }
 
     [RequireComponent(typeof(SpriteRenderer))]
@@ -47,6 +50,25 @@ namespace GridBattle.Gameplay
         [SerializeField]
         [Tooltip("Highlight of the cells the selected skill can be aimed at.")]
         private Color skillRangeHighlightColor = new(0.75f, 0.45f, 1f, 0.51f);
+
+        [SerializeField]
+        [Tooltip("Highlight of the cells an inspected enemy can hit on its next turn (long press on the enemy).")]
+        private Color dangerHighlightColor = new(1f, 0.45f, 0.1f, 0.5f);
+
+        [SerializeField]
+        [Tooltip("Mark of the cells a telegraphed enemy skill will hit when it fires. Shown all the time, in every " +
+                 "turn, over the other highlights.")]
+        private Color telegraphHighlightColor = new(1f, 0.85f, 0.1f, 0.55f);
+
+        [SerializeField]
+        [Range(0f, 1f)]
+        [Tooltip("How much the telegraph mark fades in and out (0 = steady).")]
+        private float telegraphPulse = 0.35f;
+
+        [SerializeField]
+        [Min(0.05f)]
+        [Tooltip("Seconds of one fade in and out of the telegraph mark.")]
+        private float telegraphPulsePeriod = 1.2f;
 
         [SerializeField]
         private TextMeshPro damageText;
@@ -104,6 +126,7 @@ namespace GridBattle.Gameplay
 
         private bool _wasHighlighted;
         private float _highlightStart;
+        private SpriteRenderer _warningRenderer;
 
         public static readonly Vector2Int Size = new(32, 46);
 
@@ -125,6 +148,13 @@ namespace GridBattle.Gameplay
         public bool Selected { get; set; } = false;
         public bool Highlighted { get; set; } = false;
         public ECellHighlightType HighlightType { get; set; } = ECellHighlightType.Walk;
+
+        /// <summary>
+        /// A telegraphed enemy skill will hit this cell when it fires (set by
+        /// <see cref="GridController.RefreshTelegraphMarks"/>). Independent of <see cref="Highlighted"/>: the mark
+        /// stays on during every turn. Visual only.
+        /// </summary>
+        public bool Warned { get; set; }
 
         public Vector2Int GridPosition { get; set; }
 
@@ -191,6 +221,7 @@ namespace GridBattle.Gameplay
         {
             selectionRenderer.enabled = Selected;
             UpdateHighlight();
+            UpdateWarning();
             UpdateLongPress();
         }
 
@@ -272,11 +303,51 @@ namespace GridBattle.Gameplay
             {
                 ECellHighlightType.Walk => walkHighlightColor,
                 ECellHighlightType.SkillRange => skillRangeHighlightColor,
+                ECellHighlightType.Danger => dangerHighlightColor,
                 _ => attackHighlightColor,
             };
             color.a *= alpha;
             highlightRenderer.color = color;
             highlightRenderer.enabled = Time.time >= _highlightStart;
+        }
+
+        /// <summary>
+        /// The telegraph mark: a pulsing copy of the highlight sprite drawn over it, created the first time a cell is
+        /// marked (cells that are never marked do not pay for it).
+        /// </summary>
+        private void UpdateWarning()
+        {
+            if (!Warned || SimMode.IsActive)
+            {
+                if (_warningRenderer != null)
+                    _warningRenderer.enabled = false;
+                return;
+            }
+
+            if (_warningRenderer == null)
+            {
+                if (highlightRenderer == null) return;
+
+                var copy = new GameObject("TelegraphMark");
+                copy.transform.SetParent(highlightRenderer.transform.parent, false);
+                // Same sorting order as the highlight, a hair closer to the camera so it draws over it.
+                copy.transform.localPosition = highlightRenderer.transform.localPosition + new Vector3(0f, 0f, -0.001f);
+                copy.transform.localRotation = highlightRenderer.transform.localRotation;
+                copy.transform.localScale = highlightRenderer.transform.localScale;
+                _warningRenderer = copy.AddComponent<SpriteRenderer>();
+                _warningRenderer.sprite = highlightRenderer.sprite;
+                _warningRenderer.drawMode = highlightRenderer.drawMode;
+                _warningRenderer.size = highlightRenderer.size;
+                _warningRenderer.sharedMaterial = highlightRenderer.sharedMaterial;
+                _warningRenderer.sortingLayerID = highlightRenderer.sortingLayerID;
+                _warningRenderer.sortingOrder = highlightRenderer.sortingOrder;
+            }
+
+            var wave = 0.5f + 0.5f * Mathf.Sin(Time.time * 2f * Mathf.PI / telegraphPulsePeriod);
+            var color = telegraphHighlightColor;
+            color.a *= 1f - telegraphPulse * wave;
+            _warningRenderer.color = color;
+            _warningRenderer.enabled = true;
         }
 
         private void HandleContentHpChanged(DamageReceiveData data)
@@ -367,6 +438,15 @@ namespace GridBattle.Gameplay
         }
 
         public bool HasContent => _content != null;
+
+        /// <summary>World position where the content of this cell rests (its local content position).</summary>
+        public Vector3 ContentRestPosition => transform.TransformPoint(contentPosition);
+
+        /// <summary>
+        /// Changes only who occupies the cell (no transform, health bar or event): the simulation bot's what-if
+        /// queries put the player on a cell for a moment and put everything back (<see cref="GridController.ProbePosition"/>).
+        /// </summary>
+        internal void SetContentForProbe(GridEntity entity) => _content = entity;
 
         /// <summary>
         /// Short scale pulse on arrival of an entity, sized in pixels (never a

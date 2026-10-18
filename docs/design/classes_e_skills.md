@@ -3,7 +3,7 @@ tags:
   - design
   - classes
 status: em definição (classes e skills implementadas, valores provisórios)
-updated: 2026-10-06
+updated: 2026-10-18
 ---
 # Classes e Skills
 
@@ -37,7 +37,7 @@ Valores atuais das três classes, como estão implementados no jogo (um asset de
   - **Alcance:** distância Manhattan máxima para selecionar o alvo
   - **Cooldown:** número de ações do jogador entre usos
   - **Ícone**
-- **Sistema de cooldown:** cada skill ativa tem um contador de cooldown que decrementa a cada ação do jogador (movimento ou ataque). Uma skill não pode ser usada enquanto o cooldown não zera.
+- **Sistema de cooldown:** cada skill ativa tem um contador de cooldown que decrementa a cada turno do jogador. Uma skill não pode ser usada enquanto o cooldown não zera.
 - **Skills de classe:** cada classe começa com 1-2 skills básicas (ex.: o Guerreiro começa com "Golpe", dano em área frontal). Novas skills são desbloqueadas via traits.
 - **Slots de skill:** o personagem carrega até 6 skills ativas por vez, uma por botão da barra de skills (4.2). Em uma run, só 6 talentos que liberam skills podem ser escolhidos. ❓ Se a skill inicial da classe ocupa um dos 6 espaços, e o que acontece quando os 6 já estão ocupados (sugestão: talentos que liberam skills deixam de ser oferecidos). Valores iniciais configuráveis: a skill inicial ocupa um dos 6 espaços, e os talentos que liberam skills deixam de ser oferecidos quando os espaços acabam (ver [[valores_padrao_em_aberto]]).
 - **Skills dos inimigos:** os inimigos têm skills exclusivas de cada tipo, descritas em [[inimigos]].
@@ -99,8 +99,8 @@ Decisão do usuário: as classes se diferenciam por **talentos que modificam as 
 | Classe | Papel | Skills modificáveis | Passivas exclusivas |
 |---|---|---|---|
 | Guerreiro | brigão da linha de frente | Golpe (dano, largura, empurra 1), Investida com Escudo (recarga, dano, alcance), Golpe de Escudo (empurra mais, expõe, atordoa) | Frenesi Corpo a Corpo (+7% de dano por inimigo adjacente, até 3), Segurar a Linha (−4% de dano recebido por inimigo adjacente), Sede de Sangue (cura ao matar), Estilhaçar (+40% de dano de colisão) |
-| Mago | controle de área | Nova de Gelo (congela por 1 turno, recarga, área), Bola de Fogo (dano, queima, área), Tempestade Elétrica (dano, cone), Rajada de Vento (área, empurra mais) | Quebradiço (+20% de dano contra alvos com estado nocivo), Foco Arcano (+15% de dano de skill se não andou), Colheita de Almas (matar encurta os cooldowns) |
-| Ladino | assassino e veneno | Adagas (dano, alcance, recarga, linha), Bomba de Fumaça (enfraquece, duração, área), Gancho (puxa mais, atordoa), Linha Venenosa (dano) | Veneno em habilidades e ataques básicos (Lâminas Envenenadas, Arma Envenenada), Depredador (+35% contra envenenados), Bate e Corre (+30% depois de andar), Assassino (+40% contra isolados), Banquete das Sombras (cura ao matar), Veneno Debilitante (−15% de dano de inimigos com estado nocivo) |
+| Mago | controle de área | Nova de Gelo (congela por 1 turno, recarga, área), Bola de Fogo (dano, queima, área), Tempestade Elétrica (dano, cone), Rajada de Vento (área, empurra mais) | Quebradiço (+20% de dano contra alvos com estado nocivo), Foco Arcano (+15% de dano de skill se não andou neste turno), Colheita de Almas (matar encurta os cooldowns) |
+| Ladino | assassino e veneno | Adagas (dano, alcance, recarga, linha), Bomba de Fumaça (enfraquece, duração, área), Gancho (puxa mais, atordoa), Linha Venenosa (dano) | Veneno em habilidades e ataques básicos (Lâminas Envenenadas, Arma Envenenada), Depredador (+35% contra envenenados), Bate e Corre (+30% se andou neste turno antes de atacar), Assassino (+40% contra isolados), Banquete das Sombras (cura ao matar), Veneno Debilitante (−15% de dano de inimigos com estado nocivo) |
 
 - **Ladino mais forte:** antes do G3 o Ladino vencia ~8% das runs do simulador contra ~46% e ~58% das outras classes (mesmas seeds). O que o limitava era a sustentação (90 de vida, golpes de 6 a 9) e as passivas que dependem de situação rara; o veneno que cresce com a vida do inimigo e enfraquece o envenenado, a cura ao matar e a redução de dano contra inimigos com estado nocivo foram o que mais o aproximou das outras classes. Resultados do simulador na etapa: [[plano_balanceamento]].
 - **Estados novos** (provisórios): Queimando, Veneno letal, Congelado, Atordoado e Exposto (`Settings/States`), usados pelos talentos e disponíveis para inimigos.

@@ -235,6 +235,27 @@ namespace GridBattle.Gameplay.Run
 
         /// <summary>AI memory: action cooldowns and counters (key chosen by each action).</summary>
         public List<CounterState> AiMemory = new();
+
+        /// <summary>The telegraphed skill the enemy is preparing, or null.</summary>
+        public TelegraphState Telegraph;
+    }
+
+    /// <summary>A telegraphed skill being prepared (see <c>SkillTelegraph</c>).</summary>
+    [Serializable]
+    public sealed class TelegraphState
+    {
+        public string SkillId;
+        public int TargetX;
+        public int TargetY;
+        public int TurnsLeft = 1;
+        public List<GridCellState> Cells = new();
+    }
+
+    [Serializable]
+    public sealed class GridCellState
+    {
+        public int X;
+        public int Y;
     }
 
     [Serializable]

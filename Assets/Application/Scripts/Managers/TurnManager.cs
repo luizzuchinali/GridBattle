@@ -10,29 +10,16 @@ using UnityEngine;
 
 namespace GridBattle.Managers
 {
-    public enum EEnemyTurnPacing
-    {
-        /// <summary>Each enemy acts after the previous one finished moving.</summary>
-        Sequential,
-
-        /// <summary>
-        /// Each enemy acts a short interval after the previous one, without waiting
-        /// for its animation; the turn ends when every animation finished.
-        /// </summary>
-        Staggered,
-
-        /// <summary>All enemies act at once; the turn ends when every move finished.</summary>
-        Simultaneous
-    }
-
     /// <summary>
     /// Turn flow (GDD: global turn). Each global turn the player plays first, then
     /// every enemy. Each entity has its own turn inside it: at its start the
     /// entity's states run their turn-start effects (damage/healing over time)
     /// and at its end the state durations go down (EntityTurnStarted/EndedEvent).
-    /// Every action consumed by the player (PlayerActionEvent) ends the player's
-    /// turn; after the player's animations the enemies act (closest to the player
-    /// first, ties by y then x) and then the turn returns to the player. Each step
+    /// The player's controller ends the player's turn (PlayerActionEvent: walk and
+    /// action used, End turn, or a tap on the player); after the player's animations
+    /// the enemies act one at a time (closest to the player first, ties by y then x):
+    /// each one walks and acts, its animations (walk, attack, impact) finish, and only
+    /// then the next one starts. Then the turn returns to the player. Each step
     /// also waits for <see cref="TurnBlockers"/> (XP orbs that level up, talent
     /// choice, pause). Tapping during the enemies' turn speeds the animations up
     /// until the turn returns to the player. Raises TurnChangedEvent on every
@@ -42,12 +29,8 @@ namespace GridBattle.Managers
     public class TurnManager : MonoBehaviour
     {
         [SerializeField]
-        [Tooltip("Whether enemies take their turns one after another or all at once.")]
-        private EEnemyTurnPacing enemyPacing = EEnemyTurnPacing.Staggered;
-
-        [SerializeField]
         [Min(0f)]
-        [Tooltip("Seconds between enemies in Staggered pacing (at normal speed).")]
+        [Tooltip("Pause, in seconds at normal speed, after an enemy finished its turn (walk, attack and their animations) and before the next one starts.")]
         private float enemyStagger = 0.08f;
 
         [SerializeField]
@@ -191,14 +174,13 @@ namespace GridBattle.Managers
                     if (!character.IsDead)
                         EndEntityTurn(character);
 
-                    if (enemyPacing == EEnemyTurnPacing.Sequential)
+                    // One enemy at a time: its walk, its attack and their impact finish before the next one starts.
+                    if (!SimMode.IsActive)
                     {
                         await _grid.WaitForMovementsAsync(destroyCancellationToken);
-                    }
-                    else if (enemyPacing == EEnemyTurnPacing.Staggered && enemyStagger > 0f && !SimMode.IsActive)
-                    {
-                        await Awaitable.WaitForSecondsAsync(enemyStagger / _grid.AnimationSpeed,
-                            destroyCancellationToken);
+                        if (enemyStagger > 0f)
+                            await Awaitable.WaitForSecondsAsync(enemyStagger / _grid.AnimationSpeed,
+                                destroyCancellationToken);
                     }
 
                     await TurnBlockers.WaitAsync(destroyCancellationToken);

@@ -20,6 +20,7 @@ namespace GridBattle.Gameplay.Movement
     public sealed class GridMovementAnimator
     {
         private readonly Dictionary<GridEntity, MotionHandle> _motions = new();
+        private readonly Dictionary<GridEntity, float> _endTimes = new();
         private readonly List<GridEntity> _finished = new();
 
         public bool IsAnimating
@@ -57,11 +58,25 @@ namespace GridBattle.Gameplay.Movement
             if (start == end) return;
 
             var speed = Mathf.Max(0.01f, SpeedMultiplier);
+            float total;
             var handle = settings.Style == EMovementStyle.Flip
-                ? CreateFlip(target, start, end, settings, speed, onArrived)
-                : CreateHop(target, start, end, Vector2Int.Distance(fromCell, toCell), settings, speed, onArrived);
+                ? CreateFlip(target, start, end, settings, speed, onArrived, out total)
+                : CreateHop(target, start, end, Vector2Int.Distance(fromCell, toCell), settings, speed, onArrived,
+                    out total);
 
             _motions[entity] = handle.AddTo(entity.gameObject);
+            _endTimes[entity] = Time.time + total;
+        }
+
+        /// <summary>
+        /// Seconds until the movement of <paramref name="entity"/> ends (0 when it is not moving): what an attack or
+        /// a skill of the same entity waits before its lunge or its visual starts, so it never plays mid-hop.
+        /// </summary>
+        public float GetRemaining(GridEntity entity)
+        {
+            if (entity == null || !_motions.TryGetValue(entity, out var handle) || !handle.IsActive()) return 0f;
+
+            return _endTimes.TryGetValue(entity, out var end) ? Mathf.Max(0f, end - Time.time) : 0f;
         }
 
         /// <summary>Seconds a slide over <paramref name="cells"/> cells lasts at normal speed (0 without settings).</summary>
@@ -96,20 +111,22 @@ namespace GridBattle.Gameplay.Movement
                 .WithOnComplete(() => Normalize(target, end))
                 .Bind(t => target.localPosition = Vector3.LerpUnclamped(start, end, t));
             _motions[entity] = handle.AddTo(entity.gameObject);
+            _endTimes[entity] = Time.time + total;
         }
 
         private static MotionHandle CreateHop(Transform target, Vector3 start, Vector3 end, float distance,
-            GridMovementSettings settings, float speed, Action onArrived)
+            GridMovementSettings settings, float speed, Action onArrived, out float total)
         {
             var hops = Mathf.Max(1, Mathf.RoundToInt(distance * settings.HopsPerCell));
             var hopHeight = settings.HopHeight;
             var hopsDuration = hops * settings.HopDuration / speed;
             var squashDuration = settings.LandingSquash > 0f ? settings.LandingSquashDuration / speed : 0f;
             var squashY = 1f - settings.LandingSquash / GameConfigManager.Ppu;
-            var total = hopsDuration + squashDuration;
+            var duration = hopsDuration + squashDuration;
+            total = duration;
 
             target.localPosition = start;
-            return LMotion.Create(0f, 1f, total)
+            return LMotion.Create(0f, 1f, duration)
                 .WithOnComplete(() =>
                 {
                     Normalize(target, end);
@@ -117,7 +134,7 @@ namespace GridBattle.Gameplay.Movement
                 })
                 .Bind(t =>
                 {
-                    var time = t * total;
+                    var time = t * duration;
                     if (time < hopsDuration)
                     {
                         var progress = EaseUtility.Evaluate(time / hopsDuration, settings.HopEase);
@@ -136,16 +153,17 @@ namespace GridBattle.Gameplay.Movement
         }
 
         private static MotionHandle CreateFlip(Transform target, Vector3 start, Vector3 end,
-            GridMovementSettings settings, float speed, Action onArrived)
+            GridMovementSettings settings, float speed, Action onArrived, out float total)
         {
             var close = settings.FlipCloseDuration / speed;
             var open = settings.FlipOpenDuration / speed;
-            var total = close + open;
+            var duration = close + open;
+            total = duration;
             var overshoot = settings.FlipOvershoot;
             var steps = settings.ScaleSteps;
 
             target.localPosition = start;
-            return LMotion.Create(0f, 1f, total)
+            return LMotion.Create(0f, 1f, duration)
                 .WithOnComplete(() =>
                 {
                     Normalize(target, end);
@@ -153,7 +171,7 @@ namespace GridBattle.Gameplay.Movement
                 })
                 .Bind(t =>
                 {
-                    var time = t * total;
+                    var time = t * duration;
                     float scaleX;
                     if (time < close)
                     {
@@ -196,6 +214,7 @@ namespace GridBattle.Gameplay.Movement
                 if (handle.IsActive())
                     handle.Complete();
                 _motions.Remove(entity);
+                _endTimes.Remove(entity);
             }
         }
 
@@ -209,7 +228,10 @@ namespace GridBattle.Gameplay.Movement
             }
 
             foreach (var entity in _finished)
+            {
                 _motions.Remove(entity);
+                _endTimes.Remove(entity);
+            }
         }
     }
 }

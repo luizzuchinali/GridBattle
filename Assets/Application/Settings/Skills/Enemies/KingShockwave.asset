@@ -36,12 +36,21 @@ MonoBehaviour:
   damage: 6
   areaShape: 0
   areaSize: 3
+  selectionShape: 0
+  minRange: 0
   range: 0
+  rangeModifiable: 1
   unlimitedRange: 0
+  targetCell: 0
   affects: 0
   requiresAffectedTarget: 0
   ignoresLineOfSight: 0
   cooldown: 3
+  telegraphed: 0
+  windupTurns: 1
+  canMoveWhileWindingUp: 0
+  cancelledByDisplacement: 0
+  interruptibleByStates: 1
   visual: {fileID: 11400000, guid: fcf04db3d83eed546961ef04942491ba, type: 2}
   effects:
   - rid: 8661860384129155158

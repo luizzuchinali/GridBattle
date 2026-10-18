@@ -287,7 +287,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 10290247991296
-    m_Localized: "Toque em uma c\xE9lula destacada para andar ou em um inimigo ao alcance para atacar; cada a\xE7\xE3o d\xE1 a vez aos inimigos. Derrot\xE1-los d\xE1 XP: encha a barra para subir de n\xEDvel."
+    m_Localized: "Em cada turno voc\xEA anda uma vez e age uma vez (ataque ou habilidade), na ordem que quiser. Toque em si mesmo ou em Encerrar para terminar; depois os inimigos tamb\xE9m andam e agem. Derrot\xE1-los d\xE1 XP: encha a barra para subir de n\xEDvel."
     m_Metadata:
       m_Items: []
   - m_Id: 10290373820416
@@ -551,7 +551,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 218487270690817
-    m_Localized: "As habilidades recuperam 1 a\xE7\xE3o mais cedo por ac\xFAmulo."
+    m_Localized: "As habilidades se recuperam 1 turno antes por ac\xFAmulo."
     m_Metadata:
       m_Items: []
   - m_Id: 218487669149696
@@ -671,7 +671,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 218491670515713
-    m_Localized: "As habilidades recuperam 1 a\xE7\xE3o mais cedo por n\xEDvel do talento."
+    m_Localized: "As habilidades se recuperam 1 turno antes por n\xEDvel."
     m_Metadata:
       m_Items: []
   - m_Id: 218491930562560
@@ -1307,7 +1307,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 458950780780545
-    m_Localized: "As habilidades causam +15% de dano por n\xEDvel se voc\xEA n\xE3o se moveu no seu \xFAltimo turno."
+    m_Localized: "As habilidades causam +15% de dano por n\xEDvel se voc\xEA n\xE3o andou neste turno."
     m_Metadata:
       m_Items: []
   - m_Id: 458951166656512
@@ -1315,7 +1315,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 458951166656513
-    m_Localized: "As habilidades causam +15% de dano por n\xEDvel se voc\xEA n\xE3o se moveu no seu \xFAltimo turno."
+    m_Localized: "As habilidades causam +15% de dano por n\xEDvel se voc\xEA n\xE3o andou neste turno."
     m_Metadata:
       m_Items: []
   - m_Id: 458951573504000
@@ -1547,7 +1547,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 458961736302593
-    m_Localized: "+30% de dano por n\xEDvel no turno seguinte a se mover."
+    m_Localized: "+30% de dano por n\xEDvel se voc\xEA andou neste turno antes de atacar."
     m_Metadata:
       m_Items: []
   - m_Id: 458962084429824
@@ -1555,7 +1555,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 458962084429825
-    m_Localized: "+30% de dano por n\xEDvel no turno seguinte a se mover."
+    m_Localized: "+30% de dano por n\xEDvel se voc\xEA andou neste turno antes de atacar."
     m_Metadata:
       m_Items: []
   - m_Id: 458962432557056
@@ -1632,6 +1632,22 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 2743378734030849
     m_Localized: "Assassino que desgasta os inimigos com veneno, golpeia forte alvos isolados e arrasta os oponentes para onde s\xE3o mais fracos."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4946699310063616
+    m_Localized: Martelada
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4946699347812352
+    m_Localized: "Levanta o martelo e marca as c\xE9lulas em volta. No pr\xF3ximo turno dele, golpeia todas e acerta quem estiver nelas, os Guardas tamb\xE9m."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4946699561721856
+    m_Localized: "\xC1rea marcada"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4946699561721857
+    m_Localized: "Este inimigo est\xE1 preparando um golpe: as c\xE9lulas marcadas s\xE3o atingidas no pr\xF3ximo turno dele. Saia da \xE1rea antes disso (o ataque continua livre) ou atordoe-o para cancelar o golpe. Toque longo numa c\xE9lula marcada mostra o dano."
     m_Metadata:
       m_Items: []
   references:

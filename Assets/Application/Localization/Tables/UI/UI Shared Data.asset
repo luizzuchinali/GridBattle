@@ -859,6 +859,50 @@ MonoBehaviour:
     m_Key: details.target_cell.occupied
     m_Metadata:
       m_Items: []
+  - m_Id: 4931173821177856
+    m_Key: hud.end_turn
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4931173888286720
+    m_Key: hud.undo_move
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4946700195061760
+    m_Key: details.targets.everyone_but_self
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4946700203450368
+    m_Key: details.action.telegraph
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4946700203450369
+    m_Key: details.telegraph.turn
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4946700203450370
+    m_Key: details.telegraph.turns
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4946700203450371
+    m_Key: details.telegraph.title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4946700203450372
+    m_Key: details.telegraph.section
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4946700203450373
+    m_Key: details.telegraph.damage
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4946700203450374
+    m_Key: details.telegraph.fires
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4946700203450375
+    m_Key: details.preparing
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

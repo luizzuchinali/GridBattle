@@ -1631,6 +1631,22 @@ MonoBehaviour:
     m_Key: class.rogue.desc
     m_Metadata:
       m_Items: []
+  - m_Id: 4946699310063616
+    m_Key: skill.king_slam.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4946699347812352
+    m_Key: skill.king_slam.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4946699561721856
+    m_Key: tutorial.first_telegraph.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4946699561721857
+    m_Key: tutorial.first_telegraph.desc
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

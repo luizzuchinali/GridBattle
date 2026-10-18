@@ -62,7 +62,10 @@ namespace GridBattle.Gameplay.Entities.Skills
         Self,
 
         /// <summary>Everybody inside the area, friend or foe.</summary>
-        Everyone
+        Everyone,
+
+        /// <summary>Everybody inside the area except the caster (a boss slam that also hits its guards).</summary>
+        EveryoneButCaster
     }
 
     /// <summary>
@@ -156,6 +159,32 @@ namespace GridBattle.Gameplay.Entities.Skills
         [Tooltip("Player actions between uses (enemy turns for enemies). 0 = no cooldown.")]
         private int cooldown = 1;
 
+        [Header("Telegraph (enemies)")]
+        [SerializeField]
+        [Tooltip("An enemy prepares the skill instead of using it at once: the cells of its area are marked on the " +
+                 "grid and it hits whoever stands on them when it fires, on a later turn of the enemy. Off = immediate " +
+                 "(the default). Only the enemy AI telegraphs; the player always uses skills at once.")]
+        private bool telegraphed;
+
+        [SerializeField]
+        [Min(1)]
+        [Tooltip("Turns of the enemy until a telegraphed skill fires (1 = on its next turn).")]
+        private int windupTurns = 1;
+
+        [SerializeField]
+        [Tooltip("The enemy can walk while it prepares (on the turn it prepares, after preparing, and on the waiting " +
+                 "turns). Off = it stands still. The marked cells never move.")]
+        private bool canMoveWhileWindingUp;
+
+        [SerializeField]
+        [Tooltip("Pushing or pulling the enemy that prepares cancels the skill. Off = the skill still fires on the " +
+                 "marked cells.")]
+        private bool cancelledByDisplacement;
+
+        [SerializeField]
+        [Tooltip("A state that prevents skills (Stunned, Frozen) cancels the prepared skill.")]
+        private bool interruptibleByStates = true;
+
         [Header("Look")]
         [SerializeField]
         [Tooltip("How the skill looks when used (gesture, projectile, effect on each cell of the area). Empty = the " +
@@ -186,6 +215,16 @@ namespace GridBattle.Gameplay.Entities.Skills
         public IReadOnlyList<SkillEffect> Effects => effects;
         public ActionVisualDefinition Visual => visual;
 
+        /// <summary>Enemies prepare it and it fires later on the marked cells (see <see cref="SkillTelegraph"/>).</summary>
+        public bool Telegraphed => telegraphed;
+
+        /// <summary>Turns of the enemy until a prepared use fires (at least 1).</summary>
+        public int WindupTurns => Mathf.Max(1, windupTurns);
+
+        public bool CanMoveWhileWindingUp => canMoveWhileWindingUp;
+        public bool CancelledByDisplacement => cancelledByDisplacement;
+        public bool InterruptibleByStates => interruptibleByStates;
+
         /// <summary>True for skills centered on the caster (range 0, not unlimited).</summary>
         public bool IsSelfCentered => !unlimitedRange && range == 0;
 
@@ -210,7 +249,27 @@ namespace GridBattle.Gameplay.Entities.Skills
         public virtual bool Execute(Character caster, GridController grid, Vector2Int targetPos)
         {
             // The numbers (damage, area, effects) are the caster's effective ones: authored + talent modifiers.
-            var context = SkillTargeting.CreateContext(grid, caster, EffectiveSkill.Resolve(caster, this), targetPos);
+            return Execute(SkillTargeting.CreateContext(grid, caster, EffectiveSkill.Resolve(caster, this), targetPos));
+        }
+
+        /// <summary>
+        /// Fires a prepared (telegraphed) use: like <see cref="Execute(Character, GridController, Vector2Int)"/>, but
+        /// on the <paramref name="areaCells"/> marked when it was prepared instead of the area around the target now,
+        /// so it hits whoever stands on them at this moment. The visual plays on every marked cell, even empty ones.
+        /// </summary>
+        public virtual bool ExecuteOnCells(Character caster, GridController grid, Vector2Int targetPos,
+            IReadOnlyList<Vector2Int> areaCells)
+        {
+            return Execute(SkillTargeting.CreateContext(grid, caster, EffectiveSkill.Resolve(caster, this), targetPos,
+                areaCells));
+        }
+
+        /// <summary>Plays the look, deals the damage and applies the effects of a resolved use.</summary>
+        protected bool Execute(in SkillContext context)
+        {
+            var caster = context.Caster;
+            var grid = context.Grid;
+            var targetPos = context.TargetPos;
 
             // Before the damage, so the hit reactions land on the impact: the skill's own look when it has one,
             // else the attack lunge of offensive skills.
@@ -252,6 +311,7 @@ namespace GridBattle.Gameplay.Entities.Skills
             base.OnValidate();
 
             areaSize = Mathf.Clamp(areaSize, MinAreaSize, MaxAreaSize);
+            windupTurns = Mathf.Max(1, windupTurns);
             if (areaSize % 2 == 0)
                 areaSize++;
 

@@ -56,7 +56,9 @@ namespace GridBattle.Gameplay.Movement
             var speed = Mathf.Max(0.01f, SpeedMultiplier);
             var casterPos = caster.CurrentGridPos;
             var direction = GetCardinal(casterPos, targetPos);
-            var time = 0f;
+
+            // The caster may still be hopping to the cell it acts from: everything waits for the landing.
+            var time = _grid.GetMovementRemaining(caster);
 
             switch (visual.CasterGesture)
             {

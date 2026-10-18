@@ -4,7 +4,7 @@ tags:
   - combate
   - sistemas
 created: 2026-09-29
-updated: 2026-10-06
+updated: 2026-10-18
 aliases:
   - Sistema de Combate
   - Turnos
@@ -59,18 +59,33 @@ contém no máximo um entity (`GridEntity` → `Character` → `PlayerCharacter`
 [[mapa_e_nos]]): vence-se eliminando todos os inimigos, sem limite de turnos, e
 perde-se ao morrer.
 
-O jogo é **por turnos**. Em cada **turno global** o jogador joga primeiro, com
-**uma ação**, e depois cada inimigo joga a sua. Cada entidade tem o seu próprio
-turno dentro do turno global.
+O jogo é **por turnos**. Em cada **turno global** o jogador joga primeiro e
+depois cada inimigo joga o seu, um de cada vez. Cada entidade tem o seu próprio
+turno dentro do turno global. **Andar e agir no mesmo turno** (decisão do usuário
+de 2026-10-18): o personagem anda uma vez e age uma vez (ataque básico ou skill),
+na ordem que quiser, e o jogador ainda pode usar um consumível. O turno do jogador
+**só acaba sozinho quando ele não consegue fazer mais nenhuma das três coisas**
+(andar, agir, usar consumível): cada uma conta como indisponível quando já foi
+usada no turno ou quando não há como fazê-la (nenhuma célula para andar; nenhum
+alvo para o ataque básico e nenhuma skill pronta com célula para mirar; nenhum
+item utilizável). Sem itens, andar + agir encerra; com um item utilizável, a vez
+espera até ele ser usado ou até o botão **Encerrar turno** (sempre visível na vez
+do jogador) ou um toque no próprio personagem (que também serve para esperar sem
+fazer nada). Os inimigos também andam e agem no mesmo
+turno. (A regra antiga, uma ação por turno, foi removida a pedido do usuário.) O
+jogo ficou mais difícil com essa regra (no simulador, vitórias de 0 a 3% e morte
+por volta da profundidade 12–14) e o **balanceamento está pendente**.
 
-| Ação do jogador | Consome a ação do turno? |
+| Ação do jogador | No turno |
 |---|---|
-| Andar | sim |
-| Atacar (ataque básico) | sim |
-| Usar skill | sim |
-| Usar consumível | não (no máximo um por turno) |
+| Andar | usa o andar do turno |
+| Atacar (ataque básico) | usa o agir do turno |
+| Usar skill | usa o agir do turno |
+| Usar consumível | grátis para o andar e o agir; no máximo um por turno |
+| Encerrar turno / tocar em si mesmo | encerra o turno |
 
-Uma ação inválida não consome o turno.
+Uma ação inválida não gasta nada. O andar pode ser **desfeito** enquanto o agir
+não foi usado (veja [Ações do jogador e entrada](#ações-do-jogador-e-entrada)).
 
 > [!important]
 > Jogador e inimigos seguem **exatamente as mesmas regras**: alcance,
@@ -187,7 +202,8 @@ characters e grid: classe estática, funções puras. As distâncias vêm de
 | `IsAttackTarget(grid, attacker, target)` | alvo válido do ataque básico: célula válida e caminhável, o atacante pode atacar (sem `PreventBasicAttack`), em alcance, com um `IDamageReceiver` que **não** é o próprio atacante |
 | `FindStepToward(grid, character, target)` | passo guloso de um turno: a célula alcançável mais perto do alvo (ou null se nenhuma aproxima); com obstáculos, segue a menor rota ao redor deles |
 | `AreAllies(a, b)` | jogador × inimigos: os inimigos são aliados entre si |
-| `GetHighlightInfos(grid, character)` | dicionário de highlights Walk/Attack |
+| `GetHighlightInfos(grid, character[, canMove, canAct])` | dicionário de highlights Walk/Attack; sem andar ou sem agir no turno, a parte usada fica de fora |
+| `GetReachCells(grid, character)` | células que o personagem alcança com o ataque básico no próximo turno, de qualquer célula para onde pode andar (e da própria); toque longo num inimigo |
 | `GetSkillHighlightInfos(grid, caster, skill)` | highlights `SkillRange` das células onde a skill pode ser mirada |
 
 Regras de negócio derivadas:
@@ -304,7 +320,7 @@ duração). O valor em jogo é o base somado aos estados ativos.
 | Atributo | Descrição | Base no config |
 |---|---|---|
 | Vida máxima (`MaxHp`) | quantidade máxima de vida (inteiro) | `maxHp` × escala |
-| Alcance de movimento (`WalkRange`) | distância que anda por ação (inteiro); vale 0 enquanto um estado impede o movimento | `walkDistance` |
+| Alcance de movimento (`WalkRange`) | distância que anda no andar do turno (inteiro); vale 0 enquanto um estado impede o movimento | `walkDistance` |
 | Alcance de ataque (`AttackRange`) | distância do ataque básico (inteiro) | `attackDistance` |
 | Dano básico (`BasicDamage`) | dano do ataque básico (inteiro) | `basicAttackDamage` × escala |
 | Chance de crítico (`CritChance`) | probabilidade (0 a 1) de um golpe ser crítico | `critChance` |
@@ -523,8 +539,8 @@ atacante, como no dano periódico):
 | `NoAdjacentEnemy` | nenhum inimigo do portador está adjacente a ele |
 | `OpponentHasNegativeState` | o oponente tem algum estado nocivo (debuff) |
 | `OpponentHasState` | o oponente tem algum dos estados listados (por exemplo Envenenado, Veneno letal) |
-| `HolderMovedLastTurn` | o portador andou ou se teletransportou no turno anterior ("bate e corre") |
-| `HolderDidNotMoveLastTurn` | o portador não andou no turno anterior (parado) |
+| `HolderMovedThisTurn` | "bate e corre": o portador andou ou se teletransportou **neste turno, antes do golpe** |
+| `HolderDidNotMoveThisTurn` | parado: o portador **não andou neste turno** até o golpe |
 | `OpponentIsolated` | nenhum aliado do oponente está adjacente a ele |
 | `OpponentAtFullHp` | o oponente está com a vida cheia (golpe de abertura) |
 
@@ -533,12 +549,13 @@ atacante, como no dano periódico):
   contando só personagens vivos (`GridRules.CountAdjacentOpponents` e
   `HasAdjacentAlly`).
 - **Moveu-se:** `Character.MovedThisTurn` / `MovedLastTurn`. `GridController.MoveEntity`
-  (andar, teletransporte) marca o movimento; ser empurrado ou puxado não conta.
-  A bandeira vira "turno anterior" quando o turno do personagem começa
-  (`Character.BeginTurn`). Como um turno é uma ação, o turno em que o portador anda
-  nunca é o turno em que ataca: o bônus vale no turno **seguinte**. Para o dano
-  **recebido**, "turno anterior" é o turno anterior ao atual (os inimigos agem
-  depois do jogador), então evite essa condição em redução de dano.
+  (andar, teletransporte) marca o movimento; ser empurrado ou puxado não conta, e
+  desfazer o andar (`GridController.UndoMove`) desmarca. As condições leem a
+  bandeira **deste turno** (andou antes de atacar; Foco Arcano vale para quem
+  ainda não andou quando lança a skill, mesmo que ande depois); ela volta a falso
+  quando o turno do personagem começa (`Character.BeginTurn`). Para o dano
+  **recebido** essas condições dependem do momento do golpe, então evite usá-las
+  em redução de dano.
   A bandeira entra no salvamento (`EntitySnapshot.MovedLastTurn`, capturada no início
   do turno do jogador, antes de `BeginTurn`), então carregar repete o mesmo dano.
 
@@ -695,7 +712,7 @@ com ao menos um afetado (só se a skill exige: `requiresAffectedTarget`,
 desligado em todas desde 2026-10-12, para a skill poder ser mirada em qualquer
 célula e o destaque cobrir todo o alcance) e aceita pelos efeitos (um
 teleporte precisa de uma célula livre). Um uso
-inválido não faz nada e **não consome o turno**.
+inválido não faz nada e **não gasta o agir do turno**.
 
 `SkillDefinition.Execute`: animação de ataque (skills ofensivas, quando o alvo
 não é a própria célula; antes do dano, para a reação do alvo cair no impacto),
@@ -709,8 +726,8 @@ do lançador` (escala por profundidade dos inimigos), arredondado
 
 ### Cooldown
 
-- Conta em **turnos do dono** da skill: para o jogador, uma ação consumida; para
-  inimigos, os turnos dele. "Cooldown N" significa **N ações entre usos**.
+- Conta em **turnos do dono** da skill (do jogador e dos inimigos). "Cooldown N"
+  significa **N turnos do dono entre usos**.
 - Ao usar: `cooldown (com os modificadores de talentos) − Redução de cooldown`,
   nunca abaixo do mínimo (`SkillSettings.minimumCooldown`, 1) para skills que têm
   cooldown. Skills com cooldown 0 nunca esperam. Um efeito de abate pode reduzir
@@ -718,7 +735,7 @@ do lançador` (escala por profundidade dos inimigos), arredondado
   fim do turno, antes de os cooldowns caírem 1.
 - No fim de cada turno do dono (`Character.EndTurn`), todo cooldown em andamento
   diminui em 1, **exceto o das skills usadas naquele turno**. Por isso uma skill
-  de cooldown 1 volta a ficar disponível depois de exatamente uma ação no meio.
+  de cooldown 1 volta a ficar disponível depois de exatamente um turno no meio.
 - Os cooldowns são **zerados a cada batalha** (`RunSettings`) e entram na captura
   e na restauração da batalha.
 - Os assets são compartilhados e não guardam estado: os cooldowns vivem em
@@ -738,7 +755,8 @@ ser oferecidos quando os 6 espaços acabam ou depois do sexto talento desse tipo
 Barra de skills (6 botões) → `PlayerCharacterController.SelectSkill`. Tocar o
 botão seleciona a skill (as células onde ela pode ser mirada ganham highlight
 `SkillRange`), tocar de novo cancela, e tocar outra troca. Um toque numa célula
-válida usa a skill, consome a ação e limpa a seleção; numa célula inválida o
+válida usa a skill, gasta o agir do turno e limpa a seleção; depois de agir, as
+skills ficam inativas até o próximo turno. Numa célula inválida o
 toque é rejeitado (pulso na célula) e a seleção continua. A seleção cai sozinha
 ao mudar a vez, e quando a skill deixa de poder ser usada (cooldown, silêncio).
 
@@ -748,12 +766,15 @@ A ação de IA `UseSkillsAction` percorre as skills do config, na ordem. Para ca
 skill pronta, `SkillTargeting.TryFindAimCell` escolhe a célula da mira: a do
 próprio jogador se for válida; senão a célula válida mais próxima do inimigo
 (Manhattan; empate por linha e coluna) cuja área ainda atinge o jogador. A
-primeira skill que funciona consome o turno. Skills com o efeito `Displace` têm
+primeira skill que funciona usa o agir do turno. Skills com o efeito `Displace` têm
 tratamento próprio: a célula da mira é a de melhor pontuação (veja
 [Empurrar e puxar](#empurrar-e-puxar-deslocamento)) e a skill só é usada se essa
 pontuação chegar ao mínimo. Só o Goblin Arpoador e o chefe têm
 `SkillDefinition`; as outras habilidades dos inimigos são ações de IA (cura,
 escudo, enfraquecer, invocar) descritas em [IA dos inimigos](#ia-dos-inimigos).
+Hoje toda skill de inimigo dispara na hora; a opção de **telegrafar** uma skill
+(preparar num turno, disparar no seguinte nas células marcadas) está desenhada
+em [[inimigos#Habilidades telegrafadas]] e ainda não foi implementada.
 
 > [!important]
 > Criar uma skill nova = criar um asset de `SkillDefinition` (ou uma subclasse,
@@ -839,7 +860,7 @@ Onda de Choque quando o jogador está contra a borda ou um obstáculo.
 
 Um consumível (`ConsumableDefinition`, `Create > GridBattle > Consumables >
 Consumable Definition`) é um item de uso único, obtido no nó de consumível do
-mapa, que só pode ser usado **em batalha** e **não consome a ação do turno**.
+mapa, que só pode ser usado **em batalha** e **não gasta o andar nem o agir do turno** (no máximo um por turno).
 Tudo é dado:
 
 | Campo | Significado |
@@ -885,17 +906,45 @@ célula) e **roteia** a ação:
 tap em célula
 ├── entrada bloqueada (TurnBlockers)?  → ignora
 ├── não é a vez do jogador?            → pulso de rejeição (na vez dos inimigos, também acelera as animações)
-├── consumível selecionado?            → TapWithConsumable (não consome a ação)
-├── skill selecionada?                 → TapWithSkill (consome a ação)
-├── célula sem conteúdo                → ANDAR  (GridRules.CanWalkTo)
+├── (qualquer toque apaga o alcance de um inimigo inspecionado)
+├── consumível selecionado?            → TapWithConsumable (grátis)
+├── skill selecionada?                 → TapWithSkill (usa o agir)
+├── a célula do próprio jogador?       → encerra o turno
+├── célula sem conteúdo                → ANDAR  (ainda pode andar e GridRules.CanWalkTo)
 │     └── válido → GridController.MoveEntity
-└── célula com conteúdo                → ATACAR (GridRules.IsAttackTarget)
+└── célula com conteúdo                → ATACAR (ainda pode agir e GridRules.IsAttackTarget)
       └── válido → animação + Character.Attack
-→ ação consumida: PlayerActionEvent → termina a vez do jogador
+depois de cada escolha (andar, agir, item): nada mais é possível (HasAnythingLeft falso) → encerra o turno sozinho
+(PlayerActionEvent); senão a vez continua
 ```
 
+- **Andar e agir.** O controller guarda o que o jogador já usou no turno
+  (`CanMove`, `CanAct`, `CanUseConsumable`, `HasStartedTurn`) e levanta
+  `PlayerTurnStateChangedEvent` a cada mudança. `EndTurn()` (botão **Encerrar
+  turno**) e o toque no próprio personagem encerram a vez; o turno acaba sozinho
+  quando, depois de uma escolha, `HasAnythingLeft` é falso (andar, agir e
+  consumível usados ou impossíveis). Os highlights mostram andar e atacar
+  juntos e são refeitos depois de andar (sem o que já foi usado).
+- **Desfazer o andar** (`UndoMove()`, botão **Desfazer**): enquanto o agir não foi
+  usado, nenhum consumível foi usado depois do andar e a célula de destino não tem
+  terreno que reage ao entrar (`ETerrainTrigger.OnEnter`). O personagem volta à
+  célula de onde saiu pelo `GridController.UndoMove` (sem `EntityEnteredCellEvent`,
+  então o terreno não reage) e pode andar de novo. É seguro porque andar não sorteia
+  nada e o terreno comum só age no início ou no fim do turno.
+- **HUD** (`UI/Hud/TurnActionsView`): entre o grid e a barra de itens, um pé
+  (andar), uma espada (agir) e uma poção (o consumível do turno) que apagam quando
+  usados, o botão **Desfazer** enquanto dá para desfazer e **Encerrar turno**
+  durante toda a vez do jogador.
+- **Animação:** a lógica é imediata, mas o avanço do ataque (e o visual de uma
+  skill) de quem acabou de andar espera o fim do pulo
+  (`GridMovementAnimator.GetRemaining`); a reação do alvo e o número de dano
+  esperam esse atraso também.
+- **Salvamento:** continua no início do turno. Carregar no meio de um turno repete
+  o turno desde o começo (com os mesmos sorteios).
+
 - Ação inválida (fora de alcance, célula ocupada ou bloqueada ao andar, alvo
-  inválido) mostra o pulso de rejeição na célula e **não consome o turno**.
+  inválido, andar ou agir já usados) mostra o pulso de rejeição na célula e **não
+  gasta nada**.
 - O ataque básico passa pelo `CombatResolver` (tipo `BasicAttack`); o ataque do
   inimigo também.
 - `PlayerCharacterController.TryUseSkill` e `TryUseConsumable` usam skills e
@@ -938,6 +987,11 @@ o terreno). Enquanto está aberta, o jogo não aceita ações (`TurnBlockers`). 
 só fecha pelo **X** (a ação de voltar não fecha); abrir ou fechar não consome o
 turno nem faz nada no jogo, e um novo grid a fecha.
 
+No toque longo num **inimigo**, na vez do jogador, o grid também marca em laranja
+(highlight `Danger`) as células que ele alcança com o ataque básico no próximo
+turno (`GridRules.GetReachCells`: andar + atacar; skills não entram). Como a janela cobre boa parte do
+grid, a marcação continua depois de fechá-la e some no próximo toque no grid.
+
 ## Sistema de turnos
 
 `TurnManager` (`GridBattle.Managers`, no GameObject do Grid, com o
@@ -949,19 +1003,21 @@ GlobalTurnStartedEvent(n)        ← zera o contador de consumíveis do turno
            EntityTurnStartedEvent
   espera as animações e os TurnBlockers
   TurnChangedEvent(Player)       ← o jogador pode agir (salva a batalha)
-  ... uma ação consumida (PlayerActionEvent) ...
+  ... a vez do jogador termina (PlayerActionEvent): nada mais possível, Encerrar turno ou toque em si mesmo ...
   TurnChangedEvent(Enemies)
   jogador: EntityTurnEndedEvent  ← gatilhos de fim de turno do terreno
            Character.EndTurn     ← cooldowns e durações diminuem
   espera o movimento do jogador e os TurnBlockers (orbs que sobem de nível, escolha de talento)
   para cada inimigo, na ordem:
-      BeginTurn → Act (IA) → EndTurn   (cada passo com os mesmos ganchos)
-      ritmo (pacing) e espera dos TurnBlockers
+      BeginTurn → Act (IA: anda e age) → EndTurn   (cada passo com os mesmos ganchos)
+      espera as animações dele (andar, ataque, impacto), a pausa enemyStagger e os TurnBlockers
   espera as animações e os TurnBlockers → próximo turno global
 ```
 
-- **Cada ação consumida do jogador = 1 rodada completa dos inimigos.** Uma ação
-  inválida não levanta o evento, então não há turno inimigo.
+- **Cada vez do jogador encerrada = 1 rodada completa dos inimigos.** Uma ação
+  inválida não levanta o evento, então não há turno inimigo. O primeiro andar ou
+  agir fecha a janela em que o XP que ainda chega entra no salvamento do turno
+  (`RunManager`).
 - **A vez é explícita** (`ETurnOwner`: `Player`, `Enemies`, `None`;
   `TurnChangedEvent`): o jogador não age nem vê highlights fora da vez dele.
 - **Início e fim do turno de cada entidade** (`EntityTurnStartedEvent`,
@@ -972,10 +1028,10 @@ GlobalTurnStartedEvent(n)        ← zera o contador de consumíveis do turno
 - **Ordem dos inimigos determinística:** distância ao jogador (euclidiana, a
   menor primeiro), desempate por `y` e depois `x`. A lista é tirada no início da
   rodada, então um inimigo invocado não age no turno em que aparece.
-- **Ritmo** (`EEnemyTurnPacing`): `Staggered` (padrão: cada inimigo age
-  `enemyStagger` = 0,08 s depois do anterior, sem esperar a animação),
-  `Sequential` (cada um espera a animação do anterior) e `Simultaneous` (todos
-  agem de uma vez). Em todos, espera-se o fim das animações ao final.
+- **Um inimigo de cada vez:** cada inimigo anda e age, as animações dele terminam
+  (pulo, avanço do ataque, reação do alvo) e só então, depois de `enemyStagger`
+  (0,08 s), o próximo começa. No modo de simulação não há esperas. (O antigo ritmo
+  `EEnemyTurnPacing` foi removido em 2026-10-18.)
 - **Acelerar:** um toque durante a vez dos inimigos aplica `speedUpMultiplier`
   (2x) às animações e ao intervalo até a vez voltar ao jogador (sem
   `Time.timeScale`).
@@ -1021,13 +1077,15 @@ A IA é **dado, não código de controller**. O `EnemyController` (componente do
 EnemyController.Act()
   → guard: inimigo morto não age; sem jogador, não age
   → config.Behavior.TakeTurn(EnemyTurnContext { Self, Grid, Target, Memory })
-      → tenta cada EnemyAction em ordem; a primeira que retornar true
-        consome o turno
+      → um andar e um agir: percorre a lista em ordem, pulando o tipo já usado
+        (EnemyAction.IsMovement: ChaseTarget e KeepDistance são andar; as outras
+        são agir), e repete a passada enquanto algo funcionar (até 2): o corpo a
+        corpo persegue e bate, o atirador atira e se reposiciona
 ```
 
 - `EnemyBehavior` (SO, `Create > GridBattle > AI > Enemy Behavior`) — lista
   ordenada de `EnemyAction`. Pode ser compartilhado por vários inimigos.
-  Sem nenhuma ação que consuma o turno, o inimigo pula a vez. `EnemyConfig` sem
+  Sem nenhuma ação que funcione, o inimigo pula a vez. `EnemyConfig` sem
   `behavior` = inimigo que não age.
 - `EnemyAction` (SO abstrato, `TryExecute(in EnemyTurnContext)`). Ações são
   **assets sem estado de runtime**: o estado de cada inimigo (cooldowns e
@@ -1042,10 +1100,10 @@ Ações disponíveis (`Create > GridBattle > AI > Actions`):
 |---|---|---|
 | `UseSkillsAction` | `UseSkills` | tenta as skills do config contra o jogador (ver [Skills](#uso-pelos-inimigos)) |
 | `BasicAttackAction` | `BasicAttack` | se `GridRules.IsAttackTarget`, ataca o jogador |
-| `ChaseTargetAction` | `ChaseTarget` | anda o passo de `GridRules.FindStepToward`; sem passo que aproxime, não consome o turno |
-| `KeepDistanceAction` | `KeepDistance` (distância preferida 2), `KeepDistanceBackline` (3, sem preferir o alcance de ataque) | entre as células para onde pode andar e a própria, escolhe a de distância (métrica de ataque) mais próxima da preferida; com a opção ligada, as células de onde o jogador está ao alcance de ataque vencem primeiro; empate prefere ficar parado, depois a menor linha e coluna. Só consome o turno se o inimigo se mover |
+| `ChaseTargetAction` | `ChaseTarget` | anda o passo de `GridRules.FindStepToward`; sem passo que aproxime, não usa o andar |
+| `KeepDistanceAction` | `KeepDistance` (distância preferida 2), `KeepDistanceBackline` (3, sem preferir o alcance de ataque) | entre as células para onde pode andar e a própria, escolhe a de distância (métrica de ataque) mais próxima da preferida; com a opção ligada, as células de onde o jogador está ao alcance de ataque vencem primeiro; empate prefere ficar parado, depois a menor linha e coluna. Só usa o andar se o inimigo se mover |
 | `ApplyStateToTargetAction` | `ApplyWeakened` | com o jogador no alcance (3), a habilidade pronta e o jogador sem o estado, anima o ataque e aplica Fraquejado (2 turnos) |
-| `HealAllyAction` | `HealAlly` | cura 6 de vida o aliado mais ferido (vida abaixo de 75%) no alcance 3; só consome o turno se curou algo |
+| `HealAllyAction` | `HealAlly` | cura 6 de vida o aliado mais ferido (vida abaixo de 75%) no alcance 3; só usa o agir se curou algo |
 | `BuffAllyAction` | `BuffAllyShield` | dá Escudo (3 turnos) ao aliado que ainda não o tem, no alcance 3, escolhendo o mais próximo do jogador |
 | `SummonAction` | `SummonRat` | invoca um Rato na célula livre adjacente mais próxima do jogador, com a escala do invocador, se houver menos de 2 vivos dele; o invocado não age no turno em que aparece e **não dá XP** |
 
@@ -1327,14 +1385,18 @@ Só aparecem na vez do jogador.
 | **Walk** (azul) | célula livre, em alcance de movimento | `walkHighlightColor` (prefab Cell) |
 | **Attack** (vermelho) | célula com `IDamageReceiver` (não o próprio jogador) em alcance de ataque | `attackHighlightColor` (prefab Cell) |
 | **SkillRange** (roxo) | com uma skill ou um item com alvo selecionado: as células onde ele pode ser mirado | `skillRangeHighlightColor` (prefab Cell) |
+| **Danger** (laranja) | depois de um toque longo num inimigo: as células que ele alcança no próximo turno (até o próximo toque) | `dangerHighlightColor` (prefab Cell; padrão do código) |
 
 - Com uma skill ou item com alvo selecionado, só o `SkillRange` aparece.
+- Depois de andar somem os `Walk`, e depois de agir somem os `Attack`.
 - Highlights que aparecem juntos entram em fade escalonado (visual).
 - Quando uma skill ou uma bomba é usada, as células da área piscam
   (`skillAreaFlashColor`).
 - Cores e alpha ficam no prefab `Cell.prefab` (alpha > 0 obrigatório).
 - Inimigos não pintam highlights (decisão de design: o campo tático é
-  apresentado do ponto de vista do jogador).
+  apresentado do ponto de vista do jogador). Exceção planejada, **ainda não
+  implementada**: a área das habilidades telegrafadas (ver
+  [[inimigos#Habilidades telegrafadas]]).
 
 ## Pontos de extensão
 
@@ -1362,7 +1424,7 @@ Só aparecem na vez do jogador.
 | **Distância em diagonais** | trocar a métrica em `CombatSettings` (Chebyshev) |
 | **Reações visuais** (dano, ataque, morte) | `CharacterView` e `GridEffectsAnimator` |
 | **Animações compartilhadas** | `AnimatorOverrideController` no `animatorController` do config (sobre um controller base comum) |
-| **Pacing e animação dos turnos** | `TurnManager.enemyPacing` e `GridMovementSettings`; animações que devam segurar o turno entram no esquema de espera do `GridController.WaitForMovementsAsync` |
+| **Ritmo e animação dos turnos** | `TurnManager.enemyStagger` e `GridMovementSettings`; animações que devam segurar o turno entram no esquema de espera do `GridController.WaitForMovementsAsync` |
 | **Curva de XP e nível máximo** | `ProgressionSettings` |
 | **Oferta de talentos** (opções, rerolls, banimentos, pesos) | `TalentOfferSettings` |
 | **Efeitos de nível** | assinar `PlayerLeveledUpEvent` |
@@ -1588,7 +1650,7 @@ cadeias.
 
 | Talento | Nível mínimo | Postos | Peso | Pré-requisito | Efeito por posto |
 |---|---|---|---|---|---|
-| Foco Arcano | 2 | 2 | 1,5 | - | As habilidades causam +15% de dano por nível se você não se moveu no seu último turno. |
+| Foco Arcano | 2 | 2 | 1,5 | - | As habilidades causam +15% de dano por nível se você não andou neste turno. |
 | Toque Gélido | 2 | 1 | 1,5 | - | A Nova de Gelo congela os inimigos por 1 turno: eles não se movem e causam 20% menos dano. |
 | Criomancia | 2 | 1 | 2 | - | Domínio do gelo: suas skills causam 15% a mais de dano. |
 | Grimório | 2 | 1 | 2 | - | Desbloqueia Bola de Fogo: queima os inimigos de uma área de qualquer ponto do grid. |
@@ -1617,7 +1679,7 @@ cadeias.
 | Adagas Afiadas | 2 | 3 | 1,5 | - | A Adaga Envenenada e a Adaga de Arremesso causam +4 de dano por nível. |
 | Olho de Águia | 3 | 2 | 1 | - | A Adaga Envenenada e a Adaga de Arremesso alcançam 1 casa a mais por nível. |
 | Gancho de Abordagem | 3 | 1 | 1,5 | - | Desbloqueia Gancho: puxa um inimigo distante até 3 casas em sua direção. Arraste-o para áreas perigosas ou contra outros inimigos. |
-| Bate e Corre | 3 | 2 | 1,5 | - | +30% de dano por nível no turno seguinte a se mover. |
+| Bate e Corre | 3 | 2 | 1,5 | - | +30% de dano por nível se você andou neste turno antes de atacar. |
 | Mestre das Sombras | 3 | 1 | 2 | - | Desbloqueia Bomba de Fumaça: lança uma bomba de fumaça em um inimigo ao seu lado. |
 | Ágil | 3 | 3 | 2 | - | +12 de vida máxima por nível. |
 | Predador | 3 | 2 | 2,5 | - | +35% de dano por nível a inimigos envenenados. |
@@ -1647,5 +1709,5 @@ cadeias.
 | `RunSettings` | nó de cura 30% da vida máxima; nó de talento custa 15% da vida máxima (nunca mata); estados temporários removidos entre batalhas; cooldowns zerados entre batalhas; salvamento automático |
 | `GridMovementSettings` | estilo `Hop`; avanço do ataque de 5 px em 0,15 s; flash de acerto vermelho; morte de 0,15 s; deslize de empurrões e puxões 0,06 s por célula (`OutQuad`), reação de colisão 0,02 s depois |
 | `GameplayInputSettings` | toque longo de 0,45 s |
-| `TurnManager` (cena) | ritmo `Staggered`, 0,08 s entre inimigos, aceleração 2x |
+| `TurnManager` (cena) | um inimigo de cada vez, 0,08 s de pausa entre eles, aceleração 2x |
 | `XpRewardSystem` (cena) | 5 XP por orb |

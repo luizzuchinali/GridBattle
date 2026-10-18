@@ -11,7 +11,8 @@ namespace GridBattle.Gameplay.Controllers
     /// Runs the enemy's turn by delegating to the config's <see cref="EnemyBehavior"/>.
     /// The behavior (action priority and types) is data, not code. Owns the
     /// enemy's <see cref="EnemyMemory"/> (action cooldowns), which goes down at the
-    /// end of each of this enemy's own turns.
+    /// end of each of this enemy's own turns. A telegraphed skill being prepared
+    /// (<see cref="Enemy.Telegraph"/>) is resolved before the behavior runs.
     /// </summary>
     [RequireComponent(typeof(Enemy))]
     public class EnemyController : CharacterControllerBase<Enemy>
@@ -41,10 +42,23 @@ namespace GridBattle.Gameplay.Controllers
                 _target = PlayerCharacter.Active;
             if (_target == null) return;
 
+            // A telegraphed skill being prepared comes first: it fires now (the action of the turn, the walk stays
+            // free) or keeps waiting (the action, and the walk unless the skill lets the enemy move).
+            var walkUsed = false;
+            var actionUsed = false;
+            var telegraph = Owner.Telegraph;
+            if (telegraph != null && Owner.AdvanceTelegraph(Grid))
+            {
+                actionUsed = true;
+                walkUsed = Owner.Telegraph != null && !telegraph.Skill.CanMoveWhileWindingUp;
+            }
+
+            if (Owner.IsDead || (walkUsed && actionUsed)) return;
+
             var config = Owner.EnemyConfig;
             if (config == null || config.Behavior == null) return;
 
-            config.Behavior.TakeTurn(new EnemyTurnContext(Owner, Grid, _target, _memory));
+            config.Behavior.TakeTurn(new EnemyTurnContext(Owner, Grid, _target, _memory), walkUsed, actionUsed);
         }
 
         /// <summary>Snapshot of the AI memory for saves.</summary>

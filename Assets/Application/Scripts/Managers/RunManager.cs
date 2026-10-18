@@ -205,6 +205,7 @@ namespace GridBattle.Managers
             EventBus.Subscribe<GlobalTurnStartedEvent>(OnGlobalTurnStarted);
             EventBus.Subscribe<TurnChangedEvent>(OnTurnChanged);
             EventBus.Subscribe<PlayerActionEvent>(OnPlayerAction);
+            EventBus.Subscribe<PlayerTurnStateChangedEvent>(OnPlayerTurnStateChanged);
             EventBus.Subscribe<PlayerXpChangedEvent>(OnPlayerXpChanged);
             EventBus.Subscribe<DamageDealtEvent>(OnDamageDealt);
             EventBus.Subscribe<CharacterDiedEvent>(OnCharacterDied);
@@ -218,6 +219,7 @@ namespace GridBattle.Managers
             EventBus.Unsubscribe<GlobalTurnStartedEvent>(OnGlobalTurnStarted);
             EventBus.Unsubscribe<TurnChangedEvent>(OnTurnChanged);
             EventBus.Unsubscribe<PlayerActionEvent>(OnPlayerAction);
+            EventBus.Unsubscribe<PlayerTurnStateChangedEvent>(OnPlayerTurnStateChanged);
             EventBus.Unsubscribe<PlayerXpChangedEvent>(OnPlayerXpChanged);
             EventBus.Unsubscribe<DamageDealtEvent>(OnDamageDealt);
             EventBus.Unsubscribe<CharacterDiedEvent>(OnCharacterDied);
@@ -1007,6 +1009,17 @@ namespace GridBattle.Managers
 
             _saveWindowOpen = false;
             _run.Statistics.TurnsPlayed++;
+        }
+
+        /// <summary>
+        /// The player's first walk or action already changes the battle: XP that lands after it is no longer part of
+        /// the save of the turn (the turn ends later, with PlayerActionEvent).
+        /// </summary>
+        private void OnPlayerTurnStateChanged(PlayerTurnStateChangedEvent e)
+        {
+            if (!_battleActive || _run == null || !e.Started) return;
+
+            _saveWindowOpen = false;
         }
 
         private void OnPlayerXpChanged(PlayerXpChangedEvent e)

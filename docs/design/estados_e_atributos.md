@@ -3,7 +3,7 @@ tags:
   - design
   - estados
 status: em definição (atributos e estados implementados, com valores iniciais configuráveis)
-updated: 2026-10-05
+updated: 2026-10-18
 ---
 # Atributos e Estados
 
@@ -27,7 +27,7 @@ As configurações da run (opções de talento, rerolls e banimentos) não são 
 | Categoria | Atributo | Descrição | Situação |
 |---|---|---|---|
 | Base | Vida máxima | Quantidade máxima de vida. | Implementado |
-| Base | Alcance de movimento | Distância que o personagem anda por ação. | Implementado |
+| Base | Alcance de movimento | Distância que o personagem anda no andar do turno. | Implementado |
 | Base | Alcance de ataque | Distância do ataque básico. | Implementado |
 | Ofensivo | Dano básico | Dano do ataque básico. | Implementado |
 | Ofensivo | Chance de crítico | Probabilidade de um ataque causar dano extra. | Implementado |

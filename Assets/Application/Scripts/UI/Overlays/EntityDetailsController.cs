@@ -129,9 +129,27 @@ namespace GridBattle.UI.Overlays
             var content = _scroll.contentContainer;
             content.Clear();
 
+            if (model.Telegraphs.Count > 0)
+            {
+                AddSection(content, HudText.Get("details.telegraph.section"));
+                foreach (var telegraph in model.Telegraphs)
+                {
+                    AddRow(content, telegraph.Skill, telegraph.Caster, telegraph.Icon, "details-row--debuff");
+                    if (telegraph.Damage != null)
+                        AddRow(content, HudText.Get("details.telegraph.damage"), telegraph.Damage);
+                    AddRow(content, HudText.Get("details.telegraph.fires"), telegraph.Turns);
+                }
+            }
+
             if (model.IsCharacter)
             {
                 AddRow(content, HudText.Get("details.hp"), model.Hp + " / " + model.MaxHp, null, "details-row--hp");
+
+                if (!string.IsNullOrEmpty(model.Preparing))
+                {
+                    AddSection(content, HudText.Get("details.preparing"));
+                    AddRow(content, model.Preparing, string.Empty, model.PreparingIcon, "details-row--waiting");
+                }
 
                 if (model.HasRole)
                 {

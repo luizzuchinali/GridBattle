@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading;
 using GridBattle.Gameplay.Controllers;
 using GridBattle.Gameplay.Entities;
+using GridBattle.Gameplay.Entities.Skills;
 using GridBattle.Gameplay.Events;
 using GridBattle.Gameplay.Movement;
 using GridBattle.Gameplay.Run;
@@ -122,10 +123,39 @@ namespace GridBattle.Gameplay
         {
             if (attacker == null || !IsValidPosition(targetPos)) return;
 
+            // The attacker may still be hopping to the cell it attacks from: the lunge waits for the landing.
             var targetCell = _cells[targetPos.x, targetPos.y];
-            var direction = targetCell.transform.position - attacker.transform.position;
-            _effectsAnimator.PlayAttack(attacker, targetCell.GetContent(), direction, movementSettings);
+            var attackerCell = GetCell(attacker.CurrentGridPos);
+            var from = attackerCell != null && attackerCell.GetContent() == attacker
+                ? attackerCell.ContentRestPosition
+                : attacker.transform.position;
+            var direction = targetCell.transform.position - from;
+            _effectsAnimator.PlayAttack(attacker, targetCell.GetContent(), direction, movementSettings,
+                _movementAnimator.GetRemaining(attacker));
         }
+
+        /// <summary>
+        /// World point at the middle of the bottom edge of the grid's last row of cells (the visible cell, without
+        /// the gap between cells). False while the grid has no cells.
+        /// </summary>
+        public bool TryGetBottomEdge(out Vector3 worldPoint)
+        {
+            worldPoint = default;
+            if (_cells == null || gridSize.x <= 0 || gridSize.y <= 0) return false;
+
+            var first = _cells[0, gridSize.y - 1];
+            var last = _cells[gridSize.x - 1, gridSize.y - 1];
+            if (first == null || last == null ||
+                !first.TryGetComponent(out SpriteRenderer firstRenderer) ||
+                !last.TryGetComponent(out SpriteRenderer lastRenderer)) return false;
+
+            var center = (firstRenderer.bounds.center + lastRenderer.bounds.center) / 2f;
+            worldPoint = new Vector3(center.x, center.y - Cell.Size.y / 2f / Ppu, center.z);
+            return true;
+        }
+
+        /// <summary>Seconds until the walk of <paramref name="entity"/> ends (0 when it is not moving).</summary>
+        public float GetMovementRemaining(GridEntity entity) => _movementAnimator.GetRemaining(entity);
 
         public void PlayHitAnimation(GridEntity entity) => _effectsAnimator.PlayHit(entity, movementSettings);
 
@@ -184,11 +214,41 @@ namespace GridBattle.Gameplay
 
             _terrainEffects ??= new TerrainEffects(this);
             _terrainEffects.Enable();
+            EventBus.Subscribe<SkillTelegraphChangedEvent>(OnTelegraphChanged);
+            EventBus.Subscribe<GridInitializedEvent>(OnGridInitializedForMarks);
         }
 
         private void OnDisable()
         {
             _terrainEffects?.Disable();
+            EventBus.Unsubscribe<SkillTelegraphChangedEvent>(OnTelegraphChanged);
+            EventBus.Unsubscribe<GridInitializedEvent>(OnGridInitializedForMarks);
+        }
+
+        private void OnTelegraphChanged(SkillTelegraphChangedEvent e) => RefreshTelegraphMarks();
+
+        private void OnGridInitializedForMarks(GridInitializedEvent e) => RefreshTelegraphMarks();
+
+        /// <summary>
+        /// Marks the cells of every telegraphed skill being prepared (<see cref="Cell.Warned"/>), the only highlight
+        /// the enemies draw: it stays on in every turn, under the player's own highlights. Visual only.
+        /// </summary>
+        public void RefreshTelegraphMarks()
+        {
+            if (_cells == null) return;
+
+            var marked = new HashSet<Vector2Int>();
+            foreach (var telegraph in SkillTelegraph.GetAll())
+            {
+                foreach (var cell in telegraph.Cells)
+                    marked.Add(cell);
+            }
+
+            foreach (var cell in _cells)
+            {
+                if (cell != null)
+                    cell.Warned = marked.Contains(cell.GridPosition);
+            }
         }
 
         private void OnDestroy()
@@ -381,6 +441,7 @@ namespace GridBattle.Gameplay
                 if (entity.IsSummoned)
                     enemy.MarkSummoned();
                 enemy.SetHp(entity.Hp);
+                enemy.RestoreTelegraph(entity.Telegraph);
             }
 
             EventBus.Raise(new GridInitializedEvent(snapshot.GlobalTurn));
@@ -464,6 +525,7 @@ namespace GridBattle.Gameplay
                 snapshot.IsSummoned = enemy.IsSummoned;
                 if (enemy.TryGetComponent(out EnemyController controller))
                     snapshot.AiMemory = controller.CaptureMemory();
+                snapshot.Telegraph = enemy.CaptureTelegraph();
             }
 
             return snapshot;
@@ -601,6 +663,74 @@ namespace GridBattle.Gameplay
             entity.CurrentGridPos = targetPos;
             if (moved && entity is Character character)
                 character.RegisterMovement();
+        }
+
+        /// <summary>
+        /// Takes back a walk of the current turn (the player's undo):
+        /// the entity hops back to <paramref name="targetPos"/>, its movement flag of the turn is cleared and
+        /// <see cref="EntityMoveUndoneEvent"/> is raised instead of <see cref="EntityEnteredCellEvent"/>, so the
+        /// terrain does not react (the walk is only undoable when its cell did not react either). Nothing is drawn.
+        /// </summary>
+        public void UndoMove(Character character, Vector2Int targetPos)
+        {
+            var from = character.CurrentGridPos;
+            if (from == targetPos || !IsFreePosition(targetPos)) return;
+
+            var fromWorld = character.transform.position;
+            _cells[from.x, from.y].RemoveContent();
+            _cells[targetPos.x, targetPos.y].SetContent(character);
+            character.CurrentGridPos = targetPos;
+            _movementAnimator.Animate(character, fromWorld, from, targetPos, movementSettings, null);
+            character.SetMovedThisTurn(false);
+            EventBus.Raise(new EntityMoveUndoneEvent(character, from, targetPos));
+        }
+
+        /// <summary>
+        /// Puts <paramref name="character"/> on <paramref name="position"/> for a what-if query (the simulation bot
+        /// valuing a walk followed by an action): only the occupancy, the position and the movement flag change, with
+        /// no animation, event or visual. Dispose the result to put everything back. The position must be free.
+        /// </summary>
+        public IDisposable ProbePosition(Character character, Vector2Int position)
+        {
+            return new PositionProbe(this, character, position);
+        }
+
+        private sealed class PositionProbe : IDisposable
+        {
+            private readonly GridController _grid;
+            private readonly Character _character;
+            private readonly Vector2Int _origin;
+            private readonly Vector2Int _position;
+            private readonly bool _moved;
+            private bool _disposed;
+
+            public PositionProbe(GridController grid, Character character, Vector2Int position)
+            {
+                _grid = grid;
+                _character = character;
+                _origin = character.CurrentGridPos;
+                _position = position;
+                _moved = character.MovedThisTurn;
+                if (position == _origin) return;
+
+                grid._cells[_origin.x, _origin.y].SetContentForProbe(null);
+                grid._cells[position.x, position.y].SetContentForProbe(character);
+                character.CurrentGridPos = position;
+                character.SetMovedThisTurn(true);
+            }
+
+            public void Dispose()
+            {
+                if (_disposed) return;
+
+                _disposed = true;
+                if (_position == _origin) return;
+
+                _grid._cells[_position.x, _position.y].SetContentForProbe(null);
+                _grid._cells[_origin.x, _origin.y].SetContentForProbe(_character);
+                _character.CurrentGridPos = _origin;
+                _character.SetMovedThisTurn(_moved);
+            }
         }
 
         /// <summary>
@@ -785,6 +915,10 @@ namespace GridBattle.Gameplay
 
         public void HighlightCells(Dictionary<Vector2Int, ECellHighlightType> highlightInfos)
         {
+            // Builds skip the editor's debug grid: before the first battle there are no cells, only the scene's baked
+            // player, whose controller already refreshes its highlights.
+            if (_cells == null) return;
+
             foreach (var cell in _cells)
             {
                 if (highlightInfos.TryGetValue(cell.GridPosition, out var highlightType))

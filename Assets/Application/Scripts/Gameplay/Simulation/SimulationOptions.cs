@@ -174,6 +174,14 @@ namespace GridBattle.Gameplay.Simulation
         private float bonusReward = 1.5f;
 
         [SerializeField]
+        [Min(0f)]
+        [Tooltip("Cost of ending the turn on a cell marked by a telegraphed enemy skill, per point of the damage it " +
+                 "would deal there (the same unit as the expected damage of an action: 1 = the bot stays when its " +
+                 "action out-damages the strike). A strike that would kill the player costs much more. Walking costs " +
+                 "half of it per half route step.")]
+        private float telegraphDamageWeight = 1f;
+
+        [SerializeField]
         [Min(1)]
         [Tooltip("After this many player turns in one battle the bot stops weighing hazard and bonus cells (only a cell that would kill " +
                  "it still counts), walks straight to its target and chases the enemies of Focus Role Order even when a ranged skill " +
@@ -239,6 +247,7 @@ namespace GridBattle.Gameplay.Simulation
         public float HealSkillHpFraction { get => healSkillHpFraction; set => healSkillHpFraction = value; }
         public float HazardPenalty { get => hazardPenalty; set => hazardPenalty = value; }
         public float BonusReward { get => bonusReward; set => bonusReward = value; }
+        public float TelegraphDamageWeight { get => telegraphDamageWeight; set => telegraphDamageWeight = value; }
         public int StallTurns { get => stallTurns; set => stallTurns = value; }
         public int RushMaxStreak { get => rushMaxStreak; set => rushMaxStreak = value; }
         public float RoleTierDistanceBonus { get => roleTierDistanceBonus; set => roleTierDistanceBonus = value; }

@@ -267,14 +267,20 @@ namespace GridBattle.Gameplay.Entities
         public bool MovedThisTurn { get; private set; }
 
         /// <summary>
-        /// The character walked or teleported during its previous turn. Conditional damage effects read it
-        /// ("hit and run", "standing still"): a turn is one action, so the turn in which a character moves is
-        /// never the one in which it attacks. Being pushed or pulled does not count.
+        /// The character walked or teleported during its previous turn (kept in the battle save). The conditional
+        /// damage effects ("hit and run", "standing still") read <see cref="MovedThisTurn"/>. Being pushed or pulled
+        /// does not count.
         /// </summary>
         public bool MovedLastTurn { get; private set; }
 
         /// <summary>Marks that the character moved on its own this turn (called by <see cref="GridController.MoveEntity"/>).</summary>
         public void RegisterMovement() => MovedThisTurn = true;
+
+        /// <summary>
+        /// Sets the movement flag of the current turn directly: an undone walk (<see cref="GridController.UndoMove"/>)
+        /// or a what-if query of the simulation bot that restores it afterwards.
+        /// </summary>
+        public void SetMovedThisTurn(bool moved) => MovedThisTurn = moved;
 
         /// <summary>
         /// Restores the movement flag of the last turn from a battle snapshot (taken before the next turn starts,

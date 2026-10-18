@@ -110,6 +110,7 @@ namespace GridBattle.Gameplay.Entities.Skills
                 ESkillTargetFilter.Allies => candidate != caster && GridRules.AreAllies(caster, candidate),
                 ESkillTargetFilter.AlliesAndSelf => GridRules.AreAllies(caster, candidate),
                 ESkillTargetFilter.Self => candidate == caster,
+                ESkillTargetFilter.EveryoneButCaster => candidate != caster,
                 _ => true,
             };
         }
@@ -124,6 +125,28 @@ namespace GridBattle.Gameplay.Entities.Skills
             Vector2Int targetPos)
         {
             var cells = GetAreaCells(grid, caster, skill, targetPos);
+            var affected = GetAffectedCharacters(grid, caster, skill.Skill, cells);
+            return new SkillContext(caster, grid, skill.Skill, skill, targetPos, cells, affected);
+        }
+
+        /// <summary>
+        /// Resolves a use on fixed <paramref name="areaCells"/> (a telegraphed skill fires on the cells marked when it
+        /// was prepared): the cells outside the grid are dropped and the affected characters are whoever passes the
+        /// target filter on them now.
+        /// </summary>
+        public static SkillContext CreateContext(GridController grid, Character caster, in EffectiveSkill skill,
+            Vector2Int targetPos, IReadOnlyList<Vector2Int> areaCells)
+        {
+            var cells = new List<Vector2Int>();
+            if (areaCells != null)
+            {
+                foreach (var cell in areaCells)
+                {
+                    if (grid.IsValidPosition(cell))
+                        cells.Add(cell);
+                }
+            }
+
             var affected = GetAffectedCharacters(grid, caster, skill.Skill, cells);
             return new SkillContext(caster, grid, skill.Skill, skill, targetPos, cells, affected);
         }

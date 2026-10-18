@@ -28,9 +28,15 @@ namespace GridBattle.UI.Hud
                  "run depth is 0 or lower (no run, or the start).")]
         private bool hideDepthWhenZero = true;
 
+        [SerializeField]
+        [Min(0)]
+        [Tooltip("Pixels (at the 216x384 reference) between the bottom edge of the grid's last row of cells and the top of the turn bar (walk, act and item icons, Undo, End turn).")]
+        private int turnBarGap = 2;
+
         public ViewDefinition EntityDetailsView => entityDetailsView;
         public bool ShowAllAttributes => showAllAttributes;
         public bool HideDepthWhenZero => hideDepthWhenZero;
+        public int TurnBarGap => Mathf.Max(0, turnBarGap);
 
         /// <summary>The settings asset registered in <see cref="GameSettings"/> (defaults if missing).</summary>
         public static HudSettings Current => GameSettings.Get<HudSettings>();

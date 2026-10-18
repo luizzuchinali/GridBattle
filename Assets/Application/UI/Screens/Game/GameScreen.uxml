@@ -15,7 +15,16 @@
             </ui:VisualElement>
             <ui:Button name="menu-button" class="slot-button" icon-image="project://database/Assets/Application/Art/Sprites/UI.png?fileID=9094600903545770030&amp;guid=62a3f1345f5495642b6ab1f188fd400c&amp;type=3#MenuIcon"/>
         </ui:VisualElement>
-        <ui:VisualElement name="game-content" picking-mode="Ignore"/>
+        <ui:VisualElement name="game-content" picking-mode="Ignore">
+            <ui:VisualElement name="turn-actions" picking-mode="Ignore">
+                <ui:VisualElement name="turn-move-icon" class="turn-icon" picking-mode="Ignore"/>
+                <ui:VisualElement name="turn-act-icon" class="turn-icon" picking-mode="Ignore"/>
+                <ui:VisualElement name="turn-item-icon" class="turn-icon" picking-mode="Ignore"/>
+                <ui:VisualElement class="turn-actions__spacer" picking-mode="Ignore"/>
+                <ui:Button name="undo-move-btn" text="Undo" class="text-button turn-button"/>
+                <ui:Button name="end-turn-btn" text="End turn" class="text-button turn-button"/>
+            </ui:VisualElement>
+        </ui:VisualElement>
         <ui:VisualElement name="item-bar" class="slot-bar" picking-mode="Ignore"/>
         <ui:VisualElement name="skill-bar" class="slot-bar" picking-mode="Ignore"/>
     </zs:SafeArea>

@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b3fcdc5ee1f2f8d4684b11dfc6985562, type: 3}
+  m_Name: KingSlamVisual
+  m_EditorClassIdentifier: Assembly-CSharp::GridBattle.Gameplay.Movement.ActionVisualDefinition
+  casterGesture: 2
+  glowColor: {r: 0.8392157, g: 0.21176471, b: 0.15686275, a: 1}
+  projectileFrames: []
+  projectileCellsPerSecond: 10
+  projectileArc: 0
+  projectileFacesDirection: 0
+  cellFrames:
+  - {fileID: 21300000, guid: 5827c13474bf244f5b06943bf597a5df, type: 3}
+  - {fileID: 21300000, guid: aac9eab48c7a54d7989eea251ca12ad3, type: 3}
+  - {fileID: 21300000, guid: b512dddab0dcf4222b0155441d0594c0, type: 3}
+  - {fileID: 21300000, guid: 45f6a09825793475f85b29307cadff76, type: 3}
+  frameSeconds: 0.06
+  impactFrame: 0
+  order: 0
+  stepSeconds: 0.05
+  cellFacing: 0
+  dropPixels: 16
+  lingerSeconds: 0
+  tint: {r: 1, g: 1, b: 1, a: 1}

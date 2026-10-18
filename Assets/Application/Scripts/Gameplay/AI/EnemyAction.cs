@@ -12,7 +12,14 @@ namespace GridBattle.Gameplay.AI
     public abstract class EnemyAction : GameDefinition
     {
         /// <summary>
-        /// Tries to execute the action. Returning true consumes the enemy's turn.
+        /// The action is a walk (chase, keep distance): an enemy uses one walk and one other action per turn
+        /// (<see cref="EnemyBehavior.TakeTurn"/>).
+        /// </summary>
+        public virtual bool IsMovement => false;
+
+        /// <summary>
+        /// Tries to execute the action. Returning true uses the walk or the action of the enemy's turn (see
+        /// <see cref="IsMovement"/>).
         /// </summary>
         public abstract bool TryExecute(in EnemyTurnContext context);
     }

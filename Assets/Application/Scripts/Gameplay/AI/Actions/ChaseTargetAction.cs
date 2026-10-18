@@ -10,6 +10,8 @@ namespace GridBattle.Gameplay.AI.Actions
     [CreateAssetMenu(fileName = "ChaseTarget", menuName = "GridBattle/AI/Actions/Chase Target", order = 2)]
     public class ChaseTargetAction : EnemyAction
     {
+        public override bool IsMovement => true;
+
         public override bool TryExecute(in EnemyTurnContext context)
         {
             var step = GridRules.FindStepToward(context.Grid, context.Self, context.Target.CurrentGridPos);

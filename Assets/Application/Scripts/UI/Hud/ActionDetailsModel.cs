@@ -84,6 +84,10 @@ namespace GridBattle.UI.Hud
                 model.Add(HudText.Get("details.action.sight"), sight);
             }
 
+            if (skill.Telegraphed)
+                model.Add(HudText.Get("details.action.telegraph"), HudText.Format(
+                    skill.WindupTurns == 1 ? "details.telegraph.turn" : "details.telegraph.turns", skill.WindupTurns));
+
             var displace = effective.FindDisplacement();
             if (displace != null)
             {
@@ -199,6 +203,7 @@ namespace GridBattle.UI.Hud
             ESkillTargetFilter.AlliesAndSelf => HudText.Get("details.targets.allies_and_self"),
             ESkillTargetFilter.Self => HudText.Get("details.targets.self"),
             ESkillTargetFilter.Everyone => HudText.Get("details.targets.everyone"),
+            ESkillTargetFilter.EveryoneButCaster => HudText.Get("details.targets.everyone_but_self"),
             _ => HudText.Get("details.targets.enemies"),
         };
     }

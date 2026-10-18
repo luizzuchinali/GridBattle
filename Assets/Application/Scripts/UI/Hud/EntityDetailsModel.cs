@@ -19,10 +19,12 @@ namespace GridBattle.UI.Hud
     /// </summary>
     public sealed class EntityDetailsRequest
     {
-        public EntityDetailsRequest([CanBeNull] Character character, [CanBeNull] TerrainDefinition terrain)
+        public EntityDetailsRequest([CanBeNull] Character character, [CanBeNull] TerrainDefinition terrain,
+            [CanBeNull] IReadOnlyList<SkillTelegraph> telegraphs = null)
         {
             Character = character;
             Terrain = terrain;
+            Telegraphs = telegraphs ?? System.Array.Empty<SkillTelegraph>();
         }
 
         private EntityDetailsRequest(Character owner, SkillDefinition skill, ConsumableDefinition consumable)
@@ -62,6 +64,38 @@ namespace GridBattle.UI.Hud
         /// <summary>The terrain of the cell (null for plain floor).</summary>
         [CanBeNull]
         public TerrainDefinition Terrain { get; }
+
+        /// <summary>The telegraphed enemy skills whose marked cells include the cell (empty when none).</summary>
+        public IReadOnlyList<SkillTelegraph> Telegraphs { get; } = System.Array.Empty<SkillTelegraph>();
+
+        /// <summary>Whether a long press on a cell has anything to show (a character, terrain or a marked area).</summary>
+        public bool HasContent => Character != null || Terrain != null || Telegraphs.Count > 0;
+    }
+
+    /// <summary>One telegraphed skill that will hit the inspected cell.</summary>
+    public readonly struct DetailsTelegraph
+    {
+        public DetailsTelegraph(Sprite icon, string skill, string caster, string damage, string turns)
+        {
+            Icon = icon;
+            Skill = skill;
+            Caster = caster;
+            Damage = damage;
+            Turns = turns;
+        }
+
+        public Sprite Icon { get; }
+        public string Skill { get; }
+
+        /// <summary>Name of the enemy that prepares it.</summary>
+        public string Caster { get; }
+
+        /// <summary>Predicted damage against the player on this cell (null when it deals none).</summary>
+        [CanBeNull]
+        public string Damage { get; }
+
+        /// <summary>When it fires ("in 1 turn").</summary>
+        public string Turns { get; }
     }
 
     /// <summary>One line of the attribute list.</summary>
@@ -143,6 +177,19 @@ namespace GridBattle.UI.Hud
         public List<DetailsSkill> Skills { get; } = new();
         public List<DetailsState> States { get; } = new();
 
+        /// <summary>"Skill (in 1 turn)" for an enemy preparing a telegraphed skill (null otherwise).</summary>
+        [CanBeNull]
+        public string Preparing { get; private set; }
+
+        [CanBeNull]
+        public Sprite PreparingIcon { get; private set; }
+
+        /// <summary>The telegraphed skills that will hit the inspected cell.</summary>
+        public List<DetailsTelegraph> Telegraphs { get; } = new();
+
+        /// <summary>Only a marked area (no character, no terrain): the window is titled after it.</summary>
+        public bool TelegraphOnly => Telegraphs.Count > 0 && !IsCharacter && !HasTerrain;
+
         public bool HasTerrain { get; private set; }
 
         /// <summary>A look at the terrain of an empty cell: the window is titled after the terrain.</summary>
@@ -161,9 +208,14 @@ namespace GridBattle.UI.Hud
             if (request.Terrain != null)
                 model.AddTerrain(request.Terrain);
 
+            foreach (var telegraph in request.Telegraphs)
+                model.AddTelegraph(telegraph);
+
             // A plain look at the terrain has no entity to name: the window is titled after the terrain.
             if (model.TerrainOnly)
                 model.Title = model.TerrainName;
+            else if (model.TelegraphOnly)
+                model.Title = HudText.Get("details.telegraph.title");
 
             return model;
         }
@@ -185,10 +237,35 @@ namespace GridBattle.UI.Hud
                 Behavior = enemy.EnemyConfig != null ? enemy.EnemyConfig.GetBehaviorDescription() : string.Empty;
             }
 
+            if (character is Enemy { Telegraph: not null } preparing)
+            {
+                var telegraph = preparing.Telegraph;
+                Preparing = telegraph.Skill.GetDisplayName() + " (" + FormatTurns(telegraph.TurnsLeft) + ")";
+                PreparingIcon = telegraph.Skill.Icon;
+            }
+
             AddAttributes(character, showAllAttributes);
             AddSkills(character);
             AddStates(character);
         }
+
+        /// <summary>The skill, who prepares it, the damage it would deal to the player and when it fires.</summary>
+        private void AddTelegraph(SkillTelegraph telegraph)
+        {
+            if (telegraph == null || telegraph.Skill == null) return;
+
+            var caster = telegraph.Caster != null && telegraph.Caster.Config != null
+                ? telegraph.Caster.Config.GetDisplayName()
+                : string.Empty;
+            var player = PlayerCharacter.Active;
+            var damage = player != null ? telegraph.PredictDamage(player) : 0;
+            Telegraphs.Add(new DetailsTelegraph(telegraph.Skill.Icon, telegraph.Skill.GetDisplayName(), caster,
+                damage > 0 ? damage.ToString(CultureInfo.InvariantCulture) : null, FormatTurns(telegraph.TurnsLeft)));
+        }
+
+        /// <summary>"in 1 turn" / "in 2 turns" until a telegraphed skill fires.</summary>
+        private static string FormatTurns(int turns) =>
+            HudText.Format(turns == 1 ? "details.telegraph.turn" : "details.telegraph.turns", turns);
 
         private void AddAttributes(Character character, bool all)
         {

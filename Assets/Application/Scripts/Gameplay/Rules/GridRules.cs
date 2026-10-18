@@ -276,10 +276,23 @@ namespace GridBattle.Gameplay.Rules
             return highlightInfos;
         }
 
+        /// <summary>Where the character can walk or attack now (both still available).</summary>
         public static Dictionary<Vector2Int, ECellHighlightType> GetHighlightInfos(
             GridController grid, Character character)
         {
+            return GetHighlightInfos(grid, character, true, true);
+        }
+
+        /// <summary>
+        /// Where the character can attack (<paramref name="canAct"/>) or walk (<paramref name="canMove"/>) now: the part
+        /// of the turn already used is left out.
+        /// </summary>
+        public static Dictionary<Vector2Int, ECellHighlightType> GetHighlightInfos(
+            GridController grid, Character character, bool canMove, bool canAct)
+        {
             var highlightInfos = new Dictionary<Vector2Int, ECellHighlightType>();
+            if (!canMove && !canAct) return highlightInfos;
+
             var currentPos = character.CurrentGridPos;
             var range = Mathf.Max(character.WalkDistance, character.AttackDistance);
 
@@ -292,18 +305,57 @@ namespace GridBattle.Gameplay.Rules
                     var targetPos = currentPos + new Vector2Int(x, y);
                     if (!grid.IsValidPosition(targetPos)) continue;
 
-                    if (IsAttackTarget(grid, character, targetPos))
+                    if (canAct && IsAttackTarget(grid, character, targetPos))
                     {
                         highlightInfos.Add(targetPos, ECellHighlightType.Attack);
                         continue;
                     }
 
-                    if (CanWalkTo(grid, character, targetPos))
+                    if (canMove && CanWalkTo(grid, character, targetPos))
                         highlightInfos.Add(targetPos, ECellHighlightType.Walk);
                 }
             }
 
             return highlightInfos;
+        }
+
+        /// <summary>
+        /// The cells <paramref name="character"/> can hit with its basic attack on its next turn, walking first: from
+        /// any cell it can walk to, its own included. Characters in the way are as they are now. Skills are not counted.
+        /// </summary>
+        public static HashSet<Vector2Int> GetReachCells(GridController grid, Character character)
+        {
+            var reach = new HashSet<Vector2Int>();
+            if (grid == null || character == null || character.IsDead) return reach;
+
+            var origins = new List<Vector2Int> { character.CurrentGridPos };
+            var walk = character.WalkDistance;
+            for (var y = -walk; y <= walk; y++)
+            {
+                for (var x = -walk; x <= walk; x++)
+                {
+                    var cell = character.CurrentGridPos + new Vector2Int(x, y);
+                    if (CanWalkTo(grid, character, cell))
+                        origins.Add(cell);
+                }
+            }
+
+            var range = character.AttackDistance;
+            foreach (var origin in origins)
+            {
+                for (var y = -range; y <= range; y++)
+                {
+                    for (var x = -range; x <= range; x++)
+                    {
+                        var cell = origin + new Vector2Int(x, y);
+                        if (cell == character.CurrentGridPos || !grid.IsWalkable(cell)) continue;
+                        if (IsInAttackRange(origin, cell, range))
+                            reach.Add(cell);
+                    }
+                }
+            }
+
+            return reach;
         }
     }
 }

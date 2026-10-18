@@ -74,6 +74,15 @@ Menu ou script ──► BalanceSimulation (editor) ──► entra em Play Mode
   6. uma skill defensiva com inimigos por perto;
   7. andar em direção ao melhor alvo, evitando perigo e preferindo bônus.
 
+  Como o turno tem um andar e um agir, o bot escolhe **pares (andar, agir)**: testa cada
+  célula para onde pode andar (e a própria) sem mover nada de verdade
+  (`GridController.ProbePosition`), acha a melhor ação a partir de cada uma
+  com as mesmas prioridades acima e desconta o custo de terreno da célula;
+  ficar parado vence empates. Se o melhor par pede andar, ele anda primeiro e
+  age depois. Agindo sem andar, dá um passo em direção ao próximo alvo quando
+  nada mais está ao alcance, e então encerra o turno. A coluna "Player actions"
+  do relatório conta os turnos do jogador.
+
   Empurrões e puxões são avaliados pela mesma previsão do jogo (dano de
   colisão e de terreno, tirar um inimigo do alcance, trazer um atirador).
   As skills são lidas já com os talentos (dano, área, alcance, recarga).

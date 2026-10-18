@@ -62,6 +62,7 @@ namespace GridBattle.Editor.Tools
                 ["wind"] = Frames("wind", DrawWind),
                 ["slash"] = Frames("slash", DrawSlash),
                 ["shockwave"] = Frames("shockwave", DrawShockwave),
+                ["slam"] = Frames("slam", DrawSlam),
                 ["orb_fire"] = Frames("orb_fire", (c, f) => DrawOrb(c, f, Orange, Yellow), 2),
                 ["bomb"] = Frames("bomb", DrawBomb, 2),
                 ["dagger"] = Frames("dagger", DrawDagger, 1),
@@ -85,6 +86,7 @@ namespace GridBattle.Editor.Tools
             Link(report, Skill("Hook"), Visual("Hook", ECasterGesture.None, Color.white, art["hook"], art["impact"], EVisualCellOrder.Simultaneous, speed: 14f, projectileFaces: true));
             Link(report, Skill("GoblinHook"), Visual("GoblinHook", ECasterGesture.None, Color.white, art["hook"], art["impact"], EVisualCellOrder.Simultaneous, speed: 14f, projectileFaces: true));
             Link(report, Skill("KingShockwave"), Visual("KingShockwave", glow, White, null, art["shockwave"], EVisualCellOrder.RippleFromTarget, step: 0.06f));
+            Link(report, Skill("KingSlam"), Visual("KingSlam", glow, Red, null, art["slam"], EVisualCellOrder.Simultaneous, drop: 16, impactFrame: 0));
             Link(report, Item("Bomb"), Visual("Bomb", ECasterGesture.None, Color.white, art["bomb"], art["fire"], EVisualCellOrder.RippleFromTarget, arc: 0.6f, speed: 8f));
 
             AssetDatabase.SaveAssets();
@@ -346,6 +348,28 @@ namespace GridBattle.Editor.Tools
         {
             var r = f switch { 0 => 3, 1 => 6, 2 => 9, _ => 11 };
             c.Ring(12, 12, r, f == 3 ? 1 : 2, f == 3 ? Grey : White);
+        }
+
+        private static void DrawSlam(Canvas c, int f)
+        {
+            switch (f)
+            {
+                case 0:
+                    c.Disc(12, 12, 6, Orange);
+                    c.Disc(12, 12, 3, Yellow);
+                    break;
+                case 1:
+                    c.Disc(12, 12, 5, Red);
+                    c.Sparks(12, 12, 9, 6, Orange, 53);
+                    break;
+                case 2:
+                    c.Ring(12, 12, 9, 2, Red);
+                    c.Sparks(12, 12, 11, 5, Grey, 71);
+                    break;
+                default:
+                    c.Ring(12, 12, 11, 1, DarkGrey);
+                    break;
+            }
         }
 
         private static void DrawOrb(Canvas c, int f, Color32 outer, Color32 inner)
