@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "propostas/Novo formato de jogo.md",
+                "file": "anotações/Pontos problemáticos.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Novo formato de jogo"
+              "title": "Pontos problemáticos"
             }
           }
         ]
@@ -184,9 +184,12 @@
       "project-manager:Project manager": false
     }
   },
-  "active": "9a7b6c9953f65d08",
+  "active": "0a86c625115eed19",
   "lastOpenFiles": [
-    "propostas/Novo formato de jogo.md",
+    "anotações",
+    "Sem título.md",
+    "anotações/Pontos problemáticos.md",
+    "propostas/proposta_conteudo_classes_skills_estados_talentos.md",
     "projeto/arte.md",
     "planos/plano_balanceamento.md.tmp.479916.fdb4c191c932",
     "planos/plano_balanceamento.md",
@@ -218,9 +221,6 @@
     "design/inimigos.md",
     "design/inimigos_e_variedade.md",
     "design/skills.md",
-    "design/classes.md",
-    "propostas/proposta_conteudo_classes_skills_estados_talentos.md",
-    "Sem título.md",
-    "propostas/ideias_traits_itens.md"
+    "design/classes.md"
   ]
 }
