@@ -1647,6 +1647,62 @@ MonoBehaviour:
     m_Key: tutorial.first_telegraph.desc
     m_Metadata:
       m_Items: []
+  - m_Id: 5032682152599552
+    m_Key: state.webbed.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5032682282622976
+    m_Key: state.webbed.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5032682580418560
+    m_Key: skill.fire_rain.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5032682580418561
+    m_Key: skill.fire_rain.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5032682874019840
+    m_Key: skill.crushing_blow.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5032682874019841
+    m_Key: skill.crushing_blow.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5032683163426816
+    m_Key: skill.web.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5032683163426817
+    m_Key: skill.web.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5032683788378112
+    m_Key: enemy.goblin_bomber.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5032683788378113
+    m_Key: enemy.goblin_bomber.behavior
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5032684375580672
+    m_Key: enemy.ogre_brute.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5032684375580673
+    m_Key: enemy.ogre_brute.behavior
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5032684946006016
+    m_Key: enemy.weaver_spider.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5032684946006017
+    m_Key: enemy.weaver_spider.behavior
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

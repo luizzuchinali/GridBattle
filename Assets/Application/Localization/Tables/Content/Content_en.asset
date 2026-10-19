@@ -1650,6 +1650,62 @@ MonoBehaviour:
     m_Localized: 'This enemy is preparing a strike: the marked cells are hit on its next turn. Walk out of the area before then (you can still attack) or stun it to cancel the strike. Long press a marked cell to see the damage.'
     m_Metadata:
       m_Items: []
+  - m_Id: 5032682152599552
+    m_Localized: Webbed
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5032682282622976
+    m_Localized: Cannot move.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5032682580418560
+    m_Localized: Fire Rain
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5032682580418561
+    m_Localized: 'Lobs fire bombs: marks a 3x3 area and, on his next turn, hits everyone in it for 8 and sets them Burning.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5032682874019840
+    m_Localized: Crushing Blow
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5032682874019841
+    m_Localized: 'Raises the club and marks a line of 3 cells in front of him. On his next turn he smashes it: 14 damage to everyone in it.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5032683163426816
+    m_Localized: Web
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5032683163426817
+    m_Localized: 'Shoots a web from 2 to 4 cells away in a straight line: 2 damage and you cannot move on your next turn.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5032683788378112
+    m_Localized: Goblin Bomber
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5032683788378113
+    m_Localized: 'Keeps his distance and lobs fire bombs: he marks an area and hits it on his next turn.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5032684375580672
+    m_Localized: Ogre Brute
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5032684375580673
+    m_Localized: 'Slow and tough. Winds up a crushing blow in a line in front of him: step aside before his next turn.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5032684946006016
+    m_Localized: Weaver Spider
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5032684946006017
+    m_Localized: Quick and fragile. Keeps her distance and webs you in place so you cannot walk.
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

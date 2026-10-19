@@ -91,6 +91,54 @@ As habilidades que hoje são ações de IA (curar, proteger, enfraquecer, invoca
 - **Simulador:** o bot precisa conhecer as células marcadas (evitar terminar nelas quando o golpe vale mais que a jogada) para o balanceamento medir a mecânica.
 - **Balanceamento:** ❓ Quanto mais forte uma habilidade telegrafada deve ser que uma imediata. Valor inicial sugerido: cerca do dobro do dano, ou área maior com o mesmo dano.
 
+## Muitos inimigos e inimigos únicos
+> Direção do Luiz (2026-10-18): o jogo deve ter **muitos inimigos**, e a cada alguns nós aparecem **inimigos
+> únicos, com habilidades**, para dar versatilidade às batalhas. Só design; a geração ainda não faz isso.
+
+- **Elenco grande, introduzido aos poucos:** cada faixa de andares traz inimigos novos, para a run mudar de cara ao
+  avançar. Valor inicial: três faixas (andares 1–10, 11–20 e 21–30), cada uma com 6 a 10 inimigos comuns e 3 a 5
+  únicos, além dos que continuam das faixas anteriores. Meta de cerca de 40 inimigos no total.
+- **Inimigo comum:** sem habilidade ou com uma habilidade simples e imediata. É o volume das batalhas.
+- **Inimigo único:** arte própria, mais vida que um comum da mesma faixa, 1 ou 2 habilidades (pelo menos uma
+  telegrafada) e um papel claro. É o que muda o plano da batalha: o jogador olha a prévia e decide a rota por ele.
+- **Frequência:** valor inicial: um inimigo único em toda batalha difícil e em uma de cada três batalhas normais, a
+  partir do andar 4; nunca o mesmo único duas vezes seguidas na run; nunca dois únicos na mesma batalha antes do andar
+  15. ❓ Se, em vez disso, os únicos ganham um nó próprio no mapa (nó de elite).
+- **Leitura:** a prévia do nó marca a batalha que tem um único (um selo na ficha do inimigo), e o glossário registra
+  cada único na primeira vez em que aparece.
+- **Como cada inimigo é feito:** um `EnemyConfig`, as skills dele (`SkillDefinition`, com a opção de telegrafar) e a
+  arte gerada no PixelLab no estilo do jogo (sprite 24×30 de frente com animação parada; ícones 16×16 das
+  habilidades). O teste abaixo valida esse caminho de ponta a ponta.
+- ❓ Quantos únicos por faixa, se algum único vira chefe de meio de run, e se os únicos dão recompensa extra (mais XP
+  ou um consumível). Valor inicial: só o XP maior, pela ameaça.
+
+## Inimigos novos de teste (2026-10-18)
+> Pedido do Luiz: testar inimigos novos com habilidades, com arte própria gerada no PixelLab (não são inimigos
+> existentes recoloridos). **Teste**, valores provisórios e sem balanceamento. Cada um mostra um uso diferente das
+> habilidades: uma telegrafada de área, uma telegrafada de linha e uma imediata de controle.
+
+| Inimigo | Papel | Vida | Andar | Alcance do ataque | Dano básico | Defesa | XP | Aparece a partir do andar (de 30) |
+|---|---|---|---|---|---|---|---|---|
+| **Goblin Bombardeiro** | atirador | 24 | 1 | 2 | 4 | 0 | 15 | 6 |
+| **Ogro Brutamontes** | corpo a corpo (robusto) | 60 | 1 | 1 | 7 | 1 | 24 | 12 |
+| **Aranha Tecelã** | controlador | 20 | 2 | 1 | 3 | 0 | 12 | 4 |
+
+- **Goblin Bombardeiro, Chuva de Fogo** (telegrafada): mira uma célula a 2–4 de distância (círculo), marca uma
+  área 3×3 e dispara no próximo turno dele. Dano 8 e Queimando (1 pilha, 2 turnos) em quem estiver na área, inclusive
+  outros inimigos (atinge todos menos ele). Recarga 3. Fica a 2 de distância do jogador, como o Crânio de Fogo.
+  Ensina a sair da área e a usar a área contra os outros inimigos.
+- **Ogro Brutamontes, Pancada Esmagadora** (telegrafada): mira uma célula vizinha em linha reta e marca uma linha de
+  3 células a partir dela, para longe do ogro. Dispara no próximo turno dele: dano 14, atinge todos menos ele.
+  Enquanto prepara, não anda. Recarga 3. É o golpe que dói muito, mas é fácil de evitar andando para o lado; pede
+  leitura do campo e dano alto para derrubá-lo (vida 60 e defesa 1). Sem empurrão: a IA só usa skills de
+  deslocamento quando o empurrão vale a pena, e com ele o ogro quase nunca usava o golpe.
+- **Aranha Tecelã, Teia** (imediata): mira uma célula a 2–4 de distância, em linha reta. Dano 2 e o estado novo
+  **Enredado** (não pode andar no próximo turno) no jogador. Recarga 3. Anda 2 e fica a 2 de distância. Faz
+  pressão de controle cedo e valoriza matar quem controla primeiro.
+- **Estado novo, Enredado:** −2 de alcance de movimento (o jogador não anda) por 1 turno de quem carrega. Prejudicial.
+- ❓ Se esses inimigos ficam no jogo depois do teste, e se algum vira elite. Valor inicial: entram na geração das
+  batalhas nos andares acima, com os mesmos pesos dos inimigos provisórios.
+
 ## 3.3 NPCs / Inimigos
 Papéis e comportamentos dos inimigos: ver Mecânica 4. Inimigos que exigem resposta da build: ver Mecânica 6 em 2.3.
 

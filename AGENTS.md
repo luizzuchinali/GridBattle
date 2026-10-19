@@ -37,7 +37,8 @@ O guia de uso dos sistemas pelo editor é `docs/projeto/guia_sistemas.md`
 (o simulador de balanceamento tem o seu: `docs/projeto/simulador_balanceamento.md`;
 a monetização também: `docs/projeto/monetizacao.md`, com o passo a passo dos painéis e dos builds em
 `docs/projeto/habilitar_anuncios_e_compras.md`;
-o resumo das mudanças está em `docs/projeto/resumo_das_mudancas.md`). O plano e os
+o resumo das mudanças está em `docs/projeto/resumo_das_mudancas.md`; o guia de estilo da arte e como gerar ícones
+novos no PixelLab, em `docs/projeto/arte.md`). O plano e os
 valores padrão das perguntas em aberto ficam em `docs/planos/`. **Não use nada
 de `docs/propostas/`** (são rascunhos não aprovados).
 
@@ -50,7 +51,10 @@ Assets/
 │   │   ├── Animations/{Enemies,PlayerCharacters}/<Nome>/   AnimatorController + clips por personagem
 │   │   └── Sprites/
 │   │       ├── {Enemies,PlayerCharacters}/, Characters.png, Skills.png, UI.png
-│   │       └── Placeholders/<Sistema>/                     ícones provisórios gerados (PlaceholderIcons)
+│   │       ├── Icons/{Talents,States,Roles,Consumables,Map,UI}/   ícones finais (PixelLab, ENDESGA 32; ver docs/projeto/arte.md)
+│   │       ├── Terrain/                                    sprites de terreno 24×24 (sobre a célula e como ícone)
+│   │       ├── UI/                                         slots redondos da barra de itens (cores do UI.png)
+│   │       └── Placeholders/{Skills,Vfx}/                  ícones e visuais de skills ainda provisórios (PlaceholderIcons, VfxPlaceholders)
 │   ├── Localization/                                       LocalizationSettings, Locales (en, es, pt-BR), Tables (UI, Content)
 │   ├── Prefabs/
 │   │   ├── Cell.prefab                                     célula (destaques, terreno, barra de vida, texto de dano)
@@ -572,6 +576,21 @@ O Unity Editor costuma estar aberto e acessível pela CLI `unity` (pacote
 ## Histórico de refatorações
 
 Registre aqui toda mudança estrutural (mais recente primeiro).
+
+### 2026-10-18 — Arte final dos ícones, terreno e slots (PixelLab)
+Pedido do Luiz: trocar todos os placeholders em uso, menos os das skills, com coerência visual. Guia em
+`docs/projeto/arte.md`. Só arte e referências; nenhuma regra mudou.
+- **Pastas novas** em `Art/Sprites/`: `Icons/{Talents,States,Roles,Consumables,Map,UI}`, `Terrain` e `UI`. Os PNGs
+  foram movidos pelo `AssetDatabase` (GUIDs mantidos) e reescritos; `Tokens.uss` atualizou os caminhos dos slots e
+  dos ícones do turno. `Placeholders/` ficou só com `Skills` e `Vfx`.
+- **Arte:** ícones 16×16 e terreno 24×24 gerados com `create_image_pro` do PixelLab na paleta ENDESGA 32 (lotes e
+  escolhas no guia); insígnias 8×8 (papéis e estados sobre os inimigos) desenhadas à mão na mesma paleta; slots
+  redondos redesenhados com as camadas e cores dos slots quadrados do `UI.png`. O terreno passou de 20×20 para
+  24×24.
+- **Dados:** os 43 estados de talento de classe (`Settings/States/Talents`) passaram a usar o ícone do talento, como os
+  compartilhados; as cópias em `Placeholders/States` foram apagadas.
+- **Verificado:** validador sem erros; capturas em Play Mode do mapa (nós e prévia com papéis), da HUD (ícones do
+  turno, slots), da escolha de talento e dos cinco terrenos; perfil real restaurado depois.
 
 ### 2026-10-18 — Andar e agir no mesmo turno
 Mudança de mecânica pedida (o Luiz quer saber se o combate fica divertido); docs em

@@ -88,12 +88,16 @@ Perfil (entre runs): classes liberadas, glossário, recordes, opções, dicas vi
   jogador. Para depurar um cenário, fixe-a em `RunSettings > Debug Seed`
   (0 = aleatória).
 
-### Ícones provisórios
-- O conteúdo sem arte usa ícones gerados (formas coloridas) em
-  `Art/Sprites/Placeholders/`. **Para trocar pela arte final, substitua o PNG
-  no mesmo caminho** (mesmo nome) ou aponte o campo *Icon* do asset para o
-  sprite novo. Ícones que aparecem no mundo (sobre inimigos) devem ter 8×8;
-  os de interface, 16×16 (escala sempre inteira, pixel perfect).
+### Ícones
+- Talentos, estados, papéis, consumíveis, nós do mapa, terreno e ícones da
+  interface têm arte final em `Art/Sprites/Icons/`, `Art/Sprites/Terrain/` e
+  `Art/Sprites/UI/`. Estilo, pastas e como gerar ícones novos no mesmo estilo:
+  [[arte]]. Para trocar um ícone, substitua o PNG no mesmo caminho (mesmo nome)
+  ou aponte o campo *Icon* do asset para o sprite novo. Ícones que aparecem no
+  mundo (sobre inimigos) devem ter 8×8; os de interface, 16×16 (escala sempre
+  inteira, pixel perfect).
+- Os ícones das skills continuam provisórios (formas coloridas) em
+  `Art/Sprites/Placeholders/Skills/`.
 - Os visuais de skills e itens também são provisórios, desenhados por código
   (ver [Visual de uma skill ou item](#visual-de-uma-skill-ou-item)).
 
@@ -575,9 +579,9 @@ builds, testes no celular, privacidade) está em [[habilitar_anuncios_e_compras]
 
 ## 10. Pendências conhecidas
 - **Fonte pixel com acentos:** precisa de uma nova fonte (decisão de arte).
-- **Conteúdo provisório:** inimigos de exemplo, chefe, talentos e ícones
-  existem para os sistemas funcionarem e devem ser substituídos pelos
-  definitivos.
+- **Conteúdo provisório:** inimigos de exemplo, chefe, talentos e os ícones
+  das skills existem para os sistemas funcionarem e devem ser substituídos
+  pelos definitivos. Os demais ícones já têm arte final (ver [[arte]]).
 - **Balanceamento: pausado** (decisão de 2026-10-06; o jogo ainda vai
   mudar bastante). Os valores atuais são um ponto de partida (ver
   [[valores_padrao_em_aberto]]). O que foi feito, a última medição e o que

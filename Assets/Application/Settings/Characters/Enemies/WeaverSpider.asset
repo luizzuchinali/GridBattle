@@ -1,0 +1,71 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79aab3d122fc9a54184cb0b84d518416, type: 3}
+  m_Name: WeaverSpider
+  m_EditorClassIdentifier: Assembly-CSharp::GridBattle.Gameplay.Entities.EnemyConfig
+  id: b6c261fb01b004d4c97e3c4a4dba841c
+  displayName:
+    m_TableReference:
+      m_TableCollectionName: Content
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: enemy.weaver_spider.name
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  description:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  icon: {fileID: 0}
+  sprite: {fileID: 9024196995717187625, guid: 3c4bad6b23cba8242b835501808523bb, type: 3}
+  animatorController: {fileID: 9100000, guid: a785c1c567e68bd41b213d50b8061d09, type: 2}
+  tint: {r: 1, g: 1, b: 1, a: 1}
+  maxHp: 20
+  walkDistance: 2
+  attackDistance: 1
+  basicAttackDamage: 3
+  critChance: 0
+  critMultiplier: 2
+  defensePenetration: 0
+  defense: 0
+  skillDamageBonus: 0
+  skillRange: 0
+  cooldownReduction: 0
+  canBeDisplaced: 1
+  immuneStates: []
+  maxHpPercentDamageMultiplier: 1
+  skills:
+  - {fileID: 11400000, guid: c91c1c96892244147afd0add8185a023, type: 2}
+  initialStates: []
+  prefab: {fileID: 2069839144374370989, guid: 4cf13f1910da4e14296e096a872f8cf2, type: 3}
+  role: {fileID: 11400000, guid: 6e2cff6a20436de4dbc845648caf76a9, type: 2}
+  isBoss: 0
+  behavior: {fileID: 11400000, guid: 1a8221c720a45fe4cb4982e46f804428, type: 2}
+  behaviorDescription:
+    m_TableReference:
+      m_TableCollectionName: Content
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: enemy.weaver_spider.behavior
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  xpReward: 12
+  references:
+    version: 2
+    RefIds: []

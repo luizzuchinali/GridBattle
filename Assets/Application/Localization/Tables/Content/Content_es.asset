@@ -1650,6 +1650,62 @@ MonoBehaviour:
     m_Localized: "Este enemigo prepara un golpe: las casillas marcadas reciben el golpe en su siguiente turno. Sal del \xE1rea antes (todav\xEDa puedes atacar) o at\xFArdelo para cancelar el golpe. Mant\xE9n pulsada una casilla marcada para ver el da\xF1o."
     m_Metadata:
       m_Items: []
+  - m_Id: 5032682152599552
+    m_Localized: Enredado
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5032682282622976
+    m_Localized: No puede moverse.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5032682580418560
+    m_Localized: Lluvia de fuego
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5032682580418561
+    m_Localized: "Lanza bombas de fuego: marca un \xE1rea de 3x3 y, en su siguiente turno, golpea a todos los que est\xE9n en ella por 8 y los deja Ardiendo."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5032682874019840
+    m_Localized: Golpe aplastante
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5032682874019841
+    m_Localized: "Levanta el garrote y marca una l\xEDnea de 3 casillas delante de \xE9l. En su siguiente turno la golpea: 14 de da\xF1o a todos los que est\xE9n en ella."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5032683163426816
+    m_Localized: "Telara\xF1a"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5032683163426817
+    m_Localized: "Dispara una telara\xF1a desde 2 a 4 casillas en l\xEDnea recta: 2 de da\xF1o y no puedes moverte en tu siguiente turno."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5032683788378112
+    m_Localized: Goblin bombardero
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5032683788378113
+    m_Localized: "Mantiene la distancia y lanza bombas de fuego: marca un \xE1rea y la golpea en su siguiente turno."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5032684375580672
+    m_Localized: Ogro bruto
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5032684375580673
+    m_Localized: "Lento y resistente. Prepara un golpe aplastante en l\xEDnea delante de \xE9l: ap\xE1rtate antes de su siguiente turno."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5032684946006016
+    m_Localized: "Ara\xF1a tejedora"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5032684946006017
+    m_Localized: "R\xE1pida y fr\xE1gil. Mantiene la distancia y te enreda para que no puedas caminar."
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

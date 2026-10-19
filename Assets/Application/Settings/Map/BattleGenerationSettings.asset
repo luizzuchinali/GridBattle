@@ -64,6 +64,18 @@ MonoBehaviour:
     minDepth: 8
     maxDepth: 0
     weight: 1
+  - enemy: {fileID: 11400000, guid: b6c261fb01b004d4c97e3c4a4dba841c, type: 2}
+    minDepth: 4
+    maxDepth: 0
+    weight: 1
+  - enemy: {fileID: 11400000, guid: b706201cf99d2414bb52616b68324cc6, type: 2}
+    minDepth: 6
+    maxDepth: 0
+    weight: 1
+  - enemy: {fileID: 11400000, guid: bb5ad6b0422e91349a08146b5913b0b2, type: 2}
+    minDepth: 12
+    maxDepth: 0
+    weight: 1
   threatDivisor: 50
   movementCoefficient: 0.25
   rangeCoefficient: 0.5

@@ -31,7 +31,7 @@ MonoBehaviour:
     m_FallbackState: 0
     m_WaitForCompletion: 0
     m_LocalVariables: []
-  icon: {fileID: 21300000, guid: 1ac030d4c5af3b64b82011f2eea6d6b4, type: 3}
+  icon: {fileID: 21300000, guid: e369b039e39933443b40968139761f9f, type: 3}
   kind: 0
   stackPolicy: 2
   maxStacks: 2

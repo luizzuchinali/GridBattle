@@ -47,11 +47,11 @@
     --skin-grid-cell: url("project://database/Assets/Application/Art/Sprites/UI.png?fileID=82707731993968007&guid=62a3f1345f5495642b6ab1f188fd400c&type=3#GridCell");
     --skin-panel: url("project://database/Assets/Application/Art/Sprites/UI.png?fileID=846991392&guid=62a3f1345f5495642b6ab1f188fd400c&type=3#UI_1");
     --skin-slot-selected: url("project://database/Assets/Application/Art/Sprites/UI.png?fileID=-273060469431498887&guid=62a3f1345f5495642b6ab1f188fd400c&type=3#UI_9");
-    --skin-slot-round: url("project://database/Assets/Application/Art/Sprites/Placeholders/UI/ItemSlot.png?fileID=21300000&guid=63ebbef0c76ee7c4cb2b3760cf8c9a63&type=3#ItemSlot");
-    --skin-slot-round-pressed: url("project://database/Assets/Application/Art/Sprites/Placeholders/UI/ItemSlotPressed.png?fileID=21300000&guid=a038071257b6c5842a0a6964bcdb7193&type=3#ItemSlotPressed");
-    --skin-slot-round-selected: url("project://database/Assets/Application/Art/Sprites/Placeholders/UI/ItemSlotSelected.png?fileID=21300000&guid=722863192158f0d47bcb67b47af0a82a&type=3#ItemSlotSelected");
-    --skin-turn-move: url("project://database/Assets/Application/Art/Sprites/Placeholders/UI/TurnMove.png?fileID=21300000&guid=1c7fa0cd655ab421d821e4fc0332293e&type=3#TurnMove");
-    --skin-turn-item: url("project://database/Assets/Application/Art/Sprites/Placeholders/UI/TurnItem.png?fileID=21300000&guid=8637961ef0c7f4d97ad8cbe5d1df2514&type=3#TurnItem");
-    --skin-turn-act: url("project://database/Assets/Application/Art/Sprites/Placeholders/UI/TurnAct.png?fileID=21300000&guid=0ad2f8a9b78e3418387428a1617204a0&type=3#TurnAct");
+    --skin-slot-round: url("project://database/Assets/Application/Art/Sprites/UI/ItemSlot.png?fileID=21300000&guid=63ebbef0c76ee7c4cb2b3760cf8c9a63&type=3#ItemSlot");
+    --skin-slot-round-pressed: url("project://database/Assets/Application/Art/Sprites/UI/ItemSlotPressed.png?fileID=21300000&guid=a038071257b6c5842a0a6964bcdb7193&type=3#ItemSlotPressed");
+    --skin-slot-round-selected: url("project://database/Assets/Application/Art/Sprites/UI/ItemSlotSelected.png?fileID=21300000&guid=722863192158f0d47bcb67b47af0a82a&type=3#ItemSlotSelected");
+    --skin-turn-move: url("project://database/Assets/Application/Art/Sprites/Icons/UI/TurnMove.png?fileID=21300000&guid=1c7fa0cd655ab421d821e4fc0332293e&type=3#TurnMove");
+    --skin-turn-item: url("project://database/Assets/Application/Art/Sprites/Icons/UI/TurnItem.png?fileID=21300000&guid=8637961ef0c7f4d97ad8cbe5d1df2514&type=3#TurnItem");
+    --skin-turn-act: url("project://database/Assets/Application/Art/Sprites/Icons/UI/TurnAct.png?fileID=21300000&guid=0ad2f8a9b78e3418387428a1617204a0&type=3#TurnAct");
     --skin-xp-bar-progress: url("project://database/Assets/Application/Art/Sprites/UI.png?fileID=8160775752198118580&guid=62a3f1345f5495642b6ab1f188fd400c&type=3#XpBarProgress");
 }
