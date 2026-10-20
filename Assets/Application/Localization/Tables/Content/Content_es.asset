@@ -367,7 +367,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 141743153709057
-    m_Localized: "L\xE1nzala hasta 3 casillas de distancia: causa 2 de da\xF1o a cada enemigo en un \xE1rea de 3x3. No gasta tu acci\xF3n."
+    m_Localized: "L\xE1nzala a hasta 3 casillas, con l\xEDnea de visi\xF3n: causa 2 de da\xF1o a cada enemigo en un \xE1rea de 3x3. No gasta tu acci\xF3n."
     m_Metadata:
       m_Items: []
   - m_Id: 141743547973632
@@ -1415,7 +1415,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5123259992973313
-    m_Localized: "Marca una casilla adyacente y la golpea en su siguiente turno: 1 de da\xF1o a quien est\xE9 all\xED."
+    m_Localized: "Marca una fila de 3 casillas delante de \xE9l y las golpea en su siguiente turno: 1 de da\xF1o a quien est\xE9 all\xED."
     m_Metadata:
       m_Items: []
   - m_Id: 5123260152356864
@@ -1423,7 +1423,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5123260152356865
-    m_Localized: "Marca una casilla adyacente y la muerde en su siguiente turno: 1 de da\xF1o."
+    m_Localized: "Marca una casilla adyacente y la de detr\xE1s, y muerde all\xED en su siguiente turno: 1 de da\xF1o."
     m_Metadata:
       m_Items: []
   - m_Id: 5123260307546112
@@ -1439,7 +1439,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5123260471123969
-    m_Localized: "Marca una casilla a 2-3 en l\xEDnea recta y dispara en su siguiente turno: 1 de da\xF1o y Ardiendo durante 2 turnos."
+    m_Localized: "Marca una cruz de 5 casillas a 2-3 en l\xEDnea recta y dispara en su siguiente turno: 1 de da\xF1o y Ardiendo durante 2 turnos."
     m_Metadata:
       m_Items: []
   - m_Id: 5123260626313216
@@ -1447,7 +1447,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5123260626313217
-    m_Localized: "Marca una casilla vecina en diagonal y se lanza sobre ella en su siguiente turno: 1 de da\xF1o."
+    m_Localized: "Marca una casilla vecina en diagonal y la de detr\xE1s, y se lanza all\xED en su siguiente turno: 1 de da\xF1o."
     m_Metadata:
       m_Items: []
   - m_Id: 5123260798279680
@@ -1455,7 +1455,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5123260802473984
-    m_Localized: "Marca una casilla a 2-3 y la electrocuta en su siguiente turno: 1 de da\xF1o."
+    m_Localized: "Marca una cruz de 5 casillas a 2-3 y la electrocuta en su siguiente turno: 1 de da\xF1o."
     m_Metadata:
       m_Items: []
   - m_Id: 5123260961857536
@@ -1463,7 +1463,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5123260961857537
-    m_Localized: "Marca una casilla a hasta 2 y chilla contra ella en su siguiente turno: 1 de da\xF1o y empuja 1 casilla."
+    m_Localized: "Marca una cruz de 5 casillas a hasta 2 y chilla contra ella en su siguiente turno: 1 de da\xF1o y empuja 1 casilla."
     m_Metadata:
       m_Items: []
   - m_Id: 5123261129629696
@@ -1471,7 +1471,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5123261129629697
-    m_Localized: "Marca una casilla a 2-4 en l\xEDnea recta y la maldice en su siguiente turno: 1 de da\xF1o y Expuesto (recibe 1 m\xE1s de cada golpe)."
+    m_Localized: "Marca 2 casillas seguidas a 2-4 en l\xEDnea recta y las maldice en su siguiente turno: 1 de da\xF1o y Expuesto (recibe 1 m\xE1s de cada golpe)."
     m_Metadata:
       m_Items: []
   - m_Id: 5123261301596160
@@ -1479,7 +1479,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5123261301596161
-    m_Localized: "Marca una casilla adyacente y la empuja en su siguiente turno: 1 de da\xF1o y empuja 1 casilla."
+    m_Localized: "Marca una casilla adyacente y la de detr\xE1s, y empuja all\xED en su siguiente turno: 1 de da\xF1o y empuja 1 casilla."
     m_Metadata:
       m_Items: []
   - m_Id: 5123261486145536
@@ -1495,7 +1495,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5123261649723393
-    m_Localized: "Marca una casilla adyacente y la embiste en su siguiente turno: 1 de da\xF1o y empuja 2 casillas."
+    m_Localized: "Marca una casilla adyacente y la de detr\xE1s, y embiste all\xED en su siguiente turno: 1 de da\xF1o y empuja 2 casillas."
     m_Metadata:
       m_Items: []
   - m_Id: 5123261809106944
@@ -1535,7 +1535,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5123262484389889
-    m_Localized: "Marca una casilla adyacente y la muerde en su siguiente turno: 1 de da\xF1o, y el murci\xE9lago recupera 1 PV."
+    m_Localized: "Marca una casilla adyacente y la de detr\xE1s, y muerde all\xED en su siguiente turno: 1 de da\xF1o, y el murci\xE9lago recupera 1 PV."
     m_Metadata:
       m_Items: []
   - m_Id: 5123262643773440
@@ -1663,7 +1663,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5570314477576193
-    m_Localized: "Marca una casilla a 2-4 en l\xEDnea recta y le lanza una piedra con la honda en su siguiente turno: 1 de da\xF1o."
+    m_Localized: "Marca 2 casillas seguidas a 2-4 en l\xEDnea recta y lanza una piedra con la honda all\xED en su siguiente turno: 1 de da\xF1o."
     m_Metadata:
       m_Items: []
   - m_Id: 5570314725040128
@@ -1671,7 +1671,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5570314725040129
-    m_Localized: "Marca una casilla adyacente y la golpea con su martillo en su siguiente turno: 2 de da\xF1o."
+    m_Localized: "Marca una fila de 3 casillas delante de \xE9l y las golpea con su martillo en su siguiente turno: 2 de da\xF1o."
     m_Metadata:
       m_Items: []
   - m_Id: 5570314951532544
@@ -1679,7 +1679,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5570314951532545
-    m_Localized: "Marca una casilla adyacente y la golpea en su siguiente turno: 1 de da\xF1o y Ardiendo durante 2 turnos."
+    m_Localized: "Marca una fila de 3 casillas delante de \xE9l y las golpea en su siguiente turno: 1 de da\xF1o y Ardiendo durante 2 turnos."
     m_Metadata:
       m_Items: []
   - m_Id: 5570315131887616
@@ -1695,7 +1695,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5570315329019904
-    m_Localized: "Marca una casilla adyacente y la golpea con el pu\xF1o en su siguiente turno: 2 de da\xF1o y empuja 1 casilla."
+    m_Localized: "Marca una fila de 3 casillas delante de \xE9l y las golpea con el pu\xF1o en su siguiente turno: 2 de da\xF1o y empuja 1 casilla."
     m_Metadata:
       m_Items: []
   - m_Id: 5570315517763584
@@ -1703,7 +1703,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5570315517763585
-    m_Localized: "Marca una casilla adyacente y la golpea con el pu\xF1o en su siguiente turno: 1 de da\xF1o y empuja 1 casilla."
+    m_Localized: "Marca una fila de 3 casillas delante de \xE9l y las golpea con el pu\xF1o en su siguiente turno: 1 de da\xF1o y empuja 1 casilla."
     m_Metadata:
       m_Items: []
   - m_Id: 5570315744256000
@@ -1711,7 +1711,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5570315744256001
-    m_Localized: "Marca una casilla a 2-3 y le lanza lodo en su siguiente turno: 1 de da\xF1o."
+    m_Localized: "Marca una cruz de 5 casillas a 2-3 y le lanza lodo en su siguiente turno: 1 de da\xF1o."
     m_Metadata:
       m_Items: []
   - m_Id: 5570315932999680
@@ -1792,6 +1792,94 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 5570317619109889
     m_Localized: "Marca una cruz de casillas a 2-4 e invoca un tornado en su siguiente turno: 1 de da\xF1o y empuja a todos 1 casilla lejos del centro."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5660003393937408
+    m_Localized: Entrenamiento de Embestida
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5660003473629184
+    m_Localized: "Desbloquea Embestida con Escudo: embiste hasta 3 casillas en l\xEDnea recta. El enemigo al final recibe 1 de da\xF1o y es empujado 1 casilla."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5660003704315904
+    m_Localized: Escudo Pesado
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5660003704315905
+    m_Localized: "Desbloquea Golpe de Escudo: golpea a un enemigo adyacente: 2 de da\xF1o, lo empuja 2 casillas y lo aturde, cancelando su golpe preparado."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5660003951779840
+    m_Localized: "Toque G\xE9lido"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5660003951779841
+    m_Localized: "Desbloquea Nova de Hielo: congela a todos a tu alrededor: 1 de da\xF1o, y en su siguiente turno no pueden caminar ni usar habilidades. Un enemigo congelado pierde su golpe preparado."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5660004169883648
+    m_Localized: Piromancia
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5660004174077952
+    m_Localized: "Desbloquea Bola de Fuego: lanza una bola de fuego a una casilla a 2-3: 2 de da\xF1o, y la casilla arde durante 2 rondas (1 de da\xF1o a quien termine su turno en ella)."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5660004375404544
+    m_Localized: Garfio de Caza
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5660004379598848
+    m_Localized: "Desbloquea Garfio: lanza un garfio a un enemigo a 2-3 casillas en l\xEDnea recta: 1 de da\xF1o y lo arrastra hasta 3 casillas hacia ti."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5660004610285568
+    m_Localized: "Senda Sombr\xEDa"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5660004610285569
+    m_Localized: "Desbloquea Paso Sombr\xEDo: intercambia el lugar con un personaje a hasta 3 casillas; un enemigo recibe 1 de da\xF1o. El golpe preparado de un enemigo se mueve con \xE9l."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5670288141918208
+    m_Localized: Granada de impacto
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5670288276135936
+    m_Localized: "L\xE1nzala a hasta 3 casillas, con l\xEDnea de visi\xF3n: empuja 1 casilla, lejos del centro, a cada enemigo en un \xE1rea de 3x3. Los choques causan da\xF1o. No gasta tu acci\xF3n."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5670288276135937
+    m_Localized: Pergamino de intercambio
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5670288276135938
+    m_Localized: "Intercambia tu lugar con un personaje a hasta 4 casillas, con l\xEDnea de visi\xF3n. El golpe que prepar\xF3 se mueve con \xE9l. No gasta tu acci\xF3n."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5670288280330240
+    m_Localized: Piedra
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5670288280330241
+    m_Localized: "Levanta una roca en una casilla vac\xEDa a hasta 3 casillas, con l\xEDnea de visi\xF3n, durante 3 rondas. Bloquea el paso y la l\xEDnea de visi\xF3n. No gasta tu acci\xF3n."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5670288280330242
+    m_Localized: Frasco de fuego
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5670288280330243
+    m_Localized: "L\xE1nzalo a hasta 3 casillas, con l\xEDnea de visi\xF3n: prende fuego a una cruz de 5 casillas durante 2 rondas. El fuego hiere a quien est\xE9 en \xE9l. No gasta tu acci\xF3n."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5670288280330244
+    m_Localized: Frasco helado
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5670288280330245
+    m_Localized: "Congela a un enemigo a hasta 3 casillas, con l\xEDnea de visi\xF3n, durante 1 turno: no anda ni usa habilidades, y su golpe preparado se cancela. No gasta tu acci\xF3n."
     m_Metadata:
       m_Items: []
   references:

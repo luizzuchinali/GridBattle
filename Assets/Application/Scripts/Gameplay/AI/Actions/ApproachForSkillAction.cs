@@ -74,7 +74,7 @@ namespace GridBattle.Gameplay.AI.Actions
 
             if (best == start) return false;
 
-            grid.MoveEntity(self, best);
+            grid.WalkEntity(self, best);
             return true;
         }
 

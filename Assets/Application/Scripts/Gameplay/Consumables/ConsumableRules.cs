@@ -94,6 +94,22 @@ namespace GridBattle.Gameplay.Consumables
         }
 
         /// <summary>
+        /// Whether the user can see the target cell, with the skills' rule (<see cref="SkillTargeting.HasLineOfSight"/>):
+        /// always for items without a target, self-centered ones, items that ignore line of sight and when the rule
+        /// is off (<see cref="CombatSettings.SkillsNeedLineOfSight"/>); otherwise nothing may block the line from the
+        /// user to the cell (<see cref="LineOfSight"/>).
+        /// </summary>
+        public static bool HasLineOfSight(GridController grid, Character user, ConsumableDefinition consumable,
+            Vector2Int targetPos)
+        {
+            if (!consumable.NeedsTarget || consumable.IsSelfCentered || consumable.IgnoresLineOfSight ||
+                !CombatResolver.Settings.SkillsNeedLineOfSight)
+                return true;
+
+            return LineOfSight.IsClear(grid, user.CurrentGridPos, targetPos);
+        }
+
+        /// <summary>
         /// Cells of the item's area (inside the grid) when aimed at <paramref name="targetPos"/>. Items that
         /// target the user cover only the user's cell.
         /// </summary>
@@ -145,7 +161,7 @@ namespace GridBattle.Gameplay.Consumables
         }
 
         /// <summary>
-        /// Whether the target cell is a valid aim for the item: inside the grid, in range and at least one
+        /// Whether the target cell is a valid aim for the item: inside the grid, in range, in line of sight and at least one
         /// effect would change something (e.g. a damage item needs a character in the area). Ignores the turn
         /// and the per-turn limit (see <see cref="GetUseBlock"/>).
         /// </summary>
@@ -154,6 +170,7 @@ namespace GridBattle.Gameplay.Consumables
         {
             if (consumable.NeedsTarget && !grid.IsValidPosition(targetPos)) return false;
             if (!IsTargetInRange(user, consumable, targetPos)) return false;
+            if (!HasLineOfSight(grid, user, consumable, targetPos)) return false;
 
             return consumable.IsUseful(CreateContext(grid, user, consumable, targetPos));
         }

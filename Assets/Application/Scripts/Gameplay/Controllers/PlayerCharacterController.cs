@@ -39,8 +39,8 @@ namespace GridBattle.Gameplay.Controllers
     /// still does.
     /// </para>
     /// <para>
-    /// A long press on an enemy also marks on the grid the cells it can hit on its next turn
-    /// (<see cref="GridRules.GetReachCells"/>) until the next tap.
+    /// A tap on an enemy marks on the grid only the cells it can walk to from where it stands
+    /// (<see cref="GridRules.GetWalkCells"/>) until the next tap.
     /// </para>
     /// <para>
     /// Aim, then confirm (<see cref="GameplayInputSettings.ConfirmTargetedActions"/>): the first tap on a valid cell
@@ -182,7 +182,7 @@ namespace GridBattle.Gameplay.Controllers
             return false;
         }
 
-        /// <summary>The enemy whose reach the grid shows (long press), or null.</summary>
+        /// <summary>The enemy whose walk range the grid shows (tapped), or null.</summary>
         public Enemy InspectedEnemy => _inspected != null && !_inspected.IsDead ? _inspected : null;
 
         /// <summary>The skill being aimed, or null when no skill is selected.</summary>
@@ -302,7 +302,7 @@ namespace GridBattle.Gameplay.Controllers
 
         /// <summary>
         /// The highlights for the current state, computed from scratch: the aimed item's range, else the
-        /// aimed skill's range, else the reach of the enemy inspected by a long press, else where the player can
+        /// aimed skill's range, else the cells the tapped enemy can walk to, else where the player can
         /// walk or attack (what is left of the turn). Pure query (no selection is changed, nothing is applied);
         /// tests compare it with what the cells show.
         /// </summary>
@@ -317,10 +317,10 @@ namespace GridBattle.Gameplay.Controllers
             var inspected = InspectedEnemy;
             if (inspected != null)
             {
-                var danger = new Dictionary<Vector2Int, ECellHighlightType>();
-                foreach (var cell in GridRules.GetReachCells(Grid, inspected))
-                    danger[cell] = ECellHighlightType.Danger;
-                return danger;
+                var walk = new Dictionary<Vector2Int, ECellHighlightType>();
+                foreach (var cell in GridRules.GetWalkCells(Grid, inspected))
+                    walk[cell] = ECellHighlightType.Danger;
+                return walk;
             }
 
             var infos = GridRules.GetHighlightInfos(Grid, Owner, CanMove, CanAct);
@@ -426,7 +426,7 @@ namespace GridBattle.Gameplay.Controllers
             RaiseTurnState();
         }
 
-        /// <summary>A long press on an enemy shows the cells it can hit on its next turn, until the next tap.</summary>
+        /// <summary>A long press on an enemy shows the cells it can walk to, until the next tap.</summary>
         private void OnCellLongPress(CellLongPressEvent e)
         {
             if (e.Cell == null || e.Cell.GetContent() is not Enemy enemy || enemy.IsDead) return;
@@ -630,7 +630,7 @@ namespace GridBattle.Gameplay.Controllers
                 return;
             }
 
-            // Any tap puts away the reach of an inspected enemy.
+            // Any tap puts away the walk range of an inspected enemy.
             var wasInspected = _inspected;
             if (_inspected != null)
             {
@@ -666,7 +666,7 @@ namespace GridBattle.Gameplay.Controllers
                 }
 
                 var from = Owner.CurrentGridPos;
-                Grid.MoveEntity(Owner, @event.Cell.GridPosition);
+                Grid.WalkEntity(Owner, @event.Cell.GridPosition);
                 OnMoved(from, @event.Cell.GridPosition);
             }
             else
@@ -678,7 +678,7 @@ namespace GridBattle.Gameplay.Controllers
                     return;
                 }
 
-                // Without a basic attack a tap on an enemy shows (or hides) where it can strike next turn.
+                // Without a basic attack a tap on an enemy shows (or hides) where it can walk.
                 if (!Owner.HasBasicAttack && @event.Cell.GetContent() is Enemy enemy && !enemy.IsDead)
                 {
                     if (wasInspected != enemy)

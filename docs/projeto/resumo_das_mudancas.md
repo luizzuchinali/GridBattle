@@ -137,7 +137,7 @@ Todos provisórios: o balanceamento continua pausado (decisão sua de
 | Item | Valor |
 |---|---|
 | Ataque básico | desligado em todos (jogador e inimigos) |
-| Skills | 3 iniciais por classe, até 3 por talentos (`maxSkillTalents` = 3) |
+| Skills | 1 inicial por classe (desde 2026-10-20), até 5 por talentos (`maxSkillTalents` = 5) |
 | Andar do jogador | 2 casas |
 | Golpes dos inimigos | anunciados 1 turno antes, acertam todos menos quem lança, a área acompanha quem é deslocado, atordoar ou congelar cancela |
 | Disparar um golpe | não gasta o agir do inimigo (`firingUsesAction` desligado) |

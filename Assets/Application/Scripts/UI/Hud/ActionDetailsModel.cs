@@ -135,6 +135,25 @@ namespace GridBattle.UI.Hud
                 model.Add(HudText.Get("details.action.range"), FormatRange(item.IsSelfCentered, item.UnlimitedRange, item.Range));
                 model.Add(HudText.Get("details.action.area"), FormatArea(item.AreaShape, item.AreaSize));
                 model.Add(HudText.Get("details.action.targets"), GetTargetsText(item.Affects));
+
+                if (!item.IsSelfCentered && CombatResolver.Settings.SkillsNeedLineOfSight)
+                {
+                    var sight = item.IgnoresLineOfSight
+                        ? HudText.Get("details.action.sight_ignored")
+                        : HudText.Get("details.action.sight_needed");
+                    model.Add(HudText.Get("details.action.sight"), sight);
+                }
+
+                foreach (var effect in item.Effects)
+                {
+                    if (effect is not DisplaceConsumableEffect displace) continue;
+
+                    var movement = displace.Mode == EDisplacementMode.TowardCaster
+                        ? HudText.Format("details.action.pulls", displace.Distance)
+                        : HudText.Format("details.action.pushes", displace.Distance);
+                    model.Add(HudText.Get("details.action.displace"), movement);
+                    break;
+                }
             }
 
             model.Note = HudText.Format("details.action.item_note", ConsumableSettings.Current.MaxUsesPerTurn);

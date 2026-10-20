@@ -1685,7 +1685,10 @@ namespace GridBattle.Editor.Talents
             var harvestTalent = GetTalent("SoulHarvest");
             var harvest = EffectOf<OnKillEffect>(harvestTalent);
             Assert(harvest.CooldownReduction > 0, "Soul Harvest shortens cooldowns");
-            var slowSkill = mageConfig.Skills.FirstOrDefault(skill => skill != null && skill.Cooldown > 1);
+            // The Mage starts with one skill; the others come from its skill talents.
+            var slowSkill = mageConfig.Skills
+                .Concat(mageConfig.TalentPool.Where(t => t != null && t.UnlockedSkill != null).Select(t => t.UnlockedSkill))
+                .FirstOrDefault(skill => skill != null && skill.Cooldown > 1);
             Assert(slowSkill != null, "the Mage has a skill with a cooldown above 1 (needed by the check)");
             if (slowSkill != null)
             {

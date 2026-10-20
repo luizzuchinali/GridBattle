@@ -34,8 +34,8 @@ MonoBehaviour:
   icon: {fileID: 21300000, guid: 2bb563cb49e14bdcbcb5d189b7e63fe9, type: 3}
   type: 0
   damage: 1
-  areaShape: 0
-  areaSize: 1
+  areaShape: 2
+  areaSize: 2
   selectionShape: 1
   minRange: 1
   range: 1

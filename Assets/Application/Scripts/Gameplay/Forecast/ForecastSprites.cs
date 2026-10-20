@@ -5,8 +5,9 @@ using UnityEngine;
 namespace GridBattle.Gameplay.Forecast
 {
     /// <summary>
-    /// The small pixel art arrows of the forecast (pushes and pulls), drawn in code so they need no asset: 8 directions,
-    /// 10x10 pixels with a dark outline, at the game's pixels per unit. The straight and diagonal shapes are turned by
+    /// The small pixel art pieces of the forecast, drawn in code so they need no asset, at the game's pixels per unit:
+    /// the arrows of pushes and pulls (8 directions, 10x10 pixels with a dark outline), the striped mark of the cells a
+    /// prepared strike will hit and the plate behind an enemy's badge. The arrows' straight and diagonal shapes are turned by
     /// whole quarter turns of the pixel grid (never by rotating the sprite), so they stay pixel perfect.
     /// </summary>
     public static class ForecastSprites
@@ -29,7 +30,12 @@ namespace GridBattle.Gameplay.Forecast
             new(6, 6), new(3, 6), new(4, 6), new(5, 6), new(6, 3), new(6, 4), new(6, 5),
         };
 
+        private const int HatchWidth = 34;
+        private const int HatchHeight = 48;
+
         private static readonly Dictionary<Vector2Int, Sprite> Cache = new();
+        private static readonly Dictionary<(int, int), Sprite> HatchCache = new();
+        private static readonly Dictionary<(int, int), Sprite> PlateCache = new();
 
         /// <summary>
         /// The arrow for a grid direction (x right, y down, each component in -1..1), or null for no direction.
@@ -79,6 +85,89 @@ namespace GridBattle.Gameplay.Forecast
             return sprite;
         }
 
+        /// <summary>
+        /// The mark of a cell a prepared enemy strike will hit: diagonal stripes ("danger zone") inside the shape of the
+        /// cell highlight (34x48, same pivot), so it reads apart from the walk and skill frames drawn on the same cell.
+        /// White, tinted by the renderer. <paramref name="period"/> pixels from one stripe to the next,
+        /// <paramref name="width"/> pixels wide.
+        /// </summary>
+        public static Sprite GetStrikeHatch(int period, int width)
+        {
+            period = Mathf.Max(2, period);
+            width = Mathf.Clamp(width, 1, period - 1);
+            var key = (period, width);
+            if (HatchCache.TryGetValue(key, out var cached) && cached != null) return cached;
+
+            var texture = NewTexture(HatchWidth, HatchHeight, "StrikeHatch");
+            for (var y = 0; y < HatchHeight; y++)
+            {
+                for (var x = 0; x < HatchWidth; x++)
+                {
+                    var on = IsInsideHatch(x, y) && (x + y) % period < width;
+                    texture.SetPixel(x, y, on ? Color.white : Color.clear);
+                }
+            }
+
+            texture.Apply();
+            var sprite = Sprite.Create(texture, new Rect(0, 0, HatchWidth, HatchHeight), new Vector2(0.5f, 0.5f),
+                GameConfigManager.Ppu);
+            sprite.name = "StrikeHatch";
+            HatchCache[key] = sprite;
+            return sprite;
+        }
+
+        /// <summary>
+        /// A plain plate with its corners cut, <paramref name="width"/> x <paramref name="height"/> pixels: the backing
+        /// that groups the small pieces of information over an enemy into one badge. White, tinted by the renderer.
+        /// </summary>
+        public static Sprite GetPlate(int width, int height)
+        {
+            width = Mathf.Max(3, width);
+            height = Mathf.Max(3, height);
+            var key = (width, height);
+            if (PlateCache.TryGetValue(key, out var cached) && cached != null) return cached;
+
+            var texture = NewTexture(width, height, "BadgePlate");
+            for (var y = 0; y < height; y++)
+            {
+                for (var x = 0; x < width; x++)
+                {
+                    var corner = (x == 0 || x == width - 1) && (y == 0 || y == height - 1);
+                    texture.SetPixel(x, y, corner ? Color.clear : Color.white);
+                }
+            }
+
+            texture.Apply();
+            var sprite = Sprite.Create(texture, new Rect(0, 0, width, height), new Vector2(0.5f, 0.5f),
+                GameConfigManager.Ppu);
+            sprite.name = "BadgePlate";
+            PlateCache[key] = sprite;
+            return sprite;
+        }
+
+        private static Texture2D NewTexture(int width, int height, string name) =>
+            new(width, height, TextureFormat.RGBA32, false)
+            {
+                filterMode = FilterMode.Point,
+                wrapMode = TextureWrapMode.Clamp,
+                name = name,
+            };
+
+        /// <summary>
+        /// Inside the cell highlight's rounded frame (34x48, corners cut over 5 rows), 3 pixels in from its edge, so
+        /// the stripes never touch the frame of a highlight drawn on the same cell.
+        /// </summary>
+        private static bool IsInsideHatch(int x, int y)
+        {
+            const int inset = 3;
+            if (x < inset || y < inset || x >= HatchWidth - inset || y >= HatchHeight - inset) return false;
+
+            // Distance from the nearest corner along each axis; the frame cuts a diagonal of about 5 pixels.
+            var dx = Mathf.Min(x, HatchWidth - 1 - x);
+            var dy = Mathf.Min(y, HatchHeight - 1 - y);
+            return dx + dy >= 7;
+        }
+
         private static bool IsNextToFill(bool[,] fill, int x, int y)
         {
             for (var dy = -1; dy <= 1; dy++)
@@ -99,6 +188,11 @@ namespace GridBattle.Gameplay.Forecast
 
         /// <summary>Play Mode runs without a domain reload: the textures do not survive it.</summary>
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
-        private static void ResetStatics() => Cache.Clear();
+        private static void ResetStatics()
+        {
+            Cache.Clear();
+            HatchCache.Clear();
+            PlateCache.Clear();
+        }
     }
 }

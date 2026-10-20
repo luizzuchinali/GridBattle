@@ -367,7 +367,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 141743153709057
-    m_Localized: 'Throw it up to 3 cells away: deals 2 damage to every enemy in a 3x3 area. Does not cost your action.'
+    m_Localized: 'Throw it up to 3 cells away, in line of sight: deals 2 damage to every enemy in a 3x3 area. Does not cost your action.'
     m_Metadata:
       m_Items: []
   - m_Id: 141743547973632
@@ -1415,7 +1415,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5123259992973313
-    m_Localized: 'Marks an adjacent cell and smashes it on its next turn: 1 damage to whoever stands there.'
+    m_Localized: 'Marks a row of 3 cells in front of it and smashes them on its next turn: 1 damage to whoever stands there.'
     m_Metadata:
       m_Items: []
   - m_Id: 5123260152356864
@@ -1423,7 +1423,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5123260152356865
-    m_Localized: 'Marks an adjacent cell and bites it on its next turn: 1 damage.'
+    m_Localized: 'Marks an adjacent cell and the one behind it, and bites there on its next turn: 1 damage.'
     m_Metadata:
       m_Items: []
   - m_Id: 5123260307546112
@@ -1439,7 +1439,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5123260471123969
-    m_Localized: 'Marks a cell 2 to 3 cells away in a straight line and shoots it on its next turn: 1 damage and Burning for 2 turns.'
+    m_Localized: 'Marks a cross of 5 cells 2 to 3 cells away in a straight line and shoots it on its next turn: 1 damage and Burning for 2 turns.'
     m_Metadata:
       m_Items: []
   - m_Id: 5123260626313216
@@ -1447,7 +1447,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5123260626313217
-    m_Localized: 'Marks a diagonal neighbour cell and dives on it on its next turn: 1 damage.'
+    m_Localized: 'Marks a diagonal neighbour cell and the one behind it, and dives there on its next turn: 1 damage.'
     m_Metadata:
       m_Items: []
   - m_Id: 5123260798279680
@@ -1455,7 +1455,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5123260802473984
-    m_Localized: 'Marks a cell 2 to 3 cells away and zaps it on its next turn: 1 damage.'
+    m_Localized: 'Marks a cross of 5 cells 2 to 3 cells away and zaps it on its next turn: 1 damage.'
     m_Metadata:
       m_Items: []
   - m_Id: 5123260961857536
@@ -1463,7 +1463,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5123260961857537
-    m_Localized: 'Marks a cell up to 2 cells away and screeches at it on its next turn: 1 damage and pushes 1 cell.'
+    m_Localized: 'Marks a cross of 5 cells up to 2 cells away and screeches at it on its next turn: 1 damage and pushes 1 cell.'
     m_Metadata:
       m_Items: []
   - m_Id: 5123261129629696
@@ -1471,7 +1471,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5123261129629697
-    m_Localized: 'Marks a cell 2 to 4 cells away in a straight line and curses it on its next turn: 1 damage and Exposed (takes 1 more damage from every hit).'
+    m_Localized: 'Marks 2 cells in a row, 2 to 4 cells away in a straight line, and curses them on its next turn: 1 damage and Exposed (takes 1 more damage from every hit).'
     m_Metadata:
       m_Items: []
   - m_Id: 5123261301596160
@@ -1479,7 +1479,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5123261301596161
-    m_Localized: 'Marks an adjacent cell and shoves it on its next turn: 1 damage and pushes 1 cell.'
+    m_Localized: 'Marks an adjacent cell and the one behind it, and shoves there on its next turn: 1 damage and pushes 1 cell.'
     m_Metadata:
       m_Items: []
   - m_Id: 5123261486145536
@@ -1495,7 +1495,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5123261649723393
-    m_Localized: 'Marks an adjacent cell and rams it on its next turn: 1 damage and pushes 2 cells.'
+    m_Localized: 'Marks an adjacent cell and the one behind it, and rams there on its next turn: 1 damage and pushes 2 cells.'
     m_Metadata:
       m_Items: []
   - m_Id: 5123261809106944
@@ -1535,7 +1535,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5123262484389889
-    m_Localized: 'Marks an adjacent cell and bites it on its next turn: 1 damage, and the bat heals 1 HP.'
+    m_Localized: 'Marks an adjacent cell and the one behind it, and bites there on its next turn: 1 damage, and the bat heals 1 HP.'
     m_Metadata:
       m_Items: []
   - m_Id: 5123262643773440
@@ -1663,7 +1663,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5570314477576193
-    m_Localized: 'Marks a cell 2 to 4 cells away in a straight line and slings a stone at it on its next turn: 1 damage.'
+    m_Localized: 'Marks 2 cells in a row, 2 to 4 cells away in a straight line, and slings a stone there on its next turn: 1 damage.'
     m_Metadata:
       m_Items: []
   - m_Id: 5570314725040128
@@ -1671,7 +1671,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5570314725040129
-    m_Localized: 'Marks an adjacent cell and smashes it with his hammer on his next turn: 2 damage.'
+    m_Localized: 'Marks a row of 3 cells in front of him and smashes them with his hammer on his next turn: 2 damage.'
     m_Metadata:
       m_Items: []
   - m_Id: 5570314951532544
@@ -1679,7 +1679,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5570314951532545
-    m_Localized: 'Marks an adjacent cell and punches it on its next turn: 1 damage and Burning for 2 turns.'
+    m_Localized: 'Marks a row of 3 cells in front of it and punches them on its next turn: 1 damage and Burning for 2 turns.'
     m_Metadata:
       m_Items: []
   - m_Id: 5570315131887616
@@ -1695,7 +1695,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5570315329019904
-    m_Localized: 'Marks an adjacent cell and punches it on his next turn: 2 damage and pushes 1 cell.'
+    m_Localized: 'Marks a row of 3 cells in front of him and punches them on his next turn: 2 damage and pushes 1 cell.'
     m_Metadata:
       m_Items: []
   - m_Id: 5570315517763584
@@ -1703,7 +1703,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5570315517763585
-    m_Localized: 'Marks an adjacent cell and punches it on its next turn: 1 damage and pushes 1 cell.'
+    m_Localized: 'Marks a row of 3 cells in front of it and punches them on its next turn: 1 damage and pushes 1 cell.'
     m_Metadata:
       m_Items: []
   - m_Id: 5570315744256000
@@ -1711,7 +1711,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5570315744256001
-    m_Localized: 'Marks a cell 2 to 3 cells away and throws mud at it on its next turn: 1 damage.'
+    m_Localized: 'Marks a cross of 5 cells 2 to 3 cells away and throws mud at it on its next turn: 1 damage.'
     m_Metadata:
       m_Items: []
   - m_Id: 5570315932999680
@@ -1792,6 +1792,94 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 5570317619109889
     m_Localized: 'Marks a cross of cells 2 to 4 cells away and summons a tornado on its next turn: 1 damage and pushes everyone 1 cell away from the center.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5660003393937408
+    m_Localized: Charge Drill
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5660003473629184
+    m_Localized: 'Unlocks Shield Charge: charge up to 3 cells in a straight line. An enemy at the end takes 1 damage and is pushed 1 cell.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5660003704315904
+    m_Localized: Heavy Shield
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5660003704315905
+    m_Localized: 'Unlocks Shield Bash: slam an adjacent enemy: 2 damage, push it 2 cells and stun it, cancelling its prepared strike.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5660003951779840
+    m_Localized: Frost Touch
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5660003951779841
+    m_Localized: 'Unlocks Frost Nova: freeze everyone around you: 1 damage, and on their next turn they cannot walk or use skills. A frozen enemy loses its prepared strike.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5660004169883648
+    m_Localized: Pyromancy
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5660004174077952
+    m_Localized: 'Unlocks Fireball: hurl a fireball at a cell 2 to 3 cells away: 2 damage, and the cell burns for 2 rounds (1 damage to whoever ends a turn on it).'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5660004375404544
+    m_Localized: Hunting Hook
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5660004379598848
+    m_Localized: 'Unlocks Hook: throw a hook at an enemy 2 to 3 cells away in a straight line: 1 damage and pull it up to 3 cells toward you.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5660004610285568
+    m_Localized: Shadow Path
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5660004610285569
+    m_Localized: 'Unlocks Shadow Step: trade places with a character up to 3 cells away; an enemy takes 1 damage. An enemy''s prepared strike moves with it.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5670288141918208
+    m_Localized: Impact Grenade
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5670288276135936
+    m_Localized: 'Throw it up to 3 cells away, in line of sight: pushes every enemy in a 3x3 area 1 cell away from the center. Collisions deal damage. Does not cost your action.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5670288276135937
+    m_Localized: Swap Scroll
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5670288276135938
+    m_Localized: Swap places with a character up to 4 cells away, in line of sight. A strike it prepared moves with it. Does not cost your action.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5670288280330240
+    m_Localized: Stone
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5670288280330241
+    m_Localized: Raises a rock on an empty cell up to 3 cells away, in line of sight, for 3 rounds. It blocks walking and line of sight. Does not cost your action.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5670288280330242
+    m_Localized: Fire Flask
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5670288280330243
+    m_Localized: 'Throw it up to 3 cells away, in line of sight: sets a cross of 5 cells on fire for 2 rounds. Fire hurts whoever stands in it. Does not cost your action.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5670288280330244
+    m_Localized: Frost Flask
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5670288280330245
+    m_Localized: 'Freezes an enemy up to 3 cells away, in line of sight, for 1 turn: it neither walks nor uses skills, and its prepared strike is cancelled. Does not cost your action.'
     m_Metadata:
       m_Items: []
   references:

@@ -44,6 +44,12 @@ namespace GridBattle.Gameplay.Consumables
         [Tooltip("Cell targeting: the target cell can be anywhere on the grid (ignores Range).")]
         private bool unlimitedRange;
 
+        [SerializeField]
+        [Tooltip("Cell targeting: the item does not need line of sight to the target cell (something that falls from " +
+                 "above). Off: obstacles and characters on the way block it, as for skills (Combat Settings > Skills " +
+                 "Need Line Of Sight).")]
+        private bool ignoresLineOfSight;
+
         [Header("Area of effect (Cell targeting)")]
         [SerializeField]
         private ESkillAreaShape areaShape = ESkillAreaShape.Circle;
@@ -84,6 +90,7 @@ namespace GridBattle.Gameplay.Consumables
         public EConsumableTargeting Targeting => targeting;
         public int Range => range;
         public bool UnlimitedRange => unlimitedRange;
+        public bool IgnoresLineOfSight => ignoresLineOfSight;
         public ESkillAreaShape AreaShape => areaShape;
         public int AreaSize => areaSize;
         public ESkillTargetFilter Affects => affects;

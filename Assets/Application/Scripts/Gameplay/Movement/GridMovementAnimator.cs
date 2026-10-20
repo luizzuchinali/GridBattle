@@ -69,6 +69,79 @@ namespace GridBattle.Gameplay.Movement
         }
 
         /// <summary>
+        /// Like <see cref="Animate"/> for a walk along a path: the entity hops cell by cell through
+        /// <paramref name="worldPoints"/> (its world position on each cell of the path, the last one being where it
+        /// already is), with the landing squash at the end. The flip style has no path to show and flips straight
+        /// to the destination.
+        /// </summary>
+        public void AnimatePath(GridEntity entity, Vector3 fromWorld, Vector2Int fromCell, Vector2Int toCell,
+            IReadOnlyList<Vector3> worldPoints, GridMovementSettings settings, Action onArrived = null)
+        {
+            if (settings == null || settings.Style == EMovementStyle.Flip || worldPoints == null ||
+                worldPoints.Count < 2)
+            {
+                Animate(entity, fromWorld, fromCell, toCell, settings, onArrived);
+                return;
+            }
+
+            Stop(entity);
+            if (Application.isPlaying)
+                EventBus.Raise(new EntityMoveStartedEvent(entity, fromCell, toCell));
+            if (!Application.isPlaying || SimMode.IsActive) return;
+
+            var target = entity.transform;
+            var parent = target.parent;
+            var points = new Vector3[worldPoints.Count + 1];
+            points[0] = parent != null ? parent.InverseTransformPoint(fromWorld) : fromWorld;
+            for (var i = 0; i < worldPoints.Count; i++)
+                points[i + 1] = parent != null ? parent.InverseTransformPoint(worldPoints[i]) : worldPoints[i];
+            var end = target.localPosition;
+            points[points.Length - 1] = end;
+
+            var speed = Mathf.Max(0.01f, SpeedMultiplier);
+            var hopsPerCell = Mathf.Max(1, Mathf.RoundToInt(settings.HopsPerCell));
+            var segments = points.Length - 1;
+            var segmentDuration = hopsPerCell * settings.HopDuration / speed;
+            var hopsDuration = segments * segmentDuration;
+            var squashDuration = settings.LandingSquash > 0f ? settings.LandingSquashDuration / speed : 0f;
+            var squashY = 1f - settings.LandingSquash / GameConfigManager.Ppu;
+            var duration = hopsDuration + squashDuration;
+            var hopHeight = settings.HopHeight;
+
+            target.localPosition = points[0];
+            var handle = LMotion.Create(0f, 1f, duration)
+                .WithOnComplete(() =>
+                {
+                    Normalize(target, end);
+                    onArrived?.Invoke();
+                })
+                .Bind(t =>
+                {
+                    var time = t * duration;
+                    if (time < hopsDuration)
+                    {
+                        var segment = Mathf.Min(segments - 1, Mathf.FloorToInt(time / segmentDuration));
+                        var local = (time - segment * segmentDuration) / segmentDuration;
+                        var progress = EaseUtility.Evaluate(local, settings.HopEase);
+                        var arc = Mathf.Abs(Mathf.Sin(Mathf.PI * hopsPerCell * local)) * hopHeight;
+                        target.localPosition = Vector3.Lerp(points[segment], points[segment + 1], progress) +
+                                               Vector3.up * arc;
+                        target.localScale = Vector3.one;
+                    }
+                    else
+                    {
+                        // Landing: flatten and recover (V shape) at the destination.
+                        var k = (time - hopsDuration) / squashDuration;
+                        target.localPosition = end;
+                        target.localScale = new Vector3(1f, Mathf.Lerp(1f, squashY, 1f - Mathf.Abs(2f * k - 1f)), 1f);
+                    }
+                });
+
+            _motions[entity] = handle.AddTo(entity.gameObject);
+            _endTimes[entity] = Time.time + duration;
+        }
+
+        /// <summary>
         /// Seconds until the movement of <paramref name="entity"/> ends (0 when it is not moving): what an attack or
         /// a skill of the same entity waits before its lunge or its visual starts, so it never plays mid-hop.
         /// </summary>

@@ -128,15 +128,15 @@ MonoBehaviour:
   - depth: 5
     budget: 3.5
   - depth: 10
-    budget: 4.5
+    budget: 5
   - depth: 15
-    budget: 5.5
-  - depth: 20
     budget: 6.5
-  - depth: 25
+  - depth: 20
     budget: 7.5
-  - depth: 30
+  - depth: 25
     budget: 8.5
+  - depth: 30
+    budget: 9.5
   budgetTolerance: 0.3
   overshootAllowance: 0.5
   maxAttempts: 12
@@ -149,8 +149,8 @@ MonoBehaviour:
     budgetMultiplier: 1.35
     strengthMultiplier: 1
     xpMultiplier: 2
-  hpPerDepth: 0
-  damagePerDepth: 0
+  hpPerDepth: 0.025
+  damagePerDepth: 0.035
   compoundScaling: 0
   xpSource: 2
   xpBaseBudget: 6

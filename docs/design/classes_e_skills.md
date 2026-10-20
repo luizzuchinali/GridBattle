@@ -29,13 +29,15 @@ Valores atuais das três classes, como estão implementados no jogo (um asset de
 
 - **Sem ataque básico:** agir é sempre usar uma skill. O dano básico e o alcance de ataque do jogador deixam de existir. Antes, o ataque básico (15 de dano, sem recarga, contra inimigos de 20 a 40 de vida) era a melhor ação na maior parte do tempo, e o turno virava "andar até o mais perto e bater".
 - **Toda skill faz duas coisas:** causa dano **e** muda o tabuleiro (empurra, puxa, troca de lugar, cria ou tira terreno, ou aplica um estado). Uma skill que só causa dano não entra no jogo. As skills que já moldavam a partida eram as que mexiam no tabuleiro; a regra generaliza isso.
-- **2 ou 3 skills iniciais por classe,** com pelo menos uma sem recarga, para o jogador sempre ter o que fazer. As outras continuam vindo de talentos.
+- **2 ou 3 skills iniciais por classe,** com pelo menos uma sem recarga, para o jogador sempre ter o que fazer. As outras continuam vindo de talentos. **Mudou em 2026-10-20 (decisão do Luiz):** cada classe começa com uma skill só, a sem recarga (Golpe, Rajada de Vento, Adaga Envenenada); as outras vêm de talentos durante a run, como as demais.
 - **6 espaços de skill** (mantido em 2026-10-19; a ideia de reduzir para 4 foi descartada). Com os 6 cheios, os talentos que liberam skill deixam de ser oferecidos (regra atual).
 - **Números pequenos:** de 1 a 3 de dano por skill e 1 de colisão (ver [[balanceamento_e_geracao#Números pequenos (2026-10-19)]]).
 - **Melhorias de skill viram variantes:** em vez de "+3 de dano", a melhoria dá uma versão nova da skill, e o jogador escolhe uma de duas. Exemplo: Golpe de Escudo **A** empurra 3 casas em linha, ou **B** empurra para os dois lados. As melhorias vêm da elite (recompensa extra) e do acampamento (no lugar de curar); ver [[mapa_e_nos#Nós e dificuldade (2026-10-19)]]. ❓ Quantas melhorias cada skill aceita (sugestão: uma, para a escolha ser definitiva).
 - **Contra golpes anunciados:** as skills são as ferramentas para desarmar os golpes dos inimigos (ver [[inimigos#Golpes anunciados]]): tirar o atacante de posição, empurrar um inimigo para dentro da área de outro, atordoar ou congelar quem prepara.
 
 ### Skills iniciais (exemplos provisórios, só para orientar)
+
+> Desde 2026-10-20, só a skill sem recarga de cada classe é inicial (Golpe, Rajada, Adaga). As outras desta tabela vêm de talentos de nível 2 da classe: Treino de Investida, Escudo Pesado, Toque Gélido, Piromancia, Gancho de Caça e Caminho das Sombras (ver [[talentos_e_oferta]]).
 
 | Classe | Skill | Recarga | Dano | Efeito no tabuleiro |
 |---|---|---|---|---|
@@ -49,7 +51,7 @@ Valores atuais das três classes, como estão implementados no jogo (um asset de
 | Ladino | Gancho | 2 | 1 (até 3 casas, em linha) | puxa até 3 casas para perto do Ladino |
 | Ladino | Passo das Sombras | 3 | 1, se trocar com um inimigo | troca de lugar com um personagem a até 3 casas |
 
-Identidade: o Guerreiro empurra e segura a linha, o Mago controla áreas e terreno, e o Ladino puxa, troca de lugar e envenena. ❓ Lista final e valores, e se cada classe começa com 2 ou 3 skills.
+Identidade: o Guerreiro empurra e segura a linha, o Mago controla áreas e terreno, e o Ladino puxa, troca de lugar e envenena. Valores ainda provisórios; cada classe começa com 1 skill (2026-10-20).
 
 ## Contras do Mago: magias canalizadas (2026-10-20)
 > Pedido do Luiz em 2026-10-20, **implementado** (valores provisórios): algumas magias do Mago passam a ter um contra. "O Meteoro Ardente custa o ponto de ação e o de movimento; depois de usado, o mago também não pode andar no próximo turno. Alto dano em área, mas tem de ser usado de um lugar seguro."
@@ -93,6 +95,8 @@ Identidade: o Guerreiro empurra e segura a linha, o Mago controla áreas e terre
 As nove skills da tabela estão implementadas como assets (`Settings/Skills/<Classe>`), e os valores atuais dos assets estão em [[sistema_combate]].
 
 **Decisão (2026-10-12): linha de visão e mira livre.** As skills precisam ver a célula onde são miradas: obstáculos (Rocha) e personagens no caminho bloqueiam. A Tempestade Elétrica (raio do céu) ignora a linha de visão; a Bola de Fogo também ignorava, mas o usuário a deixou precisando de visão (ajuste provisório, até o rebalanceamento); skills centradas no personagem não precisam dela. Toda skill pode ser mirada em qualquer célula do alcance (não só onde há inimigos), para o destaque cobrir todo o alcance. Regras em [[sistema_combate]].
+
+**Decisão (2026-10-20): cada classe começa com uma skill só,** a sem recarga (Golpe, Rajada de Vento, Adaga Envenenada); as outras vêm de talentos durante a run (até 5, para os 6 espaços). Substitui a decisão abaixo.
 
 **Decisão (2026-10-05): toda classe começa com ao menos uma skill.** Golpe (Guerreiro), Nova de Gelo (Mago) e Adaga Envenenada (Ladino) são as skills iniciais. As demais são liberadas pelos talentos da coluna Trait. Criomancia e Mãos Ligeiras, que liberavam as skills que viraram iniciais, passaram a ser talentos de reforço (+15% de dano de skill). O Golpe foi reajustado para dano em área frontal (`PERPENDICULAR` de tamanho 3).
 

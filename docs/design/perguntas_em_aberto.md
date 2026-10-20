@@ -257,7 +257,7 @@ Total: 89 perguntas (índice de 2026-10-03), mais as perguntas novas de 2026-10-
 
 ### [[classes_e_skills#Nova direção das skills (2026-10-19)|Nova direção das skills]]
 
-- [ ] Lista final das skills iniciais e valores, e se cada classe começa com 2 ou 3.
+- [ ] Lista final das skills iniciais e valores. (Decidido em 2026-10-20: cada classe começa com 1 skill.)
 - [ ] Quantas melhorias (variantes) cada skill aceita (sugestão: uma).
 
 ### [[talentos_e_oferta#Talentos que mudam regras (2026-10-19)|Talentos que mudam regras]]

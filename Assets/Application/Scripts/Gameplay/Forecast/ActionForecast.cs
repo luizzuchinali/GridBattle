@@ -100,12 +100,27 @@ namespace GridBattle.Gameplay.Forecast
 
             var context = ConsumableRules.CreateContext(grid, user, item, target);
             forecast.Area.AddRange(context.AreaCells);
+
+            // The effects in their order, as ConsumableDefinition.Execute applies them.
             foreach (var effect in item.Effects)
             {
-                if (effect is not DamageConsumableEffect damage || damage.Damage <= 0) continue;
-
-                foreach (var hit in context.Affected)
-                    forecast.AddDamage(hit, CombatResolver.PredictDamage(user, hit, damage.Damage, EDamageKind.Consumable));
+                switch (effect)
+                {
+                    case DamageConsumableEffect damage when damage.Damage > 0:
+                        foreach (var hit in context.Affected)
+                            forecast.AddDamage(hit, CombatResolver.PredictDamage(user, hit, damage.Damage, EDamageKind.Consumable));
+                        break;
+                    case DisplaceConsumableEffect displace:
+                        forecast.AddDisplacement(grid, user, context.Affected, displace.Mode, displace.Distance, target);
+                        break;
+                    case SwapConsumableEffect:
+                        forecast.AddSwap(grid, user, target);
+                        break;
+                    case ApplyStatesConsumableEffect apply:
+                        forecast.AddInterruptions(user, context.Affected, apply.States,
+                            apply.Recipient == EConsumableRecipient.User);
+                        break;
+                }
             }
 
             return forecast;
@@ -122,10 +137,14 @@ namespace GridBattle.Gameplay.Forecast
                 Killed.Add(character);
         }
 
-        private void AddInterruptions(Character caster, IReadOnlyList<Character> affected, ApplyStatesSkillEffect apply)
+        private void AddInterruptions(Character caster, IReadOnlyList<Character> affected, ApplyStatesSkillEffect apply) =>
+            AddInterruptions(caster, affected, apply.States, apply.Recipient == ESkillEffectRecipient.Caster);
+
+        private void AddInterruptions(Character caster, IReadOnlyList<Character> affected,
+            IReadOnlyList<StateGrant> states, bool onCaster)
         {
             StateDefinition interrupting = null;
-            foreach (var grant in apply.States)
+            foreach (var grant in states)
             {
                 if (grant.IsValid && Restricts(grant.State, EBehaviorRestriction.PreventSkills))
                 {
@@ -136,7 +155,7 @@ namespace GridBattle.Gameplay.Forecast
 
             if (interrupting == null) return;
 
-            if (apply.Recipient == ESkillEffectRecipient.Caster)
+            if (onCaster)
             {
                 Interrupt(caster, interrupting);
                 return;

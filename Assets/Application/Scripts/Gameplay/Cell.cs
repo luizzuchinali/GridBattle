@@ -25,7 +25,7 @@ namespace GridBattle.Gameplay
         /// <summary>A cell the selected skill can be aimed at.</summary>
         SkillRange,
 
-        /// <summary>A cell an inspected enemy can hit on its next turn (walking and attacking).</summary>
+        /// <summary>A cell the tapped enemy can walk to on its next turn.</summary>
         Danger,
 
         /// <summary>A cell of the area of the aimed skill or item (the player taps again to confirm).</summary>
@@ -56,17 +56,17 @@ namespace GridBattle.Gameplay
         private Color skillRangeHighlightColor = new(0.75f, 0.45f, 1f, 0.51f);
 
         [SerializeField]
-        [Tooltip("Highlight of the cells an inspected enemy can hit on its next turn (long press on the enemy).")]
+        [Tooltip("Highlight of the cells a tapped enemy can walk to on its next turn.")]
         private Color dangerHighlightColor = new(1f, 0.45f, 0.1f, 0.5f);
 
         [SerializeField]
         [Tooltip("Mark of the cells a telegraphed enemy skill will hit when it fires. Shown all the time, in every " +
                  "turn, over the other highlights.")]
-        private Color telegraphHighlightColor = new(1f, 0.85f, 0.1f, 0.55f);
+        private Color telegraphHighlightColor = new(1f, 0.7f, 0.1f, 0.8f);
 
         [SerializeField]
         [Tooltip("Mark of a telegraphed cell where a character the strike affects stands (it would be hit).")]
-        private Color telegraphHitColor = new(1f, 0.3f, 0.15f, 0.7f);
+        private Color telegraphHitColor = new(1f, 0.25f, 0.15f, 0.9f);
 
         [SerializeField]
         [Tooltip("Highlight of the cells of the area of the aimed skill or item, before it is confirmed.")]
@@ -75,7 +75,7 @@ namespace GridBattle.Gameplay
         [SerializeField]
         [Range(0f, 1f)]
         [Tooltip("How much the telegraph mark fades in and out (0 = steady).")]
-        private float telegraphPulse = 0.35f;
+        private float telegraphPulse = 0.25f;
 
         [SerializeField]
         [Min(0.05f)]
@@ -174,6 +174,12 @@ namespace GridBattle.Gameplay
         /// forecast view). Visual only.
         /// </summary>
         public bool WarnHit { get; set; }
+
+        /// <summary>
+        /// The mark belongs to other strikes than the one of the enemy the player tapped: it fades
+        /// (<see cref="ForecastSettings.DimmedStrikeAlpha"/>) so that enemy's own strike stands out. Visual only.
+        /// </summary>
+        public bool WarnDimmed { get; set; }
 
         public Vector2Int GridPosition { get; set; }
 
@@ -338,8 +344,9 @@ namespace GridBattle.Gameplay
         }
 
         /// <summary>
-        /// The telegraph mark: a pulsing copy of the highlight sprite drawn over it, created the first time a cell is
-        /// marked (cells that are never marked do not pay for it).
+        /// The telegraph mark: diagonal stripes (<see cref="ForecastSprites.GetStrikeHatch"/>) in the shape of the
+        /// highlight, drawn over it, so a strike reads apart from the walk and skill frames on the same cell. Created
+        /// the first time a cell is marked (cells that are never marked do not pay for it).
         /// </summary>
         private void UpdateWarning()
         {
@@ -361,17 +368,19 @@ namespace GridBattle.Gameplay
                 copy.transform.localRotation = highlightRenderer.transform.localRotation;
                 copy.transform.localScale = highlightRenderer.transform.localScale;
                 _warningRenderer = copy.AddComponent<SpriteRenderer>();
-                _warningRenderer.sprite = highlightRenderer.sprite;
-                _warningRenderer.drawMode = highlightRenderer.drawMode;
-                _warningRenderer.size = highlightRenderer.size;
                 _warningRenderer.sharedMaterial = highlightRenderer.sharedMaterial;
                 _warningRenderer.sortingLayerID = highlightRenderer.sortingLayerID;
                 _warningRenderer.sortingOrder = highlightRenderer.sortingOrder;
             }
 
+            var settings = ForecastSettings.Current;
+            _warningRenderer.sprite = ForecastSprites.GetStrikeHatch(settings.StrikeStripePeriod, settings.StrikeStripeWidth);
+
             var wave = 0.5f + 0.5f * Mathf.Sin(Time.time * 2f * Mathf.PI / telegraphPulsePeriod);
             var color = WarnHit ? telegraphHitColor : telegraphHighlightColor;
             color.a *= 1f - telegraphPulse * wave;
+            if (WarnDimmed)
+                color.a *= settings.DimmedStrikeAlpha;
             _warningRenderer.color = color;
             _warningRenderer.enabled = true;
         }

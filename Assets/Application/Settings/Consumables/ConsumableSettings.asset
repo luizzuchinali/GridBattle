@@ -20,6 +20,11 @@ MonoBehaviour:
   - {fileID: 11400000, guid: c28750548bb4a794ea783d0e21d8b6f6, type: 2}
   - {fileID: 11400000, guid: 9563bc73932e34f45bd5fac6bba777f1, type: 2}
   - {fileID: 11400000, guid: 70956fae1ae59b04cade0bfc9aee3d44, type: 2}
+  - {fileID: 11400000, guid: 78d88c79417e42fdb62102ce7dd639e3, type: 2}
+  - {fileID: 11400000, guid: f4a04cb403d84ebd860570997a4bf3d5, type: 2}
+  - {fileID: 11400000, guid: 4ec49a69ca1441369fa1c89f59476a62, type: 2}
+  - {fileID: 11400000, guid: 16ee30f83f8b4bbfaaf50854af9b957e, type: 2}
+  - {fileID: 11400000, guid: 8de7ef7fa6ac41d3993aff8a2c26d461, type: 2}
   choiceCount: 3
   debugStartingConsumables:
   - {fileID: 11400000, guid: c28750548bb4a794ea783d0e21d8b6f6, type: 2}

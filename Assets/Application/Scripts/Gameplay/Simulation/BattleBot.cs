@@ -960,7 +960,7 @@ namespace GridBattle.Gameplay.Simulation
                 if (item == null || !item.NeedsTarget || !ConsumableRules.CanSelect(grid, player, item, true)) continue;
 
                 var damage = GetDamage(item);
-                if (damage <= 0 && !AppliesStatesToTargets(item)) continue;
+                if (damage <= 0 && !AppliesStatesToTargets(item) && !Displaces(item)) continue;
 
                 if (!TryFindItemCell(grid, player, item, damage, out var cell)) continue;
                 if (controller.TryUseConsumable(slot, cell))
@@ -995,8 +995,44 @@ namespace GridBattle.Gameplay.Simulation
             var bestScore = float.MinValue;
             var found = false;
             var ties = 1;
+            var displaces = Displaces(item);
             foreach (var cell in ConsumableRules.GetTargetableCells(grid, player, item))
             {
+                if (displaces)
+                {
+                    // A push item hurts through collisions and terrain: read the same forecast as the player.
+                    var forecast = ActionForecast.ForConsumable(grid, player, item, cell);
+                    if (forecast.Damage.ContainsKey(player) || forecast.Killed.Contains(player)) continue;
+
+                    var dealt = 0;
+                    var killed = 0;
+                    foreach (var pair in forecast.Damage)
+                    {
+                        if (pair.Key is not Enemy) continue;
+
+                        dealt += pair.Value;
+                        if (forecast.Killed.Contains(pair.Key))
+                            killed++;
+                    }
+
+                    if (dealt <= 0) continue;
+
+                    var pushScore = killed * 100f + dealt;
+                    if (!found || pushScore > bestScore + Epsilon)
+                    {
+                        bestScore = pushScore;
+                        bestCell = cell;
+                        found = true;
+                        ties = 1;
+                    }
+                    else if (Math.Abs(pushScore - bestScore) <= Epsilon && _rng.Range(0, ++ties) == 0)
+                    {
+                        bestCell = cell;
+                    }
+
+                    continue;
+                }
+
                 var area = ConsumableRules.GetAreaCells(grid, player, item, cell);
                 var affected = ConsumableRules.GetAffectedCharacters(grid, player, item, area);
                 var enemies = 0;
@@ -1057,6 +1093,16 @@ namespace GridBattle.Gameplay.Simulation
             }
 
             return total;
+        }
+
+        private static bool Displaces(ConsumableDefinition item)
+        {
+            foreach (var effect in item.Effects)
+            {
+                if (effect is DisplaceConsumableEffect) return true;
+            }
+
+            return false;
         }
 
         private static bool AppliesStatesToUser(ConsumableDefinition item)

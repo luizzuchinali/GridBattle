@@ -7,6 +7,7 @@ using GridBattle.Gameplay.Entities.Skills;
 using GridBattle.Gameplay.Events;
 using GridBattle.Gameplay.Forecast;
 using GridBattle.Gameplay.Movement;
+using GridBattle.Gameplay.Rules;
 using GridBattle.Gameplay.Run;
 using GridBattle.Gameplay.Terrain;
 using GridBattle.Data;
@@ -647,6 +648,27 @@ namespace GridBattle.Gameplay
             return null;
         }
 
+        /// <summary>
+        /// The walk of a character (its turn's walk, the player's or an enemy's): it goes to
+        /// <paramref name="targetPos"/> one cell at a time along <see cref="GridRules.FindWalkPath"/> (straight when
+        /// no path is found, which callers that checked <see cref="GridRules.CanWalkTo"/> never see). Occupancy
+        /// changes at once; <see cref="EntityPassedCellEvent"/> is raised for each crossed cell, then
+        /// <see cref="EntityEnteredCellEvent"/> for the destination, and the character hops cell by cell.
+        /// </summary>
+        public void WalkEntity(Character character, Vector2Int targetPos)
+        {
+            var from = character.CurrentGridPos;
+            if (from == targetPos) return;
+
+            var path = GridRules.FindWalkPath(this, from, targetPos, character.WalkDistance);
+            if (path == null || path.Count == 0 || path[path.Count - 1] != targetPos)
+                path = new List<Vector2Int> { targetPos };
+
+            Move(from, targetPos, false, path);
+            character.CurrentGridPos = targetPos;
+            character.RegisterMovement();
+        }
+
         public void MoveEntity(GridEntity entity, Vector2Int targetPos)
         {
             var moved = entity.CurrentGridPos != targetPos;
@@ -668,10 +690,15 @@ namespace GridBattle.Gameplay
             if (from == targetPos || !IsFreePosition(targetPos)) return;
 
             var fromWorld = character.transform.position;
+            var path = GridRules.FindWalkPath(this, from, targetPos, character.WalkDistance);
             _cells[from.x, from.y].RemoveContent();
             _cells[targetPos.x, targetPos.y].SetContent(character);
             character.CurrentGridPos = targetPos;
-            _movementAnimator.Animate(character, fromWorld, from, targetPos, movementSettings, null);
+            if (path != null && path.Count > 1)
+                _movementAnimator.AnimatePath(character, fromWorld, from, targetPos, GetPathPoints(character, path),
+                    movementSettings, null);
+            else
+                _movementAnimator.Animate(character, fromWorld, from, targetPos, movementSettings, null);
             character.SetMovedThisTurn(false);
             EventBus.Raise(new EntityMoveUndoneEvent(character, from, targetPos));
         }
@@ -942,7 +969,8 @@ namespace GridBattle.Gameplay
 
         public void Move(Vector2Int currentPos, Vector2Int targetPos) => Move(currentPos, targetPos, false);
 
-        private void Move(Vector2Int currentPos, Vector2Int targetPos, bool slide)
+        private void Move(Vector2Int currentPos, Vector2Int targetPos, bool slide,
+            List<Vector2Int> walkPath = null)
         {
             if (currentPos == targetPos)
                 return;
@@ -955,21 +983,41 @@ namespace GridBattle.Gameplay
             _cells[currentPos.x, currentPos.y].RemoveContent();
             var targetCell = _cells[targetPos.x, targetPos.y];
             targetCell.SetContent(content);
+            Action pulse = () =>
+            {
+                if (targetCell != null && movementSettings != null)
+                    targetCell.PlayArrivalPulse(movementSettings.ArrivalPulsePixels,
+                        movementSettings.ArrivalPulseDuration);
+            };
             if (slide)
-            {
                 _movementAnimator.AnimateSlide(content, fromWorld, currentPos, targetPos, movementSettings);
-            }
+            else if (walkPath != null && walkPath.Count > 1)
+                _movementAnimator.AnimatePath(content, fromWorld, currentPos, targetPos,
+                    GetPathPoints(content, walkPath), movementSettings, pulse);
             else
+                _movementAnimator.Animate(content, fromWorld, currentPos, targetPos, movementSettings, pulse);
+
+            if (walkPath != null)
             {
-                _movementAnimator.Animate(content, fromWorld, currentPos, targetPos, movementSettings,
-                    () =>
-                    {
-                        if (targetCell != null && movementSettings != null)
-                            targetCell.PlayArrivalPulse(movementSettings.ArrivalPulsePixels,
-                                movementSettings.ArrivalPulseDuration);
-                    });
+                for (var i = 0; i < walkPath.Count - 1; i++)
+                    EventBus.Raise(new EntityPassedCellEvent(content, walkPath[i], i));
             }
+
             EventBus.Raise(new EntityEnteredCellEvent(content, currentPos, targetPos));
+        }
+
+        /// <summary>
+        /// World positions of <paramref name="entity"/> (already on the last cell of <paramref name="path"/>) on
+        /// each cell of the path: the same offset from each cell as it has on its own.
+        /// </summary>
+        private List<Vector3> GetPathPoints(GridEntity entity, List<Vector2Int> path)
+        {
+            var last = path[path.Count - 1];
+            var offset = entity.transform.position - _cells[last.x, last.y].transform.position;
+            var points = new List<Vector3>(path.Count);
+            foreach (var cell in path)
+                points.Add(_cells[cell.x, cell.y].transform.position + offset);
+            return points;
         }
 
         public void HighlightCells(Dictionary<Vector2Int, ECellHighlightType> highlightInfos)

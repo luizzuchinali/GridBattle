@@ -1791,6 +1791,94 @@ MonoBehaviour:
     m_Key: skill.tornado.desc
     m_Metadata:
       m_Items: []
+  - m_Id: 5660003393937408
+    m_Key: talent.charge_drill.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5660003473629184
+    m_Key: talent.charge_drill.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5660003704315904
+    m_Key: talent.heavy_shield.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5660003704315905
+    m_Key: talent.heavy_shield.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5660003951779840
+    m_Key: talent.frost_touch.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5660003951779841
+    m_Key: talent.frost_touch.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5660004169883648
+    m_Key: talent.pyromancy.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5660004174077952
+    m_Key: talent.pyromancy.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5660004375404544
+    m_Key: talent.hunting_hook.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5660004379598848
+    m_Key: talent.hunting_hook.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5660004610285568
+    m_Key: talent.shadow_path.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5660004610285569
+    m_Key: talent.shadow_path.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5670288141918208
+    m_Key: consumable.impact_grenade.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5670288276135936
+    m_Key: consumable.impact_grenade.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5670288276135937
+    m_Key: consumable.swap_scroll.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5670288276135938
+    m_Key: consumable.swap_scroll.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5670288280330240
+    m_Key: consumable.stone.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5670288280330241
+    m_Key: consumable.stone.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5670288280330242
+    m_Key: consumable.fire_flask.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5670288280330243
+    m_Key: consumable.fire_flask.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5670288280330244
+    m_Key: consumable.frost_flask.name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5670288280330245
+    m_Key: consumable.frost_flask.desc
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

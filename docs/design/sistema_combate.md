@@ -112,7 +112,7 @@ do jogador) ou tocando no próprio personagem, que também serve para esperar.
 | Usar skill (mirar e confirmar) | usa o agir do turno |
 | Usar skill canalizada (Meteoro, Tempestade Elétrica e variantes) | usa o agir **e** o andar; só antes de andar, e não se anda depois (ver [Uso](#uso)) |
 | Usar consumível | não usa o andar nem o agir; no máximo um por turno |
-| Tocar num inimigo | mostra ou esconde onde ele pode golpear no próximo turno; não gasta nada |
+| Tocar num inimigo | mostra ou esconde até onde ele pode andar a partir de onde está; não gasta nada |
 | Encerrar / tocar em si mesmo | encerra a vez |
 
 Uma ação inválida não gasta nada.
@@ -239,8 +239,9 @@ O `GridController` expõe consultas e execuções de estado:
 | `IsWalkable(pos)` | dentro dos limites e sem obstáculo |
 | `GetContent(pos)` / `GetCell(pos)` / `GetTerrain(pos)` | entity, célula ou terreno da posição |
 | `HasBlockedCells`, `BlocksSkillArea(pos)` | há obstáculos; o terreno da célula bloqueia áreas de skill |
-| `MoveEntity(entity, pos)` | **execução centralizada do andar**: move o conteúdo, atualiza `CurrentGridPos`, marca `MovedThisTurn`, levanta `EntityEnteredCellEvent` e anima |
-| `UndoMove(...)` | desfaz o andar do jogador (sem `EntityEnteredCellEvent`) |
+| `WalkEntity(personagem, pos)` | **execução centralizada do andar** (jogador e inimigos): segue o caminho de `GridRules.FindWalkPath` célula a célula, move o conteúdo na hora, atualiza `CurrentGridPos`, marca `MovedThisTurn`, levanta `EntityPassedCellEvent` para cada célula do caminho (menos o destino) e depois `EntityEnteredCellEvent` no destino, e anima um pulo por célula |
+| `MoveEntity(entity, pos)` | movimento direto, sem caminho (o Teleporte); também marca `MovedThisTurn` e levanta `EntityEnteredCellEvent` |
+| `UndoMove(...)` | desfaz o andar do jogador (sem `EntityEnteredCellEvent`), voltando pelo caminho |
 | `DisplaceEntity(...)` | movimento forçado dos empurrões e puxões (desliza, não conta como andar) |
 | `SwapCharacters(a, b, fonte)` | troca dois personagens de lugar: os dois pulam, as duas células reagem como ao entrar (`EntityEnteredCellEvent`) e sai `CharactersSwappedEvent`; não conta como andar |
 | `SetTerrain(pos, terreno[, rodadas])` / `ApplyTerrain` / `ClearTerrain` | define o terreno (com rodadas > 0, temporário); recusa terreno que bloqueia movimento sobre célula ocupada |
@@ -277,14 +278,16 @@ characters e grid: classe estática, funções puras. As distâncias vêm de
 |---|---|
 | `IsInWalkRange(from, to, walkDistance)` | alcance de movimento (métrica de movimento) |
 | `IsInAttackRange(from, to, attackDistance)` | alcance do ataque básico (métrica de ataque) |
-| `CanWalkTo(grid, character, target)` | posição válida, caminhável, livre e em alcance; havendo obstáculos, também alcançável por um caminho sem cruzá-los |
-| `HasWalkPath(grid, from, to, walkDistance)` | caminho por células ortogonais não bloqueadas, todas dentro do alcance de `from`; personagens não bloqueiam o caminho, só o destino precisa estar livre |
+| `CanWalkTo(grid, character, target)` | posição válida, caminhável, livre, em alcance e alcançável por um caminho que não cruza obstáculos nem personagens |
+| `FindWalkPath(grid, from, to, walkDistance)` | o caminho do andar: as células cruzadas em ordem, sem a de partida e terminando no destino (o mais curto; empate pela ordem baixo, esquerda, direita, cima), ou nulo |
+| `HasWalkPath(grid, from, to, walkDistance)` | existe `FindWalkPath`: caminho por células ortogonais livres (sem terreno que bloqueia e sem personagem, jogador ou inimigo), todas dentro do alcance de `from`; não dá para passar na diagonal entre dois obstáculos (desde 2026-10-20; antes, personagens não bloqueavam o caminho, só o destino) |
 | `IsAttackTarget(grid, attacker, target)` | alvo válido do ataque básico: exige `CanBasicAttack` (ter ataque básico e nenhum estado que o impeça); **hoje sempre falso**, porque ninguém tem ataque básico |
 | `FindStepToward(grid, character, target)` | passo guloso de um turno (usado pela ação `ChaseTarget`, que nenhum comportamento usa hoje) |
 | `CountAdjacentOpponents` / `HasAdjacentAlly` | adjacência das passivas, pela métrica `adjacencyMetric` |
 | `AreAllies(a, b)` | jogador × inimigos: os inimigos são aliados entre si |
 | `GetHighlightInfos(grid, character, canMove, canAct)` | highlights Walk/Attack; sem andar ou sem agir no turno, a parte usada fica de fora (sem ataque básico, só Walk) |
-| `GetReachCells(grid, character)` | células que o personagem pode golpear no próximo turno, andando antes; sem ataque básico é `GetSkillReachCells` |
+| `GetWalkCells(grid, character)` | células para onde o personagem pode andar a partir de onde está (`CanWalkTo` dentro de `WalkDistance`); é o destaque do inimigo tocado |
+| `GetReachCells(grid, character)` | células que o personagem pode golpear no próximo turno, andando antes; sem ataque básico é `GetSkillReachCells` (sem uso no jogo desde 2026-10-20) |
 | `GetSkillReachCells(grid, character)` | células cobertas pela área de alguma skill pronta, mirada de qualquer célula para onde ele pode andar (e da própria), consultadas com `ProbePosition` |
 | `GetSkillHighlightInfos(grid, caster, skill)` | highlights `SkillRange` das células onde a skill pode ser mirada |
 
@@ -362,11 +365,14 @@ Character.prefab          SpriteRenderer + Animator + CharacterView (base)
   na ordem de ação) e `Telegraph` (o golpe que está preparando, ou nulo).
 - A classe escolhida no menu é resolvida pelo `GameStateManager`
   (`playableCharacters` e `CharacterClass`).
-- `EnemyIconsView` mostra sobre o inimigo o ícone do papel, até 2 ícones de
-  estados permanentes (blindado, regenerante, espinhoso: Mecânica 6), o **número
-  da ordem de ação** e, enquanto ele prepara um golpe, o **ícone da skill com os
-  turnos até o disparo**. Os ícones são 8×8 nativos, ampliados só por fator
-  inteiro (pixel perfect).
+- `EnemyIconsView` mostra no inimigo, dentro da própria célula (nada cobre a
+  barra de vida do vizinho): o **número da ordem de ação** num pequeno selo escuro
+  no canto de cima à esquerda, o ícone do papel no canto de cima à direita e, abaixo
+  dele, até 2 ícones de estados permanentes (blindado, regenerante, espinhoso:
+  Mecânica 6). Enquanto o jogador toca nele (`SetFocused`), aparece sobre a cabeça,
+  num selo, o **ícone do golpe que prepara**, com os turnos até o disparo só quando
+  passam de 1 (decisão de 2026-10-20: menos informação em pouco espaço). Os ícones
+  são nativos, ampliados só por fator inteiro (pixel perfect).
 
 ### Escala por profundidade
 
@@ -375,11 +381,14 @@ de vida e de dano) que multiplica a **vida máxima base**, o **dano básico base
 e o **dano das skills** do personagem. Não é um estado: não aparece nem pode ser
 removido. Fórmula linear, por profundidade `p`:
 `multiplicador = 1 + taxa × (p − 1)` (há opção de crescimento composto).
-**Hoje as duas taxas são 0** (`BattleGenerationSettings.hpPerDepth` e
-`damagePerDepth`): pelo princípio de 2026-10-19, a dificuldade vem da
-composição e dos golpes, não de números maiores, então um inimigo tem a mesma
-vida e o mesmo dano em qualquer andar. Invocados herdam a escala de quem os
-invocou.
+Desde 2026-10-20 as taxas são **0,025 de vida e 0,035 de dano por andar**
+(`BattleGenerationSettings.hpPerDepth` e `damagePerDepth`), na profundidade de
+balanceamento (pedido do Luiz de 2026-10-20: o combate estava fácil demais; isso
+deixa de lado o princípio de 2026-10-19 de não escalar os números; o Luiz confirmou que a escala fica, com os valores em teste). No
+andar 30 a vida é ×1,73 e o dano ×2,02. Como os números são pequenos e
+arredondados (`CombatSettings.RoundValue`), um golpe de 1 passa a dar 2 a partir
+do andar 16 e um de 2 passa a dar 3 a partir do andar 9. De 2026-10-19 a
+2026-10-20 as duas taxas foram 0. Invocados herdam a escala de quem os invocou.
 
 ### Criando um personagem novo
 
@@ -392,7 +401,7 @@ invocou.
   peso); um elite tem `isUnique` ligado. Nenhum prefab novo.
 - **Personagem jogável:** `Create > GridBattle > Characters > Player Character
   Config`; `prefab = PlayerCharacter.prefab`, `characterClass`, `battlesToUnlock`,
-  as 3 skills iniciais e `talentPool`; adicionar à lista `playableCharacters` do
+  a skill inicial e `talentPool` (com um talento para cada skill liberada); adicionar à lista `playableCharacters` do
   `GameStateManager`.
 - Só crie um prefab próprio (variant do template) se o personagem precisar de
   componentes extras.
@@ -896,10 +905,10 @@ por profundidade, hoje 1), arredondado (`EffectiveSkill.Damage`).
 ### Slots
 
 O personagem carrega no máximo **6 skills** (`SkillSettings.maxSkillSlots`), uma
-por botão da barra de skills. As **3 skills iniciais** da classe ocupam 3 dos 6
-espaços (`startingSkillsUseSlots`), e os talentos liberam **até 3** skills a mais
-(`TalentOfferSettings.maxSkillTalents`; cada classe tem exatamente 3 talentos que
-liberam skill). Uma melhoria troca a skill pela variante no mesmo espaço. A lista
+por botão da barra de skills. A classe começa com **uma skill** (decisão de
+2026-10-20), que ocupa 1 dos 6 espaços (`startingSkillsUseSlots`), e os talentos
+liberam **até 5** skills a mais (`TalentOfferSettings.maxSkillTalents`; cada classe
+tem exatamente 5 talentos que liberam skill). Uma melhoria troca a skill pela variante no mesmo espaço. A lista
 de skills de uma run vive em `RunState` (`SkillIds`); `Character.SetSkills` a
 aplica ao personagem da batalha.
 
@@ -929,10 +938,18 @@ confirmação desligada, o primeiro toque numa célula válida já usa a skill.
 A ação de IA `UseSkillsAction` percorre as skills do config, na ordem. Para cada
 skill pronta:
 
-- **sem empurrão ou puxão:** `SkillTargeting.TryFindAimCell` escolhe a célula da
-  mira: a do próprio jogador se for válida; senão a célula válida mais próxima do
-  inimigo (Manhattan; empate por linha e coluna) cuja área ainda atinge o jogador.
-  Sem sorteio, para o jogador sempre poder fugir;
+- **sem empurrão ou puxão:** com `coverEscapeCells` ligado no asset `UseSkills`
+  (desde 2026-10-20), a mira cobre **as casas para onde o jogador pode fugir**:
+  a zona é a casa do jogador mais as casas para onde ele pode andar no próximo
+  turno (`GridRules.CanWalkTo` até o andar dele). Cada célula de mira válida vale a
+  soma das casas da zona que a área atinge (a do jogador vale `playerCellWeight`
+  1,5, as outras `escapeCellWeight` 1; casa já marcada por outro golpe vale
+  `alreadyCoveredFactor` 0,25 disso), menos `allyHitPenalty` 1 por outro inimigo
+  atingido. Empate: a que atinge o jogador, depois a mais perto dele. Abaixo de
+  `minCoverValue` 1, ou com a opção desligada, vale a mira antiga
+  (`SkillTargeting.TryFindAimCell`: a casa do jogador se for válida; senão a célula
+  válida mais próxima do inimigo cuja área ainda o atinge). Sem sorteio: o
+  jogador ainda pode fugir, mas não basta andar uma casa para qualquer lado;
 - **com o efeito `Displace`:** a mira é a célula de melhor pontuação
   (`DisplacementScoring`) entre as que afetam o jogador, e a skill só é usada se a
   pontuação chegar ao mínimo (hoje −1000, ou seja, sempre que houver mira); ver
@@ -1025,14 +1042,19 @@ movem com ele, mantendo a forma e a direção (`SkillTelegraph.Shift`). Células
 que saem do grid nunca são atingidas. Assim, empurrar o atacante muda para onde
 o golpe vai.
 
-**Como o jogador vê:** as células marcadas ficam com a marca amarela pulsante
-(`telegraphHighlightColor`), vermelha onde há um personagem que o golpe afeta
-(`telegraphHitColor`), o tempo todo e em todas as vezes, por cima dos outros
-destaques; o número da ordem de quem lança aparece na célula mirada (vários
-golpes mirados na mesma célula mostram os números lado a lado, em ordem, a 9 px um
-do outro, `ForecastSettings.strikeOrderSpacing`, para "1 3" não parecer "13"); sobre o
-inimigo, o ícone da skill e os turnos até o disparo; o dano previsto pisca na
-barra de vida de quem seria atingido (ver [Previsão do resultado](#previsão-do-resultado)).
+**Como o jogador vê** (refeito em 2026-10-20, porque destaques sobrepostos e
+números demais poluíam o tabuleiro): as células marcadas ficam com **listras
+diagonais** laranja (`ForecastSprites.GetStrikeHatch`, `telegraphHighlightColor`),
+vermelhas onde há um personagem que o golpe afeta (`telegraphHitColor`), o tempo
+todo e em todas as vezes, por cima dos outros destaques; a listra não tem moldura,
+então não se confunde com a moldura do andar ou da mira na mesma célula. Vários
+golpes na mesma célula dão uma marca só, e o dano somado pisca na barra de vida de
+quem seria atingido (ver [Previsão do resultado](#previsão-do-resultado)). As
+células não mostram números (`ForecastSettings.showOrderOnStrikes` desligado). Para
+saber de quem é cada área, o jogador **toca no inimigo**: as marcas dos outros golpes
+ficam fracas (`ForecastSettings.dimmedStrikeAlpha`, 0,3), as do golpe dele ficam
+fortes e o ícone do golpe aparece sobre ele. O número da ordem fica sempre no canto
+da célula do inimigo.
 Toque longo numa célula marcada abre a seção "Golpe preparado" da janela de
 detalhes: a skill, quem lança (com o número da ordem), o dano previsto contra o
 jogador e em quantos turnos dispara. A dica de tutorial `FirstTelegraph` aparece
@@ -1204,8 +1226,9 @@ turno** (no máximo um por turno). Tudo é dado:
 |---|---|
 | Mira | `Self` (usado na hora, sem alvo) ou `Cell` (precisa de uma célula alvo) |
 | Alcance, alcance ilimitado | mira `Cell`: distância (Manhattan, como as skills) da célula alvo; 0 = centrado em quem usa |
+| Ignora linha de visão | mira `Cell`: desligado = precisa ver a célula alvo, como as skills (obstáculos e personagens no caminho bloqueiam); ligado = algo que cai do alto |
 | Forma e tamanho da área, afeta | a área em torno da célula alvo e quem ela atinge (as mesmas formas das skills) |
-| Efeitos | curar quem usa, causar dano aos afetados, aplicar estados (a quem usa ou aos afetados) |
+| Efeitos | curar quem usa, causar dano aos afetados, aplicar estados (a quem usa ou aos afetados), empurrar ou puxar os afetados (`DisplaceConsumableEffect`), trocar de lugar com o personagem da célula alvo (`SwapConsumableEffect`), criar terreno temporário (`CreateTerrainConsumableEffect`) |
 | Visual | `ActionVisualDefinition` (a Bomba tem) |
 | Peso de sorteio | chance relativa de sair no nó de consumível |
 | Aparece no glossário | desligado |
@@ -1216,9 +1239,13 @@ turno** (no máximo um por turno). Tudo é dado:
   o novo (`AskPlayer`; as outras são descartar o novo ou o mais antigo).
 - **Regras de uso** (`ConsumableRules`): o item existe, o jogador está vivo, é a
   vez dele, a batalha não foi decidida, o limite de usos do turno (1) não foi
-  atingido, a célula alvo é válida e **ao menos um efeito mudaria algo** (a cura
-  recusa vida cheia; o dano exige um inimigo na área). Um item nunca é gasto à
-  toa.
+  atingido, a célula alvo é válida, **há linha de visão até ela** (desde
+  2026-10-20, pela mesma regra das skills: `ConsumableRules.HasLineOfSight`; itens
+  sem alvo, centrados em quem usa ou com `ignoresLineOfSight` não precisam) e **ao
+  menos um efeito mudaria algo** (a cura recusa vida cheia; o dano exige um
+  inimigo na área; o empurrão, alguém que possa ser empurrado; a troca, um
+  personagem que possa ser movido; o terreno, ao menos uma célula onde ele caiba).
+  Um item nunca é gasto à toa.
 - **Uso** (`ConsumableExecutor`): tira o item do inventário, conta o uso no turno
   (o contador zera a cada turno global), aplica os efeitos e levanta
   `ConsumableUsedEvent`. **Nunca encerra a vez sozinho**, a não ser que depois
@@ -1231,16 +1258,26 @@ turno** (no máximo um por turno). Tudo é dado:
   toque mira e mostra a área e a previsão do dano; o segundo, ou Confirmar,
   usa). Tocar o mesmo botão cancela. Mirar um item cancela a skill selecionada, e
   vice-versa.
-- **Previsão:** só o efeito de dano (`DamageConsumableEffect`) entra na previsão
-  (`ActionForecast.ForConsumable`).
+- **Previsão** (`ActionForecast.ForConsumable`): dano, empurrões e puxões (com
+  colisões e terreno), troca de lugar e quem um estado que impede skills
+  interromperia (Frasco Congelante), pelas mesmas funções das skills. O terreno
+  criado não entra na previsão (como nas skills).
+- **Efeitos de tabuleiro** (`BoardConsumableEffects.cs`): `DisplaceConsumableEffect`
+  usa o `DisplacementResolver` com quem usa o item no papel de lançador (colisões
+  atribuídas a ele; talentos de regra valem); `SwapConsumableEffect` usa
+  `GridController.SwapCharacters` (o golpe preparado acompanha quem é trocado);
+  `CreateTerrainConsumableEffect` segue as regras do `CreateTerrainSkillEffect`.
+- **Bot do simulador:** usa itens de dano e de estado nos inimigos como antes e,
+  desde 2026-10-20, os de empurrão quando a previsão dá dano ou abate sem ferir o
+  jogador. A troca, a Pedra e o Frasco de Fogo não são usados pelo bot.
 - **Obtenção:** o nó de consumível sorteia do pool, pelo peso, usando o fluxo
   `Consumables` da seed; com `choiceCount` 3, o jogador escolhe 1 entre 3 opções.
 
 Itens atuais: ver [Valores atuais](#consumíveis).
 
-**Ainda não implementado:** os itens de tabuleiro do design ([[consumiveis]]:
-Granada de impacto, Pergaminho de troca, Pedra e Óleo). Os efeitos de consumível
-que existem são só curar, causar dano e aplicar estados.
+Itens de tabuleiro implementados em 2026-10-20: Granada de Impacto, Pergaminho de
+Troca, Pedra, Frasco de Fogo e Frasco Congelante. O Óleo do design ([[consumiveis]])
+não foi implementado.
 
 ## Ações do jogador e entrada
 
@@ -1259,7 +1296,7 @@ tap em célula
 │     └── válido → GridController.MoveEntity
 └── célula com conteúdo
       ├── vizinho e Passo Trocado com o andar livre → TROCAR DE LUGAR (usa o andar)
-      ├── inimigo vivo (sem ataque básico) → mostra ou esconde onde ele pode golpear (highlight Danger)
+      ├── inimigo vivo (sem ataque básico) → mostra ou esconde até onde ele pode andar (highlight Danger)
       └── senão                          → ataque básico, se o personagem tiver (hoje ninguém tem) ou rejeição
 depois de cada escolha (andar, agir, item, troca): nada mais é possível (HasAnythingLeft falso) → encerra o turno
 sozinho (PlayerActionEvent); senão a vez continua
@@ -1354,9 +1391,10 @@ fecha pelo **X**; abrir ou fechar não consome o turno nem faz nada no jogo, e u
 novo grid a fecha.
 
 No toque longo num **inimigo**, na vez do jogador, o grid também marca em laranja
-(highlight `Danger`) as células que ele pode golpear no próximo turno
-(`GridRules.GetReachCells`: as áreas das skills prontas dele, miradas de qualquer
-célula para onde pode andar). Como a janela cobre boa parte do grid, a marcação
+(highlight `Danger`) as células para onde ele pode andar a partir de onde está
+(`GridRules.GetWalkCells`; nenhuma se um estado o impede de andar). Até
+2026-10-20 eram as células que os golpes prontos dele cobririam de qualquer casa
+para onde pudesse andar, o que acendia quase o tabuleiro todo. Como a janela cobre boa parte do grid, a marcação
 continua depois de fechá-la e some no próximo toque no grid. Sem ataque básico,
 um **toque curto** num inimigo faz o mesmo sem abrir a janela (tocar de novo
 esconde).
@@ -1460,7 +1498,10 @@ GlobalTurnStartedEvent(n)        ← zera o contador de consumíveis do turno; a
   antes da vez do jogador (e do salvamento dela).
 - **Movimento:** a ocupação das células e o `CurrentGridPos` mudam na hora; só o
   visual anima (`GridMovementSettings`: estilo `Hop` ou `Flip`, pulso na célula de
-  chegada).
+  chegada). O andar segue um caminho de células ortogonais (`GridRules.FindWalkPath`):
+  no estilo `Hop` o personagem pula de célula em célula, e cada célula cruzada levanta
+  `EntityPassedCellEvent` (gancho para efeitos ao passar por uma célula; hoje nada
+  reage, e o terreno continua reagindo só à célula de chegada).
 - **Acelerar:** um toque durante a vez dos inimigos aplica `speedUpMultiplier`
   (2x) às animações e ao intervalo até a vez voltar ao jogador (sem
   `Time.timeScale`).
@@ -1546,7 +1587,7 @@ Ações disponíveis (`Create > GridBattle > AI > Actions`):
 | Ação | Assets | Comportamento |
 |---|---|---|
 | `ApproachForSkillAction` (andar) | `ApproachMelee` (distância preferida 1), `ApproachMid` (2), `ApproachRanged` (3) | entre a própria célula e as células para onde pode andar, prefere, nesta ordem: célula **sem perigo** (não marcada por golpe de outro inimigo, `avoidMarkedCells`, e sem terreno de perigo que o afete, `avoidHazards`); célula **de onde uma skill pronta alcança o jogador** (`TryFindAimCell`); distância ao jogador (métrica de ataque) mais perto da preferida (ou simplesmente a menor, se de nenhum lugar alcança); ficar parado; menor linha e coluna. Só usa o andar se o inimigo se mover. Consulta as posições com `ProbePosition` |
-| `UseSkillsAction` (agir) | `UseSkills` | prepara a primeira skill pronta que alcança o jogador (ver [Skills](#uso-pelos-inimigos)) |
+| `UseSkillsAction` (agir) | `UseSkills` | prepara a primeira skill pronta que alcança o jogador, mirando onde cobre mais casas para onde ele pode fugir (ver [Skills](#uso-pelos-inimigos)) |
 | `ApplyStateToTargetAction` (agir) | `ApplyWeakened` | com o jogador no alcance (3), a habilidade pronta (recarga 2) e o jogador sem o estado, anima o ataque e aplica Fraquejado (1 turno), na hora |
 | `HealAllyAction` (agir) | `HealAlly` | cura 1 de vida o aliado mais ferido (vida abaixo de 99%) no alcance 3, sem contar a si mesmo; recarga 2; só usa o agir se curou algo |
 | `BuffAllyAction` (agir) | `BuffAllyShield` | dá Escudo (2 turnos) ao aliado que ainda não o tem, no alcance 3, sem contar a si mesmo, escolhendo o mais próximo do jogador; recarga 2 |
@@ -1620,7 +1661,7 @@ Terrain Definition`), que é só dado:
 | Afeta jogador, afeta inimigos | os dois ligados: o terreno afeta jogador e inimigos igualmente |
 | Visual | sprite sobreposto, cor do sprite e tinta do piso (o tipo é legível antes de entrar) |
 
-- **Obstáculos:** quem anda contorna (`HasWalkPath`), e o gerador garante que
+- **Obstáculos:** quem anda contorna (`HasWalkPath`; personagens também bloqueiam o caminho), e o gerador garante que
   nenhum conjunto de obstáculos gerados isole células do grid.
 - **Efeitos** (`TerrainEffects`, ligados ao `GridController`): a cada
   `EntityTurnStartedEvent`, `EntityTurnEndedEvent` e `EntityEnteredCellEvent`, se a
@@ -1965,7 +2006,7 @@ mudado. Só aparecem na vez do jogador, exceto as marcas dos golpes anunciados.
 | **Attack** (vermelho) | alvo do ataque básico em alcance; hoje nunca aparece | `attackHighlightColor` (prefab Cell) |
 | **SkillRange** (roxo) | com uma skill ou um item com alvo selecionado: as células onde ele pode ser mirado | `skillRangeHighlightColor` |
 | **SkillArea** (rosa) | a área da ação mirada, antes de confirmar | `skillAreaHighlightColor` |
-| **Danger** (laranja) | depois de um toque (ou toque longo) num inimigo: as células que ele pode golpear no próximo turno (até o próximo toque) | `dangerHighlightColor` |
+| **Danger** (laranja) | depois de um toque (ou toque longo) num inimigo: as células para onde ele pode andar (até o próximo toque) | `dangerHighlightColor` |
 | **Marca de golpe** (amarela pulsante; vermelha onde atinge alguém) | as células de cada golpe anunciado, o tempo todo, por cima dos outros | `telegraphHighlightColor`, `telegraphHitColor` |
 
 - Com uma skill ou item com alvo selecionado, só o `SkillRange` (e a `SkillArea`
@@ -1991,7 +2032,7 @@ mudado. Só aparecem na vez do jogador, exceto as marcas dos golpes anunciados.
 | **Skill que empurra, puxa, troca, avança ou cria terreno** | efeitos `Displace`, `Swap`, `DashToTarget` (antes do `Displace`) e `CreateTerrain` na lista de efeitos da skill; valores da colisão em `CombatSettings`; personagem imóvel: `canBeDisplaced` desligado no config |
 | **Novo inimigo** | asset `EnemyConfig` (sprite, animator, atributos, `role`, `behavior`, `threat`, skills, `initialStates`, `prefab = Enemy.prefab`) + entrada no pool de `BattleGenerationSettings`, sem prefab novo; elite: `isUnique` |
 | **Novo papel de inimigo** | asset `EnemyRoleDefinition` (ícone, nome, fator de ameaça, linha de frente) |
-| **Novo personagem jogável** | asset `PlayerCharacterConfig` (`prefab = PlayerCharacter.prefab`, `battlesToUnlock`, `talentPool`, 3 skills iniciais) + entrada em `GameStateManager.playableCharacters` |
+| **Novo personagem jogável** | asset `PlayerCharacterConfig` (`prefab = PlayerCharacter.prefab`, `battlesToUnlock`, `talentPool`, 1 skill inicial) + entrada em `GameStateManager.playableCharacters` |
 | **Comportamento de inimigo novo** | subclasse de `EnemyAction` (de `EnemyAbilityAction` se tiver recarga; `IsMovement` para andar) + asset; combinar ações num `EnemyBehavior` e referenciar no `EnemyConfig` |
 | **Estado novo** | asset `StateDefinition` com efeitos; efeito novo = subclasse de `StateEffect` |
 | **Talento de regra** | estado com um efeito de `RuleTalentEffects.cs` (ou um efeito novo) concedido por um talento |
@@ -2042,12 +2083,15 @@ modificadores de skill 0.
 
 | Personagem | Classe | Vida | Skills iniciais | Liberação (batalhas vencidas) | Talentos da classe |
 |---|---|---|---|---|---|
-| Knight | Guerreiro (Warrior) | 18 | Golpe, Investida com Escudo, Golpe de Escudo | 0 (desde o início) | Força Bruta, Muralha, Passo Pesado, Dominó, Estilhaçar, Sede de Sangue |
-| Mage | Mago (Mage) | 14 | Rajada de Vento, Nova de Gelo, Bola de Fogo | 15 | Conjurador de Tempestades, Grimório, Criomancia, Gelo Escorregadio, Rastro de Chamas, Foco Arcano, Quebradiço, Colheita de Almas |
-| Rogue | Ladino (Rogue) | 15 | Adaga Envenenada, Gancho, Passo das Sombras | 30 | Arsenal Oculto, Mestre das Sombras, Mestre do Veneno, Passo Trocado, Lâminas Envenenadas, Predador, Assassino, Banquete das Sombras |
+| Knight | Guerreiro (Warrior) | 18 | Golpe | 0 (desde o início) | Treino de Investida, Escudo Pesado, Força Bruta, Muralha, Passo Pesado, Dominó, Estilhaçar, Sede de Sangue |
+| Mage | Mago (Mage) | 14 | Rajada de Vento | 15 | Toque Gélido, Piromancia, Conjurador de Tempestades, Grimório, Criomancia, Gelo Escorregadio, Rastro de Chamas, Foco Arcano, Quebradiço, Colheita de Almas |
+| Rogue | Ladino (Rogue) | 15 | Adaga Envenenada | 30 | Gancho de Caça, Caminho das Sombras, Arsenal Oculto, Mestre das Sombras, Mestre do Veneno, Passo Trocado, Lâminas Envenenadas, Predador, Assassino, Banquete das Sombras |
 
-Cada classe tem uma skill inicial **sem recarga** (Golpe, Rajada de Vento, Adaga
-Envenenada), para sempre ter o que fazer. O Mago tem duas skills canalizadas
+Cada classe começa só com a skill **sem recarga** (Golpe, Rajada de Vento, Adaga
+Envenenada), para sempre ter o que fazer. As que eram iniciais vêm de talentos de
+nível 2: Investida com Escudo (Treino de Investida), Golpe de Escudo (Escudo
+Pesado), Nova de Gelo (Toque Gélido), Bola de Fogo (Piromancia), Gancho (Gancho de
+Caça) e Passo das Sombras (Caminho das Sombras). O Mago tem duas skills canalizadas
 (Meteoro e Tempestade Elétrica, com as variantes), liberadas por talento. A vida máxima cresce 1 por nível (até
 +11 no nível 12) e cai 2 a cada nó de talento.
 
@@ -2142,8 +2186,8 @@ no lançador. Todas as skills do jogador afetam só inimigos e não são anuncia
 | Skill | Dano | Área | Seleção | Recarga | Efeitos | Como se obtém |
 |---|---|---|---|---|---|---|
 | Golpe | 1 | 1 célula | linha 1, fixo | 0 | empurra 1 | inicial |
-| Investida com Escudo | 1 | 1 célula | linha 1-3, fixo | 2 | avança até o alvo e empurra 1 | inicial |
-| Golpe de Escudo | 2 | 1 célula | linha 1, fixo | 3 | empurra 2; Atordoado 1 turno | inicial |
+| Investida com Escudo | 1 | 1 célula | linha 1-3, fixo | 2 | avança até o alvo e empurra 1 | talento Treino de Investida |
+| Golpe de Escudo | 2 | 1 célula | linha 1, fixo | 3 | empurra 2; Atordoado 1 turno | talento Escudo Pesado |
 | Abalo Sísmico | 1 | linha de 3 | linha 1, fixo | 3 | empurra 1 | talento Força Bruta |
 | Pisão | 1 | 3×3 ao redor | na própria casa | 3 | empurra 1 para longe do centro | talento Passo Pesado |
 | Arremesso de Escudo | 1 | 1 célula | linha 2-4 | 2 | empurra 1 | talento Muralha |
@@ -2153,8 +2197,8 @@ no lançador. Todas as skills do jogador afetam só inimigos e não são anuncia
 | Skill | Dano | Área | Seleção | Recarga | Efeitos | Como se obtém |
 |---|---|---|---|---|---|---|
 | Rajada de Vento | 1 | 1 célula | linha 1-3 | 0 | empurra 1 | inicial |
-| Nova de Gelo | 1 | 3×3 ao redor | na própria casa | 3 | Congelado 1 turno | inicial |
-| Bola de Fogo | 2 | 1 célula | círculo 2-3 | 3 | Fogo na célula alvo por 2 rodadas | inicial |
+| Nova de Gelo | 1 | 3×3 ao redor | na própria casa | 3 | Congelado 1 turno | talento Toque Gélido |
+| Bola de Fogo | 2 | 1 célula | círculo 2-3 | 3 | Fogo na célula alvo por 2 rodadas | talento Piromancia |
 | Muralha de Gelo | 1 | perpendicular de 3 | círculo 1-3 | 3 | Gelado 2 turnos; Muralha de Gelo nas células vazias da área por 2 rodadas | talento Criomancia |
 | Tempestade Elétrica | 1 | cruz de 5 | círculo 2-4, ignora visão | 4 | Atordoado 1 turno; **canalizada** (usa o andar) | talento Conjurador de Tempestades |
 | Meteoro | 2 | 3×3 | círculo 2-4, ignora visão | 5 | empurra 1 para longe do centro; **canalizada** (usa o andar) e Exausto 2 turnos no Mago | talento Grimório |
@@ -2164,8 +2208,8 @@ no lançador. Todas as skills do jogador afetam só inimigos e não são anuncia
 | Skill | Dano | Área | Seleção | Recarga | Efeitos | Como se obtém |
 |---|---|---|---|---|---|---|
 | Adaga Envenenada | 1 | 1 célula | linha 1-3 | 0 | Envenenado 2 turnos | inicial |
-| Gancho | 1 | 1 célula | linha 2-3 | 2 | puxa 3 | inicial |
-| Passo das Sombras | 1 | 1 célula | círculo 1-3, casa ocupada | 3 | troca de lugar com o personagem do alvo | inicial |
+| Gancho | 1 | 1 célula | linha 2-3 | 2 | puxa 3 | talento Gancho de Caça |
+| Passo das Sombras | 1 | 1 célula | círculo 1-3, casa ocupada | 3 | troca de lugar com o personagem do alvo | talento Caminho das Sombras |
 | Adaga de Arremesso | 1 | 1 célula | estrela 2-4 | 1 | Exposto 2 turnos | talento Arsenal Oculto |
 | Bomba de Fumaça | 1 | 3×3 ao redor | na própria casa | 4 | Cego 1 turno | talento Mestre das Sombras |
 | Linha Venenosa | 1 | linha de 4 | linha 1, fixo | 3 | Envenenado 2 turnos; Pântano Venenoso nas células da área por 2 rodadas | talento Mestre do Veneno |
@@ -2201,39 +2245,39 @@ marcadas com * entraram em 2026-10-20 (golpe básico e especial em todo inimigo)
 
 | Skill | Inimigo | Dano | Área | Seleção | Recarga | Efeitos |
 |---|---|---|---|---|---|---|
-| Porretada | Goblin | 1 | 1 célula | linha 1 | 0 | |
-| Mordida | Rato, Rato espinhoso | 1 | 1 célula | linha 1 | 0 | |
+| Porretada | Goblin | 1 | fila de 3 na frente | linha 1 | 0 | |
+| Mordida | Rato, Rato espinhoso | 1 | linha de 2 | linha 1 | 0 | |
 | Respingo Ácido | Slime, Slime regenerante | 1 | perpendicular de 3 | linha 1 | 0 | |
-| Seta Flamejante | Crânio de fogo | 1 | 1 célula | linha 2-3 | 0 | Queimando 2 turnos |
-| Rasante | Morcego-olho | 1 | 1 célula | diagonal 1 | 0 | |
+| Seta Flamejante | Crânio de fogo | 1 | cruz de 5 | linha 2-3 | 0 | Queimando 2 turnos |
+| Rasante | Morcego-olho | 1 | linha de 2 | diagonal 1 | 0 | |
 | Estocada | Goblin lanceiro | 1 | linha de 2 | linha 1 | 0 | |
 | Teia | Aranha tecelã | 1 | 1 célula | linha 2-4 | 1 | Enredado 1 turno |
-| Mordida Vampírica | Morcego vampiro | 1 | 1 célula | linha 1 | 0 | cura 1 o morcego |
+| Mordida Vampírica | Morcego vampiro | 1 | linha de 2 | linha 1 | 0 | cura 1 o morcego |
 | Chuva de fogo | Goblin bombardeiro | 1 | 3×3 | círculo 2-4, ignora visão | 2 | Queimando 1 turno |
-| Chifrada | Besouro aríete | 1 | 1 célula | linha 1 | 0 | empurra 2 |
-| Faísca | Xamã goblin | 1 | 1 célula | círculo 2-3 | 0 | |
+| Chifrada | Besouro aríete | 1 | linha de 2 | linha 1 | 0 | empurra 2 |
+| Faísca | Xamã goblin | 1 | cruz de 5 | círculo 2-3 | 0 | |
 | Gancho | Goblin arpoador | 1 | 1 célula | linha 2-4 | 1 | puxa 3 |
 | Descarga | Totem do raio | 1 | linha de 5 | linha 1 | 1 | |
-| Empurrão de Escudo | Goblin blindado, Guarda Goblin | 1 | 1 célula | linha 1 | 0 | empurra 1 |
+| Empurrão de Escudo | Goblin blindado, Guarda Goblin | 1 | linha de 2 | linha 1 | 0 | empurra 1 |
 | Lufada | Xamã do vento | 1 | linha de 3 | linha 1 | 0 | empurra 1 |
 | Morteiro | Goblin artilheiro | 1 | cruz de 5 | círculo 2-5, ignora visão | 1 | |
-| Olhar Maldito | Olho maldito | 1 | 1 célula | linha 2-4 | 0 | Exposto 2 turnos |
+| Olhar Maldito | Olho maldito | 1 | linha de 2 | linha 2-4 | 0 | Exposto 2 turnos |
 | Maldição do Pântano | Bruxa do pântano | 1 | cruz de 5 | círculo 2-4 | 2 | Pântano Venenoso nas células da área por 2 rodadas |
 | Tremor | Golem de pedra | 2 | 3×3 ao redor | na própria casa | 1 | |
-| Guincho | Rainha dos ratos | 1 | 1 célula | círculo 1-2 | 0 | empurra 1 |
+| Guincho | Rainha dos ratos | 1 | cruz de 5 | círculo 1-2 | 0 | empurra 1 |
 | Pancada esmagadora | Ogro brutamontes | 3 | linha de 3 | linha 1 | 1 | |
 | Varredura Óssea | Cavaleiro esqueleto | 2 | perpendicular de 3 | linha 1 | 0 | |
 | Investida Sombria | Cavaleiro esqueleto | 2 | 1 célula | linha 2-4 | 2 | avança até o alvo e empurra 1 |
 | Erupção | Golem de lava | 2 | cruz de 5 | círculo 1-3 | 1 | Fogo nas células da área por 2 rodadas |
 | Martelada | Rei Goblin | 3 | 3×3 ao redor | na própria casa | 2 | |
 | Onda de Choque | Rei Goblin | 2 | linha de 4 | linha 1 | 1 | empurra 2 |
-| Estilingada* | Goblin artilheiro, Goblin bombardeiro, Goblin arpoador | 1 | 1 célula | linha 2-4 | 0 | |
-| Golpe Real* | Rei Goblin | 2 | 1 célula | linha 1 | 0 | |
-| Punho de Magma* | Golem de lava | 1 | 1 célula | linha 1 | 0 | Queimando 2 turnos |
+| Estilingada* | Goblin artilheiro, Goblin bombardeiro, Goblin arpoador | 1 | linha de 2 | linha 2-4 | 0 | |
+| Golpe Real* | Rei Goblin | 2 | fila de 3 na frente | linha 1 | 0 | |
+| Punho de Magma* | Golem de lava | 1 | fila de 3 na frente | linha 1 | 0 | Queimando 2 turnos |
 | Choque Estático* | Totem do raio | 1 | 3×3 ao redor | na própria casa | 0 | |
-| Soco de Ogro* | Ogro brutamontes | 2 | 1 célula | linha 1 | 0 | empurra 1 |
-| Soco de Pedra* | Golem de pedra | 1 | 1 célula | linha 1 | 0 | empurra 1 |
-| Bola de Lama* | Bruxa do pântano | 1 | 1 célula | círculo 2-3 | 0 | |
+| Soco de Ogro* | Ogro brutamontes | 2 | fila de 3 na frente | linha 1 | 0 | empurra 1 |
+| Soco de Pedra* | Golem de pedra | 1 | fila de 3 na frente | linha 1 | 0 | empurra 1 |
+| Bola de Lama* | Bruxa do pântano | 1 | cruz de 5 | círculo 2-3 | 0 | |
 | Investida* | Goblin, Goblin blindado, Guarda Goblin, Besouro aríete | 1 | 1 célula | linha 2-3 | 2 | avança até o alvo e empurra 1 |
 | Dardo* | Goblin lanceiro | 1 | 1 célula | linha 2-4 | 2 | empurra 1 |
 | Arco Elétrico* | Xamã goblin | 1 | cruz de 5 | círculo 2-3 | 2 | |
@@ -2257,14 +2301,20 @@ Sônico).
 
 ### Consumíveis
 
-`ConsumableDefinition` em `Consumables`. Inventário de 3 espaços, 1 uso por
-turno, só em batalha; o nó de consumível oferece 3 para escolher 1.
+`ConsumableDefinition` em `Consumables` (8 itens no pool de `ConsumableSettings`).
+Inventário de 3 espaços, 1 uso por turno, só em batalha; o nó de consumível
+oferece 3 para escolher 1. Todo item com alvo precisa de linha de visão.
 
 | Consumível | Mira | Efeito | Peso de sorteio |
 |---|---|---|---|
 | Poção de Cura | sem alvo | recupera 4 de vida (recusa vida cheia) | 3 |
-| Bomba | com alvo (até 3 células, Manhattan; área 3×3) | 2 de dano a cada inimigo na área | 2 |
+| Bomba | com alvo (até 3 células, Manhattan; área 3×3; precisa de linha de visão) | 2 de dano a cada inimigo na área | 2 |
 | Tônico de Regeneração | sem alvo | aplica Regeneração (1 de vida por turno) por 3 turnos | 1 |
+| Granada de Impacto | com alvo (até 3; área 3×3; linha de visão) | empurra 1 casa, para longe do centro, cada inimigo na área (colisões causam dano) | 1,5 |
+| Pergaminho de Troca | com alvo (até 4; 1 célula ocupada; linha de visão) | quem usa troca de lugar com o personagem da célula (o golpe preparado vai junto) | 1 |
+| Pedra | com alvo (até 3; célula vazia; linha de visão) | Rocha na célula por 3 rodadas (bloqueia o andar e a visão) | 1 |
+| Frasco de Fogo | com alvo (até 3; cruz de 5; linha de visão) | Fogo nas células da área por 2 rodadas | 1 |
+| Frasco Congelante | com alvo (até 3; 1 célula; linha de visão) | Congelado 1 turno no inimigo (cancela o golpe preparado) | 1 |
 
 ### Talentos
 

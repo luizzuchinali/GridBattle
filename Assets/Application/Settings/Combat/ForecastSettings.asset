@@ -13,12 +13,15 @@ MonoBehaviour:
   m_Name: ForecastSettings
   m_EditorClassIdentifier: Assembly-CSharp::GridBattle.Gameplay.Forecast.ForecastSettings
   showActingOrder: 1
-  showOrderOnStrikes: 1
+  showOrderOnStrikes: 0
   strikeOrderOffset: {x: -11, y: 16}
   strikeOrderSpacing: 9
   orderFontSize: 1.5
   orderColor: {r: 1, g: 1, b: 1, a: 1}
   laterStrikeColor: {r: 0.75, g: 0.75, b: 0.75, a: 1}
+  strikeStripePeriod: 6
+  strikeStripeWidth: 2
+  dimmedStrikeAlpha: 0.3
   showPredictedDamage: 1
   blinkPeriod: 0.6
   damageTextColor: {r: 1, g: 0.85, b: 0.1, a: 1}

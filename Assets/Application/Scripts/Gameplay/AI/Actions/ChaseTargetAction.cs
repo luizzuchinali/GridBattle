@@ -17,7 +17,7 @@ namespace GridBattle.Gameplay.AI.Actions
             var step = GridRules.FindStepToward(context.Grid, context.Self, context.Target.CurrentGridPos);
             if (step == null) return false;
 
-            context.Grid.MoveEntity(context.Self, step.Value);
+            context.Grid.WalkEntity(context.Self, step.Value);
             return true;
         }
     }

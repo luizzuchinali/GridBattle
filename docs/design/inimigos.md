@@ -146,13 +146,13 @@ As habilidades que hoje são ações de IA (curar, proteger, enfraquecer, invoca
 
 | Golpe | Tipo | Dano | Área | Seleção | Efeito |
 |---|---|---|---|---|---|
-| Estilingada | básico | 1 | 1 célula | linha 2-4 | |
-| Golpe Real | básico | 2 | 1 célula | linha 1 | |
-| Punho de Magma | básico | 1 | 1 célula | linha 1 | Queimando 2 turnos |
+| Estilingada | básico | 1 | linha de 2 | linha 2-4 | |
+| Golpe Real | básico | 2 | fila de 3 na frente | linha 1 | |
+| Punho de Magma | básico | 1 | fila de 3 na frente | linha 1 | Queimando 2 turnos |
 | Choque Estático | básico | 1 | 3×3 ao redor | na própria casa | |
-| Soco de Ogro | básico | 2 | 1 célula | linha 1 | empurra 1 |
-| Soco de Pedra | básico | 1 | 1 célula | linha 1 | empurra 1 |
-| Bola de Lama | básico | 1 | 1 célula | círculo 2-3 | |
+| Soco de Ogro | básico | 2 | fila de 3 na frente | linha 1 | empurra 1 |
+| Soco de Pedra | básico | 1 | fila de 3 na frente | linha 1 | empurra 1 |
+| Bola de Lama | básico | 1 | cruz de 5 | círculo 2-3 | |
 | Investida | especial, recarga 2 | 1 | 1 célula | linha 2-3 | avança até o alvo e empurra 1 |
 | Dardo | especial, recarga 2 | 1 | 1 célula | linha 2-4 | empurra 1 |
 | Arco Elétrico | especial, recarga 2 | 1 | cruz de 5 | círculo 2-3 | |

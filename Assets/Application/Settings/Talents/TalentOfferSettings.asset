@@ -21,7 +21,7 @@ MonoBehaviour:
   synergyBonusPerSharedTag: 0.5
   synergyCounting: 0
   sharedPoolWeightMultiplier: 0.5
-  maxSkillTalents: 3
+  maxSkillTalents: 5
   offerAfterFinalBossKill: 0
   talentNodeLevelBonus: 1
   maxHpGainHealsSameAmount: 1

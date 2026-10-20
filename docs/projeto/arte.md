@@ -111,6 +111,7 @@ Lotes gerados com `create_image_pro` (galeria do PixelLab da conta do Luiz; aind
 | O | 16×16 | ícones do novo molde (commit `37ff643`): skills novas das classes e dos inimigos, talentos de regra, Congelado, Cego, acampamento e elite; trabalho `f981155d` | `51347edd-11af-51f6-bc35-2a7d63fe9770` |
 | P | 24×24 | Muralha de Gelo (terreno), sem piso; trabalho `e9411cfc` | `62516f6f-5f09-5b4f-8c21-8c0062fa9ae8` |
 | Q | 16×16 | 64 opções, paleta ENDESGA 32: os 17 golpes novos dos inimigos e o estado Exausto (2026-10-20, commit `1288849`); trabalho `869d91fc-6616-4992-8d7b-71ec3a897624` | `db6d7dab-39c7-5104-a011-99f1d1b5856b` |
+| R | 16×16 | 64 opções, paleta ENDESGA 32: os 5 consumíveis novos, 13 opções de cada (1-13 Granada de Impacto, 14-26 Pergaminho de Troca, 27-39 Pedra, 40-52 Frasco de Fogo, 53-64 Frasco de Gelo) (2026-10-20); trabalho `097b3e59-017d-4b6f-af76-b9859fbbfdb8` | `fff10c2c-bc5b-5283-ab98-225535ae8d9f` |
 
 Nos lotes O e P, o registro da geração guardou o número do trabalho (`f981155d`, `e9411cfc`), não o da imagem na
 galeria. As imagens da coluna da direita são as únicas da galeria com esse tamanho e essa quantidade de opções
@@ -142,6 +143,8 @@ Escolhas (lote e número da opção, contando de 1):
   Golpe básico e especial de 2026-10-20: Sling (Q1), KingStrike (Q6), MagmaFist (Q7), StaticShock (Q11),
   OgrePunch (Q13), StoneFist (Q17), MudBolt (Q19), Charge (Q22), Javelin (Q26), ArcLightning (Q30), Shriek (Q33),
   FlameBurst (Q36), BlindingGaze (Q38), PlagueBite (Q42), QuillBurst (Q45), AcidSpit (Q48), Tornado (Q50).
+- `Icons/Consumables/` de 2026-10-20: ImpactGrenade (R1), SwapScroll (R20), Stone (R28), FireFlask (R46),
+  FrostFlask (R55).
 - `Icons/Talents/` do novo molde (talentos de regra): Domino (O13), FlameTrail (O15), Momentum (O17),
   Counterstrike (O19), SlipperyIce (O21), SwapStep (O23).
 - `Icons/States/`: Burning (B6), Chilled (B7), Exposed (B8), Stunned (B9), Venom (E29), Webbed (I59),

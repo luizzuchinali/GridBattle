@@ -367,7 +367,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 141743153709057
-    m_Localized: "Arremesse at\xE9 3 casas de dist\xE2ncia: causa 2 de dano em cada inimigo numa \xE1rea 3x3. N\xE3o gasta a sua a\xE7\xE3o."
+    m_Localized: "Arremesse at\xE9 3 casas de dist\xE2ncia, com linha de vis\xE3o: causa 2 de dano em cada inimigo numa \xE1rea 3x3. N\xE3o gasta a sua a\xE7\xE3o."
     m_Metadata:
       m_Items: []
   - m_Id: 141743547973632
@@ -1415,7 +1415,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5123259992973313
-    m_Localized: "Marca uma casa adjacente e a golpeia no pr\xF3ximo turno: 1 de dano em quem estiver l\xE1."
+    m_Localized: "Marca uma fila de 3 casas \xE0 sua frente e as golpeia no pr\xF3ximo turno: 1 de dano em quem estiver l\xE1."
     m_Metadata:
       m_Items: []
   - m_Id: 5123260152356864
@@ -1423,7 +1423,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5123260152356865
-    m_Localized: "Marca uma casa adjacente e a morde no pr\xF3ximo turno: 1 de dano."
+    m_Localized: "Marca uma casa adjacente e a de tr\xE1s dela e morde ali no pr\xF3ximo turno: 1 de dano."
     m_Metadata:
       m_Items: []
   - m_Id: 5123260307546112
@@ -1439,7 +1439,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5123260471123969
-    m_Localized: "Marca uma casa a 2-3 em linha reta e dispara no pr\xF3ximo turno: 1 de dano e Queimando por 2 turnos."
+    m_Localized: "Marca uma cruz de 5 casas a 2-3 em linha reta e dispara no pr\xF3ximo turno: 1 de dano e Queimando por 2 turnos."
     m_Metadata:
       m_Items: []
   - m_Id: 5123260626313216
@@ -1447,7 +1447,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5123260626313217
-    m_Localized: "Marca uma casa vizinha na diagonal e mergulha nela no pr\xF3ximo turno: 1 de dano."
+    m_Localized: "Marca uma casa vizinha na diagonal e a de tr\xE1s dela e mergulha ali no pr\xF3ximo turno: 1 de dano."
     m_Metadata:
       m_Items: []
   - m_Id: 5123260798279680
@@ -1455,7 +1455,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5123260802473984
-    m_Localized: "Marca uma casa a 2-3 e a eletrifica no pr\xF3ximo turno: 1 de dano."
+    m_Localized: "Marca uma cruz de 5 casas a 2-3 e a eletrifica no pr\xF3ximo turno: 1 de dano."
     m_Metadata:
       m_Items: []
   - m_Id: 5123260961857536
@@ -1463,7 +1463,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5123260961857537
-    m_Localized: "Marca uma casa a at\xE9 2 e guincha contra ela no pr\xF3ximo turno: 1 de dano e empurra 1 casa."
+    m_Localized: "Marca uma cruz de 5 casas a at\xE9 2 e guincha contra ela no pr\xF3ximo turno: 1 de dano e empurra 1 casa."
     m_Metadata:
       m_Items: []
   - m_Id: 5123261129629696
@@ -1471,7 +1471,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5123261129629697
-    m_Localized: "Marca uma casa a 2-4 em linha reta e a amaldi\xE7oa no pr\xF3ximo turno: 1 de dano e Exposto (leva 1 a mais de cada golpe)."
+    m_Localized: "Marca 2 casas seguidas a 2-4 em linha reta e as amaldi\xE7oa no pr\xF3ximo turno: 1 de dano e Exposto (leva 1 a mais de cada golpe)."
     m_Metadata:
       m_Items: []
   - m_Id: 5123261301596160
@@ -1479,7 +1479,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5123261301596161
-    m_Localized: "Marca uma casa adjacente e a empurra no pr\xF3ximo turno: 1 de dano e empurra 1 casa."
+    m_Localized: "Marca uma casa adjacente e a de tr\xE1s dela e empurra ali no pr\xF3ximo turno: 1 de dano e empurra 1 casa."
     m_Metadata:
       m_Items: []
   - m_Id: 5123261486145536
@@ -1495,7 +1495,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5123261649723393
-    m_Localized: "Marca uma casa adjacente e a acerta com os chifres no pr\xF3ximo turno: 1 de dano e empurra 2 casas."
+    m_Localized: "Marca uma casa adjacente e a de tr\xE1s dela e acerta ali com os chifres no pr\xF3ximo turno: 1 de dano e empurra 2 casas."
     m_Metadata:
       m_Items: []
   - m_Id: 5123261809106944
@@ -1535,7 +1535,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5123262484389889
-    m_Localized: "Marca uma casa adjacente e a morde no pr\xF3ximo turno: 1 de dano, e o morcego recupera 1 PV."
+    m_Localized: "Marca uma casa adjacente e a de tr\xE1s dela e morde ali no pr\xF3ximo turno: 1 de dano, e o morcego recupera 1 PV."
     m_Metadata:
       m_Items: []
   - m_Id: 5123262643773440
@@ -1663,7 +1663,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5570314477576193
-    m_Localized: "Marca uma casa a 2-4 em linha reta e atira uma pedra nela no pr\xF3ximo turno: 1 de dano."
+    m_Localized: "Marca 2 casas seguidas a 2-4 em linha reta e atira uma pedra ali no pr\xF3ximo turno: 1 de dano."
     m_Metadata:
       m_Items: []
   - m_Id: 5570314725040128
@@ -1671,7 +1671,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5570314725040129
-    m_Localized: "Marca uma casa adjacente e a golpeia com o martelo no pr\xF3ximo turno: 2 de dano."
+    m_Localized: "Marca uma fila de 3 casas \xE0 sua frente e as golpeia com o martelo no pr\xF3ximo turno: 2 de dano."
     m_Metadata:
       m_Items: []
   - m_Id: 5570314951532544
@@ -1679,7 +1679,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5570314951532545
-    m_Localized: "Marca uma casa adjacente e a soca no pr\xF3ximo turno: 1 de dano e Queimando por 2 turnos."
+    m_Localized: "Marca uma fila de 3 casas \xE0 sua frente e as soca no pr\xF3ximo turno: 1 de dano e Queimando por 2 turnos."
     m_Metadata:
       m_Items: []
   - m_Id: 5570315131887616
@@ -1695,7 +1695,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5570315329019904
-    m_Localized: "Marca uma casa adjacente e a soca no pr\xF3ximo turno: 2 de dano e empurra 1 casa."
+    m_Localized: "Marca uma fila de 3 casas \xE0 sua frente e as soca no pr\xF3ximo turno: 2 de dano e empurra 1 casa."
     m_Metadata:
       m_Items: []
   - m_Id: 5570315517763584
@@ -1703,7 +1703,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5570315517763585
-    m_Localized: "Marca uma casa adjacente e a soca no pr\xF3ximo turno: 1 de dano e empurra 1 casa."
+    m_Localized: "Marca uma fila de 3 casas \xE0 sua frente e as soca no pr\xF3ximo turno: 1 de dano e empurra 1 casa."
     m_Metadata:
       m_Items: []
   - m_Id: 5570315744256000
@@ -1711,7 +1711,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5570315744256001
-    m_Localized: "Marca uma casa a 2-3 e joga lama nela no pr\xF3ximo turno: 1 de dano."
+    m_Localized: "Marca uma cruz de 5 casas a 2-3 e joga lama nela no pr\xF3ximo turno: 1 de dano."
     m_Metadata:
       m_Items: []
   - m_Id: 5570315932999680
@@ -1792,6 +1792,94 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 5570317619109889
     m_Localized: "Marca uma cruz de casas a 2-4 e invoca um tornado no pr\xF3ximo turno: 1 de dano e empurra todos 1 casa para longe do centro."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5660003393937408
+    m_Localized: Treino de Investida
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5660003473629184
+    m_Localized: "Desbloqueia Investida com Escudo: avan\xE7a at\xE9 3 casas em linha reta. O inimigo no fim leva 1 de dano e \xE9 empurrado 1 casa."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5660003704315904
+    m_Localized: Escudo Pesado
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5660003704315905
+    m_Localized: 'Desbloqueia Golpe de Escudo: golpeia um inimigo adjacente: 2 de dano, o empurra 2 casas e o atordoa, cancelando o golpe preparado.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5660003951779840
+    m_Localized: "Toque G\xE9lido"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5660003951779841
+    m_Localized: "Desbloqueia Nova de Gelo: congela todos ao seu redor: 1 de dano, e no pr\xF3ximo turno deles n\xE3o podem andar nem usar skills. Um inimigo congelado perde o golpe preparado."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5660004169883648
+    m_Localized: Piromancia
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5660004174077952
+    m_Localized: "Desbloqueia Bola de Fogo: lan\xE7a uma bola de fogo numa casa a 2-3: 2 de dano, e a casa queima por 2 rodadas (1 de dano em quem terminar o turno nela)."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5660004375404544
+    m_Localized: "Gancho de Ca\xE7a"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5660004379598848
+    m_Localized: "Desbloqueia Gancho: lan\xE7a um gancho num inimigo a 2-3 casas em linha reta: 1 de dano e o puxa at\xE9 3 casas em sua dire\xE7\xE3o."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5660004610285568
+    m_Localized: Caminho das Sombras
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5660004610285569
+    m_Localized: "Desbloqueia Passo das Sombras: troca de lugar com um personagem a at\xE9 3 casas; um inimigo leva 1 de dano. O golpe preparado de um inimigo se move com ele."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5670288141918208
+    m_Localized: Granada de Impacto
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5670288276135936
+    m_Localized: "Arremesse at\xE9 3 casas de dist\xE2ncia, com linha de vis\xE3o: empurra 1 casa, para longe do centro, cada inimigo numa \xE1rea 3x3. As colis\xF5es causam dano. N\xE3o gasta a sua a\xE7\xE3o."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5670288276135937
+    m_Localized: Pergaminho de Troca
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5670288276135938
+    m_Localized: "Troque de lugar com um personagem a at\xE9 4 casas, com linha de vis\xE3o. O golpe que ele preparou vai junto. N\xE3o gasta a sua a\xE7\xE3o."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5670288280330240
+    m_Localized: Pedra
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5670288280330241
+    m_Localized: "Levanta uma rocha numa casa vazia a at\xE9 3 casas, com linha de vis\xE3o, por 3 rodadas. Ela bloqueia o andar e a linha de vis\xE3o. N\xE3o gasta a sua a\xE7\xE3o."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5670288280330242
+    m_Localized: Frasco de Fogo
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5670288280330243
+    m_Localized: "Arremesse at\xE9 3 casas, com linha de vis\xE3o: p\xF5e fogo numa cruz de 5 casas por 2 rodadas. O fogo fere quem estiver nele. N\xE3o gasta a sua a\xE7\xE3o."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5670288280330244
+    m_Localized: Frasco Congelante
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5670288280330245
+    m_Localized: "Congela um inimigo a at\xE9 3 casas, com linha de vis\xE3o, por 1 turno: ele n\xE3o anda nem usa habilidades, e o golpe preparado dele \xE9 cancelado. N\xE3o gasta a sua a\xE7\xE3o."
     m_Metadata:
       m_Items: []
   references:

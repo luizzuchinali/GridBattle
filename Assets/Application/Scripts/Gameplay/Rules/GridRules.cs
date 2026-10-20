@@ -31,9 +31,9 @@ namespace GridBattle.Gameplay.Rules
 
         /// <summary>
         /// Whether the character can move to <paramref name="targetPos"/> this turn:
-        /// inside the grid, not blocked by terrain, free, within the walk range and,
-        /// when terrain blocks cells, reachable without crossing a blocked cell
-        /// (see <see cref="HasWalkPath"/>).
+        /// inside the grid, not blocked by terrain, free, within the walk range and
+        /// reachable without crossing terrain that blocks movement or another
+        /// character (see <see cref="HasWalkPath"/>).
         /// </summary>
         public static bool CanWalkTo(GridController grid, Character character, Vector2Int targetPos)
         {
@@ -42,21 +42,33 @@ namespace GridBattle.Gameplay.Rules
             if (!grid.IsFreePosition(targetPos)) return false;
             if (!IsInWalkRange(character.CurrentGridPos, targetPos, character.WalkDistance)) return false;
 
-            return !grid.HasBlockedCells ||
-                   HasWalkPath(grid, character.CurrentGridPos, targetPos, character.WalkDistance);
+            return HasWalkPath(grid, character.CurrentGridPos, targetPos, character.WalkDistance);
         }
 
         /// <summary>
         /// Whether <paramref name="to"/> can be reached from <paramref name="from"/>
-        /// without crossing a blocked cell: a chain of unblocked, 4-adjacent cells,
-        /// all within the walk range of <paramref name="from"/>. Characters do not
-        /// block the way (only the destination must be free, see
-        /// <see cref="CanWalkTo"/>).
+        /// without crossing an obstacle (see <see cref="FindWalkPath"/>). The
+        /// destination's own content is checked by <see cref="CanWalkTo"/>.
         /// </summary>
         public static bool HasWalkPath(GridController grid, Vector2Int from, Vector2Int to, int walkDistance)
         {
-            if (from == to) return true;
+            return from == to || FindWalkPath(grid, from, to, walkDistance) != null;
+        }
 
+        /// <summary>
+        /// The cells a walk from <paramref name="from"/> to <paramref name="to"/> crosses, in order, without the
+        /// start and ending with the destination; null when there is no way. The walk goes one cell at a time
+        /// through 4-adjacent cells that are free (no terrain that blocks movement, no character), all within the
+        /// walk range of <paramref name="from"/>, so a diagonal step between two obstacles is not possible. It is
+        /// the shortest such walk; ties go to the first found (steps tried down, left, right, up). The
+        /// destination's own content is not checked here (<see cref="CanWalkTo"/> does).
+        /// </summary>
+        public static List<Vector2Int> FindWalkPath(GridController grid, Vector2Int from, Vector2Int to,
+            int walkDistance)
+        {
+            if (from == to) return new List<Vector2Int>();
+
+            var previous = new Dictionary<Vector2Int, Vector2Int>();
             var visited = new HashSet<Vector2Int> { from };
             var queue = new Queue<Vector2Int>();
             queue.Enqueue(from);
@@ -69,13 +81,26 @@ namespace GridBattle.Gameplay.Rules
                     if (!visited.Add(next)) continue;
                     if (!grid.IsWalkable(next)) continue;
                     if (!IsInWalkRange(from, next, walkDistance)) continue;
-                    if (next == to) return true;
+
+                    previous[next] = current;
+                    if (next == to) return BuildPath(previous, from, to);
+                    if (!grid.IsFreePosition(next)) continue;
 
                     queue.Enqueue(next);
                 }
             }
 
-            return false;
+            return null;
+        }
+
+        private static List<Vector2Int> BuildPath(Dictionary<Vector2Int, Vector2Int> previous, Vector2Int from,
+            Vector2Int to)
+        {
+            var path = new List<Vector2Int>();
+            for (var cell = to; cell != from; cell = previous[cell])
+                path.Add(cell);
+            path.Reverse();
+            return path;
         }
 
         public static bool IsAttackTarget(GridController grid, Character attacker, Vector2Int targetPos)
@@ -317,6 +342,29 @@ namespace GridBattle.Gameplay.Rules
             }
 
             return highlightInfos;
+        }
+
+        /// <summary>
+        /// The cells <paramref name="character"/> can walk to from where it stands (<see cref="CanWalkTo"/>, with
+        /// characters in the way as they are now). Empty when it cannot walk (a state that prevents moving).
+        /// </summary>
+        public static HashSet<Vector2Int> GetWalkCells(GridController grid, Character character)
+        {
+            var cells = new HashSet<Vector2Int>();
+            if (grid == null || character == null || character.IsDead) return cells;
+
+            var walk = character.WalkDistance;
+            for (var y = -walk; y <= walk; y++)
+            {
+                for (var x = -walk; x <= walk; x++)
+                {
+                    var cell = character.CurrentGridPos + new Vector2Int(x, y);
+                    if (cell != character.CurrentGridPos && CanWalkTo(grid, character, cell))
+                        cells.Add(cell);
+                }
+            }
+
+            return cells;
         }
 
         /// <summary>

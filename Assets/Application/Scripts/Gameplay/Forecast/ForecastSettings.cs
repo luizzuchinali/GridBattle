@@ -4,8 +4,8 @@ using UnityEngine;
 namespace GridBattle.Gameplay.Forecast
 {
     /// <summary>
-    /// Look of the battle forecast (Into the Breach style clarity): the order the enemies act in, the number on the
-    /// area of each prepared strike, the damage a strike or the player's aimed action would deal (shown on the health
+    /// Look of the battle forecast (Into the Breach style clarity): the order the enemies act in, the striped mark of the
+    /// cells of each prepared strike, the damage a strike or the player's aimed action would deal (shown on the health
     /// bars) and the arrows and ghosts of the pushes, pulls and swaps an aimed action would cause. Visual only.
     /// Sizes and offsets are in pixels at the reference resolution, so everything stays pixel perfect.
     /// </summary>
@@ -18,8 +18,9 @@ namespace GridBattle.Gameplay.Forecast
         private bool showActingOrder = true;
 
         [SerializeField]
-        [Tooltip("Show the caster's number on the aimed cell of each prepared strike, so each area reads as whose.")]
-        private bool showOrderOnStrikes = true;
+        [Tooltip("Also show the caster's number on the aimed cell of each prepared strike. Off by default: several " +
+                 "strikes on one cell pile their numbers up; tapping an enemy shows which area is its strike instead.")]
+        private bool showOrderOnStrikes;
 
         [SerializeField]
         [Tooltip("Offset of the strike number from the center of its aimed cell, in pixels.")]
@@ -42,6 +43,22 @@ namespace GridBattle.Gameplay.Forecast
         [SerializeField]
         [Tooltip("Color of the order number of a strike that fires in a later enemy phase (not the next one).")]
         private Color laterStrikeColor = new(0.75f, 0.75f, 0.75f, 1f);
+
+        [Header("Strike marks")]
+        [SerializeField]
+        [Min(2)]
+        [Tooltip("Pixels from one stripe of the strike mark to the next.")]
+        private int strikeStripePeriod = 6;
+
+        [SerializeField]
+        [Min(1)]
+        [Tooltip("Width of each stripe of the strike mark, in pixels.")]
+        private int strikeStripeWidth = 2;
+
+        [SerializeField]
+        [Range(0f, 1f)]
+        [Tooltip("Opacity of the marks of the other strikes while an enemy is tapped (its own strike stays full).")]
+        private float dimmedStrikeAlpha = 0.3f;
 
         [Header("Predicted damage")]
         [SerializeField]
@@ -84,6 +101,9 @@ namespace GridBattle.Gameplay.Forecast
         public float OrderFontSize => orderFontSize;
         public Color OrderColor => orderColor;
         public Color LaterStrikeColor => laterStrikeColor;
+        public int StrikeStripePeriod => Mathf.Max(2, strikeStripePeriod);
+        public int StrikeStripeWidth => Mathf.Max(1, strikeStripeWidth);
+        public float DimmedStrikeAlpha => dimmedStrikeAlpha;
         public bool ShowPredictedDamage => showPredictedDamage;
         public float BlinkPeriod => Mathf.Max(0.1f, blinkPeriod);
         public Color DamageTextColor => damageTextColor;

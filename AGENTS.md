@@ -65,14 +65,14 @@ Assets/
 │   │   ├── Cell.prefab                                     célula (destaques, terreno, barra de vida, texto de dano)
 │   │   └── Entities/
 │   │       ├── Character.prefab                            template base (SpriteRenderer + Animator + CharacterView)
-│   │       ├── Enemy.prefab                                variant: + Enemy + EnemyController + EnemyIconsView (papel, estados, ordem de ação, turnos do golpe)
+│   │       ├── Enemy.prefab                                variant: + Enemy + EnemyController + EnemyIconsView (ordem de ação no canto da célula, papel, estados; golpe só ao tocar)
 │   │       └── PlayerCharacter.prefab                      variant: + PlayerCharacter + PlayerCharacterController
 │   ├── Settings/                   ← dados de jogo (ScriptableObjects), editáveis pelo Inspector
 │   │   ├── Resources/                                      GameDatabase.asset e GameSettings.asset (gerados pelo editor)
 │   │   ├── Characters/{Players,Enemies}/                   PlayerCharacterConfig / EnemyConfig (27 inimigos provisórios, inclusive as elites `isUnique` e o chefe)
 │   │   ├── AI/                                             EnemyBehavior (ChaseAndAttack, Ranged, Skirmisher, Stationary, Support, Summoner, Controller)
 │   │   ├── AI/Actions/, AI/Roles/                          EnemyAction (ApproachMelee/Mid/Ranged = ApproachForSkillAction) e EnemyRoleDefinition
-│   │   ├── Skills/<Classe>/, Skills/<Classe>/Upgrades/     SkillDefinition: 6 por classe (3 iniciais + 3 liberadas por talento) e 2 variantes de melhoria de cada uma (Meteoro e Tempestade Elétrica do Mago são canalizadas: `usesWalk`)
+│   │   ├── Skills/<Classe>/, Skills/<Classe>/Upgrades/     SkillDefinition: 6 por classe (1 inicial + 5 liberadas por talento) e 2 variantes de melhoria de cada uma (Meteoro e Tempestade Elétrica do Mago são canalizadas: `usesWalk`)
 │   │   ├── Skills/Enemies/, Skills/SkillSettings           43 golpes anunciados dos inimigos e do chefe (cada inimigo: um especial com recarga e um básico sem recarga); SkillSettings (6 espaços de skill)
 │   │   ├── States/, States/Talents/                        StateDefinition (States/: estados de combate, inclusive Blindado, Exposto, Fraquejado, Congelado, Cego, Atordoado, Enredado, Exausto; States/Talents/: um estado por talento)
 │   │   ├── Talents/{Shared,Warrior,Mage,Rogue,Tags}/       TalentDefinition (talentos de regra, passivas e os que liberam skills), SynergyTagDefinition, TalentOfferSettings (peso dos genéricos)
@@ -118,23 +118,23 @@ O namespace segue a pasta: `GridBattle.<Pasta>[.<Subpasta>]`.
 | `Editor/` | `GridBattle.Editor[.…]` | `GameDatabaseBuilder`, `GridControllerEditor`, `Drawers/SubclassPickerDrawer`, `Localization/LocalizationTableTool`, `Tools/PlaceholderIcons`, `Tools/VfxPlaceholders` (`GridBattle > Vfx > Generate Placeholder Visuals`), `Tools/MonetizationMenu` (`GridBattle > Monetization`), `Tools/ContentValidator` (`GridBattle > Validate Content`), `Talents/{TalentChecks,XpProgressionSimulator}`, `Simulation/BalanceSimulation` (menu e Play Mode do simulador) |
 | `Managers/` | `GridBattle.Managers` | `GameStateManager` (classes jogáveis), `RunManager` (a run; acampamento, melhorias de skill, recompensa da elite), `TurnManager` (turnos; inimigos na ordem de `ActingOrder`), `GameConfigManager`, `GameReset` (reset total, só em build de desenvolvimento) |
 | `Managers/Audio/` | `…Managers.Audio` | `AudioManager` (autoinicializado), `AudioLibrary`, `ESfx`, `EMusicContext`, `AudioEventHooks` |
-| `Gameplay/` | `GridBattle.Gameplay` | `GridController` (inclui terreno temporário: `SetTerrain(célula, terreno, rodadas)` e `TickTemporaryTerrain`; troca de lugar: `SwapCharacters`), `Cell` (marcas dos golpes, dano previsto), `BattleController` (vitória/derrota), `CellContentHealthBar`, `EncounterConfig`, `ETurnOwner`, `GameplayInput(Settings)` (`confirmTargetedActions`: mirar e confirmar) |
+| `Gameplay/` | `GridBattle.Gameplay` | `GridController` (andar por caminho: `WalkEntity`; inclui terreno temporário: `SetTerrain(célula, terreno, rodadas)` e `TickTemporaryTerrain`; troca de lugar: `SwapCharacters`), `Cell` (marcas dos golpes, dano previsto), `BattleController` (vitória/derrota), `CellContentHealthBar`, `EncounterConfig`, `ETurnOwner`, `GameplayInput(Settings)` (`confirmTargetedActions`: mirar e confirmar) |
 | `Gameplay/Stats/` | `…Gameplay.Stats` | `EAttribute`, `AttributeModifier`, `CharacterStats` |
 | `Gameplay/States/` (+`Effects/`) | `…Gameplay.States[.Effects]` | `StateDefinition`, `StateEffect` (ganchos: atributos, turnos, dano causado e recebido, bônus de dano condicional, modificadores de skill) e efeitos (`SkillModifierEffect`, `ConditionalDamageEffect`, `OnKillEffect` (+`grantExtraWalk`), `ApplyStateOnHitEffect`, ...); talentos de regra em `RuleTalentEffects.cs` (`DominoEffect`, `DisplacementTrailEffect`, `SlipperyPushEffect`, `CounterstrikeEffect`, `SwapStepEffect`); `StateGrant`, `StateInstance`, `StateContainer` (`FindEffect<T>`/`HasEffect<T>`: consulta dos talentos de regra) |
 | `Gameplay/Combat/` | `…Gameplay.Combat` | `CombatSettings`, `DamageCalculator`, `CombatResolver` (`Adjust`, `PredictDamage`), `DamageContext` (+`DamageAdjustment`, `EDamageKindMask`), `HitResult`, `DisplacementResolver` (aplica e prevê empurrões e puxões; Dominó e rastro dos talentos de regra) |
 | `Gameplay/Turns/` | `…Gameplay.Turns` | `TurnBlockers`, `ActingOrder` (ordem fixa dos inimigos na batalha: `Enemy.ActOrder`, empate por linha e coluna) |
-| `Gameplay/Forecast/` | `…Gameplay.Forecast` | previsão (estilo *Into the Breach*, pura): `ActionForecast` (o que a ação mirada faria: área, dano, mortes, deslocamentos, posições finais, interrompidos), `ThreatForecast` (+`TelegraphForecast`: o que os golpes anunciados fariam, depois da ação), `ForecastView` (desenha no tabuleiro; adicionada pelo `GridController` em Play Mode), `ForecastSettings`, `ForecastSprites` (setas 10×10 feitas em código) |
-| `Gameplay/Rules/` | `…Gameplay.Rules` | `GridRules` (inclui `GetReachCells`/`GetSkillReachCells`: onde um inimigo pode golpear no próximo turno), `GridDistance`, `Displacement` (regras puras de empurrar e puxar: direção, caminho, colisão, `GetDistance` com o Gelo Escorregadio), `LineOfSight` (linha de visão das skills), `SkillSelection` (área de seleção das skills: forma, alcance mínimo e máximo) |
+| `Gameplay/Forecast/` | `…Gameplay.Forecast` | previsão (estilo *Into the Breach*, pura): `ActionForecast` (o que a ação mirada faria: área, dano, mortes, deslocamentos, posições finais, interrompidos), `ThreatForecast` (+`TelegraphForecast`: o que os golpes anunciados fariam, depois da ação), `ForecastView` (desenha no tabuleiro; adicionada pelo `GridController` em Play Mode), `ForecastSettings`, `ForecastSprites` (feitos em código: setas 10×10, listras da marca dos golpes, selos) |
+| `Gameplay/Rules/` | `…Gameplay.Rules` | `GridRules` (inclui `GetWalkCells`: para onde um personagem pode andar, mostrado ao tocar num inimigo; `GetReachCells`/`GetSkillReachCells`: onde um inimigo pode golpear no próximo turno, sem uso no jogo hoje), `GridDistance`, `Displacement` (regras puras de empurrar e puxar: direção, caminho, colisão, `GetDistance` com o Gelo Escorregadio), `LineOfSight` (linha de visão das skills), `SkillSelection` (área de seleção das skills: forma, alcance mínimo e máximo) |
 | `Gameplay/Movement/` | `…Gameplay.Movement` | `GridMovementAnimator`, `GridEffectsAnimator`, `GridMovementSettings`, `ActionVisualDefinition` (+`ECasterGesture`, `EVisualCellOrder`, `EVisualFacing`: visual de skill/item) e `ActionVisualPlayer` (toca o visual) |
-| `Gameplay/Entities/` | `…Gameplay.Entities` | `GridEntity` → `Character` → `PlayerCharacter` / `Enemy` (golpe preparado `Telegraph`, `ActOrder`); `CharacterView`, `EnemyIconsView` (+ordem de ação), `CharacterFactory`, `CharacterScaling`, `ECharacter` |
+| `Gameplay/Entities/` | `…Gameplay.Entities` | `GridEntity` → `Character` → `PlayerCharacter` / `Enemy` (golpe preparado `Telegraph`, `ActOrder`); `CharacterView`, `EnemyIconsView` (+ordem de ação, `SetFocused`: ícone do golpe do inimigo tocado), `CharacterFactory`, `CharacterScaling`, `ECharacter` |
 | `Gameplay/Entities/Configs/` | `…Gameplay.Entities` ⚠️ | `CharacterConfig`, `EnemyConfig`, `PlayerCharacterConfig` (**exceção**: namespace sem `Configs`) |
 | `Gameplay/Entities/Skills/` | `…Entities.Skills` | `SkillDefinition` (+telegrafia, variantes `upgrades`/`upgradeOf`, skill canalizada `usesWalk`), `SkillTelegraph` (golpe anunciado em preparo, salvo com a batalha), `EffectiveSkill` (+`SkillModifiers`: os números de uma skill para um lançador), `SkillEffect` (+`DisplaceSkillEffect`; em `MovementSkillEffects.cs`: `SwapSkillEffect`, `DashToTargetSkillEffect`, `CreateTerrainSkillEffect` + `ETerrainPlacement`), `SkillArea`, `SkillTargeting`, `SkillCooldowns`, `SkillSettings` |
 | `Gameplay/Entities/Roles/` | `…Entities.Roles` | `EnemyRoleDefinition` |
 | `Gameplay/Entities/Interfaces/` | `…Entities.Interfaces` | `IDamageReceiver`, `IAttacker`, `IWalker` |
-| `Gameplay/Controllers/` | `…Gameplay.Controllers` | `CharacterControllerBase<T>`, `PlayerCharacterController` (toque, skills, itens, destaques; turno com andar e agir, `UndoMove`, `EndTurn`; mirar e confirmar: `AimedCell`, `ConfirmAim`, `CancelAction`; skills canalizadas: `CanUseSkillNow`, `CanWalkNow`; troca de lugar do Passo Trocado; alcance do inimigo no toque), `EnemyController` (dispara o golpe preparado e roda a IA; memória) |
-| `Gameplay/AI/` (+`Actions/`) | `…Gameplay.AI[.Actions]` | `EnemyBehavior` (um andar e um agir por turno), `EnemyAction` (`IsMovement`), `EnemyMemory`, `EnemyTurnContext`; ações (`UseSkills`, `ApproachForSkillAction` (anda até onde uma skill pronta alcança o jogador, evitando células marcadas por golpes e terreno perigoso), `ApplyStateToTarget`, `HealAlly`, `BuffAlly`, `Summon`; `BasicAttack`, `ChaseTarget` e `KeepDistance` existem, mas nenhum comportamento usa); `DisplacementScoring` (valor de um empurrão/puxão para a IA, pesos em `UseSkills`) |
+| `Gameplay/Controllers/` | `…Gameplay.Controllers` | `CharacterControllerBase<T>`, `PlayerCharacterController` (toque, skills, itens, destaques; turno com andar e agir, `UndoMove`, `EndTurn`; mirar e confirmar: `AimedCell`, `ConfirmAim`, `CancelAction`; skills canalizadas: `CanUseSkillNow`, `CanWalkNow`; troca de lugar do Passo Trocado; andar do inimigo no toque), `EnemyController` (dispara o golpe preparado e roda a IA; memória) |
+| `Gameplay/AI/` (+`Actions/`) | `…Gameplay.AI[.Actions]` | `EnemyBehavior` (um andar e um agir por turno), `EnemyAction` (`IsMovement`), `EnemyMemory`, `EnemyTurnContext`; ações (`UseSkills` (mira onde a área cobre mais casas para onde o jogador pode fugir: `coverEscapeCells`), `ApproachForSkillAction` (anda até onde uma skill pronta alcança o jogador, evitando células marcadas por golpes e terreno perigoso), `ApplyStateToTarget`, `HealAlly`, `BuffAlly`, `Summon`; `BasicAttack`, `ChaseTarget` e `KeepDistance` existem, mas nenhum comportamento usa); `DisplacementScoring` (valor de um empurrão/puxão para a IA, pesos em `UseSkills`) |
 | `Gameplay/Terrain/` | `…Gameplay.Terrain` | `TerrainDefinition`, `TerrainGenerator`, `TerrainEffects`, `TerrainGenerationSettings` |
-| `Gameplay/Consumables/` | `…Gameplay.Consumables` | `ConsumableDefinition`, `ConsumableEffect`, `ConsumableInventory`, `ConsumableRules`, `ConsumableExecutor`, `ConsumableGrant`, `ConsumableSettings` |
+| `Gameplay/Consumables/` | `…Gameplay.Consumables` | `ConsumableDefinition` (`ignoresLineOfSight`), `ConsumableEffect` (curar, dano, estados), `BoardConsumableEffects.cs` (`DisplaceConsumableEffect`, `SwapConsumableEffect`, `CreateTerrainConsumableEffect`), `ConsumableInventory`, `ConsumableRules` (`HasLineOfSight`), `ConsumableExecutor`, `ConsumableGrant`, `ConsumableSettings` |
 | `Gameplay/Progression/` | `…Gameplay.Progression` | `ProgressionSettings` (curva de XP, nível máximo, vida máxima por nível), `XpRewardSystem` (`xpPerPacket`, `maxPackets`: no máximo 8 orbs por abate), `XpPacket` |
 | `Gameplay/Talents/` | `…Gameplay.Talents` | `TalentDefinition`, `SynergyTagDefinition`, `TalentOfferSettings` (inclui `sharedPoolWeightMultiplier`), `TalentOfferGenerator`, `TalentRules`, `TalentSession`, `TalentService`, `TalentApplier`, `TalentRunModifier`, `TalentBootstrap` |
 | `Gameplay/Map/` | `…Gameplay.Map` | `MapGenerator` (nó de elite só onde há elite: `BattleGenerationSettings.HasEliteAt`), `MapValidator`, `MapRules` (`IsEliteBattle`, `NormalizeDifficulties`), `BattleGenerator` (+`ThreatCalculator`; a elite das batalhas de elite), `MapGenerationSettings`, `BattleGenerationSettings` |
@@ -223,14 +223,15 @@ Turno (TurnManager)
     de andar (PlayerCharacterController.CanUseSkillNow); o Meteoro deixa o Mago Exausto no turno seguinte. Skill ou item: o 1º toque numa célula válida só mira (AimedCell, ActionAimChangedEvent; a
     previsão mostra dano, mortes, empurrões e onde os golpes anunciados cairiam depois), o 2º toque na
     mesma célula ou Confirmar usa (ConfirmAim), Cancelar desfaz a mira (CancelAction). Tocar num inimigo
-    mostra onde ele pode golpear no próximo turno. A vez acaba sozinha só quando nada mais é possível
+    mostra até onde ele pode andar (GridRules.GetWalkCells). A vez acaba sozinha só quando nada mais é possível
     (HasAnythingLeft falso depois de uma escolha; com item utilizável espera), ou com Encerrar turno /
     tocando em si mesmo → PlayerActionEvent; desfazer o andar enquanto não agiu
     (PlayerCharacterController.UndoMove); PlayerTurnStateChangedEvent a cada mudança
   vez do inimigo (EnemyController): dispara o golpe preparado, se houver (Enemy.AdvanceTelegraph: atinge
     quem estiver nas células marcadas agora, todos menos quem lança; TelegraphResolvedEvent), depois anda
     (ApproachForSkillAction) e prepara o próximo golpe (UseSkills → Enemy.TryUseSkill marca as células; tenta
-    na ordem da lista: o especial com recarga primeiro, o básico sem recarga quando o especial não está pronto).
+    na ordem da lista: o especial com recarga primeiro, o básico sem recarga quando o especial não está pronto;
+    mira onde a área cobre mais casas para onde o jogador pode andar, UseSkillsAction.coverEscapeCells).
     Disparar não gasta o agir (CombatSettings.firingUsesAction desligado). Curar, proteger, invocar e
     enfraquecer são imediatos. A batalha começa sem golpe preparado: cada inimigo prepara o primeiro no
     seu turno, depois da primeira vez do jogador
@@ -260,7 +261,7 @@ XP e talentos
     → TalentSession: oferta (TalentOfferGenerator, Derive(Talents, nível, reroll)) → pausa (TurnBlockers)
     → TalentOfferOpenedEvent → modal de talento → Choose/Reroll/Ban/Skip
   talento: estados permanentes com SourceId = id do talento (+pilhas = rank), skill liberada vai para a barra
-    (até TalentOfferSettings.maxSkillTalents = 3); reaplicado a cada batalha por IRunPlayerModifier.
+    (até TalentOfferSettings.maxSkillTalents = 5); reaplicado a cada batalha por IRunPlayerModifier.
     Talentos de regra (Dominó, Rastro de Chamas, Gelo Escorregadio, Contragolpe, Passo Trocado, Ímpeto)
     são efeitos de estado lidos onde a regra vale (StateContainer.FindEffect<T>)
 
@@ -368,7 +369,9 @@ Morte de inimigo
   marcadas contra quem estiver nelas, inimigos inclusive (`TelegraphResolvedEvent`).
   Empurrar, puxar ou trocar quem prepara desloca as células junto
   (`SkillTelegraph.Shift`, `telegraphFollowsCaster`); `cancelledByDisplacement`
-  e `interruptibleByStates` cancelam. O jogador nunca telegrafa. **Todo inimigo
+  e `interruptibleByStates` cancelam. A IA mira onde a área cobre mais casas para
+  onde o jogador pode andar no próximo turno (`UseSkillsAction.coverEscapeCells` e
+  pesos no asset `UseSkills`), não só a casa dele. O jogador nunca telegrafa. **Todo inimigo
   precisa de um golpe com recarga 0 (básico) e um com recarga > 0 (especial,
   primeiro na lista `skills`)**: a recarga começa no disparo, e sem o básico a
   marca some nos turnos de espera. Lacunas que continuam: turno em que nenhum
@@ -403,6 +406,13 @@ Morte de inimigo
   `SkillModifierEffect` do original vale também para as variantes.
 - **Áreas**: as formas centradas no alvo têm tamanho ímpar; `Linear` começa no
   alvo e pode ter tamanho par (`SkillDefinition.NeedsOddSize`).
+- **Andar** só por `GridRules.CanWalkTo`: a casa final livre, dentro do alcance e alcançável por um caminho de casas
+  ortogonais livres (`HasWalkPath`): terreno que bloqueia **e personagens** (jogador e inimigos) são obstáculos; não
+  se passa na diagonal entre dois deles. Destaques, IA, bot e o toque no inimigo usam a mesma regra. O andar é
+  executado por `GridController.WalkEntity`, que segue esse caminho (`GridRules.FindWalkPath`) célula a célula:
+  `EntityPassedCellEvent` em cada célula cruzada, `EntityEnteredCellEvent` no destino. Efeito novo "ao passar por
+  uma célula" escuta o `EntityPassedCellEvent` (e, se muda dano ou posição, entra também na previsão).
+  `MoveEntity` é o movimento direto (Teleporte).
 - **Distâncias** só por `GridDistance` com as métricas de `CombatSettings`
   (movimento/ataque euclidianos; alcance de skill Manhattan).
 - **Empurrar e puxar** (deslocamento forçado) só por `Displacement` (regras
@@ -414,6 +424,8 @@ Morte de inimigo
   Talentos de regra entram aqui: Dominó empurra quem foi atingido, o rastro
   deixa terreno e o Gelo Escorregadio aumenta a distância (este último também na
   previsão, por `Displacement.GetDistance`).
+- **Itens com alvo** (`ConsumableRules`) seguem a mesma linha de visão das skills (`HasLineOfSight`; `ignoresLineOfSight`
+  no item para algo que cai do alto) e só são usáveis quando um efeito mudaria algo (`ConsumableEffect.IsUseful`).
 - **Mira de skills**: célula na **área de seleção** (`Rules/SkillSelection`, estilo Dofus: forma
   `ESkillSelectionShape` Círculo/Linha/Diagonal/Estrela/Quadrado, `minRange` e `range` contados ao longo
   da forma, `rangeModifiable` para o atributo Alcance de skills), com o conteúdo pedido
@@ -618,7 +630,7 @@ com os lotes, as escolhas e o passo a passo, é `docs/projeto/arte.md`; leia ant
 | Elite | Marque `isUnique` no `EnemyConfig` e ponha no pool de `BattleGenerationSettings`: nunca é sorteado como inimigo comum; cada batalha de elite leva uma elite disponível na profundidade, e o mapa só cria nós de elite onde há uma (`HasEliteAt`). Vencê-la dá mais XP (perfil Elite), `RunSettings.eliteConsumableOffers` ofertas de consumível e uma melhoria de skill (`eliteGrantsSkillUpgrade`). |
 | Novo comportamento de IA | Subclasse de `EnemyAction` (ou `EnemyAbilityAction`, que já tem cooldown na `EnemyMemory`) + asset; combine num `EnemyBehavior`. Ação que só anda: `IsMovement => true` (ela usa o andar do turno, e as outras, o agir). Andar até de onde uma skill alcança o jogador: `ApproachForSkillAction` (`preferredDistance`: 1, 2 e 3 em `ApproachMelee`, `ApproachMid` e `ApproachRanged`). |
 | Novo papel de inimigo | `Create > GridBattle > AI > Enemy Role` (ícone 8×8, fator de ameaça, conta como linha de frente). |
-| Nova skill | `Create > GridBattle > Skills > Skill Definition`: tipo, dano, forma/tamanho de área (ímpar; `Linear` aceita par), área de seleção (forma, alcance mínimo e máximo, alcance modificável, célula alvo), cooldown, alvos, efeitos, melhorias (`upgrades`). Inicial de classe: lista `skills` do `PlayerCharacterConfig` (3 por classe); liberada por talento: `unlockedSkill` do talento; de inimigo: `skills` do `EnemyConfig`. |
+| Nova skill | `Create > GridBattle > Skills > Skill Definition`: tipo, dano, forma/tamanho de área (ímpar; `Linear` aceita par), área de seleção (forma, alcance mínimo e máximo, alcance modificável, célula alvo), cooldown, alvos, efeitos, melhorias (`upgrades`). Inicial de classe: lista `skills` do `PlayerCharacterConfig` (1 por classe, sem recarga); liberada por talento: `unlockedSkill` do talento; de inimigo: `skills` do `EnemyConfig`. |
 | Melhoria de skill (variante) | Copie a skill para `Skills/<Classe>/Upgrades/`, mude o que melhora, ponha o original em `upgradeOf` e a variante na lista `upgrades` do original (2 por skill), com nome e descrição nos 3 idiomas. A janela de melhoria mostra sozinha as linhas da ficha que mudam. |
 | Skill que troca de lugar, investe ou cria terreno | Efeitos `SwapSkillEffect` (troca com o personagem do alvo), `DashToTargetSkillEffect` (avança em linha reta; ponha antes de um `Displace`) e `CreateTerrainSkillEffect` (terreno, células `TargetCell`/`AreaCells`/`CasterCell`, rodadas, `replaceTerrain`). Terreno novo para isso: um `TerrainDefinition` comum (como `IceWall`), sem entrar no pool do gerador. |
 | Skill que empurra ou puxa | Skill normal com o efeito `Displace` na lista de efeitos: modo (longe do lançador, em direção ao lançador ou longe do centro da área) e distância. Ele roda depois do dano; colisão e terreno seguem `CombatSettings`. Para inimigos, `UseSkills` só a usa quando o resultado previsto vale a pena (`DisplacementAiWeights` no asset `UseSkills`). |
@@ -632,16 +644,16 @@ com os lotes, as escolhas e o passo a passo, é `docs/projeto/arte.md`; leia ant
 | Skill que não precisa de linha de visão | Marque `Ignores Line Of Sight` na skill (algo lançado por cima, um raio do céu). |
 | Terreno que bloqueia (ou não) a visão | `Blocks Line Of Sight` no `TerrainDefinition` (só vale para terreno que bloqueia movimento; desligue para obstáculos baixos). |
 | Conferir conteúdo novo | `GridBattle > Validate Content` (textos nos 3 idiomas, chaves de texto do código, referências vazias, talentos fora dos pools, inimigos que não aparecem, telas, ícones, banco de conteúdo). |
-| Novo consumível | `Create > GridBattle > Consumables > Consumable Definition` (alvo, área, efeitos, peso) e adicione ao pool de `ConsumableSettings`. |
+| Novo consumível | `Create > GridBattle > Consumables > Consumable Definition` (alvo, área, linha de visão, efeitos, peso) e adicione ao pool de `ConsumableSettings`. Efeitos: curar, dano, estados, empurrar/puxar, trocar de lugar, criar terreno. Um efeito novo que muda dano ou posição entra também em `ActionForecast.ForConsumable`. |
 | Visual de skill ou item | `Create > GridBattle > Vfx > Action Visual` (gesto, projétil, quadros por célula, ordem, quadro do impacto, direção, queda, permanência) e ligue no campo `Visual` da skill/consumível. Provisórios: `GridBattle > Vfx > Generate Placeholder Visuals` (redesenha os PNGs e reescreve os visuais provisórios; só liga onde o campo está vazio). Ver `docs/projeto/guia_sistemas.md`. |
 | Novo terreno | `Create > GridBattle > Terrain > Terrain Definition` (tipo, bloqueio, gatilho, dano/estados, visual) e adicione ao pool de `TerrainGenerationSettings`. |
 | Nova dica de tutorial | `TutorialTipDefinition` com o `ETutorialTrigger` + `TutorialService.Notify(gatilho)` no ponto do jogo. |
-| Novo personagem jogável | `Player Character Config` (`prefab = PlayerCharacter.prefab`, `characterClass`, `battlesToUnlock`, `talentPool`, skills iniciais); adicione em `GameStateManager.playableCharacters` e um botão no menu. |
+| Novo personagem jogável | `Player Character Config` (`prefab = PlayerCharacter.prefab`, `characterClass`, `battlesToUnlock`, `talentPool`, a skill inicial e um talento que libera cada uma das outras); adicione em `GameStateManager.playableCharacters` e um botão no menu. |
 | Ajustar mapa / batalhas | `Settings/Map/MapGenerationSettings` (andares, andares de referência do balanceamento, nós, tipos, pesos de batalha normal e de elite) e `BattleGenerationSettings` (pool, ameaça, orçamento, escala, XP, limites, perfis Normal e Elite, chefe). |
 | Ajustar XP e níveis | `Settings/Progression/ProgressionSettings` (curva, nível máximo, vida máxima por nível `maxHpPerLevel`, cura ao subir `levelUpHealFraction`); XP das batalhas em `BattleGenerationSettings` (fonte `ThreatBudget`, XP por ponto de ameaça, crescimento por profundidade, multiplicador dos perfis Normal e Elite); orbs em `XpRewardSystem` (`xpPerPacket`, `maxPackets`) e `Settings/Vfx/XpOrbsVfxSettings` (explosão, pausa, voo). Confira com `GridBattle > Talents > Simulate XP Progression`. |
 | Medir o balanceamento | `GridBattle > Simulation > Run Balance Simulation` (opções no asset `Settings/Simulation/BalanceSimulationSettings`): runs completas por classe com bots, relatório em `persistentDataPath/Simulation/<data>_<rótulo>/` (`summary.md`, `runs.csv`, `battles.csv`). Guia completo: `docs/projeto/simulador_balanceamento.md`. |
 | Ajustar combate | `Settings/Combat/CombatSettings` (defesa, dano mínimo, métricas, colisão de empurrões e puxões, se disparar um golpe anunciado gasta o agir: `firingUsesAction`). |
-| Ajustar a previsão | `Settings/Combat/ForecastSettings` (só visual: números da ordem, espaço entre golpes na mesma célula, dano piscando, setas, fantasmas). Mirar e confirmar: `GameplayInputSettings.confirmTargetedActions`. |
+| Ajustar a previsão | `Settings/Combat/ForecastSettings` (só visual: números da ordem, listras da marca dos golpes, opacidade dos golpes dos outros ao tocar num inimigo, dano piscando, setas, fantasmas). Posição dos selos do inimigo no `EnemyIconsView` do `Enemy.prefab`. Mirar e confirmar: `GameplayInputSettings.confirmTargetedActions`. |
 | Ajustar run | `Settings/Run/RunSettings` (cura do acampamento, treino no acampamento `campOffersSkillUpgrade`, custo do nó de talento `talentNodeCost`/`talentNodeCostMaxHp`, recompensa da elite `eliteConsumableOffers` e `eliteGrantsSkillUpgrade`, estados entre batalhas, seed de depuração, `autoEnterFirstNode`). |
 | Ajustar a monetização | `Settings/Monetization/MonetizationSettings` (chaves e blocos do LevelPlay, produto da loja, momentos e rampa dos anúncios forçados, aviso, oferta, privacidade, modo do Editor); recargas por run em `TalentOfferSettings`. Testes sem loja: `GridBattle > Monetization > Testing`. Ver `docs/projeto/monetizacao.md`. |
 | Adicionar som | Arraste clipes na entrada do `ESfx`/`EMusicContext` em `Settings/Audio/AudioLibrary`. |
@@ -742,6 +754,113 @@ O Unity Editor costuma estar aberto e acessível pela CLI `unity` (pacote
 ## Histórico de refatorações
 
 Registre aqui toda mudança estrutural (mais recente primeiro).
+
+### 2026-10-20 — Linha de visão nos itens e consumíveis de tabuleiro
+Pedido do Luiz: "A bomba deve ser seu uso obstruído pela linha de visão. Também sinto falta de mais itens consumíveis."
+Mudança de mecânica pedida.
+- **Linha de visão:** `ConsumableRules.HasLineOfSight` (mesma regra das skills: `CombatSettings.skillsNeedLineOfSight`,
+  `LineOfSight.IsClear`) em `IsValidTarget`; campo novo `ConsumableDefinition.ignoresLineOfSight` (desligado em todos).
+  Vale para a Bomba e todos os itens com alvo; mira, destaques, previsão e bot passam por `IsValidTarget`. A ficha do
+  item mostra a linha "Visão" e o empurrão.
+- **Efeitos novos** (`Gameplay/Consumables/BoardConsumableEffects.cs`): `DisplaceConsumableEffect`
+  (`DisplacementResolver`, quem usa é o lançador), `SwapConsumableEffect` (`GridController.SwapCharacters`) e
+  `CreateTerrainConsumableEffect` (regras do `CreateTerrainSkillEffect`). `ActionForecast.ForConsumable` prevê dano,
+  empurrões, troca e interrupção por estado (Congelado).
+- **Itens novos** (`Settings/Consumables/`, no pool de `ConsumableSettings`, textos nos 3 idiomas, ícones do lote R):
+  Granada de Impacto (área 3×3, empurra 1 para longe do centro), Pergaminho de Troca (troca com um personagem a até 4),
+  Pedra (Rocha por 3 rodadas numa casa vazia), Frasco de Fogo (Fogo numa cruz de 5 por 2 rodadas) e Frasco Congelante
+  (Congelado 1 turno). Valores provisórios. O texto da Bomba cita a linha de visão.
+- **Bot do simulador:** usa itens de empurrão quando a previsão dá dano ou abate sem ferir o jogador; troca, Pedra e
+  Frasco de Fogo ele não usa.
+
+### 2026-10-20 — Cada classe começa com uma skill
+Pedido do Luiz: "Os personagens devem iniciar com somente uma única habilidade. As demais devem ser obtidas conforme a
+run como as outras." Mudança de mecânica; só dados (nenhum código de jogo mudou).
+- **Skill inicial** (`Settings/Characters/Players/`): a lista `skills` de cada classe ficou só com a skill sem recarga
+  (Knight: Golpe; Mage: Rajada de Vento; Rogue: Adaga Envenenada).
+- **Talentos novos** (nível 2, `maxRank` 1, peso 1,5, ícone da skill, tags de sinergia dos talentos de skill da classe),
+  no `talentPool` de cada classe: Guerreiro `ChargeDrill` (Treino de Investida → Investida com Escudo) e `HeavyShield`
+  (Escudo Pesado → Golpe de Escudo); Mago `FrostTouch` (Toque Gélido → Nova de Gelo) e `Pyromancy` (Piromancia → Bola
+  de Fogo); Ladino `HuntingHook` (Gancho de Caça → Gancho) e `ShadowPath` (Caminho das Sombras → Passo das Sombras).
+  Textos nos 3 idiomas.
+- `TalentOfferSettings.maxSkillTalents` 3 → 5 (a barra continua com 6 espaços).
+- `TalentChecks`: a skill de recarga longa do Mago agora é procurada também nas skills liberadas por talento.
+- **Verificado** (no PC do Luiz): `Validate Content` sem erros (depois de reconstruir o `GameDatabase`); `TalentChecks`
+  ALL PASSED (4343).
+- **Pendência:** o simulador não foi rodado; o começo da run deve ficar mais difícil.
+
+### 2026-10-20 — Andar por um caminho de células; personagens bloqueiam o caminho
+Pedidos do Luiz: o jogador andava passando por um inimigo (de um lado dele para o outro), e o andar deve seguir um
+caminho de células até o destino, para depois haver efeitos ao passar por uma célula. Mudança de mecânica pedida.
+- **Regra** (`GridRules.HasWalkPath`, `CanWalkTo`): o caminho até a casa final só passa por casas livres; personagens
+  (jogador e inimigos) bloqueiam como terreno, e a diagonal entre dois obstáculos fecha. Antes só o terreno bloqueava
+  o caminho (e só era conferido com terreno bloqueando no grid); os personagens só ocupavam a casa final.
+- Vale para tudo que usa `CanWalkTo`: destaques do jogador, andar dos inimigos (`ApproachForSkillAction`,
+  `FindStepToward`), bot do simulador e o destaque do inimigo tocado (`GetWalkCells`).
+- **Caminho** (`GridRules.FindWalkPath`: o mais curto por casas ortogonais livres, empate pela ordem baixo, esquerda,
+  direita, cima; `HasWalkPath` passou a usá-lo). O andar do jogador e dos inimigos (`PlayerCharacterController`,
+  `ApproachForSkillAction`, `KeepDistanceAction`, `ChaseTargetAction`) vai por `GridController.WalkEntity`, que segue
+  o caminho: evento novo `EntityPassedCellEvent` (célula e posição no caminho) em cada célula cruzada, antes do
+  `EntityEnteredCellEvent` do destino; nada reage a ele ainda (o terreno continua só na chegada). O visual pula de
+  célula em célula (`GridMovementAnimator.AnimatePath`; o estilo `Flip` continua direto), e desfazer o andar volta
+  pelo caminho. O Teleporte continua com `MoveEntity` (direto).
+
+### 2026-10-20 — Toque no inimigo mostra só até onde ele anda
+Pedido do Luiz: o destaque do inimigo tocado acendia casas demais. Só visual; nenhuma regra mudou.
+- **Destaque** (`PlayerCharacterController.ComputeHighlights`): tocar num inimigo (ou o toque longo) marca só as células
+  para onde ele pode andar a partir de onde está (`GridRules.GetWalkCells`: `CanWalkTo` dentro de `WalkDistance`;
+  nenhuma com um estado que impede andar), com a moldura laranja do `Danger`. Antes eram todas as células que os
+  golpes prontos dele cobririam de qualquer casa para onde pudesse andar, o que acendia quase o tabuleiro todo num
+  inimigo voador (pendência da entrada "Leitura do tabuleiro", resolvida).
+- O resto do toque não mudou: as marcas dos outros golpes ficam fracas e o ícone do golpe dele aparece.
+- `GridRules.GetReachCells`/`GetSkillReachCells` continuam no código, sem uso no jogo.
+
+### 2026-10-20 — Combate mais exigente: mira nas casas de fuga, golpes maiores e força com o andar
+Pedido do Luiz ("o jogo está bem fácil, basicamente não importa muito a estratégia"). Commits `29164bf` (IA e
+áreas), o da escala e do orçamento e o dos textos e documentos. Valores em teste: são uma proposta para ele jogar.
+Detalhes e números em `docs/design/balanceamento_e_geracao.md` ("Combate mais exigente").
+- **Decisão:** o Luiz não escolheu entre as opções propostas ("Menos fuga", "Só números", "Reforços"); segui a
+  recomendada, "Menos fuga". Ela traz de volta a escala de vida e dano por profundidade, que a decisão de
+  2026-10-19 tinha zerado; o Luiz confirmou depois que a escala fica ("Manter"). Os valores seguem em teste.
+- **IA** (`UseSkillsAction`, seção "Aim"): `coverEscapeCells` (código desligado por padrão, ligado no asset
+  `UseSkills`) faz a skill sem empurrão mirar a célula cuja área cobre mais da zona do jogador (a casa dele com
+  `playerCellWeight` 1,5 e as casas para onde ele pode andar com `escapeCellWeight` 1; casa já marcada por outro
+  golpe × `alreadyCoveredFactor` 0,25; −`allyHitPenalty` 1 por outro inimigo atingido; mínimo `minCoverValue` 1,
+  senão a mira antiga de `SkillTargeting.TryFindAimCell`). Empate: atinge o jogador, depois mais perto dele.
+- **Golpes básicos maiores** (`Skills/Enemies/`): os 16 golpes de uma casa ganharam área: `Perpendicular` 3
+  (ClubStrike, MagmaFist, OgrePunch, StoneFist, KingStrike), `Linear` 2 (Bite, VampireBite, Ram, ShieldPush,
+  DiveBite, Sling, HexGaze) e `Cross` 3 (FlameBolt, MudBolt, Spark, Screech); descrições nos 3 idiomas.
+- **Escala e orçamento** (`BattleGenerationSettings`): `hpPerDepth` 0,025 e `damagePerDepth` 0,035; curva de
+  orçamento 2 / 3,5 / 5 / 6,5 / 7,5 / 8,5 / 9,5 nos andares 1 / 5 / 10 / 15 / 20 / 25 / 30 (antes 4,5 a 8,5 do
+  andar 10 em diante; o começo não mudou).
+- **Resultado no simulador** (seeds 1000–1019, 20 runs por classe; `melhorias-mago-elite` → `menos-fuga-3`):
+  vitórias Guerreiro 55% → 20%, Mago 15% → 0%, Ladino 50% → 20%; dano por batalha em % da vida máxima nos andares
+  11–15 de 9% para 24% e nos 26–30 de 19% para 41%. Só a IA e as áreas (`menos-fuga-1`) quase não mudaram o
+  resultado; um inimigo a mais já no andar 1 (`menos-fuga-2`) fez o bot morrer quase sempre antes do andar 6.
+- **Pendências:** o Mago ficou sem vitórias no simulador; as descrições dos golpes citam o dano base, não o
+  escalado pelo andar; se o começo continuar fácil para quem joga, o próximo ajuste é o orçamento dos andares 1 a 9.
+
+### 2026-10-20 — Leitura do tabuleiro: golpes listrados e ordem no canto
+Pedido do Luiz: os destaques dos golpes anunciados se sobrepunham e a ordem sobre cada inimigo era informação demais
+em pouco espaço ("deve mostrar as informações, mas de forma limpa"). Só visual; nenhuma regra mudou.
+- **Marca dos golpes** (`Cell`, `ForecastSprites.GetStrikeHatch`): listras diagonais no formato do destaque, sem
+  moldura (laranja; vermelhas onde alguém seria atingido), no lugar da cópia pulsante da moldura, que se misturava
+  com a moldura do andar. Cores e pulso novos no `Cell` (`telegraphHighlightColor`, `telegraphHitColor`,
+  `telegraphPulse` 0,25); listras em `ForecastSettings` (`strikeStripePeriod` 6, `strikeStripeWidth` 2).
+- **Sem números nas células:** `ForecastSettings.showOrderOnStrikes` desligado (o "123" de três golpes na mesma
+  célula sumiu).
+- **Inimigo tocado:** `ForecastView` acompanha `PlayerCharacterController.InspectedEnemy`; as marcas dos outros golpes
+  ficam fracas (`Cell.WarnDimmed`, `ForecastSettings.dimmedStrikeAlpha` 0,3) e o ícone do golpe aparece sobre ele
+  (`EnemyIconsView.SetFocused`).
+- **Selos do inimigo** (`EnemyIconsView`, valores gravados no `Enemy.prefab`): a ordem fica num selo escuro no canto
+  de cima à esquerda da própria célula (`actingOrderOffset`), o papel no canto de cima à direita e os estados abaixo
+  dele; o ícone do golpe só no inimigo tocado, com os turnos só quando passam de 1. Nada passa por cima da barra de
+  vida do vizinho. Selos em `ForecastSprites.GetPlate`.
+- **Verificado** (no PC do Luiz): compila sem erros; teste em Play Mode com 6 a 7 inimigos (perfil real restaurado):
+  marcas listradas, nenhum número nas células, ordem no canto, tocar num inimigo esmaece os outros golpes (12 células
+  marcadas, 11 esmaecidas ao tocar num inimigo de golpe de 1 célula) e mostra o ícone dele.
+- **Pendências:** tocar num inimigo voador ainda acendia o alcance dele no tabuleiro quase todo (resolvida na entrada
+  "Toque no inimigo mostra só até onde ele anda").
 
 ### 2026-10-20 — Contras do Mago, golpe todo turno, XP em explosão e batalhas de elite
 Pedido do Luiz (melhorias depois do novo molde). Implementação nos commits `1288849` (código, ícones e ajustes) e

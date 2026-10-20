@@ -52,8 +52,6 @@ MonoBehaviour:
   maxHpPercentDamageMultiplier: 1
   skills:
   - {fileID: 11400000, guid: 4bb8f2044b811214fbdcf69ebc8ef3b4, type: 2}
-  - {fileID: 11400000, guid: 621c8cec035e11346939fde4c1b3a558, type: 2}
-  - {fileID: 11400000, guid: 13c7d36aa8c5ef64886f95ab3c4c8def, type: 2}
   initialStates: []
   prefab: {fileID: 1427551736305951215, guid: 967c67956658ad84eade02cf2c3c6628, type: 3}
   characterClass: 0
@@ -65,6 +63,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 7501f041f097bb24fbc920342d1ee20b, type: 2}
   - {fileID: 11400000, guid: 750cb6cc49edbd0458ddd3e77b97288a, type: 2}
   - {fileID: 11400000, guid: 357d902b6118cc049bf2b1ae82fb5af9, type: 2}
+  - {fileID: 11400000, guid: 0d7a03b6c0b465049a32103e8f02a738, type: 2}
+  - {fileID: 11400000, guid: 2387e841af7c1824f990f827bbc3612b, type: 2}
   references:
     version: 2
     RefIds: []

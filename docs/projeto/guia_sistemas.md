@@ -133,11 +133,9 @@ Perfil (entre runs): classes liberadas, glossário, recordes, opções, dicas vi
    - `prefab = PlayerCharacter.prefab` e `characterClass`;
    - `battlesToUnlock`: batalhas vencidas, somadas entre runs, para liberar a
      classe;
-   - `skills`: as 3 skills iniciais (Guerreiro: Golpe, Investida com Escudo e
-     Golpe de Escudo; Mago: Rajada de Vento, Nova de Gelo e Bola de Fogo;
-     Ladino: Adaga Envenenada, Gancho e Passo das Sombras). Até 3 outras vêm
-     de talentos (`TalentOfferSettings > Max Skill Talents` = 3; a barra tem 6
-     espaços);
+   - `skills`: a skill inicial (Guerreiro: Golpe; Mago: Rajada de Vento;
+     Ladino: Adaga Envenenada). Até 5 outras vêm de talentos
+     (`TalentOfferSettings > Max Skill Talents` = 5; a barra tem 6 espaços);
    - `talentPool`: talentos próprios da classe.
 3. Textos: Display Name e Description na tabela `Content`. A descrição
    aparece na janela de detalhes do personagem (seleção de personagem).
@@ -722,7 +720,7 @@ Forecast Settings`) só muda a aparência:
   - Skill ou item com alvo: o 1º toque numa célula válida mira e mostra a
     previsão; o 2º toque na mesma célula ou *Confirmar* usa; *Cancelar*
     desfaz a mira.
-  - Tocar num inimigo mostra onde ele pode golpear no próximo turno.
+  - Tocar num inimigo mostra até onde ele pode andar a partir de onde está.
   - Depois, cada inimigo age, um de cada vez, na ordem fixa numerada: dispara
     o golpe preparado (acerta quem estiver nas células marcadas, inimigos
     inclusive, menos quem lança), anda e prepara o próximo golpe. A batalha

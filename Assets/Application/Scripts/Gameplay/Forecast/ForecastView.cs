@@ -14,9 +14,12 @@ namespace GridBattle.Gameplay.Forecast
     /// Draws the battle forecast on the board (Into the Breach style clarity), so every consequence is visible before
     /// the player commits:
     /// <list type="bullet">
-    /// <item>the cells of every prepared enemy strike (<see cref="Cell.Warned"/>), red where a character would be hit
-    /// (<see cref="Cell.WarnHit"/>), with the caster's acting order number on the aimed cell;</item>
-    /// <item>the acting order over every enemy (<see cref="EnemyIconsView.SetActingOrder"/>);</item>
+    /// <item>the cells of every prepared enemy strike (<see cref="Cell.Warned"/>, striped), red where a character
+    /// would be hit (<see cref="Cell.WarnHit"/>); while the player inspects an enemy
+    /// (<see cref="PlayerCharacterController.InspectedEnemy"/>) the other strikes fade (<see cref="Cell.WarnDimmed"/>),
+    /// so each area reads as whose without numbers on the cells;</item>
+    /// <item>the acting order on every enemy (<see cref="EnemyIconsView.SetActingOrder"/>) and, on the inspected one, the
+    /// icon of its prepared strike (<see cref="EnemyIconsView.SetFocused"/>);</item>
     /// <item>the damage each character would take, blinking on its health bar with the amount (red when lethal);</item>
     /// <item>while a skill or an item is aimed (<see cref="PlayerCharacterController.AimedCell"/>): the action's own
     /// damage and kills, arrows for its pushes and pulls, ghosts where characters would end, and the enemy strikes as
@@ -46,6 +49,7 @@ namespace GridBattle.Gameplay.Forecast
         private int _usedTags;
         private int _usedArrows;
         private int _usedGhosts;
+        private Enemy _lastInspected;
 
         /// <summary>The enemy strikes as last drawn (after the aimed action, when there is one).</summary>
         [CanBeNull]
@@ -122,6 +126,14 @@ namespace GridBattle.Gameplay.Forecast
                 return;
             }
 
+            // Tapping an enemy changes no game state (no event): follow it here.
+            var inspected = GetInspectedEnemy();
+            if (inspected != _lastInspected)
+            {
+                _lastInspected = inspected;
+                _dirty = true;
+            }
+
             if (_dirty)
             {
                 _dirty = false;
@@ -161,6 +173,15 @@ namespace GridBattle.Gameplay.Forecast
         private bool IsBattleDecided() => _turns != null && _turns.CurrentTurn == ETurnOwner.None;
 
         [CanBeNull]
+        private static Enemy GetInspectedEnemy()
+        {
+            var player = PlayerCharacter.Active;
+            return player != null && player.TryGetComponent(out PlayerCharacterController controller)
+                ? controller.InspectedEnemy
+                : null;
+        }
+
+        [CanBeNull]
         private ActionForecast GetAimedAction()
         {
             var player = PlayerCharacter.Active;
@@ -187,6 +208,19 @@ namespace GridBattle.Gameplay.Forecast
                 AddAll(totals, Threat.Damage);
             }
 
+            // With an enemy inspected, only its own strike stays at full strength (none when it prepares nothing).
+            HashSet<Vector2Int> focus = null;
+            var inspected = GetInspectedEnemy();
+            if (inspected != null)
+            {
+                focus = new HashSet<Vector2Int>();
+                foreach (var strike in Threat.Telegraphs)
+                {
+                    if (strike.Caster == inspected)
+                        focus.UnionWith(strike.Cells);
+                }
+            }
+
             var size = _grid.Size;
             for (var x = 0; x < size.x; x++)
             {
@@ -198,6 +232,7 @@ namespace GridBattle.Gameplay.Forecast
 
                     cell.Warned = Threat.MarkedCells.Contains(position);
                     cell.WarnHit = Threat.HitCells.Contains(position);
+                    cell.WarnDimmed = focus != null && !focus.Contains(position);
 
                     var content = cell.GetContent() as Character;
                     if (content == null || content.IsDead || !totals.TryGetValue(content, out var damage))
@@ -223,9 +258,12 @@ namespace GridBattle.Gameplay.Forecast
             }
         }
 
-        /// <summary>The acting order over each enemy (hidden over the ones that died or left).</summary>
+        /// <summary>
+        /// The acting order on each enemy (hidden on the ones that died or left) and the strike icon of the inspected one.
+        /// </summary>
         private void DrawBadges(ForecastSettings settings)
         {
+            var inspected = GetInspectedEnemy();
             var stale = new List<Enemy>(_badged);
             _badged.Clear();
             foreach (var (enemy, order) in Threat.Order)
@@ -233,13 +271,16 @@ namespace GridBattle.Gameplay.Forecast
                 if (enemy == null || !enemy.TryGetComponent(out EnemyIconsView icons)) continue;
 
                 icons.SetActingOrder(settings.ShowActingOrder ? order : 0);
+                icons.SetFocused(enemy == inspected);
                 _badged.Add(enemy);
             }
 
             foreach (var enemy in stale)
             {
-                if (enemy != null && !_badged.Contains(enemy) && enemy.TryGetComponent(out EnemyIconsView icons))
-                    icons.SetActingOrder(0);
+                if (enemy == null || _badged.Contains(enemy) || !enemy.TryGetComponent(out EnemyIconsView icons)) continue;
+
+                icons.SetActingOrder(0);
+                icons.SetFocused(false);
             }
         }
 
@@ -425,6 +466,7 @@ namespace GridBattle.Gameplay.Forecast
 
                         cell.Warned = false;
                         cell.WarnHit = false;
+                        cell.WarnDimmed = false;
                         cell.SetPredictedDamage(0, false);
                     }
                 }
@@ -432,8 +474,10 @@ namespace GridBattle.Gameplay.Forecast
 
             foreach (var enemy in _badged)
             {
-                if (enemy != null && enemy.TryGetComponent(out EnemyIconsView icons))
-                    icons.SetActingOrder(0);
+                if (enemy == null || !enemy.TryGetComponent(out EnemyIconsView icons)) continue;
+
+                icons.SetActingOrder(0);
+                icons.SetFocused(false);
             }
 
             _badged.Clear();
