@@ -1038,6 +1038,18 @@ MonoBehaviour:
     m_Localized: En ti
     m_Metadata:
       m_Items: []
+  - m_Id: 5714056882757632
+    m_Localized: Efectos
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5714057016975360
+    m_Localized: "Temblor de pantalla: S\xED"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5714057016975361
+    m_Localized: 'Temblor de pantalla: No'
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

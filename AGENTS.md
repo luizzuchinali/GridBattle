@@ -60,6 +60,8 @@ Assets/
 │   │       ├── Terrain/                                    sprites de terreno 24×24 (sobre a célula e como ícone; inclui IceWall)
 │   │       ├── UI/                                         slots redondos da barra de itens (cores do UI.png)
 │   │       └── Placeholders/Vfx/                           visuais de skills ainda provisórios (VfxPlaceholders)
+│   │   ├── Shaders/SpriteSolidColor.shader, Materials/SpriteFlash.mat   silhueta de cor sólida do clarão de golpe (SpriteFlash)
+│   ├── Audio/Sfx/                                          sons `<ESfx>_<n>.wav` (montados de pacotes CC0 da Kenney; `EnemyDeath` gerado por código), ligados à AudioLibrary pelo nome (AudioFolderLinker; regras no LEIAME.md da pasta); `Audio/Music/` segue a mesma regra com `<EMusicContext>`
 │   ├── Localization/                                       LocalizationSettings, Locales (en, es, pt-BR), Tables (UI, Content)
 │   ├── Prefabs/
 │   │   ├── Cell.prefab                                     célula (destaques, terreno, barra de vida, texto de dano)
@@ -84,6 +86,7 @@ Assets/
 │   │   ├── Meta/, Audio/, Input/, Hud/, Screens/, Modals/  MetaSettings, AudioLibrary, GameplayInputSettings, HudSettings, ScreensSettings, ModalsSettings (views dos modais)
 │   │   ├── Encounters/DefaultEncounter.asset               inimigos da batalha de depuração (grid montado no editor)
 │   │   ├── Vfx/XpOrbsVfxSettings.asset, Movement/GridMovementSettings.asset
+│   │   ├── Feel/GameFeelSettings.asset                     game feel: tremor de tela, hit stop, clarão, partículas, pop dos números
 │   │   ├── Vfx/ActionVisuals/                              ActionVisualDefinition (visual de cada skill e da Bomba; provisórios gerados)
 │   │   ├── Monetization/MonetizationSettings.asset         anúncios, compra, rampa de frequência, privacidade, modo do Editor
 │   ├── UI/                         ← UI Toolkit organizada por feature
@@ -115,7 +118,7 @@ O namespace segue a pasta: `GridBattle.<Pasta>[.<Subpasta>]`.
 | `Core/` | `GridBattle.Core` | `Loc` (textos localizados), `SaveSystem` (JSON atômico) |
 | `Core/Randomness/` | `…Core.Randomness` | `Rng` (SplitMix64), `RunRandom` (fluxos `ERandomStream` + `Derive`), `GameRandom` (fluxos da run ativa) |
 | `Data/` | `GridBattle.Data` | `GameDefinition` (id = GUID), `DisplayableDefinition` (nome/descrição localizados + ícone), `GameDatabase`, `GameSettings` + `IGameSettings`, `SubclassPicker` |
-| `Editor/` | `GridBattle.Editor[.…]` | `GameDatabaseBuilder`, `GridControllerEditor`, `Drawers/SubclassPickerDrawer`, `Localization/LocalizationTableTool`, `Tools/PlaceholderIcons`, `Tools/VfxPlaceholders` (`GridBattle > Vfx > Generate Placeholder Visuals`), `Tools/MonetizationMenu` (`GridBattle > Monetization`), `Tools/ContentValidator` (`GridBattle > Validate Content`), `Talents/{TalentChecks,XpProgressionSimulator}`, `Simulation/BalanceSimulation` (menu e Play Mode do simulador) |
+| `Editor/` | `GridBattle.Editor[.…]` | `GameDatabaseBuilder`, `GridControllerEditor`, `Drawers/SubclassPickerDrawer`, `Localization/LocalizationTableTool`, `Tools/PlaceholderIcons`, `Tools/VfxPlaceholders` (`GridBattle > Vfx > Generate Placeholder Visuals`), `Tools/MonetizationMenu` (`GridBattle > Monetization`), `Tools/ContentValidator` (`GridBattle > Validate Content`), `Tools/AudioFolderLinker` (liga os sons da pasta `Audio/Sfx` e `Audio/Music` à `AudioLibrary` pelo nome do arquivo, sozinho a cada importação; `GridBattle > Audio`), `Talents/{TalentChecks,XpProgressionSimulator}`, `Simulation/BalanceSimulation` (menu e Play Mode do simulador) |
 | `Managers/` | `GridBattle.Managers` | `GameStateManager` (classes jogáveis), `RunManager` (a run; acampamento, melhorias de skill, recompensa da elite), `TurnManager` (turnos; inimigos na ordem de `ActingOrder`), `GameConfigManager`, `GameReset` (reset total, só em build de desenvolvimento) |
 | `Managers/Audio/` | `…Managers.Audio` | `AudioManager` (autoinicializado), `AudioLibrary`, `ESfx`, `EMusicContext`, `AudioEventHooks` |
 | `Gameplay/` | `GridBattle.Gameplay` | `GridController` (andar por caminho: `WalkEntity`; inclui terreno temporário: `SetTerrain(célula, terreno, rodadas)` e `TickTemporaryTerrain`; troca de lugar: `SwapCharacters`), `Cell` (marcas dos golpes, dano previsto), `BattleController` (vitória/derrota), `CellContentHealthBar`, `EncounterConfig`, `ETurnOwner`, `GameplayInput(Settings)` (`confirmTargetedActions`: mirar e confirmar) |
@@ -126,6 +129,7 @@ O namespace segue a pasta: `GridBattle.<Pasta>[.<Subpasta>]`.
 | `Gameplay/Forecast/` | `…Gameplay.Forecast` | previsão (estilo *Into the Breach*, pura): `ActionForecast` (o que a ação mirada faria: área, dano, mortes, deslocamentos, posições finais, interrompidos), `ThreatForecast` (+`TelegraphForecast`: o que os golpes anunciados fariam, depois da ação), `ForecastView` (desenha no tabuleiro; adicionada pelo `GridController` em Play Mode), `ForecastSettings`, `ForecastSprites` (feitos em código: setas 10×10, listras da marca dos golpes, selos) |
 | `Gameplay/Rules/` | `…Gameplay.Rules` | `GridRules` (inclui `GetWalkCells`: para onde um personagem pode andar, mostrado ao tocar num inimigo; `GetReachCells`/`GetSkillReachCells`: onde um inimigo pode golpear no próximo turno, sem uso no jogo hoje), `GridDistance`, `Displacement` (regras puras de empurrar e puxar: direção, caminho, colisão, `GetDistance` com o Gelo Escorregadio), `LineOfSight` (linha de visão das skills), `SkillSelection` (área de seleção das skills: forma, alcance mínimo e máximo) |
 | `Gameplay/Movement/` | `…Gameplay.Movement` | `GridMovementAnimator`, `GridEffectsAnimator`, `GridMovementSettings`, `ActionVisualDefinition` (+`ECasterGesture`, `EVisualCellOrder`, `EVisualFacing`: visual de skill/item) e `ActionVisualPlayer` (toca o visual) |
+| `Gameplay/Feel/` | `…Gameplay.Feel` | game feel, só visual: `GameFeel` (adicionado pelo `GridController` em Play Mode; tremor de tela em pixels inteiros aplicado só durante a renderização da câmera, hit stop com `Time.timeScale`, partículas de pixel; reage a `HitLandedEvent` e `PlayerLeveledUpEvent`), `GameFeelSettings`, `SpriteFlash` (silhueta branca sobre o sprite) |
 | `Gameplay/Entities/` | `…Gameplay.Entities` | `GridEntity` → `Character` → `PlayerCharacter` / `Enemy` (golpe preparado `Telegraph`, `ActOrder`); `CharacterView`, `EnemyIconsView` (+ordem de ação, `SetFocused`: ícone do golpe do inimigo tocado), `CharacterFactory`, `CharacterScaling`, `ECharacter` |
 | `Gameplay/Entities/Configs/` | `…Gameplay.Entities` ⚠️ | `CharacterConfig`, `EnemyConfig`, `PlayerCharacterConfig` (**exceção**: namespace sem `Configs`) |
 | `Gameplay/Entities/Skills/` | `…Entities.Skills` | `SkillDefinition` (+telegrafia, variantes `upgrades`/`upgradeOf`, skill canalizada `usesWalk`), `SkillTelegraph` (golpe anunciado em preparo, salvo com a batalha), `EffectiveSkill` (+`SkillModifiers`: os números de uma skill para um lançador), `SkillEffect` (+`DisplaceSkillEffect`; em `MovementSkillEffects.cs`: `SwapSkillEffect`, `DashToTargetSkillEffect`, `CreateTerrainSkillEffect` + `ETerrainPlacement`), `SkillArea`, `SkillTargeting`, `SkillCooldowns`, `SkillSettings` |
@@ -142,7 +146,7 @@ O namespace segue a pasta: `GridBattle.<Pasta>[.<Subpasta>]`.
 | `Gameplay/Monetization/` | `…Gameplay.Monetization` | monetização (GDD 7): `MonetizationService` (autoinicializado; anúncio forçado pendente, anúncio antes de cada uso das ferramentas de talento, compra), `ForcedAdRules` (rampa de frequência, pura), `MonetizationSettings`, provedores de anúncio (`LevelPlayAdsProvider`, `SimulatedAdsProvider`, `NoAdsProvider` em `AdProviders.cs`) e de loja (`UnityIapRemoveAdsStore`, `SimulatedRemoveAdsStore`, `NoRemoveAdsStore` em `RemoveAdsStores.cs`) |
 | `Gameplay/Simulation/` | `…Gameplay.Simulation` | simulador de balanceamento: `SimMode` (modo sem animações, sons, UI nem salvamento), `SimulationRunner`, bots (`BattleBot`, que lê a previsão como o jogador e só usa uma skill canalizada antes de andar; `MapPolicy`, com as políticas `EMapPolicy` Normal/Elite/Mixed, que responde ao acampamento, à melhoria e às ofertas de consumível, inclusive a da elite; `TalentPolicy`), `SimulationCollector`, `SimulationReport`, `SimulationOptions`, `BalanceSimulationSettings` |
 | `Gameplay/Meta/` | `…Gameplay.Meta` | `ProfileService`/`ProfileState`, `GlossaryService`, `TutorialService` + `TutorialTipDefinition`, `MetricsRecorder`, `MetaSettings`, `MetaBootstrap` |
-| `Gameplay/Events/` | `…Gameplay.Events` | eventos de gameplay (os do novo molde: `ActionAimChangedEvent`, `TelegraphResolvedEvent`, `CharactersSwappedEvent`, `ExtraWalkGrantedEvent`, `CampEnteredEvent`, `SkillUpgradeOfferEvent`, `SkillUpgradedEvent`) |
+| `Gameplay/Events/` | `…Gameplay.Events` | eventos de gameplay (os do novo molde: `ActionAimChangedEvent`, `TelegraphResolvedEvent`, `CharactersSwappedEvent`, `ExtraWalkGrantedEvent`, `CampEnteredEvent`, `SkillUpgradeOfferEvent`, `SkillUpgradedEvent`; `HitLandedEvent`: o momento visual do impacto de um golpe, com o `HitResult`, para efeitos e sons) |
 | `UI/` | `GridBattle.UI` | `XpBarView`, `PixelPerfectPanelScale`, `UiExtensions` (`OnClick`, `SimulateClick`), `LongPressManipulator` (toque longo / clique direito em elementos de UI) |
 | `UI/Flow/` | `…UI.Flow` | `GameFlowController` (eventos → navegação) |
 | `UI/Screens/` | `…UI.Screens` | controladores das telas (Start, MainMenu, Game, Map, RunEnd, Victory), `ScreensSettings` |
@@ -480,7 +484,7 @@ Morte de inimigo
   salvamento novo deve ser ignorado quando `SimMode.IsActive` (veja os
   existentes em `Cell`, `GridMovementAnimator`, `GridEffectsAnimator`,
   `TurnManager`, `XpOrbsVfx`, `AudioManager`, `RunManager`,
-  `GameFlowController`, `ActionVisualPlayer`, `MonetizationService`, `ForecastView`, `EnemyIconsView`). Com o modo desligado, o jogo não muda.
+  `GameFlowController`, `ActionVisualPlayer`, `MonetizationService`, `ForecastView`, `EnemyIconsView`, `GameFeel`). Com o modo desligado, o jogo não muda.
   Com `SimulationOptions.showBoard` (`SimMode.ShowBoard`) a única tela que o
   fluxo abre é a de batalha, para quem estiver olhando ver o tabuleiro.
 - Cada parte da UI que conhece nomes/medidas do UXML fica encapsulada numa
@@ -488,7 +492,8 @@ Morte de inimigo
 - Criação de personagens passa sempre por `CharacterFactory` /
   `GridController.SpawnEnemy`.
 - Cada módulo toca os próprios sons (`AudioManager.Play(ESfx.X)`); ganchos
-  genéricos (dano, morte, XP, movimento) já estão em `AudioEventHooks`.
+  genéricos (dano, morte, XP, movimento) já estão em `AudioEventHooks`; os
+  sons de golpe tocam no impacto (`HitLandedEvent`), não quando o dano é resolvido.
 
 ### Comunicação por eventos
 
@@ -559,7 +564,7 @@ Morte de inimigo
   `new-game-btn`, `back-btn`, `select-class-label`, `menu-buttons`,
   `glossary-btn`, `options-btn`, `locked-info`, `character-*`, `remove-ads-*`,
   `ad-notice-*`, `simulated-ad-*`, `talent-tools-hint`, `options-ads-label`,
-  `options-remove-ads-button`, `summary-remove-ads-button`, `options-dev-label`, `options-reset-button`, `turn-actions`, `turn-move-icon`, `turn-act-icon`, `turn-item-icon`,
+  `options-remove-ads-button`, `summary-remove-ads-button`, `options-dev-label`, `options-reset-button`, `options-effects-label`, `options-shake-toggle`, `turn-actions`, `turn-move-icon`, `turn-act-icon`, `turn-item-icon`,
   `undo-move-btn`, `end-turn-btn`, `cancel-action-btn`, `confirm-action-btn`,
   `upgrade-title`, `upgrade-subtitle`, `upgrade-scroll`, `upgrade-back-button`,
   `upgrade-decline-button`; e os caminhos do Animator do
@@ -656,7 +661,8 @@ com os lotes, as escolhas e o passo a passo, é `docs/projeto/arte.md`; leia ant
 | Ajustar a previsão | `Settings/Combat/ForecastSettings` (só visual: números da ordem, listras da marca dos golpes, opacidade dos golpes dos outros ao tocar num inimigo, dano piscando, setas, fantasmas). Posição dos selos do inimigo no `EnemyIconsView` do `Enemy.prefab`. Mirar e confirmar: `GameplayInputSettings.confirmTargetedActions`. |
 | Ajustar run | `Settings/Run/RunSettings` (cura do acampamento, treino no acampamento `campOffersSkillUpgrade`, custo do nó de talento `talentNodeCost`/`talentNodeCostMaxHp`, recompensa da elite `eliteConsumableOffers` e `eliteGrantsSkillUpgrade`, estados entre batalhas, seed de depuração, `autoEnterFirstNode`). |
 | Ajustar a monetização | `Settings/Monetization/MonetizationSettings` (chaves e blocos do LevelPlay, produto da loja, momentos e rampa dos anúncios forçados, aviso, oferta, privacidade, modo do Editor); recargas por run em `TalentOfferSettings`. Testes sem loja: `GridBattle > Monetization > Testing`. Ver `docs/projeto/monetizacao.md`. |
-| Adicionar som | Arraste clipes na entrada do `ESfx`/`EMusicContext` em `Settings/Audio/AudioLibrary`. |
+| Adicionar ou trocar som | Solte o arquivo em `Audio/Sfx` com o nome do evento (`<ESfx>.wav` ou `<ESfx>_<qualquer coisa>.wav`; vários = variações sorteadas); o `AudioFolderLinker` liga sozinho. Apagar os arquivos silencia o evento. Música: `Audio/Music/<EMusicContext>…`. Volume, pitch e limites por evento em `Settings/Audio/AudioLibrary`. Evento novo: valor no `ESfx` + `AudioManager.Play`. |
+| Ajustar o game feel | `Settings/Feel/GameFeelSettings` (tremor por evento e liga/desliga, hit stop, cor e duração do clarão, achatamento, estouro da morte, rajadas de partículas, pop e cores dos números); recuo do ataque (`lungeWindUp`), duração do golpe e da morte em `Settings/Movement/GridMovementSettings`. O jogador desliga o tremor nas Opções. |
 | Novo texto | Entrada nas tabelas `UI`/`Content` (`Window > Asset Management > Localization Tables`) nos 3 idiomas. |
 | Nova tela/modal | UXML + USS em `UI/Screens|Overlays/<Nome>/`; `ViewController` em `Scripts/UI/...`; `ViewDefinition` (Instantiate na `ScreensLayer` ou na camada de modais); navegue a partir do `GameFlowController`. |
 | Nova página interna | `<zsnav:PageHost name="...">` no UXML da tela; `Context.GetPageNavigator("...").Push(definição)`. |
@@ -754,6 +760,30 @@ O Unity Editor costuma estar aberto e acessível pela CLI `unity` (pacote
 ## Histórico de refatorações
 
 Registre aqui toda mudança estrutural (mais recente primeiro).
+
+### 2026-10-20 — Game feel
+Pedido do Luiz: "Agora eu quero melhorar o game feel e juicy." Depois: "Esses sons não estão tão legais, deixe fácil
+para que eu consiga substituir eles." Só apresentação; nenhuma regra mudou.
+- **Impacto:** `HitLandedEvent` (`Gameplay/Events`) sai do `GridEffectsAnimator` quando a reação de golpe ou de morte
+  começa (com o `HitResult`, passado por `GridController.PlayHitAnimation`/`PlayDeathAnimation`); o jogador sem efeito
+  de morte o emite em `Character.Die`. Sons de dano, crítico, colisão e morte de inimigo tocam nele.
+- **Juice** (`Gameplay/Feel`, ajustes em `Settings/Feel/GameFeelSettings`): tremor de tela por trauma, em pixels
+  inteiros (arredondado para longe do zero: todo golpe mexe ao menos 1 px), só durante a renderização da câmera (quem
+  lê `Camera.main` vê a posição de repouso); hit stop em morte, crítico, colisão, dano no jogador e golpe pesado;
+  clarão branco (`SpriteFlash`, shader `GridBattle/Sprite Solid Color`); achatamento no golpe e estouro na morte em
+  escala quantizada a pixels do sprite; partículas de pixel (morte, colisão, crítico, subir de nível); ataque com
+  recuo antes do avanço (`GridMovementSettings.lungeWindUp`).
+- **Números:** pop ao aparecer; crítico maior, amarelo e com "!"; cura verde (`Cell.ShowFloatingText`).
+- **Botões:** afundam 1 px ao pressionar (`Components.uss`).
+- **Opções:** "Tremor de tela" (`ProfileState.OptionsState.ScreenShake`, `ProfileService.SetScreenShakeEnabled`;
+  `options-effects-label`, `options-shake-toggle`).
+- **Sons:** `ESfx.Collision` e `ESfx.StrikePrepare`; 57 sons em `Audio/Sfx` para os 33 eventos. Os primeiros,
+  gerados por código, soaram retrô demais (8 bits); ficou só `EnemyDeath`. Os outros vêm de pacotes CC0 da Kenney
+  (Impact Sounds, RPG Audio, Interface Sounds, Music Jingles/Pizzicato), recortados e nivelados; dano no jogador,
+  crítico, colisão e morte do jogador têm uma camada grave a mais. Volume e pitch de todas as entradas voltaram a 1
+  (o nível está no arquivo).
+  `Editor/Tools/AudioFolderLinker` liga cada arquivo ao evento pelo nome (sozinho a cada importação, mantendo clipes
+  de outras pastas); a tabela de eventos está em `Audio/Sfx/LEIAME.md`.
 
 ### 2026-10-20 — Linha de visão nos itens e consumíveis de tabuleiro
 Pedido do Luiz: "A bomba deve ser seu uso obstruído pela linha de visão. Também sinto falta de mais itens consumíveis."

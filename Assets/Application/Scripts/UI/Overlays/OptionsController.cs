@@ -16,7 +16,7 @@ namespace GridBattle.UI.Overlays
 {
     /// <summary>
     /// Options (interface 4.3, GDD 5.2 and 8.1): language (automatic, English, Spanish, Brazilian Portuguese), music
-    /// and effects volume, and the tutorial tips (on/off when <see cref="MetaSettings.AllowDisablingTips"/> allows
+    /// and effects volume, the screen shake (on/off), and the tutorial tips (on/off when <see cref="MetaSettings.AllowDisablingTips"/> allows
     /// it, plus "show tips again") and, where the store sells it, the remove ads purchase (GDD 7: the button opens
     /// its window; after the purchase it only says the ads are removed). Development builds also get "Reset the
     /// game" (<see cref="GameReset"/>, after a confirmation). Everything goes through
@@ -47,6 +47,8 @@ namespace GridBattle.UI.Overlays
         private Slider _sfxSlider;
         private Button _tipsToggle;
         private Button _tipsReset;
+        private Label _effectsLabel;
+        private Button _shakeToggle;
         private Label _adsLabel;
         private Button _removeAdsButton;
         private Label _devLabel;
@@ -60,6 +62,7 @@ namespace GridBattle.UI.Overlays
         public Slider SfxSlider => _sfxSlider;
         public Button TipsToggle => _tipsToggle;
         public Button TipsResetButton => _tipsReset;
+        public Button ShakeToggle => _shakeToggle;
         public Button RemoveAdsButton => _removeAdsButton;
         public Button ResetButton => _resetButton;
 
@@ -109,6 +112,9 @@ namespace GridBattle.UI.Overlays
 
             _tipsToggle.OnClick(OnTipsToggleClicked);
             _tipsReset.OnClick(OnTipsResetClicked);
+            _effectsLabel = root.Q<Label>("options-effects-label");
+            _shakeToggle = root.Q<Button>("options-shake-toggle");
+            _shakeToggle.OnClick(OnShakeToggleClicked);
             _adsLabel = root.Q<Label>("options-ads-label");
             _removeAdsButton = root.Q<Button>("options-remove-ads-button");
             _removeAdsButton.OnClick(OnRemoveAdsClicked);
@@ -211,6 +217,13 @@ namespace GridBattle.UI.Overlays
             Render();
         }
 
+        private void OnShakeToggleClicked()
+        {
+            AudioManager.Play(ESfx.ButtonTap);
+            ProfileService.SetScreenShakeEnabled(!ProfileService.ScreenShakeEnabled);
+            Render();
+        }
+
         private void OnTipsResetClicked()
         {
             AudioManager.Play(ESfx.ButtonTap);
@@ -256,6 +269,10 @@ namespace GridBattle.UI.Overlays
             _tipsToggle.EnableInClassList(ActiveClass, ProfileService.TipsEnabled);
             _tipsReset.text = HudText.Get("options.tips_reset");
             _tipsReset.SetEnabled(ProfileService.State.TipsSeen.Count > 0);
+
+            _effectsLabel.text = HudText.Get("options.effects");
+            _shakeToggle.text = HudText.Get(ProfileService.ScreenShakeEnabled ? "options.shake_on" : "options.shake_off");
+            _shakeToggle.EnableInClassList(ActiveClass, ProfileService.ScreenShakeEnabled);
 
             var store = MonetizationService.StoreSupported || MonetizationService.AdsRemoved;
             _adsLabel.SetDisplayed(store);

@@ -5,6 +5,7 @@ using GridBattle.Gameplay.Entities.Interfaces;
 using GridBattle.Gameplay.Entities.Skills;
 using GridBattle.Gameplay.Events;
 using GridBattle.Gameplay.Rules;
+using GridBattle.Gameplay.Simulation;
 using GridBattle.Gameplay.States;
 using GridBattle.Gameplay.Stats;
 using UnityEngine;
@@ -27,6 +28,9 @@ namespace GridBattle.Gameplay.Entities
         private CharacterConfig config;
 
         private int _currentHp = 100;
+
+        /// <summary>The hit that killed this character (for the death animation and its impact).</summary>
+        private HitResult _killingHit;
         private CharacterStats _stats;
         private StateContainer _states;
         private CharacterScaling _scaling = CharacterScaling.None;
@@ -172,11 +176,12 @@ namespace GridBattle.Gameplay.Entities
             if (IsDead)
             {
                 hit.Killed = true;
+                _killingHit = hit;
                 Die();
             }
             else if (GetComponentInParent<GridController>() is { } grid)
             {
-                grid.PlayHitAnimation(this);
+                grid.PlayHitAnimation(this, hit);
             }
         }
 
@@ -324,9 +329,20 @@ namespace GridBattle.Gameplay.Entities
             EventBus.Raise(new CharacterDiedEvent(this));
 
             if (PlaysDeathEffect && grid != null)
-                grid.PlayDeathAnimation(this);
+            {
+                grid.PlayDeathAnimation(this, _killingHit);
+            }
             else
+            {
+                // No death animation: the killing blow lands right now.
+                if (Application.isPlaying && !SimMode.IsActive && _killingHit.Target != null)
+                {
+                    var center = TryGetComponent(out SpriteRenderer sprite) ? sprite.bounds.center : transform.position;
+                    EventBus.Raise(new HitLandedEvent(_killingHit, center, Vector3.zero));
+                }
+
                 Destroy(gameObject);
+            }
         }
 
         /// <summary>Starts the runtime skill list from the config's skills (without raising events).</summary>

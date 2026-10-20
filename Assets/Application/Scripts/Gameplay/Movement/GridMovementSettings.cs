@@ -110,6 +110,11 @@ namespace GridBattle.Gameplay.Movement
         private float lungeDuration = 0.15f;
 
         [SerializeField]
+        [Range(0f, 1f)]
+        [Tooltip("How far the attacker steps back before the lunge, as a fraction of the lunge (anticipation).")]
+        private float lungeWindUp = 0.3f;
+
+        [SerializeField]
         private Color hitFlashColor = new(1f, 0.3f, 0.3f, 1f);
 
         [SerializeField]
@@ -131,6 +136,7 @@ namespace GridBattle.Gameplay.Movement
         public float CollisionBumpDelay => collisionBumpDelay;
         public float LungePixels => lungePixels;
         public float LungeDuration => lungeDuration;
+        public float LungeWindUp => lungeWindUp;
         public Color HitFlashColor => hitFlashColor;
         public float HitFlashDuration => hitFlashDuration;
         public float HitRecoilPixels => hitRecoilPixels;

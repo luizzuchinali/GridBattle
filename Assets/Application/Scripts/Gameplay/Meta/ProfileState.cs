@@ -98,6 +98,9 @@ namespace GridBattle.Gameplay.Meta
 
         /// <summary>Whether contextual tutorial tips are shown.</summary>
         public bool TipsEnabled = true;
+
+        /// <summary>Whether hits shake the screen (game feel; some players prefer it still).</summary>
+        public bool ScreenShake = true;
     }
 
     /// <summary>

@@ -23,6 +23,11 @@
     background-image: var(--skin-slot-pressed);
 }
 
+/* Pressed: the icon sinks one pixel (whole pixels keep it pixel perfect). */
+#container .slot-button:active > * {
+    translate: 0 1px;
+}
+
 /* Row of slot buttons (skill bar, item bar): 2px between them, centered. */
 .slot-bar {
     flex-direction: row;
@@ -39,6 +44,11 @@
 /* Slot looks (set by code, see HudSlot): selected, disabled and empty. */
 #container .slot-button--selected {
     background-image: var(--skin-slot-selected);
+}
+
+/* Selected: the icon rises one pixel. */
+#container .slot-button--selected > Image {
+    translate: 0 -1px;
 }
 
 #container .slot-button--disabled {
@@ -161,6 +171,7 @@
 
 #container .text-button:active {
     background-image: var(--skin-slot-pressed);
+    padding-top: 2px;
 }
 
 #container .text-button:disabled {

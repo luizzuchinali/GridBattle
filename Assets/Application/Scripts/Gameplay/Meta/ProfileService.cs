@@ -385,6 +385,9 @@ namespace GridBattle.Gameplay.Meta
         /// </summary>
         public static bool TipsEnabled => !MetaSettings.Current.AllowDisablingTips || State.Options.TipsEnabled;
 
+        /// <summary>Whether hits shake the screen (<see cref="Feel.GameFeel"/>).</summary>
+        public static bool ScreenShakeEnabled => State.Options.ScreenShake;
+
         /// <summary>
         /// Chooses the language and applies it right away (Unity Localization). Null or empty means
         /// automatic: the system language, with the project locale (English) as fallback.
@@ -432,6 +435,15 @@ namespace GridBattle.Gameplay.Meta
             if (options.TipsEnabled == enabled) return;
 
             options.TipsEnabled = enabled;
+            CommitOptions();
+        }
+
+        public static void SetScreenShakeEnabled(bool enabled)
+        {
+            var options = State.Options;
+            if (options.ScreenShake == enabled) return;
+
+            options.ScreenShake = enabled;
             CommitOptions();
         }
 

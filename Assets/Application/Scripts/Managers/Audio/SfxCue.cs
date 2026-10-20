@@ -102,6 +102,12 @@ namespace GridBattle.Managers.Audio
                 case ESfx.EnemyDeath:
                     Tune(0.9f, 0.06f, 0.08f, 3);
                     break;
+                case ESfx.Collision:
+                    Tune(1f, 0.05f, 0.08f, 2);
+                    break;
+                case ESfx.StrikePrepare:
+                    Tune(0.5f, 0.12f, 0.05f, 1);
+                    break;
                 case ESfx.PlayerDeath:
                 case ESfx.RunVictory:
                 case ESfx.RunDefeat:

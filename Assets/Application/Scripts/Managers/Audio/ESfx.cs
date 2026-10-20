@@ -20,6 +20,12 @@ namespace GridBattle.Managers.Audio
         EnemyDeath = 6,
         PlayerDeath = 7,
 
+        /// <summary>A pushed or pulled character crashes into something.</summary>
+        Collision = 8,
+
+        /// <summary>An enemy prepares a strike (its cells are marked).</summary>
+        StrikePrepare = 9,
+
         // Progression
         XpOrb = 20,
         LevelUp = 21,

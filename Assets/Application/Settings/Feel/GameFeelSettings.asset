@@ -1,0 +1,93 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1aefc832981847ed89681fa66675259c, type: 3}
+  m_Name: GameFeelSettings
+  m_EditorClassIdentifier: Assembly-CSharp::GridBattle.Gameplay.Feel.GameFeelSettings
+  shakeEnabled: 1
+  shakeMaxPixels: 4
+  shakeDecay: 3
+  shakeFrequency: 30
+  shakeHit: 0.12
+  shakePerDamage: 0.03
+  shakeIndirect: 0.04
+  shakeCrit: 0.2
+  shakeCollision: 0.3
+  shakeKill: 0.25
+  shakePlayerHurt: 0.2
+  shakeLevelUp: 0.15
+  hitStopEnabled: 1
+  hitStopKill: 0.07
+  hitStopCrit: 0.05
+  hitStopCollision: 0.05
+  hitStopPlayerHurt: 0.04
+  hitStopHeavyDamage: 4
+  hitStopHeavy: 0.03
+  flashMaterial: {fileID: 2100000, guid: 7ecbfd3310e04adeaad353e200e222c4, type: 2}
+  flashColor: {r: 1, g: 1, b: 1, a: 1}
+  flashDuration: 0.06
+  hitSquash: 0.15
+  deathPopScale: 1.25
+  deathPopPart: 0.3
+  particlesEnabled: 1
+  particlePixels: 1
+  particleSortingOrder: 150
+  particleGravity: 420
+  deathBurst:
+    count: 16
+    minSpeed: 50
+    maxSpeed: 120
+    upwardBias: 50
+    minLifetime: 0.25
+    maxLifetime: 0.5
+    colors:
+    - {r: 1, g: 1, b: 1, a: 1}
+    - {r: 0.75, g: 0.8, b: 0.86, a: 1}
+    - {r: 0.89, g: 0.23, b: 0.27, a: 1}
+    - {r: 0.97, g: 0.46, b: 0.13, a: 1}
+  collisionBurst:
+    count: 8
+    minSpeed: 25
+    maxSpeed: 60
+    upwardBias: 20
+    minLifetime: 0.2
+    maxLifetime: 0.35
+    colors:
+    - {r: 0.92, g: 0.83, b: 0.67, a: 1}
+    - {r: 0.75, g: 0.8, b: 0.86, a: 1}
+    - {r: 0.55, g: 0.61, b: 0.71, a: 1}
+  critBurst:
+    count: 8
+    minSpeed: 60
+    maxSpeed: 110
+    upwardBias: 30
+    minLifetime: 0.15
+    maxLifetime: 0.3
+    colors:
+    - {r: 1, g: 1, b: 1, a: 1}
+    - {r: 1, g: 0.91, b: 0.38, a: 1}
+    - {r: 1, g: 0.68, b: 0.2, a: 1}
+  levelUpBurst:
+    count: 20
+    minSpeed: 30
+    maxSpeed: 90
+    upwardBias: 80
+    minLifetime: 0.4
+    maxLifetime: 0.7
+    colors:
+    - {r: 1, g: 1, b: 1, a: 1}
+    - {r: 1, g: 0.91, b: 0.38, a: 1}
+    - {r: 0.17, g: 0.91, b: 0.96, a: 1}
+  numberPopScale: 1.6
+  numberPopDuration: 0.12
+  critNumberScale: 1.4
+  critNumberColor: {r: 1, g: 0.91, b: 0.38, a: 1}
+  healNumberColor: {r: 0.39, g: 0.78, b: 0.3, a: 1}

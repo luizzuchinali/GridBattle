@@ -60,7 +60,7 @@ Interface em UI Toolkit, em orientação retrato no mobile (ver 8.1). Os control
 - **Escolha de talento:** tela sobre a batalha ou o mapa, com o jogo pausado (ver Mecânica 3).
 - **Glossário:** seções de classes e de inimigos (ver [[meta_progressao_e_perfil]]). ❓ Se é acessível durante a pausa de escolha de talento. Valor inicial: não (`ModalsSettings.allowGlossaryDuringTalentChoice`).
 - **Pausa (overlay de menu, já existe):** continuar, glossário, opções e desistir da run. ❓ O que acontece com a run ao desistir (conta como derrota no registro de nível e profundidade). Valor inicial: conta como derrota (ver [[valores_padrao_em_aberto]]).
-- **Opções:** idioma (inglês, espanhol e português do Brasil; ver 8.1), volume da música e dos efeitos (ver 5.2) e ❓ vibração, entre outros.
+- **Opções:** idioma (inglês, espanhol e português do Brasil; ver 8.1), volume da música e dos efeitos (ver 5.2), tremor de tela (ligado por padrão) e ❓ vibração, entre outros.
 - **Fim de run (derrota):** resumo da build, nível e profundidade alcançados, progresso de liberação de classes e anúncio (ver seção 7).
 - **Vitória:** resumo da run e o que foi desbloqueado.
 - **Remoção de anúncios:** tela de compra (ver seção 7).

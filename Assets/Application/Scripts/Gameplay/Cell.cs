@@ -2,6 +2,7 @@ using System;
 using GridBattle.Gameplay.Entities;
 using GridBattle.Gameplay.Entities.Interfaces;
 using GridBattle.Gameplay.Events;
+using GridBattle.Gameplay.Feel;
 using GridBattle.Gameplay.Forecast;
 using GridBattle.Gameplay.Simulation;
 using GridBattle.Gameplay.Terrain;
@@ -439,19 +440,42 @@ namespace GridBattle.Gameplay
         {
             cellContentHealthBar.UpdateHp(data.CurrentHp, data.MaxHp);
 
+            var feel = GameFeelSettings.Current;
             if (data.Damage > 0)
-                ShowFloatingText(data.Damage.ToString());
+            {
+                if (data.IsCrit)
+                    ShowFloatingText(data.Damage + "!", feel.CritNumberColor, feel.CritNumberScale);
+                else
+                    ShowFloatingText(data.Damage.ToString(), null, 1f);
+            }
             else if (data.Healed > 0)
-                ShowFloatingText($"+{data.Healed}");
+            {
+                ShowFloatingText($"+{data.Healed}", feel.HealNumberColor, 1f);
+            }
         }
 
-        private void ShowFloatingText(string text)
+        /// <summary>
+        /// A number that pops out of the character and flies off in an arc. <paramref name="color"/> null keeps the
+        /// prefab's color; <paramref name="scale"/> enlarges it (critical hits).
+        /// </summary>
+        private void ShowFloatingText(string text, Color? color, float scale)
         {
             if (SimMode.IsActive) return;
 
             var damageTextInstance = Instantiate(damageText, damageText.transform.parent);
             damageTextInstance.text = text;
+            if (color.HasValue)
+                damageTextInstance.color = color.Value;
             damageTextInstance.gameObject.SetActive(true);
+
+            // Pop: appears bigger and settles at its size.
+            var feel = GameFeelSettings.Current;
+            var textTransform = damageTextInstance.transform;
+            var baseScale = textTransform.localScale * scale;
+            LMotion.Create(feel.NumberPopScale, 1f, feel.NumberPopDuration)
+                .WithEase(Ease.OutBack)
+                .Bind(k => textTransform.localScale = baseScale * k)
+                .AddTo(damageTextInstance.gameObject);
 
             var start = new Vector3(0, 0.23f, 0);
             var end = new Vector3(Random.Range(-0.25f, 0.25f), 0.4f, 0);

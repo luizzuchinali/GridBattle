@@ -32,7 +32,8 @@ MonoBehaviour:
   collisionBumpDelay: 0.02
   lungePixels: 5
   lungeDuration: 0.15
+  lungeWindUp: 0.3
   hitFlashColor: {r: 1, g: 0.3, b: 0.3, a: 1}
-  hitFlashDuration: 0.1
+  hitFlashDuration: 0.14
   hitRecoilPixels: 2
-  deathDuration: 0.15
+  deathDuration: 0.24

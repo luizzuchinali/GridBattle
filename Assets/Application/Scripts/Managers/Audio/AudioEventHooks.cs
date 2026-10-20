@@ -26,6 +26,9 @@ namespace GridBattle.Managers.Audio
 
             EventBus.Subscribe<EntityMoveStartedEvent>(OnMoveStarted);
             EventBus.Subscribe<DamageDealtEvent>(OnDamageDealt);
+            EventBus.Subscribe<HitLandedEvent>(OnHitLanded);
+            EventBus.Subscribe<SkillUsedEvent>(OnSkillUsed);
+            EventBus.Subscribe<SkillTelegraphChangedEvent>(OnTelegraphChanged);
             EventBus.Subscribe<HealedEvent>(OnHealed);
             EventBus.Subscribe<StateAppliedEvent>(OnStateApplied);
             EventBus.Subscribe<StateRemovedEvent>(OnStateRemoved);
@@ -48,6 +51,9 @@ namespace GridBattle.Managers.Audio
 
             EventBus.Unsubscribe<EntityMoveStartedEvent>(OnMoveStarted);
             EventBus.Unsubscribe<DamageDealtEvent>(OnDamageDealt);
+            EventBus.Unsubscribe<HitLandedEvent>(OnHitLanded);
+            EventBus.Unsubscribe<SkillUsedEvent>(OnSkillUsed);
+            EventBus.Unsubscribe<SkillTelegraphChangedEvent>(OnTelegraphChanged);
             EventBus.Unsubscribe<HealedEvent>(OnHealed);
             EventBus.Unsubscribe<StateAppliedEvent>(OnStateApplied);
             EventBus.Unsubscribe<StateRemovedEvent>(OnStateRemoved);
@@ -72,22 +78,40 @@ namespace GridBattle.Managers.Audio
 
         private static void OnDamageDealt(DamageDealtEvent e)
         {
-            var hit = e.Hit;
-
-            // Skills play their own cast sound (SkillCast) from the skill module.
-            if (hit.Kind == EDamageKind.BasicAttack)
+            // The swing sounds when the attack starts; the hit itself sounds at its impact (OnHitLanded).
+            if (e.Hit.Kind == EDamageKind.BasicAttack)
                 AudioManager.Play(ESfx.BasicAttack);
+        }
 
+        /// <summary>The impact on screen (end of the lunge, of the skill visual or of a push slide).</summary>
+        private static void OnHitLanded(HitLandedEvent e)
+        {
+            var hit = e.Hit;
             if (hit.Target == null) return;
 
             if (hit.IsCrit)
                 AudioManager.Play(ESfx.CriticalHit);
+            if (hit.Kind == EDamageKind.Collision)
+                AudioManager.Play(ESfx.Collision);
 
             // A killing blow is followed by the death sound, which replaces the hurt one.
             var library = AudioManager.Library;
             var playHurt = !hit.Killed || (library != null && library.HurtSoundOnKill);
             if (playHurt)
                 AudioManager.Play(hit.Target is PlayerCharacter ? ESfx.PlayerHurt : ESfx.EnemyHurt);
+            if (hit.Killed && hit.Target is not PlayerCharacter)
+                AudioManager.Play(ESfx.EnemyDeath);
+        }
+
+        private static void OnSkillUsed(SkillUsedEvent e)
+        {
+            AudioManager.Play(ESfx.SkillCast);
+        }
+
+        private static void OnTelegraphChanged(SkillTelegraphChangedEvent e)
+        {
+            if (e.Change == ETelegraphChange.Prepared)
+                AudioManager.Play(ESfx.StrikePrepare);
         }
 
         private static void OnHealed(HealedEvent e)
@@ -125,7 +149,9 @@ namespace GridBattle.Managers.Audio
 
         private static void OnCharacterDied(CharacterDiedEvent e)
         {
-            AudioManager.Play(e.Character is PlayerCharacter ? ESfx.PlayerDeath : ESfx.EnemyDeath);
+            // An enemy's death sounds at the impact of the killing blow (OnHitLanded).
+            if (e.Character is PlayerCharacter)
+                AudioManager.Play(ESfx.PlayerDeath);
         }
 
         private static void OnXpRewardDropped(XpRewardDroppedEvent e)

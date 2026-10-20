@@ -1040,6 +1040,18 @@ MonoBehaviour:
     m_Localized: On you
     m_Metadata:
       m_Items: []
+  - m_Id: 5714056882757632
+    m_Localized: Effects
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5714057016975360
+    m_Localized: 'Screen shake: On'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5714057016975361
+    m_Localized: 'Screen shake: Off'
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

@@ -57,7 +57,8 @@ Perfil (entre runs): classes liberadas, glossário, recordes, opções, dicas vi
 | XP e talentos | Curva de XP, nível máximo, vida máxima por nível, ofertas, reroll/banir/pular, talentos | `Settings/Progression/`, `Settings/Talents/` |
 | Meta e perfil | Liberação de classes, glossário, recordes, dicas, métricas | `Settings/Meta/`, `Settings/Tutorial/` |
 | Interface | HUD, telas, modais, toque longo | `Settings/Hud/`, `Settings/Screens/`, `Settings/Modals/`, `Settings/Input/`, `Assets/Application/UI/` |
-| Áudio | Efeitos e músicas por contexto | `Settings/Audio/AudioLibrary` |
+| Áudio | Efeitos e músicas por contexto | arquivos em `Audio/Sfx` e `Audio/Music` (ligados pelo nome), `Settings/Audio/AudioLibrary` |
+| Game feel | Tremor de tela, hit stop, clarão, partículas, pop dos números | `Settings/Feel/GameFeelSettings` |
 | Idiomas | Textos em inglês, espanhol e português | `Assets/Application/Localization/` |
 | Simulador de balanceamento | Bot que joga runs completas e gera um relatório ([[simulador_balanceamento]]) | `Settings/Simulation/BalanceSimulationSettings` |
 | Monetização | Anúncios forçados nas pausas da run, anúncio recompensado antes de cada uso das ferramentas de talento e compra de remoção de anúncios ([[monetizacao]]) | `Settings/Monetization/MonetizationSettings` |
@@ -642,7 +643,8 @@ nomes (ou troque os PNGs e não rode o gerador de novo).
 | HUD, telas e modais | `Hud/HudSettings`, `Screens/ScreensSettings`, `Modals/ModalsSettings` | atributos na janela de detalhes; ícones e cores do mapa (batalha normal e de elite: `battleEliteIcon`, `eliteColor`; o XP dos nós saiu em 2026-10-20), consumíveis no mapa; confirmação ao pular talento e ao desistir, dicas sobre a escolha de talento, glossário durante a escolha |
 | Movimento e ritmo | `Movement/GridMovementSettings`, `TurnManager` (objeto `Grid`) | estilo dos pulos, pausa entre um inimigo e o próximo (`enemyStagger`) |
 | Orbs de XP | `Vfx/XpOrbsVfxSettings`, `XpRewardSystem` (objeto `XpRewardSystem`) | explosão (`burstRadius` 14, `burstRadiusVariance` 6, `burstAngleJitter` 0,5, `burstDuration` 0,22, `burstEase`), pausa (`holdDuration` 0,08), voo (`flightDuration` 0,45, `flightEase`, arco) e variação de partida (`launchJitter` 0,06); XP por orb (`xpPerPacket`, 5) e máximo de orbs por abate (`maxPackets`, 8: acima disso cada orb vale mais) |
-| Sons | `Audio/AudioLibrary` | clipes, volume e variação por efeito; música por contexto |
+| Sons | arquivos em `Assets/Application/Audio/Sfx` + `Audio/AudioLibrary` | **trocar um som:** solte o arquivo na pasta com o nome do efeito (`Collision.wav`, `Collision_metal.ogg`; vários do mesmo efeito = variações sorteadas) e ele é ligado sozinho (`AudioFolderLinker`); apagar os arquivos silencia o efeito; `GridBattle > Audio > Relink Sound Folders` refaz à mão. Música: `Audio/Music` com `Menu`, `Map`, `Battle`, `Boss`. Na `AudioLibrary`: volume, pitch, variação e limites de repetição por efeito. Lista dos efeitos e quando tocam: `Audio/Sfx/LEIAME.md` |
+| Game feel | `Feel/GameFeelSettings`, `Movement/GridMovementSettings` | tremor (liga/desliga, máximo em pixels, decaimento, frequência e trauma de cada evento: golpe, dano, crítico, colisão, morte, dano no jogador, subir de nível), hit stop (liga/desliga e duração por evento; golpe pesado a partir de `hitStopHeavyDamage`), clarão (material, cor, duração), achatamento no golpe e estouro na morte, partículas (liga/desliga, tamanho, gravidade e as rajadas de morte, colisão, crítico e nível: quantidade, velocidade, vida, cores), pop e cores dos números; em `GridMovementSettings`: recuo do ataque `lungeWindUp`, `hitFlashDuration`, `deathDuration`. O jogador desliga o tremor nas Opções |
 
 ### Previsão
 A previsão (`Gameplay/Forecast`) mostra no tabuleiro o que vai acontecer

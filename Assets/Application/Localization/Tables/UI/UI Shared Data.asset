@@ -1035,6 +1035,18 @@ MonoBehaviour:
     m_Key: details.action.on_caster
     m_Metadata:
       m_Items: []
+  - m_Id: 5714056882757632
+    m_Key: options.effects
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5714057016975360
+    m_Key: options.shake_on
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5714057016975361
+    m_Key: options.shake_off
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

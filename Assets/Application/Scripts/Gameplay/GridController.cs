@@ -4,7 +4,9 @@ using System.Threading;
 using GridBattle.Gameplay.Controllers;
 using GridBattle.Gameplay.Entities;
 using GridBattle.Gameplay.Entities.Skills;
+using GridBattle.Gameplay.Combat;
 using GridBattle.Gameplay.Events;
+using GridBattle.Gameplay.Feel;
 using GridBattle.Gameplay.Forecast;
 using GridBattle.Gameplay.Movement;
 using GridBattle.Gameplay.Rules;
@@ -162,7 +164,8 @@ namespace GridBattle.Gameplay
         /// <summary>Seconds until the walk of <paramref name="entity"/> ends (0 when it is not moving).</summary>
         public float GetMovementRemaining(GridEntity entity) => _movementAnimator.GetRemaining(entity);
 
-        public void PlayHitAnimation(GridEntity entity) => _effectsAnimator.PlayHit(entity, movementSettings);
+        /// <summary>Hit reaction of <paramref name="entity"/> to <paramref name="hit"/> (at the impact of a pending attack).</summary>
+        public void PlayHitAnimation(GridEntity entity, HitResult hit) => _effectsAnimator.PlayHit(entity, movementSettings, hit);
 
         /// <summary>
         /// Plays the look of a skill or an item (<see cref="ActionVisualDefinition"/>): gesture, projectile and the
@@ -201,7 +204,9 @@ namespace GridBattle.Gameplay
             _effectsAnimator.QueueImpact(entity, new Vector3(direction.x, -direction.y, 0f), delay);
         }
 
-        public void PlayDeathAnimation(GridEntity entity) => _effectsAnimator.PlayDeath(entity, movementSettings);
+        /// <summary>Death of <paramref name="entity"/> from <paramref name="hit"/>, then the object is destroyed.</summary>
+        public void PlayDeathAnimation(GridEntity entity, HitResult hit) =>
+            _effectsAnimator.PlayDeath(entity, movementSettings, hit);
 
         private void Awake()
         {
@@ -223,6 +228,10 @@ namespace GridBattle.Gameplay
             // The forecast (telegraph marks, acting order, predicted damage, aimed action) draws itself.
             if (!TryGetComponent(out ForecastView _))
                 gameObject.AddComponent<ForecastView>();
+
+            // The juice of the hits (shake, hit stop, particles).
+            if (!TryGetComponent(out GameFeel _))
+                gameObject.AddComponent<GameFeel>();
         }
 
         private void OnDisable()

@@ -1038,6 +1038,18 @@ MonoBehaviour:
     m_Localized: "Em voc\xEA"
     m_Metadata:
       m_Items: []
+  - m_Id: 5714056882757632
+    m_Localized: Efeitos
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5714057016975360
+    m_Localized: 'Tremor de tela: Ligado'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5714057016975361
+    m_Localized: 'Tremor de tela: Desligado'
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []
