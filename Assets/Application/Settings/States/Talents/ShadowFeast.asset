@@ -33,19 +33,20 @@ MonoBehaviour:
     m_LocalVariables: []
   icon: {fileID: 21300000, guid: 0ad0c77673c4ddc4db65081b70eb04f9, type: 3}
   kind: 0
-  stackPolicy: 2
-  maxStacks: 3
+  stackPolicy: 0
+  maxStacks: 1
   showInDetails: 1
   effects:
-  - rid: 8661860384129156081
+  - rid: 8661860679606599764
   references:
     version: 2
     RefIds:
-    - rid: 8661860384129156081
+    - rid: 8661860679606599764
       type: {class: OnKillEffect, ns: GridBattle.Gameplay.States.Effects, asm: Assembly-CSharp}
       data:
-        appliesTo: 131
+        appliesTo: 135
         cooldownReduction: 0
-        healFlat: 12
+        healFlat: 1
         healMaxHpFraction: 0
         grantStates: []
+        grantExtraWalk: 0

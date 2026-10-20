@@ -33,25 +33,28 @@ MonoBehaviour:
     m_LocalVariables: []
   icon: {fileID: 21300000, guid: e6e7d408e69946e469fced9a27104232, type: 3}
   type: 0
-  damage: 14
+  damage: 3
   areaShape: 2
   areaSize: 3
   selectionShape: 1
   minRange: 1
   range: 1
-  rangeModifiable: 1
+  rangeModifiable: 0
   unlimitedRange: 0
   targetCell: 0
   affects: 5
   requiresAffectedTarget: 0
   ignoresLineOfSight: 0
-  cooldown: 3
+  cooldown: 1
   telegraphed: 1
   windupTurns: 1
   canMoveWhileWindingUp: 0
   cancelledByDisplacement: 0
   interruptibleByStates: 1
+  telegraphFollowsCaster: 1
   visual: {fileID: 11400000, guid: dbd105132f2954274a8c26d24c08d85d, type: 2}
+  upgrades: []
+  upgradeOf: {fileID: 0}
   effects: []
   references:
     version: 2

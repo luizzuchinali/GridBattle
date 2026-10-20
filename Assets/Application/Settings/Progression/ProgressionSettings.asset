@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9cec4f3ffe885c94b8a75e7a4b98f6e0, type: 3}
   m_Name: ProgressionSettings
   m_EditorClassIdentifier: Assembly-CSharp::GridBattle.Gameplay.Progression.ProgressionSettings
-  baseXpToLevelUp: 50
-  xpToLevelUpGrowthPerLevel: 25
-  maxLevel: 30
+  baseXpToLevelUp: 150
+  xpToLevelUpGrowthPerLevel: 100
+  maxLevel: 12
   carryOverLeftoverXp: 1
-  levelUpHealFraction: 1
+  levelUpHealFraction: 0
+  maxHpPerLevel: 1

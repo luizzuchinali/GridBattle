@@ -7,7 +7,7 @@ namespace GridBattle.Gameplay.Progression
 {
     /// <summary>
     /// XP reward rule: when an enemy dies, the player receives the EnemyConfig's
-    /// XpReward, split into packets. Delivery is announced via
+    /// XpReward, split into packets (at most <c>maxPackets</c>). Delivery is announced via
     /// <see cref="XpRewardDroppedEvent"/> so the presentation controls the timing
     /// (each packet is credited when its orb reaches the bar); without a
     /// presentation, it is credited right away. While XP that will level the
@@ -18,8 +18,13 @@ namespace GridBattle.Gameplay.Progression
     {
         [SerializeField]
         [Min(1)]
-        [Tooltip("Maximum XP per packet. Each packet becomes an orb in the UI.")]
+        [Tooltip("XP per packet. Each packet becomes an orb in the UI; above Max Packets the packets get bigger.")]
         private int xpPerPacket = 5;
+
+        [SerializeField]
+        [Min(1)]
+        [Tooltip("Maximum packets (orbs) per kill, so a big reward stays a short burst instead of a long stream.")]
+        private int maxPackets = 8;
 
         private void OnEnable()
         {
@@ -47,7 +52,7 @@ namespace GridBattle.Gameplay.Progression
             var reward = enemy.XpReward;
             if (reward <= 0) return;
 
-            var packets = XpPacket.Split(reward, xpPerPacket, player.CurrentXp, xpToNextLevel);
+            var packets = XpPacket.Split(reward, xpPerPacket, maxPackets, player.CurrentXp, xpToNextLevel);
 
             // At the level cap the XP gives no level, so only the battle's last kill holds the turn.
             var willLevelUp = !player.IsMaxLevel && player.CurrentXp + reward >= xpToNextLevel;

@@ -2,6 +2,7 @@ using System;
 using GridBattle.Gameplay.Entities;
 using GridBattle.Gameplay.Entities.Interfaces;
 using GridBattle.Gameplay.Events;
+using GridBattle.Gameplay.Forecast;
 using GridBattle.Gameplay.Simulation;
 using GridBattle.Gameplay.Terrain;
 using GridBattle.Managers;
@@ -25,7 +26,10 @@ namespace GridBattle.Gameplay
         SkillRange,
 
         /// <summary>A cell an inspected enemy can hit on its next turn (walking and attacking).</summary>
-        Danger
+        Danger,
+
+        /// <summary>A cell of the area of the aimed skill or item (the player taps again to confirm).</summary>
+        SkillArea
     }
 
     [RequireComponent(typeof(SpriteRenderer))]
@@ -59,6 +63,14 @@ namespace GridBattle.Gameplay
         [Tooltip("Mark of the cells a telegraphed enemy skill will hit when it fires. Shown all the time, in every " +
                  "turn, over the other highlights.")]
         private Color telegraphHighlightColor = new(1f, 0.85f, 0.1f, 0.55f);
+
+        [SerializeField]
+        [Tooltip("Mark of a telegraphed cell where a character the strike affects stands (it would be hit).")]
+        private Color telegraphHitColor = new(1f, 0.3f, 0.15f, 0.7f);
+
+        [SerializeField]
+        [Tooltip("Highlight of the cells of the area of the aimed skill or item, before it is confirmed.")]
+        private Color skillAreaHighlightColor = new(1f, 0.55f, 0.95f, 0.7f);
 
         [SerializeField]
         [Range(0f, 1f)]
@@ -127,6 +139,7 @@ namespace GridBattle.Gameplay
         private bool _wasHighlighted;
         private float _highlightStart;
         private SpriteRenderer _warningRenderer;
+        private TextMeshPro _predictedText;
 
         public static readonly Vector2Int Size = new(32, 46);
 
@@ -150,11 +163,17 @@ namespace GridBattle.Gameplay
         public ECellHighlightType HighlightType { get; set; } = ECellHighlightType.Walk;
 
         /// <summary>
-        /// A telegraphed enemy skill will hit this cell when it fires (set by
-        /// <see cref="GridController.RefreshTelegraphMarks"/>). Independent of <see cref="Highlighted"/>: the mark
+        /// A telegraphed enemy skill will hit this cell when it fires (set by the forecast view,
+        /// <see cref="Forecast.ForecastView"/>). Independent of <see cref="Highlighted"/>: the mark
         /// stays on during every turn. Visual only.
         /// </summary>
         public bool Warned { get; set; }
+
+        /// <summary>
+        /// The cell is marked and a character the strike affects stands on it: the mark turns red (set by the
+        /// forecast view). Visual only.
+        /// </summary>
+        public bool WarnHit { get; set; }
 
         public Vector2Int GridPosition { get; set; }
 
@@ -173,6 +192,12 @@ namespace GridBattle.Gameplay
                 ApplyTerrainVisuals();
             }
         }
+
+        /// <summary>
+        /// Rounds left of a temporary terrain (made by a skill or an item; it disappears at 0); 0 = the terrain is
+        /// permanent. Set only by <see cref="GridController.SetTerrain(Vector2Int, TerrainDefinition, int)"/>.
+        /// </summary>
+        public int TerrainTurnsLeft { get; set; }
 
         /// <summary>Whether terrain blocks this cell (nobody occupies or crosses it).</summary>
         public bool IsBlocked => terrain != null && terrain.BlocksMovement;
@@ -304,6 +329,7 @@ namespace GridBattle.Gameplay
                 ECellHighlightType.Walk => walkHighlightColor,
                 ECellHighlightType.SkillRange => skillRangeHighlightColor,
                 ECellHighlightType.Danger => dangerHighlightColor,
+                ECellHighlightType.SkillArea => skillAreaHighlightColor,
                 _ => attackHighlightColor,
             };
             color.a *= alpha;
@@ -344,10 +370,42 @@ namespace GridBattle.Gameplay
             }
 
             var wave = 0.5f + 0.5f * Mathf.Sin(Time.time * 2f * Mathf.PI / telegraphPulsePeriod);
-            var color = telegraphHighlightColor;
+            var color = WarnHit ? telegraphHitColor : telegraphHighlightColor;
             color.a *= 1f - telegraphPulse * wave;
             _warningRenderer.color = color;
             _warningRenderer.enabled = true;
+        }
+
+        /// <summary>
+        /// Shows the damage a forecast says the character on this cell would take (0 = none): the health bar blinks
+        /// the part it would lose and a number shows the amount, red when it would kill. Visual only, set by the
+        /// forecast view.
+        /// </summary>
+        public void SetPredictedDamage(int damage, bool lethal)
+        {
+            damage = SimMode.IsActive ? 0 : Mathf.Max(0, damage);
+            cellContentHealthBar.SetPreview(damage);
+
+            if (damage == 0)
+            {
+                if (_predictedText != null)
+                    _predictedText.gameObject.SetActive(false);
+                return;
+            }
+
+            if (_predictedText == null)
+            {
+                _predictedText = Instantiate(damageText, damageText.transform.parent);
+                _predictedText.name = "PredictedDamage";
+            }
+
+            var settings = ForecastSettings.Current;
+            var ppu = GameConfigManager.Ppu;
+            _predictedText.transform.localPosition =
+                new Vector3(settings.DamageTextOffset.x / ppu, settings.DamageTextOffset.y / ppu, 0f);
+            _predictedText.text = "-" + damage;
+            _predictedText.color = lethal ? settings.LethalTextColor : settings.DamageTextColor;
+            _predictedText.gameObject.SetActive(true);
         }
 
         private void HandleContentHpChanged(DamageReceiveData data)

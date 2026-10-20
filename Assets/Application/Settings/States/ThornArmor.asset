@@ -37,12 +37,12 @@ MonoBehaviour:
   maxStacks: 1
   showInDetails: 1
   effects:
-  - rid: 8661860360884846686
+  - rid: 8661860679606599750
   references:
     version: 2
     RefIds:
-    - rid: 8661860360884846686
+    - rid: 8661860679606599750
       type: {class: ThornsEffect, ns: GridBattle.Gameplay.States.Effects, asm: Assembly-CSharp}
       data:
-        flatDamage: 3
+        flatDamage: 1
         receivedFraction: 0

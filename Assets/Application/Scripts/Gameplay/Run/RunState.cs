@@ -22,7 +22,23 @@ namespace GridBattle.Gameplay.Run
         /// A consumable node is waiting for the player to choose among the offered items or to pick the slot
         /// to discard (appended last so the numeric values of the other phases stay stable in saves).
         /// </summary>
-        ConsumableOffer
+        ConsumableOffer,
+
+        /// <summary>A camp (heal node) is waiting for the player to rest (heal) or train (upgrade a skill).</summary>
+        Camp,
+
+        /// <summary>The player is choosing a skill upgrade (training at a camp, or the reward of an elite battle).</summary>
+        SkillUpgrade
+    }
+
+    /// <summary>Where a pending skill upgrade comes from.</summary>
+    public enum ESkillUpgradeSource
+    {
+        /// <summary>Training at a camp (declining goes back to the camp's choice).</summary>
+        Camp,
+
+        /// <summary>The reward of an elite battle (declining gives nothing).</summary>
+        Elite
     }
 
     public enum EMapNodeType
@@ -34,11 +50,21 @@ namespace GridBattle.Gameplay.Run
         Boss
     }
 
+    /// <summary>
+    /// Kind of a battle node (decision of 2026-10-20: no more easy, normal and hard battles). The numbers are kept
+    /// from the old difficulties: a saved Hard (2) loads as Elite, and an old Easy (0) is turned into Normal when the
+    /// run loads (<c>MapRules.NormalizeDifficulties</c>).
+    /// </summary>
     public enum EBattleDifficulty
     {
-        Easy,
-        Normal,
-        Hard
+        /// <summary>A regular battle.</summary>
+        Normal = 1,
+
+        /// <summary>
+        /// A battle with at least one elite (a unique enemy) and a bigger budget: more XP, and its reward is a
+        /// consumable offer and a skill upgrade.
+        /// </summary>
+        Elite = 2
     }
 
     public enum ETalentOfferSource
@@ -76,6 +102,27 @@ namespace GridBattle.Gameplay.Run
         /// </summary>
         public List<string> PendingConsumableOptions = new();
 
+        /// <summary>Where the pending skill upgrade comes from (phase <see cref="ERunPhase.SkillUpgrade"/>).</summary>
+        public ESkillUpgradeSource PendingUpgradeSource;
+
+        /// <summary>
+        /// The pending consumable offer (phase <see cref="ERunPhase.ConsumableOffer"/>) is part of the reward of an
+        /// elite battle, not a consumable node: answering it moves on to the rest of the reward.
+        /// </summary>
+        public bool EliteRewardOffer;
+
+        /// <summary>
+        /// Elite reward in progress: consumable offers still to open after the current one (the skill upgrade comes
+        /// after the last of them).
+        /// </summary>
+        public int EliteOffersLeft;
+
+        /// <summary>
+        /// HP change of the node being resolved, kept while a choice inside it is pending (the elite reward), so
+        /// the node's statistics stay right after a reload.
+        /// </summary>
+        public int PendingNodeHpDelta;
+
         /// <summary>Battle in progress (null outside battles). Captured at the start of each player turn.</summary>
         public BattleSnapshot Battle;
 
@@ -93,6 +140,12 @@ namespace GridBattle.Gameplay.Run
 
         public int Level = 1;
         public int Xp;
+
+        /// <summary>
+        /// Maximum HP added to the class's base for the rest of the run, besides the levels (negative: the talent
+        /// node's lasting cost).
+        /// </summary>
+        public int MaxHpBonus;
 
         /// <summary>Talents taken, in pick order (rank = how many times).</summary>
         public List<TalentRankState> Talents = new();
@@ -157,7 +210,9 @@ namespace GridBattle.Gameplay.Run
         public int Column;
 
         public EMapNodeType Type;
-        public EBattleDifficulty Difficulty;
+
+        /// <summary>Normal or elite (battle nodes; Normal for the other types).</summary>
+        public EBattleDifficulty Difficulty = EBattleDifficulty.Normal;
 
         /// <summary>Ids of the nodes of the next floor reachable from this one.</summary>
         public List<int> Next = new();
@@ -181,6 +236,12 @@ namespace GridBattle.Gameplay.Run
         public List<TerrainCellSpec> Terrain = new();
         public int TotalXp;
         public bool IsBoss;
+
+        /// <summary>
+        /// The battle holds a unique enemy (an elite battle): winning it grants the elite reward (consumable offers
+        /// and a skill upgrade, see <c>RunSettings</c>).
+        /// </summary>
+        public bool IsElite;
     }
 
     [Serializable]
@@ -200,6 +261,9 @@ namespace GridBattle.Gameplay.Run
         public int X;
         public int Y;
         public string TerrainId;
+
+        /// <summary>Rounds left of a temporary terrain (made by a skill or an item); 0 = permanent.</summary>
+        public int TurnsLeft;
     }
 
     /// <summary>Exact battle state at the start of a player turn.</summary>
@@ -225,6 +289,10 @@ namespace GridBattle.Gameplay.Run
         public float DamageMultiplier = 1f;
         public int XpReward;
         public bool IsSummoned;
+
+        /// <summary>Place of an enemy in the acting order of the battle (0: unknown, an older save).</summary>
+        public int ActOrder;
+
         public List<StateSnapshot> States = new();
 
         /// <summary>Skill cooldowns (key = SkillDefinition id).</summary>
@@ -249,6 +317,9 @@ namespace GridBattle.Gameplay.Run
         public int TargetY;
         public int TurnsLeft = 1;
         public List<GridCellState> Cells = new();
+
+        /// <summary>The skill was aimed at the player when it was prepared.</summary>
+        public bool AimedAtPlayer;
     }
 
     [Serializable]

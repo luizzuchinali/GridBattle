@@ -1,0 +1,71 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6eef7bd41a83def4b92a13c21f9f56c7, type: 3}
+  m_Name: PiercingDagger
+  m_EditorClassIdentifier: Assembly-CSharp::GridBattle.Gameplay.Entities.Skills.SkillDefinition
+  id: 74cf27e060ddc5a438a98978a7cd3961
+  displayName:
+    m_TableReference:
+      m_TableCollectionName: Content
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: skill.piercing_dagger.name
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  description:
+    m_TableReference:
+      m_TableCollectionName: Content
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: skill.piercing_dagger.desc
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  icon: {fileID: 21300000, guid: fa84f76d754d84d46b5eddbe511f52ba, type: 3}
+  type: 0
+  damage: 1
+  areaShape: 2
+  areaSize: 2
+  selectionShape: 1
+  minRange: 1
+  range: 3
+  rangeModifiable: 1
+  unlimitedRange: 0
+  targetCell: 0
+  affects: 0
+  requiresAffectedTarget: 0
+  ignoresLineOfSight: 0
+  cooldown: 0
+  telegraphed: 0
+  windupTurns: 1
+  canMoveWhileWindingUp: 0
+  cancelledByDisplacement: 0
+  interruptibleByStates: 1
+  telegraphFollowsCaster: 1
+  visual: {fileID: 11400000, guid: 3d0daaefbd94bc949954e4fa0a583573, type: 2}
+  upgrades: []
+  upgradeOf: {fileID: 11400000, guid: b157a86b34771194ca950092c68cb1e6, type: 2}
+  effects:
+  - rid: 8661860679606599850
+  references:
+    version: 2
+    RefIds:
+    - rid: 8661860679606599850
+      type: {class: ApplyStatesSkillEffect, ns: GridBattle.Gameplay.Entities.Skills, asm: Assembly-CSharp}
+      data:
+        recipient: 0
+        states:
+        - state: {fileID: 11400000, guid: 69962cb40aeb9e54f86ea8a08b723b08, type: 2}
+          permanent: 0
+          duration: 2
+          stacks: 1

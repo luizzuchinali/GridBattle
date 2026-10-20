@@ -5,6 +5,7 @@ using GridBattle.Gameplay.Controllers;
 using GridBattle.Gameplay.Entities;
 using GridBattle.Gameplay.Entities.Skills;
 using GridBattle.Gameplay.Events;
+using GridBattle.Gameplay.Forecast;
 using GridBattle.Gameplay.Movement;
 using GridBattle.Gameplay.Run;
 using GridBattle.Gameplay.Terrain;
@@ -73,6 +74,9 @@ namespace GridBattle.Gameplay
         private TerrainEffects _terrainEffects;
         private int _blockedCellCount;
         private BattleSpec _battleSpec;
+
+        /// <summary>The last place handed out in the acting order (<see cref="Enemy.ActOrder"/>) of this battle.</summary>
+        private int _nextActOrder;
 
         public static float Ppu => GameConfigManager.Ppu;
 
@@ -214,41 +218,15 @@ namespace GridBattle.Gameplay
 
             _terrainEffects ??= new TerrainEffects(this);
             _terrainEffects.Enable();
-            EventBus.Subscribe<SkillTelegraphChangedEvent>(OnTelegraphChanged);
-            EventBus.Subscribe<GridInitializedEvent>(OnGridInitializedForMarks);
+
+            // The forecast (telegraph marks, acting order, predicted damage, aimed action) draws itself.
+            if (!TryGetComponent(out ForecastView _))
+                gameObject.AddComponent<ForecastView>();
         }
 
         private void OnDisable()
         {
             _terrainEffects?.Disable();
-            EventBus.Unsubscribe<SkillTelegraphChangedEvent>(OnTelegraphChanged);
-            EventBus.Unsubscribe<GridInitializedEvent>(OnGridInitializedForMarks);
-        }
-
-        private void OnTelegraphChanged(SkillTelegraphChangedEvent e) => RefreshTelegraphMarks();
-
-        private void OnGridInitializedForMarks(GridInitializedEvent e) => RefreshTelegraphMarks();
-
-        /// <summary>
-        /// Marks the cells of every telegraphed skill being prepared (<see cref="Cell.Warned"/>), the only highlight
-        /// the enemies draw: it stays on in every turn, under the player's own highlights. Visual only.
-        /// </summary>
-        public void RefreshTelegraphMarks()
-        {
-            if (_cells == null) return;
-
-            var marked = new HashSet<Vector2Int>();
-            foreach (var telegraph in SkillTelegraph.GetAll())
-            {
-                foreach (var cell in telegraph.Cells)
-                    marked.Add(cell);
-            }
-
-            foreach (var cell in _cells)
-            {
-                if (cell != null)
-                    cell.Warned = marked.Contains(cell.GridPosition);
-            }
         }
 
         private void OnDestroy()
@@ -440,6 +418,12 @@ namespace GridBattle.Gameplay
                     controller.RestoreMemory(entity.AiMemory);
                 if (entity.IsSummoned)
                     enemy.MarkSummoned();
+                if (entity.ActOrder > 0)
+                {
+                    enemy.SetActOrder(entity.ActOrder);
+                    _nextActOrder = Mathf.Max(_nextActOrder, entity.ActOrder);
+                }
+
                 enemy.SetHp(entity.Hp);
                 enemy.RestoreTelegraph(entity.Telegraph);
             }
@@ -485,6 +469,7 @@ namespace GridBattle.Gameplay
                 spec.PlayerY = _battleSpec.PlayerY;
                 spec.TotalXp = _battleSpec.TotalXp;
                 spec.IsBoss = _battleSpec.IsBoss;
+                spec.IsElite = _battleSpec.IsElite;
             }
 
             if (_cells == null) return spec;
@@ -498,6 +483,7 @@ namespace GridBattle.Gameplay
                     X = cell.GridPosition.x,
                     Y = cell.GridPosition.y,
                     TerrainId = cell.Terrain.Id,
+                    TurnsLeft = cell.TerrainTurnsLeft,
                 });
             }
 
@@ -523,6 +509,7 @@ namespace GridBattle.Gameplay
             {
                 snapshot.XpReward = enemy.XpReward;
                 snapshot.IsSummoned = enemy.IsSummoned;
+                snapshot.ActOrder = enemy.ActOrder;
                 if (enemy.TryGetComponent(out EnemyController controller))
                     snapshot.AiMemory = controller.CaptureMemory();
                 snapshot.Telegraph = enemy.CaptureTelegraph();
@@ -533,6 +520,7 @@ namespace GridBattle.Gameplay
 
         private void BuildCells()
         {
+            _nextActOrder = 0;
             var cells = FindObjectsByType<Cell>();
             foreach (var cell in cells)
             {
@@ -637,6 +625,9 @@ namespace GridBattle.Gameplay
 
             if (xpReward >= 0)
                 enemy.SetXpReward(xpReward);
+
+            // Each new enemy acts after the ones already on the board (summons act last).
+            enemy.SetActOrder(++_nextActOrder);
 
             var cell = _cells[position.x, position.y];
             enemy.transform.SetParent(cell.transform, false);
@@ -745,6 +736,37 @@ namespace GridBattle.Gameplay
         }
 
         /// <summary>
+        /// Two living characters trade cells at once (a swap skill, a talent that turns the walk into a swap): both
+        /// hop to the other's cell, each enters its new cell (terrain On Enter) and
+        /// <see cref="CharactersSwappedEvent"/> is raised. A swap is not a walk: <see cref="Character.MovedThisTurn"/>
+        /// does not change. Returns false (nothing happens) when either is missing or dead, or they share a cell.
+        /// </summary>
+        public bool SwapCharacters(Character first, Character second, [CanBeNull] Character source)
+        {
+            if (first == null || second == null || first.IsDead || second.IsDead || _cells == null) return false;
+
+            var firstFrom = first.CurrentGridPos;
+            var secondFrom = second.CurrentGridPos;
+            if (firstFrom == secondFrom || !IsValidPosition(firstFrom) || !IsValidPosition(secondFrom)) return false;
+
+            var firstCell = _cells[firstFrom.x, firstFrom.y];
+            var secondCell = _cells[secondFrom.x, secondFrom.y];
+            var firstWorld = first.transform.position;
+            var secondWorld = second.transform.position;
+            firstCell.RemoveContent();
+            secondCell.RemoveContent();
+            firstCell.SetContent(second);
+            secondCell.SetContent(first);
+            _movementAnimator.Animate(first, firstWorld, firstFrom, secondFrom, movementSettings, null);
+            _movementAnimator.Animate(second, secondWorld, secondFrom, firstFrom, movementSettings, null);
+
+            EventBus.Raise(new EntityEnteredCellEvent(first, firstFrom, secondFrom));
+            EventBus.Raise(new EntityEnteredCellEvent(second, secondFrom, firstFrom));
+            EventBus.Raise(new CharactersSwappedEvent(first, second, firstFrom, secondFrom, source));
+            return true;
+        }
+
+        /// <summary>
         /// Forced entry: makes the terrain under a character that was pushed or pulled onto it apply its effect at
         /// once (see <see cref="TerrainEffects.ApplyForcedEntry"/>). Returns whether an effect was applied.
         /// </summary>
@@ -821,7 +843,7 @@ namespace GridBattle.Gameplay
                     continue;
                 }
 
-                if (SetTerrain(new Vector2Int(spec.X, spec.Y), definition))
+                if (SetTerrain(new Vector2Int(spec.X, spec.Y), definition, spec.TurnsLeft))
                     applied++;
             }
 
@@ -832,7 +854,15 @@ namespace GridBattle.Gameplay
         /// Puts <paramref name="terrain"/> (null = plain floor) on one cell. Refuses
         /// positions outside the grid and blocking terrain over an occupied cell.
         /// </summary>
-        public bool SetTerrain(Vector2Int position, [CanBeNull] TerrainDefinition terrain)
+        public bool SetTerrain(Vector2Int position, [CanBeNull] TerrainDefinition terrain) =>
+            SetTerrain(position, terrain, 0);
+
+        /// <summary>
+        /// Puts <paramref name="terrain"/> on one cell for <paramref name="turns"/> rounds (0 = permanent): the
+        /// count drops at the end of every enemy phase (<see cref="TickTemporaryTerrain"/>) and the cell goes back to
+        /// plain floor at 0. Same refusals as <see cref="SetTerrain(Vector2Int, TerrainDefinition)"/>.
+        /// </summary>
+        public bool SetTerrain(Vector2Int position, [CanBeNull] TerrainDefinition terrain, int turns)
         {
             if (_cells == null || !IsValidPosition(position))
             {
@@ -848,8 +878,34 @@ namespace GridBattle.Gameplay
             }
 
             cell.Terrain = terrain;
+            cell.TerrainTurnsLeft = terrain != null ? Mathf.Max(0, turns) : 0;
             RecountBlockedCells();
             return true;
+        }
+
+        /// <summary>
+        /// One round passed (called by the turn manager after the last enemy acted, before the player's turn and its
+        /// save): every temporary terrain loses a round and the ones at 0 disappear. Returns how many disappeared.
+        /// </summary>
+        public int TickTemporaryTerrain()
+        {
+            if (_cells == null) return 0;
+
+            var removed = 0;
+            foreach (var cell in _cells)
+            {
+                if (cell == null || cell.Terrain == null || cell.TerrainTurnsLeft <= 0) continue;
+
+                cell.TerrainTurnsLeft--;
+                if (cell.TerrainTurnsLeft > 0) continue;
+
+                cell.Terrain = null;
+                removed++;
+            }
+
+            if (removed > 0)
+                RecountBlockedCells();
+            return removed;
         }
 
         /// <summary>Removes the terrain of every cell.</summary>
@@ -859,7 +915,10 @@ namespace GridBattle.Gameplay
 
             foreach (var cell in _cells)
             {
-                if (cell != null && cell.Terrain != null)
+                if (cell == null) continue;
+
+                cell.TerrainTurnsLeft = 0;
+                if (cell.Terrain != null)
                     cell.Terrain = null;
             }
 

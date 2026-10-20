@@ -1,6 +1,7 @@
 using GridBattle.Core;
 using GridBattle.Gameplay.Consumables;
 using GridBattle.Gameplay.Events;
+using GridBattle.Gameplay.Map;
 using GridBattle.Gameplay.Run;
 using GridBattle.Managers;
 using GridBattle.Managers.Audio;
@@ -14,10 +15,11 @@ using ZS.UI.Navigation;
 namespace GridBattle.UI.Overlays
 {
     /// <summary>
-    /// Consumable node offer (GDD 2.8, consumiveis): lists the option(s) with icon, name and description; taking
-    /// one calls <c>RunManager.ChooseConsumableOffer</c>. With a full inventory (policy AskPlayer) it shows the
-    /// carried items to discard one (<c>ReplaceConsumable</c>) or leave the offer (<c>DeclineConsumableOffer</c>).
-    /// Opened with the <see cref="ConsumableOfferEvent"/> as argument. It closes only through its own choices.
+    /// Consumable offer (GDD 2.8, consumiveis) of a consumable node or of the reward of an elite battle (its own
+    /// title): lists the option(s) with icon, name and description; taking one calls
+    /// <c>RunManager.ChooseConsumableOffer</c>. With a full inventory (policy AskPlayer) it shows the carried items to
+    /// discard one (<c>ReplaceConsumable</c>) or leave the offer (<c>DeclineConsumableOffer</c>). Opened with the
+    /// <see cref="ConsumableOfferEvent"/> as argument. It closes only through its own choices.
     /// </summary>
     [Preserve]
     public sealed class ConsumableOfferController : ViewController
@@ -48,6 +50,9 @@ namespace GridBattle.UI.Overlays
 
         /// <summary>The "leave it" button of the discard step.</summary>
         public Button DeclineButton => _declineButton;
+
+        /// <summary>The offer is the reward of an elite battle (its node is the battle), not a consumable node.</summary>
+        public bool IsEliteReward => _offer != null && MapRules.IsEliteBattle(_offer.Node);
 
         protected override void OnCreate()
         {
@@ -113,7 +118,7 @@ namespace GridBattle.UI.Overlays
 
             if (_offer == null || _offer.Options.Count == 0)
             {
-                _title.text = HudText.Get("consumable_offer.title");
+                _title.text = GetTitle();
                 _subtitle.text = string.Empty;
                 _declineButton.SetDisplayed(false);
                 _backButton.SetDisplayed(false);
@@ -126,9 +131,17 @@ namespace GridBattle.UI.Overlays
                 RenderDiscard(content);
         }
 
+        /// <summary>Title of the offer: the elite's reward or the item found on a consumable node.</summary>
+        private string GetTitle()
+        {
+            return IsEliteReward
+                ? HudText.Get("consumable_offer.elite_title")
+                : HudText.Get("consumable_offer.title");
+        }
+
         private void RenderOptions(VisualElement content)
         {
-            _title.text = HudText.Get("consumable_offer.title");
+            _title.text = GetTitle();
             _subtitle.text = _offer.Options.Count > 1 ? HudText.Get("consumable_offer.choose") : string.Empty;
             _subtitle.SetDisplayed(_offer.Options.Count > 1);
             _declineButton.SetDisplayed(false);

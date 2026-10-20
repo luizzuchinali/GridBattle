@@ -12,7 +12,8 @@ using UnityEngine;
 namespace GridBattle.Gameplay.Map
 {
     /// <summary>
-    /// The threat of an enemy (balanceamento_e_geracao.md): <c>damage x HP / divisor x movement factor x range
+    /// The threat of an enemy (balanceamento_e_geracao.md): the authored <see cref="EnemyConfig.Threat"/> (the
+    /// complexity the enemy brings) when set, otherwise <c>damage x HP / divisor x movement factor x range
     /// factor x role factor</c>, with the coefficients configured in <see cref="BattleGenerationSettings"/>.
     /// Pure and static: the generator spends a budget of threat to compose battles.
     /// </summary>
@@ -23,6 +24,7 @@ namespace GridBattle.Gameplay.Map
             BattleGenerationSettings settings)
         {
             if (config == null) return 0f;
+            if (config.Threat > 0f) return config.Threat;
 
             var damage = config.BasicAttackDamage * damageMultiplier;
             var hp = config.MaxHp * hpMultiplier;
@@ -54,9 +56,10 @@ namespace GridBattle.Gameplay.Map
     /// <summary>
     /// Generates the battle of a map node (GDD Mechanic 2, balanceamento_e_geracao.md): which enemies enter, how
     /// many, where they start and the XP the battle grants. The number of enemies comes from a threat budget by
-    /// depth and difficulty (stronger enemies only enter at higher depths, weaker ones in greater numbers), within
-    /// the limits and composition rules of <see cref="BattleGenerationSettings"/>. Pure and deterministic: the
-    /// only source of randomness is the <see cref="Rng"/> argument, so the same seed always gives the same battle.
+    /// depth and kind of battle (stronger enemies only enter at higher depths, weaker ones in greater numbers), within
+    /// the limits and composition rules of <see cref="BattleGenerationSettings"/>. An elite battle holds one elite
+    /// (a unique enemy) escorted by the rest of its budget. Pure and deterministic: the only source of randomness is
+    /// the <see cref="Rng"/> argument, so the same seed always gives the same battle.
     /// </summary>
     public static class BattleGenerator
     {
@@ -70,8 +73,10 @@ namespace GridBattle.Gameplay.Map
 
         /// <summary>
         /// Generates one battle. <paramref name="terrain"/> (from <see cref="TerrainGenerator"/>) is copied into
-        /// the spec and decides where enemies can start. A boss battle ignores the budget and the difficulty: it
-        /// holds the settings' boss encounter scaled for its depth.
+        /// the spec and decides where enemies can start. A boss battle ignores the budget and the kind of battle: it
+        /// holds the settings' boss encounter scaled for its depth. An elite battle draws its elite from the pool
+        /// (<see cref="BattleGenerationSettings.HasEliteAt"/>; the map only makes elite nodes where one exists);
+        /// without one it is only a bigger budget and <see cref="BattleSpec.IsElite"/> stays off.
         /// </summary>
         /// <param name="depth">Depth of the node on the map (stored in the spec).</param>
         /// <param name="balanceDepth">
@@ -98,7 +103,8 @@ namespace GridBattle.Gameplay.Map
             if (terrain != null)
             {
                 foreach (var cell in terrain)
-                    spec.Terrain.Add(new TerrainCellSpec { X = cell.X, Y = cell.Y, TerrainId = cell.TerrainId });
+                    spec.Terrain.Add(new TerrainCellSpec
+                        { X = cell.X, Y = cell.Y, TerrainId = cell.TerrainId, TurnsLeft = cell.TurnsLeft });
             }
 
             var placementCells = GetPlacementCells(spec, settings);
@@ -107,10 +113,24 @@ namespace GridBattle.Gameplay.Map
             var hpMultiplier = settings.GetHpMultiplier(balanceDepth) * profile.StrengthMultiplier;
             var damageMultiplier = settings.GetDamageMultiplier(balanceDepth) * profile.StrengthMultiplier;
 
-            var picks = isBoss
-                ? PickBoss(settings, hpMultiplier, damageMultiplier)
-                : DrawEnemies(rng, balanceDepth, difficulty, spec, placementCells.Count, settings, hpMultiplier,
-                    damageMultiplier);
+            List<Candidate> picks;
+            if (isBoss)
+            {
+                picks = PickBoss(settings, hpMultiplier, damageMultiplier);
+            }
+            else
+            {
+                var elite = difficulty == EBattleDifficulty.Elite
+                    ? PickElite(rng, Mathf.RoundToInt(balanceDepth), settings, hpMultiplier, damageMultiplier)
+                    : null;
+                picks = DrawEnemies(rng, balanceDepth, difficulty, spec, placementCells.Count, settings, hpMultiplier,
+                    damageMultiplier, elite);
+                if (elite != null)
+                {
+                    picks.Insert(0, elite);
+                    spec.IsElite = true;
+                }
+            }
 
             var placed = Place(rng, spec, picks, placementCells, settings, isBoss, hpMultiplier, damageMultiplier);
             AssignXp(spec, placed, settings, effectiveDifficulty, profile, balanceDepth, xpScale);
@@ -168,8 +188,33 @@ namespace GridBattle.Gameplay.Map
             return result;
         }
 
+        /// <summary>
+        /// The elite of an elite battle: one of the pool's unique enemies available at the depth, drawn by weight, or
+        /// null when there is none (the generator then makes a battle with the elite budget and draws nothing).
+        /// </summary>
+        [CanBeNull]
+        private static Candidate PickElite(Rng rng, int depth, BattleGenerationSettings settings, float hpMultiplier,
+            float damageMultiplier)
+        {
+            var uniques = new List<Candidate>();
+            var weights = new List<float>();
+            foreach (var entry in settings.Pool)
+            {
+                if (entry == null || !entry.IsEliteAt(depth)) continue;
+
+                uniques.Add(MakeCandidate(entry, settings, hpMultiplier, damageMultiplier, null));
+                weights.Add(entry.Weight);
+            }
+
+            if (uniques.Count == 0) return null;
+
+            var index = rng.WeightedIndex(weights);
+            return uniques[index < 0 ? 0 : index];
+        }
+
         private static List<Candidate> DrawEnemies(Rng rng, float depth, EBattleDifficulty difficulty, BattleSpec spec,
-            int placementCells, BattleGenerationSettings settings, float hpMultiplier, float damageMultiplier)
+            int placementCells, BattleGenerationSettings settings, float hpMultiplier, float damageMultiplier,
+            [CanBeNull] Candidate elite = null)
         {
             var band = settings.GetCompositionBand(depth);
             var candidates = GetCandidates(Mathf.RoundToInt(depth), settings, hpMultiplier, damageMultiplier, band);
@@ -181,6 +226,18 @@ namespace GridBattle.Gameplay.Map
             var budget = settings.GetBudget(depth, difficulty);
             var tolerance = settings.BudgetTolerance;
 
+            // The elite takes one of the places and its threat out of the budget; the rest of the battle escorts it.
+            var minEnemies = settings.MinEnemies;
+            var frontlineMet = false;
+            if (elite != null)
+            {
+                maxCount -= 1;
+                budget = Mathf.Max(0f, budget - elite.Threat);
+                minEnemies = Mathf.Max(0, minEnemies - 1);
+                frontlineMet = elite.Frontline;
+                if (maxCount <= 0) return new List<Candidate>();
+            }
+
             List<Candidate> best = null;
             var bestDeviation = float.MaxValue;
             var bestMeetsRoles = false;
@@ -188,7 +245,8 @@ namespace GridBattle.Gameplay.Map
             {
                 // Each attempt draws from its own generator so a retry never depends on how far the last one went.
                 var attemptRng = new Rng(rng.NextULong());
-                var picks = DrawAttempt(attemptRng, candidates, budget, tolerance, maxCount, settings, minRoles);
+                var picks = DrawAttempt(attemptRng, candidates, budget, tolerance, maxCount, settings, minRoles,
+                    minEnemies, frontlineMet);
                 var spent = Sum(picks);
                 var deviation = budget > 0f ? Mathf.Abs(spent - budget) / budget : 0f;
                 var meetsRoles = CountDistinctRoles(picks) >= minRoles;
@@ -202,7 +260,7 @@ namespace GridBattle.Gameplay.Map
                     bestMeetsRoles = meetsRoles;
                 }
 
-                if (picks.Count >= settings.MinEnemies && deviation <= tolerance && meetsRoles)
+                if (picks.Count >= minEnemies && deviation <= tolerance && meetsRoles)
                     return picks;
             }
 
@@ -222,16 +280,16 @@ namespace GridBattle.Gameplay.Map
         }
 
         private static List<Candidate> DrawAttempt(Rng rng, List<Candidate> candidates, float budget, float tolerance,
-            int maxCount, BattleGenerationSettings settings, int minRoles)
+            int maxCount, BattleGenerationSettings settings, int minRoles, int minEnemies, bool frontlineMet)
         {
             var picks = new List<Candidate>();
             var roleCounts = new Dictionary<EnemyRoleDefinition, int>();
             var spent = 0f;
             var limit = budget * (1f + tolerance);
-            var minEnemies = Mathf.Min(settings.MinEnemies, maxCount);
+            minEnemies = Mathf.Min(minEnemies, maxCount);
 
             var needFrontline = false;
-            if (settings.RequireFrontline)
+            if (settings.RequireFrontline && !frontlineMet)
             {
                 foreach (var candidate in candidates)
                 {
@@ -326,7 +384,7 @@ namespace GridBattle.Gameplay.Map
             var result = new List<Candidate>();
             foreach (var entry in settings.Pool)
             {
-                if (entry == null || !entry.IsAvailableAt(depth) || entry.Enemy.IsBoss) continue;
+                if (entry == null || !entry.IsAvailableAt(depth) || entry.Enemy.IsBoss || entry.Enemy.IsUnique) continue;
 
                 result.Add(MakeCandidate(entry, settings, hpMultiplier, damageMultiplier, band));
             }
@@ -336,7 +394,8 @@ namespace GridBattle.Gameplay.Map
             // No enemy is available at this depth: fall back to every pool enemy so the battle is never empty.
             foreach (var entry in settings.Pool)
             {
-                if (entry == null || entry.Enemy == null || entry.Weight <= 0f || entry.Enemy.IsBoss) continue;
+                if (entry == null || entry.Enemy == null || entry.Weight <= 0f || entry.Enemy.IsBoss ||
+                    entry.Enemy.IsUnique) continue;
 
                 result.Add(MakeCandidate(entry, settings, hpMultiplier, damageMultiplier, band));
             }
@@ -408,7 +467,7 @@ namespace GridBattle.Gameplay.Map
 
         /// <summary>
         /// Sets the XP of every placed enemy and the battle's total, from the settings' XP source (see
-        /// <see cref="EBattleXpSource"/>), the difficulty's XP multiplier and <paramref name="xpScale"/>.
+        /// <see cref="EBattleXpSource"/>), the profile's XP multiplier and <paramref name="xpScale"/>.
         /// </summary>
         private static void AssignXp(BattleSpec spec, List<Candidate> placed, BattleGenerationSettings settings,
             EBattleDifficulty difficulty, BattleDifficultyProfile profile, float depth, float xpScale)

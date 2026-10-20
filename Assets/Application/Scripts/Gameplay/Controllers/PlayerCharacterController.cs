@@ -6,6 +6,7 @@ using GridBattle.Gameplay.Entities.Interfaces;
 using GridBattle.Gameplay.Entities.Skills;
 using GridBattle.Gameplay.Events;
 using GridBattle.Gameplay.Rules;
+using GridBattle.Gameplay.States.Effects;
 using GridBattle.Gameplay.Terrain;
 using UnityEngine;
 
@@ -32,8 +33,20 @@ namespace GridBattle.Gameplay.Controllers
     /// react (terrain that triggers on entering). Every change raises <see cref="PlayerTurnStateChangedEvent"/>.
     /// </para>
     /// <para>
+    /// A skill that uses the walk too (<see cref="SkillDefinition.UsesWalk"/>, a channelled spell) can only be selected,
+    /// aimed and used before walking (<see cref="CanUseSkillNow"/>; undoing the walk gives the chance back), and using
+    /// it spends the walk for the rest of the turn: it cannot be undone. A kill that gives the walk back (Momentum)
+    /// still does.
+    /// </para>
+    /// <para>
     /// A long press on an enemy also marks on the grid the cells it can hit on its next turn
     /// (<see cref="GridRules.GetReachCells"/>) until the next tap.
+    /// </para>
+    /// <para>
+    /// Aim, then confirm (<see cref="GameplayInputSettings.ConfirmTargetedActions"/>): the first tap on a valid cell
+    /// only aims the selected skill or item (<see cref="AimedCell"/>; its area is highlighted and the forecast shows
+    /// the damage, kills, pushes and where the enemies' strikes would land); a second tap on the same cell, or
+    /// <see cref="ConfirmAim"/> (the Confirm button), uses it. Another valid cell moves the aim.
     /// </para>
     /// </summary>
     [RequireComponent(typeof(PlayerCharacter))]
@@ -54,7 +67,10 @@ namespace GridBattle.Gameplay.Controllers
         /// <summary>The enemy whose reach is shown (long press), or null.</summary>
         private Enemy _inspected;
 
-        /// <summary>The player can walk now (their turn, no walk yet).</summary>
+        /// <summary>
+        /// The walk of the turn is unused (their turn, no walk yet, no skill that uses the walk). A state may still keep
+        /// the player in place: see <see cref="CanWalkNow"/>.
+        /// </summary>
         public bool CanMove => _isMyTurn && !_moved;
 
         /// <summary>The player can attack or use a skill now (their turn, no action yet).</summary>
@@ -74,16 +90,52 @@ namespace GridBattle.Gameplay.Controllers
         public bool IsMyTurn => _isMyTurn;
 
         /// <summary>
-        /// Whether the player can still do any of the three things of the turn now: walk (not walked and a cell to
-        /// walk to), act (not acted and an attack target, or a ready skill with a cell to aim at) or use a consumable
-        /// (the turn's limit not reached and an item with a valid target). When none is left after a choice, the turn
-        /// ends by itself.
+        /// The player can walk now and has somewhere to go: the walk is unused and a cell is in reach (or a swap step).
+        /// Unlike <see cref="CanMove"/>, false while a state prevents walking (Exhausted, rooted: walk range 0) or no
+        /// cell around is free.
         /// </summary>
-        public bool HasAnythingLeft => _isMyTurn && (CanWalkSomewhere() || CanActSomehow() || CanUseAnyItem());
+        public bool CanWalkNow => CanWalkSomewhere();
+
+        /// <summary>
+        /// Whether the player may select, aim and use <paramref name="skill"/> now, wherever it is aimed: their turn,
+        /// the action unused, the skill ready (cooldown, not silenced) and, for a skill that uses the walk too
+        /// (<see cref="SkillDefinition.UsesWalk"/>), the walk unused. The skill bar and the simulation bot ask this.
+        /// </summary>
+        public bool CanUseSkillNow(SkillDefinition skill)
+        {
+            if (skill == null || !CanAct) return false;
+            if (skill.UsesWalk && !CanMove) return false;
+
+            return SkillTargeting.CanSelect(Owner, skill);
+        }
+
+        /// <summary>
+        /// Whether the player can still do any of the three things of the turn now: walk (not walked and a cell to
+        /// walk to), act (not acted and an attack target, or a ready skill with a cell to aim at; a skill that uses the
+        /// walk only before walking) or use a consumable (the turn's limit not reached and an item with a valid
+        /// target). When none is left after a choice, the turn ends by itself. A ready skill that uses the walk counts
+        /// while the walk can still be undone, so walking first does not end the turn before the player can take it back.
+        /// </summary>
+        public bool HasAnythingLeft =>
+            _isMyTurn && (CanWalkSomewhere() || CanActSomehow() || CanUseAnyItem() || CanChannelAfterUndo());
+
+        private bool CanChannelAfterUndo()
+        {
+            if (!CanUndoMove) return false;
+
+            foreach (var skill in Owner.Skills)
+            {
+                if (skill != null && skill.UsesWalk && SkillTargeting.CanSelect(Owner, skill))
+                    return true;
+            }
+
+            return false;
+        }
 
         private bool CanWalkSomewhere()
         {
-            if (!CanMove) return false;
+            if (!CanMove || Grid == null) return false;
+            if (GetSwapStepCells().Count > 0) return true;
 
             var range = Owner.WalkDistance;
             var origin = Owner.CurrentGridPos;
@@ -107,8 +159,7 @@ namespace GridBattle.Gameplay.Controllers
 
             foreach (var skill in Owner.Skills)
             {
-                if (skill != null && SkillTargeting.CanSelect(Owner, skill) &&
-                    SkillTargeting.GetTargetableCells(Grid, Owner, skill).Count > 0)
+                if (CanUseSkillNow(skill) && SkillTargeting.GetTargetableCells(Grid, Owner, skill).Count > 0)
                     return true;
             }
 
@@ -137,6 +188,12 @@ namespace GridBattle.Gameplay.Controllers
         /// <summary>The skill being aimed, or null when no skill is selected.</summary>
         public SkillDefinition SelectedSkill { get; private set; }
 
+        /// <summary>
+        /// The cell the selected skill or item is aimed at, waiting for the confirmation, or null (nothing aimed, or
+        /// actions are used on the first tap).
+        /// </summary>
+        public Vector2Int? AimedCell { get; private set; }
+
         /// <summary>Inventory slot of the consumable being aimed, or -1 when none is selected.</summary>
         public int SelectedConsumableSlot { get; private set; } = -1;
 
@@ -154,6 +211,7 @@ namespace GridBattle.Gameplay.Controllers
             EventBus.Subscribe<CellTapEvent>(OnCellTap);
             EventBus.Subscribe<CellLongPressEvent>(OnCellLongPress);
             EventBus.Subscribe<TurnChangedEvent>(OnTurnChanged);
+            EventBus.Subscribe<ExtraWalkGrantedEvent>(OnExtraWalkGranted);
 
             // Everything that can change which cells are walkable, attackable or aimable.
             WatchHighlights<EntityEnteredCellEvent>();
@@ -171,6 +229,8 @@ namespace GridBattle.Gameplay.Controllers
             WatchHighlights<GlobalTurnStartedEvent>();
             WatchHighlights<GridInitializedEvent>();
             WatchHighlights<BattleDecidedEvent>();
+            WatchHighlights<CharactersSwappedEvent>();
+            WatchHighlights<CharacterDisplacedEvent>();
         }
 
         private void OnDestroy()
@@ -178,6 +238,7 @@ namespace GridBattle.Gameplay.Controllers
             EventBus.Unsubscribe<CellTapEvent>(OnCellTap);
             EventBus.Unsubscribe<CellLongPressEvent>(OnCellLongPress);
             EventBus.Unsubscribe<TurnChangedEvent>(OnTurnChanged);
+            EventBus.Unsubscribe<ExtraWalkGrantedEvent>(OnExtraWalkGranted);
             foreach (var unsubscribe in _unsubscribers)
                 unsubscribe();
             _unsubscribers.Clear();
@@ -213,13 +274,23 @@ namespace GridBattle.Gameplay.Controllers
 
             if (SelectedConsumable != null && !IsConsumableSelectionValid())
                 CancelConsumableSelection();
-            if (SelectedSkill != null && !SkillTargeting.CanSelect(Owner, SelectedSkill))
+            if (SelectedSkill != null && !CanUseSkillNow(SelectedSkill))
                 CancelSkillSelection();
+            if (AimedCell.HasValue && !IsAimStillValid(AimedCell.Value))
+                SetAim(null);
 
             Grid.HighlightCells(ComputeHighlights());
 
             // The cancellations above raise events that mark the flag again: the result is already up to date.
             _highlightsDirty = false;
+        }
+
+        private bool IsAimStillValid(Vector2Int target)
+        {
+            if (SelectedSkill != null)
+                return CanUseSkillNow(SelectedSkill) && SkillTargeting.CanUse(Grid, Owner, SelectedSkill, target);
+            if (SelectedConsumable != null) return ConsumableRules.CanUse(Grid, Owner, SelectedConsumable, target, _isMyTurn);
+            return false;
         }
 
         /// <summary>The item can stop being selectable while aimed (replaced or removed from its slot, no battle).</summary>
@@ -238,10 +309,10 @@ namespace GridBattle.Gameplay.Controllers
         public Dictionary<Vector2Int, ECellHighlightType> ComputeHighlights()
         {
             if (SelectedConsumable != null)
-                return ConsumableRules.GetHighlightInfos(Grid, Owner, SelectedConsumable);
+                return WithAimedArea(ConsumableRules.GetHighlightInfos(Grid, Owner, SelectedConsumable));
 
             if (SelectedSkill != null)
-                return GridRules.GetSkillHighlightInfos(Grid, Owner, SelectedSkill);
+                return WithAimedArea(GridRules.GetSkillHighlightInfos(Grid, Owner, SelectedSkill));
 
             var inspected = InspectedEnemy;
             if (inspected != null)
@@ -252,7 +323,87 @@ namespace GridBattle.Gameplay.Controllers
                 return danger;
             }
 
-            return GridRules.GetHighlightInfos(Grid, Owner, CanMove, CanAct);
+            var infos = GridRules.GetHighlightInfos(Grid, Owner, CanMove, CanAct);
+            foreach (var cell in GetSwapStepCells())
+                infos[cell] = ECellHighlightType.Walk;
+            return infos;
+        }
+
+        /// <summary>The range highlights with the area of the aimed action on top (<see cref="ECellHighlightType.SkillArea"/>).</summary>
+        private Dictionary<Vector2Int, ECellHighlightType> WithAimedArea(Dictionary<Vector2Int, ECellHighlightType> infos)
+        {
+            if (!AimedCell.HasValue) return infos;
+
+            var target = AimedCell.Value;
+            var area = SelectedSkill != null
+                ? SkillTargeting.GetAreaCells(Grid, Owner, SelectedSkill, target)
+                : ConsumableRules.GetAreaCells(Grid, Owner, SelectedConsumable, target);
+            foreach (var cell in area)
+                infos[cell] = ECellHighlightType.SkillArea;
+            return infos;
+        }
+
+        /// <summary>
+        /// Swap step (rule talent <see cref="SwapStepEffect"/>): while the walk is unused, the player can trade
+        /// places with this adjacent character (8 neighbours) instead of walking.
+        /// </summary>
+        public bool CanSwapStepWith(Character other)
+        {
+            if (!CanMove || other == null || other == Owner || other.IsDead || !other.CanBeDisplaced) return false;
+            if (Owner.WalkDistance <= 0 || !Owner.States.HasEffect<SwapStepEffect>()) return false;
+
+            var delta = other.CurrentGridPos - Owner.CurrentGridPos;
+            return Mathf.Max(Mathf.Abs(delta.x), Mathf.Abs(delta.y)) == 1;
+        }
+
+        /// <summary>The cells of the characters the player can swap step with now.</summary>
+        private List<Vector2Int> GetSwapStepCells()
+        {
+            var cells = new List<Vector2Int>();
+            if (!CanMove || !Owner.States.HasEffect<SwapStepEffect>()) return cells;
+
+            for (var y = -1; y <= 1; y++)
+            {
+                for (var x = -1; x <= 1; x++)
+                {
+                    var cell = Owner.CurrentGridPos + new Vector2Int(x, y);
+                    if ((x == 0 && y == 0) || !Grid.IsValidPosition(cell)) continue;
+                    if (Grid.GetContent(cell) is Character other && CanSwapStepWith(other))
+                        cells.Add(cell);
+                }
+            }
+
+            return cells;
+        }
+
+        /// <summary>
+        /// Uses the walk to trade places with <paramref name="other"/> (see <see cref="CanSwapStepWith"/>). A swap
+        /// counts as the turn's walk but cannot be undone. Returns false when it is not possible.
+        /// </summary>
+        public bool TrySwapStep(Character other)
+        {
+            if (!_isMyTurn || GameplayInput.IsBlocked || !CanSwapStepWith(other)) return false;
+
+            CancelSkillSelection();
+            CancelConsumableSelection();
+            if (!Grid.SwapCharacters(Owner, other, Owner)) return false;
+
+            Owner.RegisterMovement();
+            _moved = true;
+            _undoable = false;
+            AfterTurnChoice();
+            return true;
+        }
+
+        /// <summary>Momentum (a kill that gives the walk back): the player may walk again this turn.</summary>
+        private void OnExtraWalkGranted(ExtraWalkGrantedEvent e)
+        {
+            if (e.Character != Owner || !_isMyTurn || !_moved) return;
+
+            _moved = false;
+            _undoable = false;
+            _highlightsDirty = true;
+            RaiseTurnState();
         }
 
         /// <summary>
@@ -362,8 +513,8 @@ namespace GridBattle.Gameplay.Controllers
         /// grid then highlights the cells it can be used on. Selecting the skill that
         /// is already selected cancels it (GDD 4.1), and selecting another one switches.
         /// Ignored (returns false) when it is not the player's turn, the skill is not
-        /// one of the character's, it is on cooldown or the player is silenced.
-        /// Returns true if the selection changed.
+        /// one of the character's or it cannot be used now (<see cref="CanUseSkillNow"/>: action used, cooldown,
+        /// silenced, or a skill that uses the walk after walking). Returns true if the selection changed.
         /// </summary>
         public bool SelectSkill(SkillDefinition skill)
         {
@@ -375,10 +526,11 @@ namespace GridBattle.Gameplay.Controllers
                 return true;
             }
 
-            if (!CanAct || !OwnsSkill(skill) || !SkillTargeting.CanSelect(Owner, skill)) return false;
+            if (!OwnsSkill(skill) || !CanUseSkillNow(skill)) return false;
 
             // Aiming a skill replaces aiming an item.
             CancelConsumableSelection();
+            SetAim(null);
             SelectedSkill = skill;
             EventBus.Raise(new SkillSelectionChangedEvent(Owner, skill));
             return true;
@@ -389,6 +541,7 @@ namespace GridBattle.Gameplay.Controllers
         {
             if (SelectedSkill == null) return;
 
+            SetAim(null);
             SelectedSkill = null;
             EventBus.Raise(new SkillSelectionChangedEvent(Owner, null));
         }
@@ -420,6 +573,7 @@ namespace GridBattle.Gameplay.Controllers
 
             CancelSkillSelection();
             CancelConsumableSelection();
+            SetAim(null);
             SelectedConsumableSlot = slot;
             SelectedConsumable = consumable;
             EventBus.Raise(new ConsumableSelectionChangedEvent(Owner, slot, consumable));
@@ -431,6 +585,7 @@ namespace GridBattle.Gameplay.Controllers
         {
             if (SelectedConsumable == null) return;
 
+            SetAim(null);
             SelectedConsumableSlot = -1;
             SelectedConsumable = null;
             EventBus.Raise(new ConsumableSelectionChangedEvent(Owner, -1, null));
@@ -476,6 +631,7 @@ namespace GridBattle.Gameplay.Controllers
             }
 
             // Any tap puts away the reach of an inspected enemy.
+            var wasInspected = _inspected;
             if (_inspected != null)
             {
                 _inspected = null;
@@ -515,6 +671,22 @@ namespace GridBattle.Gameplay.Controllers
             }
             else
             {
+                // Swap step: a tap on an adjacent character trades places with it (it uses the walk).
+                if (@event.Cell.GetContent() is Character swapWith && CanSwapStepWith(swapWith))
+                {
+                    TrySwapStep(swapWith);
+                    return;
+                }
+
+                // Without a basic attack a tap on an enemy shows (or hides) where it can strike next turn.
+                if (!Owner.HasBasicAttack && @event.Cell.GetContent() is Enemy enemy && !enemy.IsDead)
+                {
+                    if (wasInspected != enemy)
+                        _inspected = enemy;
+                    _highlightsDirty = true;
+                    return;
+                }
+
                 if (!CanAct || !GridRules.IsAttackTarget(Grid, Owner, @event.Cell.GridPosition))
                 {
                     @event.Cell.PlayRejectFeedback();
@@ -539,8 +711,56 @@ namespace GridBattle.Gameplay.Controllers
         /// </summary>
         private void TapWithConsumable(Cell cell)
         {
-            if (!TryUseConsumable(SelectedConsumableSlot, cell.GridPosition))
+            var target = cell.GridPosition;
+            if (NeedsConfirmation(target))
+            {
+                if (ConsumableRules.CanUse(Grid, Owner, SelectedConsumable, target, _isMyTurn))
+                    SetAim(target);
+                else
+                    cell.PlayRejectFeedback();
+                return;
+            }
+
+            if (!TryUseConsumable(SelectedConsumableSlot, target))
                 cell.PlayRejectFeedback();
+        }
+
+        /// <summary>
+        /// Whether a tap on <paramref name="target"/> only aims the selected action (the first tap, or a tap on another
+        /// cell) instead of using it.
+        /// </summary>
+        private bool NeedsConfirmation(Vector2Int target) =>
+            GameplayInputSettings.Current.ConfirmTargetedActions && AimedCell != target;
+
+        private void SetAim(Vector2Int? cell)
+        {
+            if (AimedCell == cell) return;
+
+            AimedCell = cell;
+            _highlightsDirty = true;
+            EventBus.Raise(new ActionAimChangedEvent(Owner, cell));
+        }
+
+        /// <summary>
+        /// Uses the aimed skill or item on <see cref="AimedCell"/> (the Confirm button; a second tap on the cell does the
+        /// same). Returns false when nothing is aimed or the action cannot be used there any more.
+        /// </summary>
+        public bool ConfirmAim()
+        {
+            if (!AimedCell.HasValue || !_isMyTurn || GameplayInput.IsBlocked) return false;
+
+            var target = AimedCell.Value;
+            if (SelectedConsumable != null)
+                return TryUseConsumable(SelectedConsumableSlot, target);
+
+            return SelectedSkill != null && UseSkill(SelectedSkill, target);
+        }
+
+        /// <summary>Drops the aimed or selected skill or item (the Cancel button), back to walking and attacking.</summary>
+        public void CancelAction()
+        {
+            CancelSkillSelection();
+            CancelConsumableSelection();
         }
 
         /// <summary>
@@ -550,27 +770,49 @@ namespace GridBattle.Gameplay.Controllers
         /// </summary>
         private void TapWithSkill(Cell cell)
         {
-            // TryUseSkill validates (range, area, cooldown, restrictions) before doing anything.
-            if (!CanAct || !Owner.TryUseSkill(Grid, SelectedSkill, cell.GridPosition))
+            var target = cell.GridPosition;
+            if (NeedsConfirmation(target))
             {
-                cell.PlayRejectFeedback();
+                if (CanUseSkillNow(SelectedSkill) && SkillTargeting.CanUse(Grid, Owner, SelectedSkill, target))
+                    SetAim(target);
+                else
+                    cell.PlayRejectFeedback();
                 return;
             }
 
-            CancelSkillSelection();
-            OnActed();
+            if (!UseSkill(SelectedSkill, target))
+                cell.PlayRejectFeedback();
         }
 
         /// <summary>
         /// Uses a skill directly on a target cell, without going through the selection
         /// (UI shortcuts, tests). Validation and effect live in SkillDefinition /
-        /// Character, not here. Returns true if the skill was used (the action is
-        /// consumed).
+        /// Character, not here; the turn's rules (<see cref="CanUseSkillNow"/>) apply. Returns true if the skill was
+        /// used (the action is consumed, and the walk too for a skill that uses it).
         /// </summary>
-        public bool TryUseSkill(SkillDefinition skill, Vector2Int targetPos)
+        public bool TryUseSkill(SkillDefinition skill, Vector2Int targetPos) => UseSkill(skill, targetPos);
+
+        /// <summary>
+        /// The one way the player uses a skill (tap, Confirm, <see cref="TryUseSkill"/>): checks the turn's rules,
+        /// lets the character validate and execute it (range, area, cooldown, restrictions), then spends the action
+        /// and, for a skill that uses the walk, the walk (it cannot be undone).
+        /// </summary>
+        private bool UseSkill(SkillDefinition skill, Vector2Int targetPos)
         {
-            if (!CanAct) return false;
-            if (!Owner.TryUseSkill(Grid, skill, targetPos)) return false;
+            if (!CanUseSkillNow(skill)) return false;
+
+            // The walk is spent before the skill resolves, so a kill during it that gives the walk back (Momentum,
+            // ExtraWalkGrantedEvent) still does; nothing is spent when the character refuses the use.
+            var spendsWalk = skill.UsesWalk;
+            if (spendsWalk)
+                _moved = true;
+
+            if (!Owner.TryUseSkill(Grid, skill, targetPos))
+            {
+                if (spendsWalk)
+                    _moved = false;
+                return false;
+            }
 
             CancelSkillSelection();
             OnActed();

@@ -4,6 +4,7 @@ using GridBattle.Gameplay.Consumables;
 using GridBattle.Gameplay.Entities.Skills;
 using GridBattle.Gameplay.Events;
 using GridBattle.Gameplay.Progression;
+using GridBattle.Gameplay.States.Effects;
 using UnityEngine;
 
 namespace GridBattle.Gameplay.Entities
@@ -35,6 +36,12 @@ namespace GridBattle.Gameplay.Entities
 
         public int Level { get; private set; } = 1;
         public int CurrentXp { get; private set; }
+
+        /// <summary>Maximum HP the run adds besides the levels (<c>PlayerRunState.MaxHpBonus</c>; negative = a lasting cost).</summary>
+        public int RunMaxHpBonus { get; private set; }
+
+        /// <summary>The levels (<see cref="ProgressionSettings.GetMaxHpBonus"/>) and the run's lasting bonus.</summary>
+        protected override int MaxHpBonus => ProgressionSettings.Current.GetMaxHpBonus(Level) + RunMaxHpBonus;
 
         private ConsumableInventory _inventory;
 
@@ -107,12 +114,24 @@ namespace GridBattle.Gameplay.Entities
             if (Application.isPlaying)
                 Live.Add(this);
             EventBus.Subscribe<GlobalTurnStartedEvent>(OnGlobalTurnStarted);
+            EventBus.Subscribe<TelegraphResolvedEvent>(OnTelegraphResolved);
         }
 
         private void OnDestroy()
         {
             Live.Remove(this);
             EventBus.Unsubscribe<GlobalTurnStartedEvent>(OnGlobalTurnStarted);
+            EventBus.Unsubscribe<TelegraphResolvedEvent>(OnTelegraphResolved);
+        }
+
+        /// <summary>Counterstrike (rule talent): an announced strike aimed at the player that misses exposes its caster.</summary>
+        private void OnTelegraphResolved(TelegraphResolvedEvent e)
+        {
+            if (IsDead || e.Telegraph == null || !e.Telegraph.AimedAtPlayer || e.WasHit(this)) return;
+
+            var counterstrike = States.FindEffect<CounterstrikeEffect>();
+            if (counterstrike != null)
+                counterstrike.Punish(e.Caster);
         }
 
         /// <summary>Play Mode runs without a domain reload: start every session with an empty list.</summary>
@@ -201,7 +220,15 @@ namespace GridBattle.Gameplay.Entities
             CurrentXp = Mathf.Max(0, xp);
             if (IsMaxLevel)
                 CurrentXp = Mathf.Min(CurrentXp, XpToNextLevel);
+            RefreshBaseAttributes();
             EventBus.Raise(new PlayerXpChangedEvent(Level, CurrentXp, XpToNextLevel));
+        }
+
+        /// <summary>Sets the run's lasting maximum HP bonus (<c>PlayerRunState.MaxHpBonus</c>). HP is not healed.</summary>
+        public void SetRunMaxHpBonus(int bonus)
+        {
+            RunMaxHpBonus = bonus;
+            RefreshBaseAttributes();
         }
 
         /// <summary>
@@ -210,7 +237,7 @@ namespace GridBattle.Gameplay.Entities
         /// (the XP above it carries over unless <see cref="ProgressionSettings.CarryOverLeftoverXp"/> is off);
         /// at the level cap the XP gives nothing more. Raises <see cref="PlayerXpChangedEvent"/> for the UI and
         /// then, for each level gained, heals <see cref="ProgressionSettings.LevelUpHealFraction"/> of the max HP
-        /// and raises one <see cref="PlayerLeveledUpEvent"/> (the talent module opens one offer for each), so the
+        /// (the max HP already counts the new levels, see <see cref="ProgressionSettings.MaxHpPerLevel"/>) and raises one <see cref="PlayerLeveledUpEvent"/> (the talent module opens one offer for each), so the
         /// XP bar already shows the new level when the choice opens.
         /// </summary>
         public void GainXp(int amount)
@@ -232,6 +259,10 @@ namespace GridBattle.Gameplay.Entities
                 if (IsMaxLevel)
                     CurrentXp = Mathf.Min(CurrentXp, XpToNextLevel);
             }
+
+            // Each level adds its maximum HP without healing (ProgressionSettings.MaxHpPerLevel).
+            if (Level != firstLevel)
+                RefreshBaseAttributes();
 
             EventBus.Raise(new PlayerXpChangedEvent(Level, CurrentXp, XpToNextLevel));
 

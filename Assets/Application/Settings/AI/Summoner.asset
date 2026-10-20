@@ -14,6 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GridBattle.Gameplay.AI.EnemyBehavior
   actions:
   - {fileID: 11400000, guid: 8cd17a1150b85fc44b25463dd378c17a, type: 2}
+  - {fileID: 11400000, guid: 28f50245696da224bb985ccf45dc3bc9, type: 2}
   - {fileID: 11400000, guid: 3e13a9d097dfc2e4aa0ce7abb923b950, type: 2}
-  - {fileID: 11400000, guid: 731a0a1959b25f941b34c00a4d8f3b97, type: 2}
-  - {fileID: 11400000, guid: cafe5acb3a572c64fa7f01e03d9e585d, type: 2}

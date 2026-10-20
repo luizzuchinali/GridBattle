@@ -1,4 +1,5 @@
 using System;
+using GridBattle.Gameplay.Controllers;
 using GridBattle.Gameplay.Entities;
 using GridBattle.Gameplay.Entities.Skills;
 using GridBattle.Gameplay.Events;
@@ -11,7 +12,9 @@ namespace GridBattle.UI.Hud
     /// The skill bar (GDD 4.2): one square button per skill slot (<see cref="SkillSettings.MaxSkillSlots"/>)
     /// showing the player's skills in order, the remaining cooldown over the icon, the selected skill
     /// highlighted and a disabled look when it cannot be selected (not the player's turn, cooldown,
-    /// silenced, or the action of the turn already used with a walk and an action per turn). A tap selects the skill for aiming, and tapping it again cancels (the controller decides).
+    /// silenced, the action of the turn already used with a walk and an action per turn, or a skill that uses the walk
+    /// after walking: <see cref="PlayerCharacterController.CanUseSkillNow"/>). A tap selects the skill for aiming, and
+    /// tapping it again cancels (the controller decides).
     /// </summary>
     public sealed class SkillBarView : SlotBarView
     {
@@ -51,8 +54,9 @@ namespace GridBattle.UI.Hud
 
             var remaining = Player.Cooldowns.GetRemaining(skill);
             var selected = Controller != null && Controller.SelectedSkill == skill;
-            var disabled = IsInactive || !SkillTargeting.CanSelect(Player, skill) ||
-                           (Controller != null && !Controller.CanAct);
+            var disabled = IsInactive || (Controller != null
+                ? !Controller.CanUseSkillNow(skill)
+                : !SkillTargeting.CanSelect(Player, skill));
             slot.Set(skill.Icon, remaining > 0 ? remaining.ToString() : string.Empty, selected, disabled && !selected, false);
         }
 

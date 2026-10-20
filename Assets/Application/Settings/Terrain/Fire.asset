@@ -37,7 +37,7 @@ MonoBehaviour:
   blocksSkillArea: 0
   blocksLineOfSight: 1
   trigger: 2
-  damage: 4
+  damage: 1
   states: []
   affectsPlayer: 1
   affectsEnemies: 1

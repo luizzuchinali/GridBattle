@@ -16,7 +16,8 @@ namespace GridBattle.Gameplay.Entities
     /// <see cref="EnemyConfig"/> and its states, and update when the states change.
     /// Sizes and offsets are in screen pixels so the icons stay pixel perfect
     /// whatever the art resolution. While the enemy prepares a telegraphed skill, the skill icon and the turns
-    /// left until it fires (1 = on its next turn) show over its head (created the first time they are needed).
+    /// left until it fires (1 = on its next turn) show over its head (created the first time they are needed), and so
+    /// does its place in the acting order of the enemy phase (<see cref="SetActingOrder"/>).
     /// </summary>
     public class EnemyIconsView : MonoBehaviour
     {
@@ -54,6 +55,11 @@ namespace GridBattle.Gameplay.Entities
         [SerializeField]
         private Color telegraphTurnsColor = new(1f, 0.85f, 0.1f, 1f);
 
+        [Header("Acting order")]
+        [SerializeField]
+        [Tooltip("Offset of the enemy's place in the acting order (1 = acts first), from the entity pivot (feet), in pixels.")]
+        private Vector2 actingOrderOffset = new(-14f, 40f);
+
         [Header("Size")]
         [SerializeField]
         [Min(1)]
@@ -66,6 +72,8 @@ namespace GridBattle.Gameplay.Entities
         private Enemy _enemy;
         private SpriteRenderer _telegraphIcon;
         private TextMeshPro _telegraphTurns;
+        private TextMeshPro _actingOrder;
+        private int _order;
 
         /// <summary>
         /// Starts showing the icons of <paramref name="enemy"/> (its config must be
@@ -115,6 +123,7 @@ namespace GridBattle.Gameplay.Entities
             RefreshTelegraph();
             if (_enemy == null || _enemy.IsDead)
             {
+                SetActingOrder(0);
                 Hide(roleIcon);
                 foreach (var icon in stateIcons)
                     Hide(icon);
@@ -139,6 +148,30 @@ namespace GridBattle.Gameplay.Entities
 
             for (; slot < stateIcons.Count; slot++)
                 Hide(stateIcons[slot]);
+        }
+
+        /// <summary>
+        /// Shows the enemy's place in the acting order of the enemy phase (1 = acts first; 0 hides it). Set by the
+        /// forecast view (<see cref="Forecast.ForecastView"/>). Visual only.
+        /// </summary>
+        public void SetActingOrder(int order)
+        {
+            _order = SimMode.IsActive || _enemy == null || _enemy.IsDead ? 0 : Mathf.Max(0, order);
+            if (_order == 0)
+            {
+                if (_actingOrder != null)
+                    _actingOrder.gameObject.SetActive(false);
+                return;
+            }
+
+            if (_actingOrder == null)
+                _actingOrder = CreateText("ActingOrder", Forecast.ForecastSettings.Current.OrderFontSize,
+                    Forecast.ForecastSettings.Current.OrderColor);
+
+            var ppu = GameConfigManager.Ppu;
+            _actingOrder.transform.localPosition = new Vector3(actingOrderOffset.x / ppu, actingOrderOffset.y / ppu, 0f);
+            _actingOrder.text = _order.ToString();
+            _actingOrder.gameObject.SetActive(true);
         }
 
         /// <summary>The icon and turns left of the telegraphed skill being prepared (hidden when there is none).</summary>
@@ -178,21 +211,28 @@ namespace GridBattle.Gameplay.Entities
                 _telegraphIcon.sortingOrder = template.sortingOrder;
             }
 
-            if (_telegraphTurns != null) return;
+            if (_telegraphTurns == null)
+                _telegraphTurns = CreateText("TelegraphTurns", telegraphTurnsFontSize, telegraphTurnsColor);
+        }
 
-            var text = new GameObject("TelegraphTurns");
-            text.transform.SetParent(template != null ? template.transform.parent : transform, false);
-            _telegraphTurns = text.AddComponent<TextMeshPro>();
+        /// <summary>A small world text next to the icons (same parent, layer and order as them).</summary>
+        private TextMeshPro CreateText(string objectName, float fontSize, Color color)
+        {
+            var template = roleIcon != null ? roleIcon : stateIcons.Count > 0 ? stateIcons[0] : null;
+            var go = new GameObject(objectName);
+            go.transform.SetParent(template != null ? template.transform.parent : transform, false);
+            var text = go.AddComponent<TextMeshPro>();
             var font = Resources.Load<TMP_FontAsset>(FontResource);
             if (font != null)
-                _telegraphTurns.font = font;
-            _telegraphTurns.fontSize = telegraphTurnsFontSize;
-            _telegraphTurns.color = telegraphTurnsColor;
-            _telegraphTurns.alignment = TextAlignmentOptions.Center;
-            _telegraphTurns.textWrappingMode = TextWrappingModes.NoWrap;
-            _telegraphTurns.rectTransform.sizeDelta = new Vector2(0.3f, 0.3f);
-            _telegraphTurns.sortingLayerID = template != null ? template.sortingLayerID : 0;
-            _telegraphTurns.sortingOrder = template != null ? template.sortingOrder : 100;
+                text.font = font;
+            text.fontSize = fontSize;
+            text.color = color;
+            text.alignment = TextAlignmentOptions.Center;
+            text.textWrappingMode = TextWrappingModes.NoWrap;
+            text.rectTransform.sizeDelta = new Vector2(0.3f, 0.3f);
+            text.sortingLayerID = template != null ? template.sortingLayerID : 0;
+            text.sortingOrder = template != null ? template.sortingOrder : 100;
+            return text;
         }
 
         private void Show(SpriteRenderer renderer, Sprite sprite, Vector2 offsetPixels)

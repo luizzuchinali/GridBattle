@@ -9,14 +9,15 @@ using JetBrains.Annotations;
 namespace GridBattle.Gameplay.Simulation
 {
     /// <summary>
-    /// The map decisions of the balance simulation: which node to enter next and what to do with a consumable offer.
+    /// The map decisions of the balance simulation: which node to enter next, what to do with a consumable offer, at a
+    /// camp and with a skill upgrade.
     /// <list type="bullet">
     /// <item>The final boss is always entered.</item>
     /// <item>A heal node is taken whenever one is available and the HP fraction is below the threshold.</item>
     /// <item>Otherwise every node gets a weight by type (battle, heal, talent, consumable). A talent node is skipped
     /// while the HP is below its threshold (it costs HP).</item>
-    /// <item>Battle nodes follow the difficulty policy: Easy and Hard always pick the easiest or the hardest battle
-    /// available, Normal the one closest to Normal, Mixed any of them.</item>
+    /// <item>Battle nodes follow the policy: Normal and Elite pick that kind of battle when one is available (the
+    /// other kind otherwise), Mixed any of them.</item>
     /// </list>
     /// Random picks use the bot's own <see cref="Rng"/>.
     /// </summary>
@@ -94,52 +95,26 @@ namespace GridBattle.Gameplay.Simulation
         private HashSet<EBattleDifficulty> GetPreferredDifficulties(IReadOnlyList<MapNodeState> available)
         {
             var preferred = new HashSet<EBattleDifficulty>();
-            var easiest = int.MaxValue;
-            var hardest = int.MinValue;
+            var offered = new HashSet<EBattleDifficulty>();
             foreach (var node in available)
             {
-                if (node.Type != EMapNodeType.Battle) continue;
-
-                easiest = Math.Min(easiest, (int)node.Difficulty);
-                hardest = Math.Max(hardest, (int)node.Difficulty);
+                if (node.Type == EMapNodeType.Battle)
+                    offered.Add(node.Difficulty);
             }
 
-            if (easiest == int.MaxValue) return preferred;
+            if (offered.Count == 0) return preferred;
 
             switch (_options.Policy)
             {
-                case EMapPolicy.Easy:
-                    preferred.Add((EBattleDifficulty)easiest);
+                case EMapPolicy.Mixed:
+                    preferred.UnionWith(offered);
                     break;
-                case EMapPolicy.Hard:
-                    preferred.Add((EBattleDifficulty)hardest);
-                    break;
-                case EMapPolicy.Normal:
-                    // The difficulty closest to Normal; between an easier and a harder one, the easier.
-                    var bestDistance = int.MaxValue;
-                    var bestDifficulty = (EBattleDifficulty)easiest;
-                    foreach (var node in available)
-                    {
-                        if (node.Type != EMapNodeType.Battle) continue;
-
-                        var distance = Math.Abs((int)node.Difficulty - (int)EBattleDifficulty.Normal);
-                        if (distance < bestDistance ||
-                            (distance == bestDistance && (int)node.Difficulty < (int)bestDifficulty))
-                        {
-                            bestDistance = distance;
-                            bestDifficulty = node.Difficulty;
-                        }
-                    }
-
-                    preferred.Add(bestDifficulty);
+                case EMapPolicy.Elite:
+                    preferred.Add(offered.Contains(EBattleDifficulty.Elite) ? EBattleDifficulty.Elite : EBattleDifficulty.Normal);
                     break;
                 default:
-                    foreach (var node in available)
-                    {
-                        if (node.Type == EMapNodeType.Battle)
-                            preferred.Add(node.Difficulty);
-                    }
-
+                    // Normal (and the value of an old Easy policy).
+                    preferred.Add(offered.Contains(EBattleDifficulty.Normal) ? EBattleDifficulty.Normal : EBattleDifficulty.Elite);
                     break;
             }
 
@@ -147,9 +122,10 @@ namespace GridBattle.Gameplay.Simulation
         }
 
         /// <summary>
-        /// Answers the pending consumable offer: takes the best option (healing, then damage, then the rest; one not
-        /// carried yet is slightly preferred) and, with a full inventory, replaces the worst carried item when the
-        /// new one is better or declines. Returns false when there is nothing to answer.
+        /// Answers the pending consumable offer (a consumable node, or the reward of an elite battle): takes the best
+        /// option (healing, then damage, then the rest; one not carried yet is slightly preferred) and, with a full
+        /// inventory, replaces the worst carried item when the new one is better or declines. Returns false when there
+        /// is nothing to answer.
         /// </summary>
         public bool AnswerConsumableOffer(RunManager runs)
         {
@@ -193,6 +169,44 @@ namespace GridBattle.Gameplay.Simulation
                 return runs.ReplaceConsumable(worstSlot);
 
             return runs.DeclineConsumableOffer();
+        }
+
+        /// <summary>
+        /// Answers a camp: rests when the HP fraction is below <see cref="MapPolicyOptions.CampRestBelowHpFraction"/>
+        /// (or when resting heals and there is nothing to upgrade), trains otherwise. Returns false outside a camp.
+        /// </summary>
+        public bool AnswerCamp(RunManager runs)
+        {
+            if (runs == null || runs.CurrentRun == null || runs.Phase != ERunPhase.Camp) return false;
+
+            var hpFraction = runs.PlayerHp / (float)Math.Max(1, runs.PlayerMaxHp);
+            if (hpFraction >= _options.CampRestBelowHpFraction && runs.CampTrain()) return true;
+
+            return runs.CampRest();
+        }
+
+        /// <summary>
+        /// Answers a skill upgrade: one of the upgradable skills and one of its variants, both at random (the bot's
+        /// own <see cref="Rng"/>). Returns false outside the SkillUpgrade phase.
+        /// </summary>
+        public bool AnswerSkillUpgrade(RunManager runs)
+        {
+            if (runs == null || runs.CurrentRun == null || runs.Phase != ERunPhase.SkillUpgrade) return false;
+
+            var skills = runs.GetUpgradableSkills();
+            if (skills.Count == 0) return runs.DeclineSkillUpgrade();
+
+            var skill = _rng.Pick(skills);
+            var variants = new List<int>();
+            for (var i = 0; i < skill.Upgrades.Count; i++)
+            {
+                if (skill.Upgrades[i] != null)
+                    variants.Add(i);
+            }
+
+            if (variants.Count == 0) return runs.DeclineSkillUpgrade();
+
+            return runs.ChooseSkillUpgrade(skill, _rng.Pick(variants)) || runs.DeclineSkillUpgrade();
         }
 
         private static float Score(ConsumableDefinition item)

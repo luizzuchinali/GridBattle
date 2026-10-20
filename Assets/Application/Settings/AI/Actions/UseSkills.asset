@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GridBattle.Gameplay.AI.Actions.UseSkillsAction
   id: 3e13a9d097dfc2e4aa0ce7abb923b950
   displacement:
-    minScore: 1
+    minScore: -1000
     allyReachValue: 5
     approachValue: 1
     killValue: 50

@@ -11,9 +11,14 @@ padrões, fluxos principais e histórico de refatorações.
 ## Visão geral
 
 RPG tático por turnos em grid 2D (roguelite mobile, retrato). O jogador escolhe
-uma classe e percorre um **mapa de nós** (batalha, cura, talento, consumível e
-chefe final). As batalhas acontecem num grid com terreno. Ao subir de nível, o
-jogador escolhe **talentos**, que concedem estados e liberam skills.
+uma classe e percorre um **mapa de nós** (batalha normal ou de elite,
+acampamento, talento, consumível e chefe final). As batalhas acontecem num
+grid com terreno, no molde do *Into the Breach* (decisão de 2026-10-19): não há
+ataque básico, toda ação é uma skill, todo golpe de inimigo é anunciado um turno
+antes e a previsão mostra o resultado de uma ação antes de confirmar. A
+progressão segue o *Slay the Spire*: ao subir de nível, o jogador escolhe
+**talentos**, que mudam regras e liberam skills; no acampamento ou depois de
+vencer uma elite, ele melhora uma skill (1 de 2 variantes).
 
 | Item | Valor |
 |---|---|
@@ -51,29 +56,30 @@ Assets/
 │   │   ├── Animations/{Enemies,PlayerCharacters}/<Nome>/   AnimatorController + clips por personagem
 │   │   └── Sprites/
 │   │       ├── {Enemies,PlayerCharacters}/, Characters.png, Skills.png, UI.png
-│   │       ├── Icons/{Talents,States,Roles,Consumables,Map,UI}/   ícones finais (PixelLab, ENDESGA 32; ver docs/projeto/arte.md)
-│   │       ├── Terrain/                                    sprites de terreno 24×24 (sobre a célula e como ícone)
+│   │       ├── Icons/{Skills,Talents,States,Roles,Consumables,Map,UI}/   ícones finais (PixelLab, ENDESGA 32; ver docs/projeto/arte.md)
+│   │       ├── Terrain/                                    sprites de terreno 24×24 (sobre a célula e como ícone; inclui IceWall)
 │   │       ├── UI/                                         slots redondos da barra de itens (cores do UI.png)
-│   │       └── Placeholders/{Skills,Vfx}/                  ícones e visuais de skills ainda provisórios (PlaceholderIcons, VfxPlaceholders)
+│   │       └── Placeholders/Vfx/                           visuais de skills ainda provisórios (VfxPlaceholders)
 │   ├── Localization/                                       LocalizationSettings, Locales (en, es, pt-BR), Tables (UI, Content)
 │   ├── Prefabs/
 │   │   ├── Cell.prefab                                     célula (destaques, terreno, barra de vida, texto de dano)
 │   │   └── Entities/
 │   │       ├── Character.prefab                            template base (SpriteRenderer + Animator + CharacterView)
-│   │       ├── Enemy.prefab                                variant: + Enemy + EnemyController + EnemyIconsView (papel/estados)
+│   │       ├── Enemy.prefab                                variant: + Enemy + EnemyController + EnemyIconsView (papel, estados, ordem de ação, turnos do golpe)
 │   │       └── PlayerCharacter.prefab                      variant: + PlayerCharacter + PlayerCharacterController
 │   ├── Settings/                   ← dados de jogo (ScriptableObjects), editáveis pelo Inspector
 │   │   ├── Resources/                                      GameDatabase.asset e GameSettings.asset (gerados pelo editor)
-│   │   ├── Characters/{Players,Enemies}/                   PlayerCharacterConfig / EnemyConfig (inclui inimigos provisórios e o chefe)
-│   │   ├── AI/                                             EnemyBehavior (ChaseAndAttack, Ranged, Support, Summoner, Controller)
-│   │   ├── AI/Actions/, AI/Roles/                          EnemyAction e EnemyRoleDefinition
-│   │   ├── Skills/<Classe>/, Skills/Enemies/, Skills/SkillSettings   SkillDefinition (tabela 6.2; Enemies = skills dos inimigos e do chefe)
-│   │   ├── States/, States/Talents/                        StateDefinition (States/: estados de combate, inclusive Queimando, Veneno letal, Congelado, Atordoado, Exposto; States/Talents/: um estado por talento, genérico ou de classe)
-│   │   ├── Talents/{Shared,Warrior,Mage,Rogue,Tags}/       TalentDefinition (talentos de classe com modificadores de skill e passivas, G3), SynergyTagDefinition, TalentOfferSettings (peso dos genéricos)
-│   │   ├── Terrain/                                        TerrainDefinition + TerrainGenerationSettings
+│   │   ├── Characters/{Players,Enemies}/                   PlayerCharacterConfig / EnemyConfig (27 inimigos provisórios, inclusive as elites `isUnique` e o chefe)
+│   │   ├── AI/                                             EnemyBehavior (ChaseAndAttack, Ranged, Skirmisher, Stationary, Support, Summoner, Controller)
+│   │   ├── AI/Actions/, AI/Roles/                          EnemyAction (ApproachMelee/Mid/Ranged = ApproachForSkillAction) e EnemyRoleDefinition
+│   │   ├── Skills/<Classe>/, Skills/<Classe>/Upgrades/     SkillDefinition: 6 por classe (3 iniciais + 3 liberadas por talento) e 2 variantes de melhoria de cada uma (Meteoro e Tempestade Elétrica do Mago são canalizadas: `usesWalk`)
+│   │   ├── Skills/Enemies/, Skills/SkillSettings           43 golpes anunciados dos inimigos e do chefe (cada inimigo: um especial com recarga e um básico sem recarga); SkillSettings (6 espaços de skill)
+│   │   ├── States/, States/Talents/                        StateDefinition (States/: estados de combate, inclusive Blindado, Exposto, Fraquejado, Congelado, Cego, Atordoado, Enredado, Exausto; States/Talents/: um estado por talento)
+│   │   ├── Talents/{Shared,Warrior,Mage,Rogue,Tags}/       TalentDefinition (talentos de regra, passivas e os que liberam skills), SynergyTagDefinition, TalentOfferSettings (peso dos genéricos)
+│   │   ├── Terrain/                                        TerrainDefinition (inclui IceWall, a Muralha de Gelo criada por skill) + TerrainGenerationSettings
 │   │   ├── Consumables/                                    ConsumableDefinition + ConsumableSettings
 │   │   ├── Tutorial/                                       TutorialTipDefinition (uma por gatilho)
-│   │   ├── Combat/, Progression/, Run/, Map/               CombatSettings, ProgressionSettings, RunSettings, Map/{Map,Battle}GenerationSettings
+│   │   ├── Combat/, Progression/, Run/, Map/               CombatSettings, ForecastSettings (visual da previsão), ProgressionSettings, RunSettings, Map/{Map,Battle}GenerationSettings
 │   │   ├── Simulation/                                     BalanceSimulationSettings (simulador de balanceamento)
 │   │   ├── Meta/, Audio/, Input/, Hud/, Screens/, Modals/  MetaSettings, AudioLibrary, GameplayInputSettings, HudSettings, ScreensSettings, ModalsSettings (views dos modais)
 │   │   ├── Encounters/DefaultEncounter.asset               inimigos da batalha de depuração (grid montado no editor)
@@ -85,7 +91,7 @@ Assets/
 │   │   ├── Settings/                                       PanelSettings, WorldPanelSettings, PanelTextSettings
 │   │   ├── Layers/*.asset                                  UILayerDefinition (uma por painel)
 │   │   ├── Screens/{Start,MainMenu,Game,Map,RunEnd,Victory}/   <Tela>.uxml + .uss + <Tela>View.asset (ViewDefinition)
-│   │   ├── Overlays/{Menu,EntityDetails,ConsumableOffer,Confirm,TalentChoice,Glossary,Options,TutorialTip,CharacterDetails,RemoveAds,AdNotice,SimulatedAd}/
+│   │   ├── Overlays/{Menu,EntityDetails,ConsumableOffer,Confirm,TalentChoice,Glossary,Options,TutorialTip,CharacterDetails,RemoveAds,AdNotice,SimulatedAd,SkillUpgrade}/
 │   │   ├── Background/, Transitions/, Animations/
 │   └── Scripts/                    ← ver tabela abaixo
 ├── ZS/UI/                          ← framework reutilizável de navegação (ver Assets/ZS/UI/README.md)
@@ -110,39 +116,40 @@ O namespace segue a pasta: `GridBattle.<Pasta>[.<Subpasta>]`.
 | `Core/Randomness/` | `…Core.Randomness` | `Rng` (SplitMix64), `RunRandom` (fluxos `ERandomStream` + `Derive`), `GameRandom` (fluxos da run ativa) |
 | `Data/` | `GridBattle.Data` | `GameDefinition` (id = GUID), `DisplayableDefinition` (nome/descrição localizados + ícone), `GameDatabase`, `GameSettings` + `IGameSettings`, `SubclassPicker` |
 | `Editor/` | `GridBattle.Editor[.…]` | `GameDatabaseBuilder`, `GridControllerEditor`, `Drawers/SubclassPickerDrawer`, `Localization/LocalizationTableTool`, `Tools/PlaceholderIcons`, `Tools/VfxPlaceholders` (`GridBattle > Vfx > Generate Placeholder Visuals`), `Tools/MonetizationMenu` (`GridBattle > Monetization`), `Tools/ContentValidator` (`GridBattle > Validate Content`), `Talents/{TalentChecks,XpProgressionSimulator}`, `Simulation/BalanceSimulation` (menu e Play Mode do simulador) |
-| `Managers/` | `GridBattle.Managers` | `GameStateManager` (classes jogáveis), `RunManager` (a run), `TurnManager` (turnos), `GameConfigManager`, `GameReset` (reset total, só em build de desenvolvimento) |
+| `Managers/` | `GridBattle.Managers` | `GameStateManager` (classes jogáveis), `RunManager` (a run; acampamento, melhorias de skill, recompensa da elite), `TurnManager` (turnos; inimigos na ordem de `ActingOrder`), `GameConfigManager`, `GameReset` (reset total, só em build de desenvolvimento) |
 | `Managers/Audio/` | `…Managers.Audio` | `AudioManager` (autoinicializado), `AudioLibrary`, `ESfx`, `EMusicContext`, `AudioEventHooks` |
-| `Gameplay/` | `GridBattle.Gameplay` | `GridController`, `Cell`, `BattleController` (vitória/derrota), `CellContentHealthBar`, `EncounterConfig`, `ETurnOwner`, `GameplayInput(Settings)` |
+| `Gameplay/` | `GridBattle.Gameplay` | `GridController` (inclui terreno temporário: `SetTerrain(célula, terreno, rodadas)` e `TickTemporaryTerrain`; troca de lugar: `SwapCharacters`), `Cell` (marcas dos golpes, dano previsto), `BattleController` (vitória/derrota), `CellContentHealthBar`, `EncounterConfig`, `ETurnOwner`, `GameplayInput(Settings)` (`confirmTargetedActions`: mirar e confirmar) |
 | `Gameplay/Stats/` | `…Gameplay.Stats` | `EAttribute`, `AttributeModifier`, `CharacterStats` |
-| `Gameplay/States/` (+`Effects/`) | `…Gameplay.States[.Effects]` | `StateDefinition`, `StateEffect` (ganchos: atributos, turnos, dano causado e recebido, bônus de dano condicional, modificadores de skill) e efeitos (`SkillModifierEffect`, `ConditionalDamageEffect`, `OnKillEffect`, `ApplyStateOnHitEffect`, ...), `StateGrant`, `StateInstance`, `StateContainer` |
-| `Gameplay/Combat/` | `…Gameplay.Combat` | `CombatSettings`, `DamageCalculator`, `CombatResolver` (`Adjust`, `PredictDamage`), `DamageContext` (+`DamageAdjustment`, `EDamageKindMask`), `HitResult`, `DisplacementResolver` (aplica e prevê empurrões e puxões) |
-| `Gameplay/Turns/` | `…Gameplay.Turns` | `TurnBlockers` |
-| `Gameplay/Rules/` | `…Gameplay.Rules` | `GridRules` (inclui `GetReachCells`: alcance de um inimigo no próximo turno), `GridDistance`, `Displacement` (regras puras de empurrar e puxar: direção, caminho, colisão), `LineOfSight` (linha de visão das skills), `SkillSelection` (área de seleção das skills: forma, alcance mínimo e máximo) |
+| `Gameplay/States/` (+`Effects/`) | `…Gameplay.States[.Effects]` | `StateDefinition`, `StateEffect` (ganchos: atributos, turnos, dano causado e recebido, bônus de dano condicional, modificadores de skill) e efeitos (`SkillModifierEffect`, `ConditionalDamageEffect`, `OnKillEffect` (+`grantExtraWalk`), `ApplyStateOnHitEffect`, ...); talentos de regra em `RuleTalentEffects.cs` (`DominoEffect`, `DisplacementTrailEffect`, `SlipperyPushEffect`, `CounterstrikeEffect`, `SwapStepEffect`); `StateGrant`, `StateInstance`, `StateContainer` (`FindEffect<T>`/`HasEffect<T>`: consulta dos talentos de regra) |
+| `Gameplay/Combat/` | `…Gameplay.Combat` | `CombatSettings`, `DamageCalculator`, `CombatResolver` (`Adjust`, `PredictDamage`), `DamageContext` (+`DamageAdjustment`, `EDamageKindMask`), `HitResult`, `DisplacementResolver` (aplica e prevê empurrões e puxões; Dominó e rastro dos talentos de regra) |
+| `Gameplay/Turns/` | `…Gameplay.Turns` | `TurnBlockers`, `ActingOrder` (ordem fixa dos inimigos na batalha: `Enemy.ActOrder`, empate por linha e coluna) |
+| `Gameplay/Forecast/` | `…Gameplay.Forecast` | previsão (estilo *Into the Breach*, pura): `ActionForecast` (o que a ação mirada faria: área, dano, mortes, deslocamentos, posições finais, interrompidos), `ThreatForecast` (+`TelegraphForecast`: o que os golpes anunciados fariam, depois da ação), `ForecastView` (desenha no tabuleiro; adicionada pelo `GridController` em Play Mode), `ForecastSettings`, `ForecastSprites` (setas 10×10 feitas em código) |
+| `Gameplay/Rules/` | `…Gameplay.Rules` | `GridRules` (inclui `GetReachCells`/`GetSkillReachCells`: onde um inimigo pode golpear no próximo turno), `GridDistance`, `Displacement` (regras puras de empurrar e puxar: direção, caminho, colisão, `GetDistance` com o Gelo Escorregadio), `LineOfSight` (linha de visão das skills), `SkillSelection` (área de seleção das skills: forma, alcance mínimo e máximo) |
 | `Gameplay/Movement/` | `…Gameplay.Movement` | `GridMovementAnimator`, `GridEffectsAnimator`, `GridMovementSettings`, `ActionVisualDefinition` (+`ECasterGesture`, `EVisualCellOrder`, `EVisualFacing`: visual de skill/item) e `ActionVisualPlayer` (toca o visual) |
-| `Gameplay/Entities/` | `…Gameplay.Entities` | `GridEntity` → `Character` → `PlayerCharacter` / `Enemy`; `CharacterView`, `EnemyIconsView`, `CharacterFactory`, `CharacterScaling`, `ECharacter` |
+| `Gameplay/Entities/` | `…Gameplay.Entities` | `GridEntity` → `Character` → `PlayerCharacter` / `Enemy` (golpe preparado `Telegraph`, `ActOrder`); `CharacterView`, `EnemyIconsView` (+ordem de ação), `CharacterFactory`, `CharacterScaling`, `ECharacter` |
 | `Gameplay/Entities/Configs/` | `…Gameplay.Entities` ⚠️ | `CharacterConfig`, `EnemyConfig`, `PlayerCharacterConfig` (**exceção**: namespace sem `Configs`) |
-| `Gameplay/Entities/Skills/` | `…Entities.Skills` | `SkillDefinition`, `EffectiveSkill` (+`SkillModifiers`: os números de uma skill para um lançador), `SkillEffect` (+`DisplaceSkillEffect`), `SkillArea`, `SkillTargeting`, `SkillCooldowns`, `SkillSettings` |
+| `Gameplay/Entities/Skills/` | `…Entities.Skills` | `SkillDefinition` (+telegrafia, variantes `upgrades`/`upgradeOf`, skill canalizada `usesWalk`), `SkillTelegraph` (golpe anunciado em preparo, salvo com a batalha), `EffectiveSkill` (+`SkillModifiers`: os números de uma skill para um lançador), `SkillEffect` (+`DisplaceSkillEffect`; em `MovementSkillEffects.cs`: `SwapSkillEffect`, `DashToTargetSkillEffect`, `CreateTerrainSkillEffect` + `ETerrainPlacement`), `SkillArea`, `SkillTargeting`, `SkillCooldowns`, `SkillSettings` |
 | `Gameplay/Entities/Roles/` | `…Entities.Roles` | `EnemyRoleDefinition` |
 | `Gameplay/Entities/Interfaces/` | `…Entities.Interfaces` | `IDamageReceiver`, `IAttacker`, `IWalker` |
-| `Gameplay/Controllers/` | `…Gameplay.Controllers` | `CharacterControllerBase<T>`, `PlayerCharacterController` (toque, skills, itens, destaques; turno com andar e agir, `UndoMove`, `EndTurn`, alcance do inimigo no toque longo), `EnemyController` (IA + memória) |
-| `Gameplay/AI/` (+`Actions/`) | `…Gameplay.AI[.Actions]` | `EnemyBehavior` (um andar e um agir por turno), `EnemyAction` (`IsMovement`), `EnemyMemory`, `EnemyTurnContext`; ações (`UseSkills`, `BasicAttack`, `ChaseTarget`, `KeepDistance`, `ApplyStateToTarget`, `HealAlly`, `BuffAlly`, `Summon`); `DisplacementScoring` (valor de um empurrão/puxão para a IA, pesos em `UseSkills`) |
+| `Gameplay/Controllers/` | `…Gameplay.Controllers` | `CharacterControllerBase<T>`, `PlayerCharacterController` (toque, skills, itens, destaques; turno com andar e agir, `UndoMove`, `EndTurn`; mirar e confirmar: `AimedCell`, `ConfirmAim`, `CancelAction`; skills canalizadas: `CanUseSkillNow`, `CanWalkNow`; troca de lugar do Passo Trocado; alcance do inimigo no toque), `EnemyController` (dispara o golpe preparado e roda a IA; memória) |
+| `Gameplay/AI/` (+`Actions/`) | `…Gameplay.AI[.Actions]` | `EnemyBehavior` (um andar e um agir por turno), `EnemyAction` (`IsMovement`), `EnemyMemory`, `EnemyTurnContext`; ações (`UseSkills`, `ApproachForSkillAction` (anda até onde uma skill pronta alcança o jogador, evitando células marcadas por golpes e terreno perigoso), `ApplyStateToTarget`, `HealAlly`, `BuffAlly`, `Summon`; `BasicAttack`, `ChaseTarget` e `KeepDistance` existem, mas nenhum comportamento usa); `DisplacementScoring` (valor de um empurrão/puxão para a IA, pesos em `UseSkills`) |
 | `Gameplay/Terrain/` | `…Gameplay.Terrain` | `TerrainDefinition`, `TerrainGenerator`, `TerrainEffects`, `TerrainGenerationSettings` |
 | `Gameplay/Consumables/` | `…Gameplay.Consumables` | `ConsumableDefinition`, `ConsumableEffect`, `ConsumableInventory`, `ConsumableRules`, `ConsumableExecutor`, `ConsumableGrant`, `ConsumableSettings` |
-| `Gameplay/Progression/` | `…Gameplay.Progression` | `ProgressionSettings` (curva de XP, nível máximo), `XpRewardSystem`, `XpPacket` |
+| `Gameplay/Progression/` | `…Gameplay.Progression` | `ProgressionSettings` (curva de XP, nível máximo, vida máxima por nível), `XpRewardSystem` (`xpPerPacket`, `maxPackets`: no máximo 8 orbs por abate), `XpPacket` |
 | `Gameplay/Talents/` | `…Gameplay.Talents` | `TalentDefinition`, `SynergyTagDefinition`, `TalentOfferSettings` (inclui `sharedPoolWeightMultiplier`), `TalentOfferGenerator`, `TalentRules`, `TalentSession`, `TalentService`, `TalentApplier`, `TalentRunModifier`, `TalentBootstrap` |
-| `Gameplay/Map/` | `…Gameplay.Map` | `MapGenerator`, `MapValidator`, `MapRules`, `BattleGenerator` (+`ThreatCalculator`), `MapGenerationSettings`, `BattleGenerationSettings` |
-| `Gameplay/Run/` | `…Gameplay.Run` | `RunState` (modelo salvo), `RunSettings`, `RunSummary`, `PlayerRunStateApplier`, `RunPlayerHooks` (+`IRunPlayerModifier`), `StateSnapshots` |
+| `Gameplay/Map/` | `…Gameplay.Map` | `MapGenerator` (nó de elite só onde há elite: `BattleGenerationSettings.HasEliteAt`), `MapValidator`, `MapRules` (`IsEliteBattle`, `NormalizeDifficulties`), `BattleGenerator` (+`ThreatCalculator`; a elite das batalhas de elite), `MapGenerationSettings`, `BattleGenerationSettings` |
+| `Gameplay/Run/` | `…Gameplay.Run` | `RunState` (modelo salvo; `EBattleDifficulty` Normal/Elite; fases `Camp` e `SkillUpgrade`, `ESkillUpgradeSource`, `PlayerRunState.MaxHpBonus`, recompensa da elite em andamento: `EliteRewardOffer`, `EliteOffersLeft`), `RunSettings` (acampamento, custo do nó de talento, recompensa da elite), `RunSummary`, `PlayerRunStateApplier`, `RunPlayerHooks` (+`IRunPlayerModifier`), `StateSnapshots` |
 | `Gameplay/Monetization/` | `…Gameplay.Monetization` | monetização (GDD 7): `MonetizationService` (autoinicializado; anúncio forçado pendente, anúncio antes de cada uso das ferramentas de talento, compra), `ForcedAdRules` (rampa de frequência, pura), `MonetizationSettings`, provedores de anúncio (`LevelPlayAdsProvider`, `SimulatedAdsProvider`, `NoAdsProvider` em `AdProviders.cs`) e de loja (`UnityIapRemoveAdsStore`, `SimulatedRemoveAdsStore`, `NoRemoveAdsStore` em `RemoveAdsStores.cs`) |
-| `Gameplay/Simulation/` | `…Gameplay.Simulation` | simulador de balanceamento: `SimMode` (modo sem animações, sons, UI nem salvamento), `SimulationRunner`, bots (`BattleBot`, `MapPolicy`, `TalentPolicy`), `SimulationCollector`, `SimulationReport`, `SimulationOptions`, `BalanceSimulationSettings` |
+| `Gameplay/Simulation/` | `…Gameplay.Simulation` | simulador de balanceamento: `SimMode` (modo sem animações, sons, UI nem salvamento), `SimulationRunner`, bots (`BattleBot`, que lê a previsão como o jogador e só usa uma skill canalizada antes de andar; `MapPolicy`, com as políticas `EMapPolicy` Normal/Elite/Mixed, que responde ao acampamento, à melhoria e às ofertas de consumível, inclusive a da elite; `TalentPolicy`), `SimulationCollector`, `SimulationReport`, `SimulationOptions`, `BalanceSimulationSettings` |
 | `Gameplay/Meta/` | `…Gameplay.Meta` | `ProfileService`/`ProfileState`, `GlossaryService`, `TutorialService` + `TutorialTipDefinition`, `MetricsRecorder`, `MetaSettings`, `MetaBootstrap` |
-| `Gameplay/Events/` | `…Gameplay.Events` | eventos de gameplay |
+| `Gameplay/Events/` | `…Gameplay.Events` | eventos de gameplay (os do novo molde: `ActionAimChangedEvent`, `TelegraphResolvedEvent`, `CharactersSwappedEvent`, `ExtraWalkGrantedEvent`, `CampEnteredEvent`, `SkillUpgradeOfferEvent`, `SkillUpgradedEvent`) |
 | `UI/` | `GridBattle.UI` | `XpBarView`, `PixelPerfectPanelScale`, `UiExtensions` (`OnClick`, `SimulateClick`), `LongPressManipulator` (toque longo / clique direito em elementos de UI) |
 | `UI/Flow/` | `…UI.Flow` | `GameFlowController` (eventos → navegação) |
 | `UI/Screens/` | `…UI.Screens` | controladores das telas (Start, MainMenu, Game, Map, RunEnd, Victory), `ScreensSettings` |
-| `UI/Hud/` | `…UI.Hud` | `SkillBarView`, `ItemBarView` (toque longo nos botões abre os detalhes), `DepthView`, `TurnActionsView` (pé, espada e poção do que resta no turno, Desfazer e Encerrar turno), `EntityDetailsModel` (+`EntityDetailsRequest`: célula, skill ou item), `ActionDetailsModel` (ficha de skill e item), `HudText`, `HudSettings` |
-| `UI/Map/` | `…UI.Map` | `MapGraphView`, `MapLinesElement`, `MapHudView`, `NodePreviewView` |
-| `UI/Overlays/` | `…UI.Overlays` | controladores dos modais (menu/pausa, detalhes, oferta de consumível, confirmação, talento, glossário, opções, dicas, detalhes do personagem, remover anúncios, aviso de anúncio, anúncio de teste), `ModalsSettings` |
-| `UI/Background/`, `UI/Vfx/`, `UI/Events/` | `…UI.*` | fundo, orbs de XP, eventos de UI |
+| `UI/Hud/` | `…UI.Hud` | `SkillBarView`, `ItemBarView` (toque longo nos botões abre os detalhes), `DepthView`, `TurnActionsView` (pé, espada e poção do que resta no turno, Desfazer e Encerrar turno; Cancelar e Confirmar com uma ação mirada), `EntityDetailsModel` (+`EntityDetailsRequest`: célula, skill ou item; ordem de ação e golpe preparado do inimigo), `ActionDetailsModel` (ficha de skill e item; linha "Em você" com os estados no lançador e nota da skill canalizada), `HudText`, `HudSettings` |
+| `UI/Map/` | `…UI.Map` | `MapGraphView` (nós `map-node--normal`/`--elite`, sem XP), `MapLinesElement`, `MapHudView`, `NodePreviewView` (título, papéis, terreno e, na elite, a linha `preview-reward`) |
+| `UI/Overlays/` | `…UI.Overlays` | controladores dos modais (menu/pausa, detalhes, oferta de consumível, confirmação, talento, glossário, opções, dicas, detalhes do personagem, remover anúncios, aviso de anúncio, anúncio de teste, acampamento e melhoria de skill em `SkillUpgradeController`; a oferta de consumível tem o título da recompensa da elite), `ModalsSettings` |
+| `UI/Background/`, `UI/Vfx/`, `UI/Events/` | `…UI.*` | fundo, orbs de XP (`XpOrbsVfx`: explosão e voo juntos; `XpOrbsVfxSettings`), eventos de UI |
 
 ### Objetos da cena
 
@@ -150,7 +157,7 @@ O namespace segue a pasta: `GridBattle.<Pasta>[.<Subpasta>]`.
 |---|---|
 | `Main Camera` | `PixelPerfectCamera`, `PixelPerfectPanelScale`, `Physics2DRaycaster` |
 | `GameStateManager` | `GameStateManager` (singleton, `DontDestroyOnLoad`), `RunManager` |
-| `Grid` | `GridController` (`[ExecuteAlways]`), `TurnManager`, `BattleController`; células `Cell_x_y` são filhas |
+| `Grid` | `GridController` (`[ExecuteAlways]`), `TurnManager`, `BattleController`; em Play Mode o `GridController` adiciona a `ForecastView`; células `Cell_x_y` são filhas |
 | `XpRewardSystem` | `XpRewardSystem` |
 | `UIManager` | `UIRoot`, `GameFlowController`; filhos (cada um `PanelRenderer` + `UILayer`): `BackgroundLayer` (999 → -1), `StartScreenLayer` (0), `MainMenuLayer` (1, + Animator), `GameScreenLayer` (2, + `XpOrbsVfx`), `ScreensLayer` (3, telas `Instantiate`: mapa, fim de run, vitória), `Overlays/MenuOverlayLayer` (5, camada dos modais), `TransitionLayer` (999) |
 | `EventSystem` | `EventSystem`, `InputSystemUIInputModule` |
@@ -169,8 +176,8 @@ Telas (GameFlowController + ZS.UI)
      card → CharacterDetailsRequestedEvent → modal de detalhes → Jogar → CharacterChoosenEvent
      (com run em andamento, confirmação) → RunManager.StartNewRun → MapOpenedEvent → tela do Mapa
   nó escolhido (SelectNode = prévia; EnterNode = confirma)
-     batalha/chefe → BattleStartedEvent → tela Game (HUD)  → vitória → mapa | chefe → Vitória
-     cura / consumível / talento → resolvidos no mapa (modais) → mapa
+     batalha/chefe → BattleStartedEvent → tela Game (HUD)  → vitória → mapa | elite → mapa + consumível + melhoria | chefe → Vitória
+     acampamento / consumível / talento → resolvidos no mapa (modais) → mapa
   derrota ou desistência → RunEndedEvent → tela de fim de run → MainMenu
   pedidos de tela durante uma transição viram "tela alvo" e são aplicados depois
 
@@ -180,23 +187,55 @@ Run (RunManager)
   geração: cada batalha lê os assets de balanceamento na profundidade de balanceamento do nó
     (MapGenerationSettings.GetBalanceDepth: andares de referência esticados para o tamanho do mapa);
     XP da batalha = orçamento de ameaça (profundidade × dificuldade) × XP por ponto × crescimento por
-    profundidade × fator do tamanho da run, dividido entre os inimigos pela ameaça (fácil < normal < difícil)
-  vida, nível, XP, skills, consumíveis e talentos persistem entre nós (PlayerRunState)
+    profundidade × fator do tamanho da run, dividido entre os inimigos pela ameaça (fácil < normal < difícil);
+    a ameaça de um inimigo é EnemyConfig.threat quando definida. Batalhas só normal ou de elite
+    (EBattleDifficulty; pesos MapGenerationSettings.normalWeight 75 / eliteWeight 25): um nó só vira elite se
+    BattleGenerationSettings.HasEliteAt(profundidade de balanceamento) (os andares 1 a 3 não têm); batalha de
+    elite = um inimigo isUnique do pool na profundidade, com escolta (perfil Elite: orçamento ×1,35, XP ×2).
+    Saves antigos: MapRules.NormalizeDifficulties (fácil, e difícil sem elite, viram normal) no ContinueRun
+  vida, vida máxima extra (MaxHpBonus), nível, XP, skills (já melhoradas), consumíveis e talentos persistem
+    entre nós (PlayerRunState)
+  nós fora da batalha: acampamento (nó de cura) → CampEnteredEvent → descansar (CampRest: cura
+    RunSettings.healFraction) ou treinar (CampTrain → melhoria); sem skill para melhorar, só cura.
+    Talento → custa vida máxima pelo resto da run (ETalentNodeCost.MaxHp, talentNodeCostMaxHp) →
+    TalentNodeEnteredEvent. Consumível → escolher 1 entre ConsumableSettings.choiceCount
+  elite vencida → BeginEliteReward: RunSettings.eliteConsumableOffers (1) ofertas de consumível (a do nó de
+    consumível, ConsumableOfferEvent com o título da elite) → melhoria de skill (eliteGrantsSkillUpgrade) →
+    CompleteNode com a vida da batalha; cada etapa salva (RunState.EliteRewardOffer, EliteOffersLeft)
+  melhoria de skill (treino no acampamento ou elite vencida, RunSettings.eliteGrantsSkillUpgrade) →
+    SkillUpgradeOfferEvent → modal SkillUpgrade (skill → 1 de 2 variantes, com o que muda) →
+    ChooseSkillUpgrade troca o id em PlayerRunState.SkillIds → SkillUpgradedEvent; recusar volta à
+    escolha do acampamento ou, na elite, abre mão da recompensa. Cada skill melhora uma vez
   batalha: GridController.InitializeBattle(spec, classe, PlayerRunState) → terreno → jogador → inimigos
   salvamento: depois de cada nó e no início de cada vez do jogador (antes dos efeitos de início de turno;
     carregar repete o turno com os mesmos sorteios). ContinueRun retoma mapa, nó aberto ou batalha.
 
 Turno (TurnManager)
-  turno global: o jogador age primeiro, depois cada inimigo, um de cada vez (mais perto do jogador primeiro;
-    desempate y, x): o inimigo anda e age, as animações dele terminam e só então o próximo começa
+  turno global: o jogador age primeiro, depois cada inimigo, um de cada vez, na ordem fixa da batalha
+    (ActingOrder: a lista gerada, depois os invocados; o número fica sobre cada um): o inimigo age, as
+    animações dele terminam e só então o próximo começa. Fim da rodada: o terreno temporário perde uma
+    rodada (GridController.TickTemporaryTerrain), antes do salvamento da vez do jogador
   turno da entidade: início (EntityTurnStartedEvent; estados: dano/cura periódicos; terreno OnTurnStart)
                      → ação → fim (EntityTurnEndedEvent; terreno OnTurnEnd, cooldowns, memória da IA;
                      depois a duração dos estados cai 1)
-  vez do jogador: anda 1 vez e age 1 vez (ataque básico ou skill), em qualquer ordem, e pode usar 1 consumível;
-    acaba sozinha só quando nada mais é possível (HasAnythingLeft falso depois de uma escolha; com item
-    utilizável espera), ou com Encerrar turno / tocando em si mesmo → PlayerActionEvent;
-    desfazer o andar enquanto não agiu (PlayerCharacterController.UndoMove); PlayerTurnStateChangedEvent a cada
-    mudança; inimigos: um andar e um agir (EnemyBehavior)
+  vez do jogador: anda 1 vez e age 1 vez (uma skill; não há ataque básico), em qualquer ordem, e pode usar
+    1 consumível. Skill canalizada (usesWalk: Meteoro e Tempestade Elétrica) gasta o agir e o andar, só antes
+    de andar (PlayerCharacterController.CanUseSkillNow); o Meteoro deixa o Mago Exausto no turno seguinte. Skill ou item: o 1º toque numa célula válida só mira (AimedCell, ActionAimChangedEvent; a
+    previsão mostra dano, mortes, empurrões e onde os golpes anunciados cairiam depois), o 2º toque na
+    mesma célula ou Confirmar usa (ConfirmAim), Cancelar desfaz a mira (CancelAction). Tocar num inimigo
+    mostra onde ele pode golpear no próximo turno. A vez acaba sozinha só quando nada mais é possível
+    (HasAnythingLeft falso depois de uma escolha; com item utilizável espera), ou com Encerrar turno /
+    tocando em si mesmo → PlayerActionEvent; desfazer o andar enquanto não agiu
+    (PlayerCharacterController.UndoMove); PlayerTurnStateChangedEvent a cada mudança
+  vez do inimigo (EnemyController): dispara o golpe preparado, se houver (Enemy.AdvanceTelegraph: atinge
+    quem estiver nas células marcadas agora, todos menos quem lança; TelegraphResolvedEvent), depois anda
+    (ApproachForSkillAction) e prepara o próximo golpe (UseSkills → Enemy.TryUseSkill marca as células; tenta
+    na ordem da lista: o especial com recarga primeiro, o básico sem recarga quando o especial não está pronto).
+    Disparar não gasta o agir (CombatSettings.firingUsesAction desligado). Curar, proteger, invocar e
+    enfraquecer são imediatos. A batalha começa sem golpe preparado: cada inimigo prepara o primeiro no
+    seu turno, depois da primeira vez do jogador
+  golpe preparado: empurrar, puxar ou trocar de lugar quem prepara leva as células junto
+    (SkillDefinition.telegraphFollowsCaster); a morte dele ou um estado que impede skills o cancela
   cada passo espera animações (GridController.WaitForMovementsAsync) e TurnBlockers
     (orbs de XP que sobem de nível, escolha de talento, pausa, detalhes, dicas)
   último inimigo ou jogador morre → BattleDecidedEvent (vez = None, ninguém age)
@@ -204,17 +243,26 @@ Turno (TurnManager)
 
 Dano (CombatResolver)
   estados de atacante e alvo opinam (Adjust: bônus condicionais, puros) → (base + fixo) × (1 + bônus de skill)
-  × (1 + dano causado) × (1 + bônus condicional) → crítico (fluxo Combat) → defesa (fixa ou %, penetração)
-  × (1 + dano recebido) × (1 + redução condicional) → mínimo → escudo absorve → vida; depois roubo de vida
-  (atacante) e espinhos (alvo). Previsão sem sorteio: CombatResolver.PredictDamage (IA e bot)
+  × (1 + dano causado) × (1 + bônus condicional) → crítico (fluxo Combat) → defesa (fixa ou %, penetração;
+  Blindado = +1 de defesa) × (1 + dano recebido) + dano recebido fixo (Exposto +1) × (1 + redução
+  condicional) → mínimo (CombatSettings.minimumDamage 0: a armadura pode zerar um golpe de 1) → escudo
+  absorve → vida; depois roubo de vida (atacante) e espinhos (alvo)
+  colisão de empurrão ou puxão: 1 a quem é lançado (+0 por casa não percorrida) e 1 a quem é atingido,
+  sem defesa (CombatSettings.collisionIgnoresDefense)
+  previsão sem sorteio: CombatResolver.PredictDamage (previsão do jogador, IA e bot)
 
 XP e talentos
-  inimigo morre → XpRewardSystem → orbs (XpOrbsVfx) → PlayerCharacter.GainXp (curva global)
-  cada nível → cura (ProgressionSettings.levelUpHealFraction, padrão vida cheia) → PlayerLeveledUpEvent
+  inimigo morre → XpRewardSystem (no máximo maxPackets = 8 pacotes; acima disso, pacotes maiores) → orbs
+    (XpOrbsVfx: todos saem juntos numa mini explosão no ponto da morte, param e voam juntos, ~0,8 s no total)
+    → PlayerCharacter.GainXp a cada orb que chega (curva global:
+    ProgressionSettings, 150 para o nível 2 e +100 a cada nível, nível máximo 12)
+  cada nível → +1 de vida máxima sem cura (maxHpPerLevel; levelUpHealFraction 0) → PlayerLeveledUpEvent
     → TalentSession: oferta (TalentOfferGenerator, Derive(Talents, nível, reroll)) → pausa (TurnBlockers)
     → TalentOfferOpenedEvent → modal de talento → Choose/Reroll/Ban/Skip
-  talento: estados permanentes com SourceId = id do talento (+pilhas = rank), skill liberada vai para a barra;
-    reaplicado a cada batalha por IRunPlayerModifier
+  talento: estados permanentes com SourceId = id do talento (+pilhas = rank), skill liberada vai para a barra
+    (até TalentOfferSettings.maxSkillTalents = 3); reaplicado a cada batalha por IRunPlayerModifier.
+    Talentos de regra (Dominó, Rastro de Chamas, Gelo Escorregadio, Contragolpe, Passo Trocado, Ímpeto)
+    são efeitos de estado lidos onde a regra vale (StateContainer.FindEffect<T>)
 
 Monetização (MonetizationService, GDD 7)
   NodeCompletedEvent / RunEndedEvent → conta uma pausa no perfil → ForcedAdRules.IsDue (carência, fase
@@ -265,14 +313,19 @@ Morte de inimigo
 
 - **Atributos** (`EAttribute`) = base do config (× escala da profundidade) +
   modificadores dos estados ativos: `(base + Σ fixo) × (1 + Σ %)`. Leia
-  sempre por `Character.Stats`, nunca direto do config.
+  sempre por `Character.Stats`, nunca direto do config. A vida máxima base do
+  jogador soma os níveis (`ProgressionSettings.GetMaxHpBonus`) e o bônus da run
+  (`PlayerRunState.MaxHpBonus`, negativo depois de um nó de talento): quando um
+  deles muda, chame `Character.RefreshBaseAttributes` (a vida não é curada).
 - **Estados**: a duração conta turnos de quem carrega e cai no fim do turno
-  dele (GDD 3.1). Reaplicação segue a `EStackPolicy` do estado; instâncias de
+  dele (GDD 3.1). O bônus de duração dos talentos (`StateDurationBonus`) não vale
+  para estados que uma skill aplica no próprio lançador (Exausto do Meteoro). Reaplicação segue a `EStackPolicy` do estado; instâncias de
   origens diferentes (`SourceId`, ex.: talento) ficam separadas.
 - **Dano e cura** passam sempre por `CombatResolver` (crítico, defesa,
   escudo, roubo de vida, espinhos, eventos). `Character.ReceiveDamage` é dano
-  puro. Previsões (IA, bot) usam `CombatResolver.PredictDamage`, nunca
-  `DamageCalculator` direto, para valer as passivas condicionais.
+  puro. Previsões (do jogador, da IA e do bot) usam `CombatResolver.PredictDamage`,
+  nunca `DamageCalculator` direto, para valer as passivas condicionais. Com
+  `CombatSettings.minimumDamage` 0, defesa e redução podem zerar um golpe.
 - **Números de skill** (dano, área, alcance, cooldown, distância de empurrão,
   duração de estados, efeitos) só pelo `EffectiveSkill.Resolve(lançador, skill)`:
   alvo, execução, cooldown, destaques, IA e bot passam por ele, e o asset da skill
@@ -284,18 +337,72 @@ Morte de inimigo
   previsão os chama também. "Andou neste turno" é
   `Character.MovedThisTurn` (antes do golpe; desfazer o andar desmarca); adjacência pela métrica
   `CombatSettings.adjacencyMetric` (`GridRules.CountAdjacentOpponents`).
-- **Turno: andar e agir.** O turno tem um andar e um agir (ataque básico ou
-  skill), em qualquer ordem, mais um consumível. A vez do jogador termina com
+- **Sem ataque básico.** `CharacterConfig.hasBasicAttack` está desligado em
+  todos os personagens (o padrão do código é ligado): agir é sempre usar uma
+  skill, e `attackDistance`/`basicAttackDamage` não são usados. Ações e destaques
+  que dependem do ataque básico consultam `Character.HasBasicAttack`.
+- **Turno: andar e agir.** O turno tem um andar e um agir (uma skill), em
+  qualquer ordem, mais um consumível. Skills e itens com alvo são mirados e
+  depois confirmados (`GameplayInputSettings.confirmTargetedActions`;
+  `PlayerCharacterController.AimedCell`, `ConfirmAim`, `CancelAction`). A vez do jogador termina com
   `PlayerActionEvent` (quando nada mais é possível, no Encerrar turno ou no toque em si
   mesmo); o que ainda resta fica no `PlayerCharacterController` (`CanMove`,
   `CanAct`, `CanUseConsumable`, `CanUndoMove`) e sai em
-  `PlayerTurnStateChangedEvent`. Inimigos: `EnemyAction.IsMovement` separa andar
-  de agir, e o `TurnManager` só começa o próximo inimigo depois das animações do
-  anterior. Desfazer o andar usa `GridController.UndoMove` (sem
+  `PlayerTurnStateChangedEvent`. **Skill canalizada** (`SkillDefinition.usesWalk`, só
+  jogador): gasta também o andar, só antes de andar e sem desfazer; UI e bot
+  perguntam `PlayerCharacterController.CanUseSkillNow` (e `CanWalkNow` para "pode andar para
+  algum lugar"); `HasAnythingLeft` conta uma canalizada pronta enquanto o andar pode
+  ser desfeito. O contra "não anda no próximo turno" é dado: `ApplyStatesSkillEffect`
+  no lançador com Exausto por 2. Inimigos: `EnemyAction.IsMovement` separa andar
+  de agir, os inimigos agem na ordem fixa de `Turns/ActingOrder` (nunca ordene
+  por conta própria) e o `TurnManager` só começa o próximo inimigo depois das
+  animações do anterior. Desfazer o andar usa `GridController.UndoMove` (sem
   `EntityEnteredCellEvent`); só vale sem gatilho `OnEnter` na célula. O ataque ou
   o visual de skill de quem acabou de andar espera o fim do pulo
   (`GridController.GetMovementRemaining`). Recargas contam turnos do dono.
   "Andou" nos bônus condicionais é `Character.MovedThisTurn`.
+- **Golpes anunciados (telegrafia).** Todo golpe de inimigo é uma skill com
+  `telegraphed` (hoje `windupTurns` 1) e alvo `EveryoneButCaster`: `Enemy.TryUseSkill`
+  prepara um `SkillTelegraph` (células fixadas na hora, salvas com a batalha) e,
+  no turno seguinte do inimigo, `Enemy.AdvanceTelegraph` dispara nas células
+  marcadas contra quem estiver nelas, inimigos inclusive (`TelegraphResolvedEvent`).
+  Empurrar, puxar ou trocar quem prepara desloca as células junto
+  (`SkillTelegraph.Shift`, `telegraphFollowsCaster`); `cancelledByDisplacement`
+  e `interruptibleByStates` cancelam. O jogador nunca telegrafa. **Todo inimigo
+  precisa de um golpe com recarga 0 (básico) e um com recarga > 0 (especial,
+  primeiro na lista `skills`)**: a recarga começa no disparo, e sem o básico a
+  marca some nos turnos de espera. Lacunas que continuam: turno em que nenhum
+  golpe alcança o jogador (o Totem nunca anda), ação de apoio imediata (curar,
+  proteger, invocar, enfraquecer usa o agir) e o primeiro turno da batalha.
+- **Previsão** (`Gameplay/Forecast`): `ActionForecast` e `ThreatForecast` são
+  puras e usam as mesmas regras da execução (`EffectiveSkill`,
+  `SkillTargeting`, `CombatResolver.PredictDamage`,
+  `DisplacementResolver.Predict`, `DashToTargetSkillEffect.GetDestination`,
+  `SkillTelegraph.PredictDamage`), sem sorteio (sem crítico) e antes dos
+  escudos. Toda regra nova que muda dano, posição ou quem é atingido tem de
+  valer nas duas (de preferência pela mesma função), senão a previsão mente.
+  Pendência: o empurrão em cadeia do Dominó ainda não entra na previsão
+  (`DisplacementResolver.Predict` não o calcula). O bot do simulador lê as
+  mesmas classes. `ForecastView` só desenha.
+- **Skills que movem e criam terreno** (`MovementSkillEffects.cs`): troca de
+  lugar (`SwapSkillEffect`) e investida (`DashToTargetSkillEffect`, antes de um
+  `Displace`) não são andar (`Character.MovedThisTurn` não muda);
+  `CreateTerrainSkillEffect` põe terreno temporário por `GridController.SetTerrain(célula,
+  terreno, rodadas)` (só em piso livre por padrão; terreno que bloqueia nunca
+  numa célula ocupada), que perde uma rodada no fim de cada rodada dos inimigos
+  e some em 0 (`TickTemporaryTerrain`; rodadas salvas em `TerrainCellSpec.TurnsLeft`).
+- **Talentos de regra** (`States/Effects/RuleTalentEffects.cs`, `OnKillEffect.grantExtraWalk`):
+  efeitos de estado sem gancho de dano, consultados no ponto onde a regra vale
+  com `States.FindEffect<T>()` (Dominó e rastro no `DisplacementResolver`,
+  Gelo Escorregadio em `Displacement.GetDistance`, Contragolpe no
+  `PlayerCharacter`, Passo Trocado no `PlayerCharacterController`).
+- **Melhorias de skill**: uma variante é um `SkillDefinition` inteiro com
+  `upgradeOf` apontando para o original, listado em `upgrades` do original (2
+  por skill; a variante não melhora de novo). Compare skills por
+  `SkillDefinition.IsSameSkillAs`/`Root` (pré-requisitos, ofertas): um
+  `SkillModifierEffect` do original vale também para as variantes.
+- **Áreas**: as formas centradas no alvo têm tamanho ímpar; `Linear` começa no
+  alvo e pode ter tamanho par (`SkillDefinition.NeedsOddSize`).
 - **Distâncias** só por `GridDistance` com as métricas de `CombatSettings`
   (movimento/ataque euclidianos; alcance de skill Manhattan).
 - **Empurrar e puxar** (deslocamento forçado) só por `Displacement` (regras
@@ -304,6 +411,9 @@ Morte de inimigo
   `EDamageKind.Collision` (valores em `CombatSettings`) atribuído ao lançador,
   terreno da célula final reage na hora (`GridController.ApplyForcedTerrain`).
   Personagem imóvel: `CharacterConfig.canBeDisplaced = false` (o chefe).
+  Talentos de regra entram aqui: Dominó empurra quem foi atingido, o rastro
+  deixa terreno e o Gelo Escorregadio aumenta a distância (este último também na
+  previsão, por `Displacement.GetDistance`).
 - **Mira de skills**: célula na **área de seleção** (`Rules/SkillSelection`, estilo Dofus: forma
   `ESkillSelectionShape` Círculo/Linha/Diagonal/Estrela/Quadrado, `minRange` e `range` contados ao longo
   da forma, `rangeModifiable` para o atributo Alcance de skills), com o conteúdo pedido
@@ -358,7 +468,7 @@ Morte de inimigo
   salvamento novo deve ser ignorado quando `SimMode.IsActive` (veja os
   existentes em `Cell`, `GridMovementAnimator`, `GridEffectsAnimator`,
   `TurnManager`, `XpOrbsVfx`, `AudioManager`, `RunManager`,
-  `GameFlowController`, `ActionVisualPlayer`, `MonetizationService`). Com o modo desligado, o jogo não muda.
+  `GameFlowController`, `ActionVisualPlayer`, `MonetizationService`, `ForecastView`, `EnemyIconsView`). Com o modo desligado, o jogo não muda.
   Com `SimulationOptions.showBoard` (`SimMode.ShowBoard`) a única tela que o
   fluxo abre é a de batalha, para quem estiver olhando ver o tabuleiro.
 - Cada parte da UI que conhece nomes/medidas do UXML fica encapsulada numa
@@ -432,13 +542,15 @@ Morte de inimigo
 - **Contratos de nome** (usados por código): `container`, `menu-button`,
   `xp-bar-progress`, `xp-bar-detail-2`, `current-level`, `tap-to-play-label`,
   `*-btn`, `overlay-background`, `skill-bar`, `item-bar`, `hud-depth*`,
-  `close-button`, `details-*`, `map-*`, `node-<id>`, `preview-*`,
+  `close-button`, `details-*`, `map-*`, `node-<id>`, `preview-*` (inclui `preview-reward`, a recompensa da elite),
   `confirm-button`, `summary-*`, `offer-*`, `confirm-*`, `continue-btn`,
   `new-game-btn`, `back-btn`, `select-class-label`, `menu-buttons`,
   `glossary-btn`, `options-btn`, `locked-info`, `character-*`, `remove-ads-*`,
   `ad-notice-*`, `simulated-ad-*`, `talent-tools-hint`, `options-ads-label`,
   `options-remove-ads-button`, `summary-remove-ads-button`, `options-dev-label`, `options-reset-button`, `turn-actions`, `turn-move-icon`, `turn-act-icon`, `turn-item-icon`,
-  `undo-move-btn`, `end-turn-btn`; e os caminhos do Animator do
+  `undo-move-btn`, `end-turn-btn`, `cancel-action-btn`, `confirm-action-btn`,
+  `upgrade-title`, `upgrade-subtitle`, `upgrade-scroll`, `upgrade-back-button`,
+  `upgrade-decline-button`; e os caminhos do Animator do
   menu (`#container/#character-selection/#<x>-btn/#<x>-image`). Não mude nome
   nem hierarquia sem atualizar o código/clip.
 - Não use `<Template>`/`<Instance>` onde há seletor `>` ou caminho de Animator.
@@ -447,6 +559,39 @@ Morte de inimigo
 - **Pixel perfect**: tamanhos inteiros (botões 32×32, ícones 16×16 ou 8×8
   nativos); nunca escala fracionária de sprite (no mundo, `EnemyIconsView` só
   amplia por inteiros). Tudo precisa caber em 216×384.
+
+### Arte (padrão visual)
+
+Vale para **toda arte nova** (ícones, terreno, inimigos, interface), feita por qualquer thread. O guia completo,
+com os lotes, as escolhas e o passo a passo, é `docs/projeto/arte.md`; leia antes de gerar arte.
+
+- **Ferramenta:** PixelLab (MCP). Ícones e sprites com `create_image_pro` (16×16 dá 64 opções por 10 gerações;
+  uma lista numerada vira uma opção por item, na ordem). Animações com `animate_image`. Escolha olhando as opções
+  ampliadas, nunca às cegas.
+- **Paleta:** ENDESGA 32 em todos os ícones e terrenos (passe `palette` + `palette_name`; a lista de cores está no
+  guia). Personagens e inimigos usam o estilo do `Characters.png` como imagem de referência (`style_image`). Peças
+  de interface (molduras, slots, botões) usam as cores do `UI.png`, não a paleta dos ícones.
+- **Traço:** contorno escuro de 1 px (`#181425`), silhueta forte e legível no tamanho real, objeto centralizado,
+  fundo **transparente** (confira; o modelo às vezes desenha um quadrado de fundo).
+- **Tamanhos nativos, sem escala fracionária:** ícones de interface 16×16; insígnias sobre inimigos 8×8 (desenhe à
+  mão na paleta, o PixelLab não gera menos de 16); terreno 24×24 sem piso por baixo; personagens em quadros 24×30
+  com pés na borda de baixo (pivô embaixo no centro); slots 32×32. Nunca redimensione arte em pixel: refaça no
+  tamanho certo.
+- **Linguagem visual:** cor por tema (fogo laranja, gelo ciano, vento branco, raio amarelo, veneno verde, Venom
+  roxo, fumaça cinza, aço para golpes e escudos, vermelho para vida); sinais fixos de modificador (`+` amarelo =
+  mais dano, anel = área maior, ampulheta = recarga menor, seta = alcance ou empurrão); ícone de skill mostra a
+  ação, ícone de talento mostra a skill com o modificador; o estado concedido por um talento usa o ícone do
+  talento; papéis de inimigo com cores diferentes entre si; nós do mapa em escala de perigo.
+- **Inimigos novos têm arte própria** (não recolorir outro com `tint`): sprite parado de frente + animação parada
+  de 8 quadros, no estilo dos existentes. Passo a passo e a armadilha do recorte em tamanhos não quadrados no guia.
+- **Organização:** `Art/Sprites/Icons/<Categoria>/<NomeDoAsset>.png` (mesmo nome do asset que usa o ícone),
+  `Art/Sprites/Terrain/`, `Art/Sprites/Enemies/<Nome>.png` + `Art/Animations/Enemies/<Nome>/`, `Art/Sprites/UI/`.
+  Nada novo em `Placeholders/`. Para trocar arte, mova pelo `AssetDatabase` ou substitua o PNG no mesmo caminho
+  (o GUID é a referência). Importação: Sprite, Point, sem compressão, 100 PPU, sem mipmaps.
+- **Registro:** cada lote gerado entra na tabela "Origem de cada asset" do guia (lote, pedido, id da galeria e a
+  opção escolhida), para dar para refazer no mesmo estilo.
+- **Conferência:** veja a arte no jogo (captura em Play Mode, guardando e restaurando o perfil real) e rode
+  `GridBattle > Validate Content`.
 
 ### Código C#
 
@@ -468,16 +613,22 @@ Morte de inimigo
 
 | Quero... | Faça |
 |---|---|
-| Novo inimigo | `Create > GridBattle > Characters > Enemy Config`: sprite/animator (ou `tint` sobre arte existente), atributos, `prefab = Enemy.prefab`, `behavior`, `role`, `behaviorDescription`, `xpReward`, estados iniciais. Textos na tabela `Content`. Para aparecer nas batalhas: entrada no pool de `BattleGenerationSettings` (profundidade mín./máx., peso). |
-| Novo comportamento de IA | Subclasse de `EnemyAction` (ou `EnemyAbilityAction`, que já tem cooldown na `EnemyMemory`) + asset; combine num `EnemyBehavior`. Ação que só anda: `IsMovement => true` (ela usa o andar do turno, e as outras, o agir). |
+| Novo inimigo | `Create > GridBattle > Characters > Enemy Config`: sprite/animator com arte própria (ver "Arte (padrão visual)"; `tint` sobre arte existente só para provisórios), atributos, `hasBasicAttack` desligado, skills de golpe anunciado (linha abaixo): um **especial** com recarga > 0 primeiro e um **básico** com recarga 0 depois, `prefab = Enemy.prefab`, `behavior` (um `Approach*` + `UseSkills`), `role`, `behaviorDescription`, `xpReward`, `threat` (custo de complexidade para o gerador; 0 = calculado), estados iniciais. Textos na tabela `Content`. Para aparecer nas batalhas: entrada no pool de `BattleGenerationSettings` (profundidade mín./máx., peso). |
+| Inimigo com golpe anunciado | Skill em `Skills/Enemies/` com `Telegraphed`, `Windup Turns` (1 = dispara no próximo turno dele), `Can Move While Winding Up`, `Cancelled By Displacement`, `Interruptible By States`, `Telegraph Follows Caster` e `affects = EveryoneButCaster` (acerta outros inimigos). A previsão e o bot passam a ler o golpe sozinhos. Todo inimigo tem ao menos um golpe de recarga 0 (básico) e um de recarga > 0 (especial, antes na lista), para haver golpe anunciado em todo turno. |
+| Elite | Marque `isUnique` no `EnemyConfig` e ponha no pool de `BattleGenerationSettings`: nunca é sorteado como inimigo comum; cada batalha de elite leva uma elite disponível na profundidade, e o mapa só cria nós de elite onde há uma (`HasEliteAt`). Vencê-la dá mais XP (perfil Elite), `RunSettings.eliteConsumableOffers` ofertas de consumível e uma melhoria de skill (`eliteGrantsSkillUpgrade`). |
+| Novo comportamento de IA | Subclasse de `EnemyAction` (ou `EnemyAbilityAction`, que já tem cooldown na `EnemyMemory`) + asset; combine num `EnemyBehavior`. Ação que só anda: `IsMovement => true` (ela usa o andar do turno, e as outras, o agir). Andar até de onde uma skill alcança o jogador: `ApproachForSkillAction` (`preferredDistance`: 1, 2 e 3 em `ApproachMelee`, `ApproachMid` e `ApproachRanged`). |
 | Novo papel de inimigo | `Create > GridBattle > AI > Enemy Role` (ícone 8×8, fator de ameaça, conta como linha de frente). |
-| Nova skill | `Create > GridBattle > Skills > Skill Definition`: tipo, dano, forma/tamanho de área, área de seleção (forma, alcance mínimo e máximo, alcance modificável, célula alvo), cooldown, alvos, efeitos. Inicial de classe: lista `skills` do `PlayerCharacterConfig`; liberada por talento: `unlockedSkill` do talento; de inimigo: `skills` do `EnemyConfig`. |
+| Nova skill | `Create > GridBattle > Skills > Skill Definition`: tipo, dano, forma/tamanho de área (ímpar; `Linear` aceita par), área de seleção (forma, alcance mínimo e máximo, alcance modificável, célula alvo), cooldown, alvos, efeitos, melhorias (`upgrades`). Inicial de classe: lista `skills` do `PlayerCharacterConfig` (3 por classe); liberada por talento: `unlockedSkill` do talento; de inimigo: `skills` do `EnemyConfig`. |
+| Melhoria de skill (variante) | Copie a skill para `Skills/<Classe>/Upgrades/`, mude o que melhora, ponha o original em `upgradeOf` e a variante na lista `upgrades` do original (2 por skill), com nome e descrição nos 3 idiomas. A janela de melhoria mostra sozinha as linhas da ficha que mudam. |
+| Skill que troca de lugar, investe ou cria terreno | Efeitos `SwapSkillEffect` (troca com o personagem do alvo), `DashToTargetSkillEffect` (avança em linha reta; ponha antes de um `Displace`) e `CreateTerrainSkillEffect` (terreno, células `TargetCell`/`AreaCells`/`CasterCell`, rodadas, `replaceTerrain`). Terreno novo para isso: um `TerrainDefinition` comum (como `IceWall`), sem entrar no pool do gerador. |
 | Skill que empurra ou puxa | Skill normal com o efeito `Displace` na lista de efeitos: modo (longe do lançador, em direção ao lançador ou longe do centro da área) e distância. Ele roda depois do dano; colisão e terreno seguem `CombatSettings`. Para inimigos, `UseSkills` só a usa quando o resultado previsto vale a pena (`DisplacementAiWeights` no asset `UseSkills`). |
 | Personagem imóvel (chefe) | Desmarque `canBeDisplaced` no `CharacterConfig`: empurrões e puxões não o movem, mas ele ainda bloqueia e leva o dano de quem é lançado contra ele. Imunidades: `immuneStates` (estados ignorados, `StateContainer.Apply` devolve nulo) e `maxHpPercentDamageMultiplier` (parte do dano periódico que depende da vida máxima). |
 | Novo estado | `Create > GridBattle > States > State Definition` + efeitos no dropdown (atributos, dano/cura periódicos, espinhos, roubo de vida, escudo, restrições, modificadores da run). |
 | Novo talento | `Create > GridBattle > Talents > Talent` (classes permitidas, nível, pré-requisitos, tags, `maxRank`, estados, skill) e coloque no `talentPool` da classe ou no pool compartilhado de `TalentOfferSettings`. O peso dos que só vêm do pool compartilhado é multiplicado por `sharedPoolWeightMultiplier` (0,5). |
-| Talento que modifica uma skill da classe | Estado com `Skill Modifier Effect` (skills, dano fixo/%, passos de área, alcance, redução de cooldown, empurrão, duração de estados, efeitos anexados; valores por pilha, `repeatAttachedPerStack`) + talento com `maxRank` (posto = pilha) e a skill (ou o talento que a libera) nos pré-requisitos. Ver `docs/projeto/guia_sistemas.md`. |
+| Talento de regra | Estado com um efeito de `RuleTalentEffects.cs` (`DominoEffect`, `DisplacementTrailEffect`, `SlipperyPushEffect`, `CounterstrikeEffect`, `SwapStepEffect`) ou `On Kill Effect` com `grantExtraWalk` (Ímpeto); talento como acima. Regra nova: subclasse de `StateEffect` consultada com `States.FindEffect<T>()` no ponto onde a regra vale e, se ela muda dano ou posição, também na previsão (`Gameplay/Forecast`). |
+| Talento que modifica uma skill da classe | Nenhum talento atual usa (os talentos de número saíram no novo molde). Estado com `Skill Modifier Effect` (skills, dano fixo/%, passos de área, alcance, redução de cooldown, empurrão, duração de estados, efeitos anexados; valores por pilha, `repeatAttachedPerStack`) + talento com `maxRank` (posto = pilha) e a skill (ou o talento que a libera) nos pré-requisitos. Ver `docs/projeto/guia_sistemas.md`. |
 | Passiva condicional de classe | Estado com `Conditional Damage Effect` (causado ou recebido; tipos de dano; condição: por inimigo adjacente, sem adjacente, alvo com estado nocivo ou com um estado, andou neste turno, alvo isolado, vida cheia), `On Kill Effect` ou `Apply State On Hit Effect`; talento como acima. Condição nova: `EDamageCondition` + `ConditionalDamageEffect.Evaluate`. |
+| Skill canalizada (gasta também o andar) | Marque `Uses Walk` na skill (só jogador). Para "não anda no próximo turno", um `Apply States` com destinatário `Caster` e o estado `Exhausted` por 2 (como no Meteoro). A ficha mostra a nota e a linha "Em você" sozinha. |
 | Skill que não precisa de linha de visão | Marque `Ignores Line Of Sight` na skill (algo lançado por cima, um raio do céu). |
 | Terreno que bloqueia (ou não) a visão | `Blocks Line Of Sight` no `TerrainDefinition` (só vale para terreno que bloqueia movimento; desligue para obstáculos baixos). |
 | Conferir conteúdo novo | `GridBattle > Validate Content` (textos nos 3 idiomas, chaves de texto do código, referências vazias, talentos fora dos pools, inimigos que não aparecem, telas, ícones, banco de conteúdo). |
@@ -486,11 +637,12 @@ Morte de inimigo
 | Novo terreno | `Create > GridBattle > Terrain > Terrain Definition` (tipo, bloqueio, gatilho, dano/estados, visual) e adicione ao pool de `TerrainGenerationSettings`. |
 | Nova dica de tutorial | `TutorialTipDefinition` com o `ETutorialTrigger` + `TutorialService.Notify(gatilho)` no ponto do jogo. |
 | Novo personagem jogável | `Player Character Config` (`prefab = PlayerCharacter.prefab`, `characterClass`, `battlesToUnlock`, `talentPool`, skills iniciais); adicione em `GameStateManager.playableCharacters` e um botão no menu. |
-| Ajustar mapa / batalhas | `Settings/Map/MapGenerationSettings` (andares, andares de referência do balanceamento, nós, tipos, dificuldades) e `BattleGenerationSettings` (pool, ameaça, orçamento, escala, XP, limites, chefe). |
-| Ajustar XP e níveis | `Settings/Progression/ProgressionSettings` (curva e nível máximo); XP das batalhas em `BattleGenerationSettings` (fonte `ThreatBudget`, XP por ponto de ameaça, crescimento por profundidade, multiplicador por dificuldade). Confira com `GridBattle > Talents > Simulate XP Progression`. |
+| Ajustar mapa / batalhas | `Settings/Map/MapGenerationSettings` (andares, andares de referência do balanceamento, nós, tipos, pesos de batalha normal e de elite) e `BattleGenerationSettings` (pool, ameaça, orçamento, escala, XP, limites, perfis Normal e Elite, chefe). |
+| Ajustar XP e níveis | `Settings/Progression/ProgressionSettings` (curva, nível máximo, vida máxima por nível `maxHpPerLevel`, cura ao subir `levelUpHealFraction`); XP das batalhas em `BattleGenerationSettings` (fonte `ThreatBudget`, XP por ponto de ameaça, crescimento por profundidade, multiplicador dos perfis Normal e Elite); orbs em `XpRewardSystem` (`xpPerPacket`, `maxPackets`) e `Settings/Vfx/XpOrbsVfxSettings` (explosão, pausa, voo). Confira com `GridBattle > Talents > Simulate XP Progression`. |
 | Medir o balanceamento | `GridBattle > Simulation > Run Balance Simulation` (opções no asset `Settings/Simulation/BalanceSimulationSettings`): runs completas por classe com bots, relatório em `persistentDataPath/Simulation/<data>_<rótulo>/` (`summary.md`, `runs.csv`, `battles.csv`). Guia completo: `docs/projeto/simulador_balanceamento.md`. |
-| Ajustar combate | `Settings/Combat/CombatSettings` (defesa, dano mínimo, métricas, colisão de empurrões e puxões). |
-| Ajustar run | `Settings/Run/RunSettings` (cura, custo do nó de talento, estados entre batalhas, seed de depuração, `autoEnterFirstNode`). |
+| Ajustar combate | `Settings/Combat/CombatSettings` (defesa, dano mínimo, métricas, colisão de empurrões e puxões, se disparar um golpe anunciado gasta o agir: `firingUsesAction`). |
+| Ajustar a previsão | `Settings/Combat/ForecastSettings` (só visual: números da ordem, espaço entre golpes na mesma célula, dano piscando, setas, fantasmas). Mirar e confirmar: `GameplayInputSettings.confirmTargetedActions`. |
+| Ajustar run | `Settings/Run/RunSettings` (cura do acampamento, treino no acampamento `campOffersSkillUpgrade`, custo do nó de talento `talentNodeCost`/`talentNodeCostMaxHp`, recompensa da elite `eliteConsumableOffers` e `eliteGrantsSkillUpgrade`, estados entre batalhas, seed de depuração, `autoEnterFirstNode`). |
 | Ajustar a monetização | `Settings/Monetization/MonetizationSettings` (chaves e blocos do LevelPlay, produto da loja, momentos e rampa dos anúncios forçados, aviso, oferta, privacidade, modo do Editor); recargas por run em `TalentOfferSettings`. Testes sem loja: `GridBattle > Monetization > Testing`. Ver `docs/projeto/monetizacao.md`. |
 | Adicionar som | Arraste clipes na entrada do `ESfx`/`EMusicContext` em `Settings/Audio/AudioLibrary`. |
 | Novo texto | Entrada nas tabelas `UI`/`Content` (`Window > Asset Management > Localization Tables`) nos 3 idiomas. |
@@ -504,7 +656,8 @@ Morte de inimigo
 - **Lógica imediata, visual atrasado.** Regras e IA nunca dependem da posição
   visual. Quem precisa esperar animações usa
   `GridController.WaitForMovementsAsync` e/ou `TurnBlockers`.
-- **Ordem dos inimigos** é determinística (distância ao jogador, y, x); mudar
+- **Ordem dos inimigos** é fixa na batalha e mostrada ao jogador
+  (`Turns/ActingOrder`: `Enemy.ActOrder`, empate por linha e coluna); mudar
   isso é mudança de mecânica.
 - **Determinismo dos saves**: a batalha é salva no início da vez do jogador e
   a carga repete o turno. Toda decisão sorteada precisa vir dos fluxos da run
@@ -538,7 +691,7 @@ Morte de inimigo
 
 Testes do framework: `unity command run_tests --mode EditMode --filter ZS.UI.Tests --filter_type assembly`.
 Conteúdo: `GridBattle > Validate Content` (ou `ContentValidator.Run()` por script) deve dar 0 erros.
-Checagens dos talentos (inclui o resolvedor de skills e as passivas de classe do G3): menu `GridBattle > Talents > Run Checks`; simulação de
+Checagens dos talentos (reescritas para o conteúdo do novo molde em 2026-10-19): menu `GridBattle > Talents > Run Checks`; simulação de
 XP: `GridBattle > Talents > Simulate XP Progression`; simulação de runs
 completas: `GridBattle > Simulation > Run Balance Simulation` (ou
 `BalanceSimulation.Run/RunBatches` por script). Ela não grava `run.json`,
@@ -555,7 +708,20 @@ O Unity Editor costuma estar aberto e acessível pela CLI `unity` (pacote
   pela run), joga por política fixa e registra estado por turno, com a ordem
   dos inimigos fixada só durante o teste; compare com a execução de
   referência. Agende passos por `Time.time` (o loop do Play Mode trava com o
-  Editor sem foco).
+  Editor sem foco). As referências antigas (`trace4.txt`) são do molde
+  anterior a 2026-10-19, que tinha ataque básico: depois do novo molde, só
+  vale comparar com uma referência gravada nele.
+- **Simulador como medida do novo molde** (usado em 2026-10-19): 20 runs por
+  classe com as seeds 1000–1019 e um rótulo próprio; o relatório tem os golpes
+  de inimigos em inimigos ("Enemy hits on enemies (dmg)", "Kills by enemies")
+  na seção de empurrões. O bot lê a mesma previsão que o jogador
+  (`ActionForecast`/`ThreatForecast`).
+- **Teste de interface do turno** (usado em 2026-10-19): script de Play Mode
+  que começa uma run, joga alguns turnos da primeira batalha com capturas e
+  confere a ordem numerada, o selo do golpe sobre cada inimigo, as células
+  marcadas com o total previsto, a previsão ao mirar (dano, seta, fantasma,
+  golpe que acompanha o empurrado) e que a vida do jogador cai exatamente o
+  previsto.
 - **Prova de regressão de refatoração com o simulador** (usada em 2026-10-12):
   rode lotes antes e depois com as mesmas seeds e compare `runs.csv` e
   `battles.csv` sem as colunas `ms` e `frames`: têm de ser idênticos.
@@ -576,6 +742,147 @@ O Unity Editor costuma estar aberto e acessível pela CLI `unity` (pacote
 ## Histórico de refatorações
 
 Registre aqui toda mudança estrutural (mais recente primeiro).
+
+### 2026-10-20 — Contras do Mago, golpe todo turno, XP em explosão e batalhas de elite
+Pedido do Luiz (melhorias depois do novo molde). Implementação nos commits `1288849` (código, ícones e ajustes) e
+`353aa2f` (conteúdo: golpes, estado Exausto, magias canalizadas). Base: `183e92e`.
+- **Decisões do Luiz:**
+  - o Mago paga as magias fortes: o Meteoro e a Tempestade Elétrica (e as variantes) gastam o andar do turno, e o
+    Meteoro ainda deixa o Mago Exausto (não anda) por 2 turnos;
+  - todo inimigo golpeia em todo turno: um golpe básico (recarga 0) e um especial (recarga maior que 0), o
+    especial primeiro na lista;
+  - o XP sai do inimigo numa explosão de orbs que voam juntos para a barra;
+  - batalhas só normais ou de elite (a fácil e a difícil saíram); a elite dá mais XP, uma oferta de consumível e a
+    melhoria de skill;
+  - o mapa não mostra o XP das batalhas.
+- **Magias canalizadas** (`SkillDefinition.usesWalk`, seção "Turn cost (player)"; inimigos ignoram): usar a skill
+  gasta o andar (`PlayerCharacterController.CanUseSkillNow`/`CanWalkNow`; a skill pode vir antes de andar, ou
+  depois de desfazer o andar, e `HasAnythingLeft` conta uma canalizada pronta enquanto o andar pode ser desfeito).
+  Estado novo `States/Exhausted` (Exausto: `BehaviorRestrictionEffect` que impede andar, nocivo,
+  `RefreshDuration`), aplicado ao lançador pelo Meteoro e variantes; o bônus de duração de estados dos talentos não
+  vale mais para estados aplicados ao próprio lançador (`ApplyStatesSkillEffect`). Ficha da skill: linha "Em você"
+  (`details.action.on_caster`) e a nota `details.uses_walk`. O bot só usa canalizadas da célula atual, antes de
+  andar.
+- **Golpe básico e especial** (`Skills/Enemies/`, agora 43 golpes): 17 golpes básicos novos, todos anunciados; a
+  lista `skills` de cada inimigo tem o especial primeiro e o básico depois (`UseSkills` tenta na ordem). Textos de
+  inimigos e golpes corrigidos nos 3 idiomas (migração por script no Editor).
+- **XP em explosão** (`XpRewardSystem.maxPackets` 8, `XpOrbsVfxSettings`): os orbs se espalham em volta do inimigo
+  (`burstRadius`, `burstRadiusVariance`, `burstAngleJitter`, `burstDuration`, `burstEase`), esperam `holdDuration`
+  e voam juntos (`launchJitter`, `flightDuration`), em cerca de 0,8 s; `staggerDelay` saiu.
+- **Batalhas normal e de elite** (`EBattleDifficulty { Normal = 1, Elite = 2 }`):
+  - mapa com pesos `MapGenerationSettings.normalWeight` 75 e `eliteWeight` 25 (o antigo `hardWeight`); nó de elite
+    só onde há elite disponível (`BattleGenerationSettings.HasEliteAt`, `EnemyPoolEntry.IsEliteAt`);
+    `MapRules.IsEliteBattle`;
+  - `BattleGenerationSettings.difficulties` com os perfis Normal (1/1/1) e Elite (orçamento ×1,35, força ×1,
+    XP ×2); saves antigos passam por `MapRules.NormalizeDifficulties` (todo nó vira normal, menos os de elite que
+    têm elite disponível);
+  - recompensa da elite (`RunManager.BeginEliteReward`/`ContinueEliteReward`): `RunSettings.eliteConsumableOffers`
+    (1) ofertas de consumível (`OpenConsumableOffer`, título `consumable_offer.elite_title`) e depois a melhoria de
+    skill; o progresso fica salvo em `RunState.EliteRewardOffer`/`EliteOffersLeft`;
+  - XP medido pela ferramenta de XP: normal de 41 (profundidade 1) a 420 (29); elite de 170 (4) a 1134 (29), cerca
+    de 2,7 vezes a normal.
+- **Mapa:** os nós não mostram XP; a prévia diz "Batalha" ou "Batalha de elite" e mostra a recompensa
+  (`preview-reward`); `ScreensSettings.battleEliteIcon`, `eliteColor` e `GetBattleColor`; classes
+  `map-node--normal` e `map-node--elite`.
+- **Simulador:** `EMapPolicy { Normal = 1, Elite = 2, Mixed = 3 }`; o `SimulationRunner` responde à oferta de
+  consumível da elite; o relatório tem colunas Normal e Elite.
+- **Arte:** lote Q do PixelLab (ícones dos 17 golpes novos e do Exausto), registrado em `docs/projeto/arte.md`.
+- **Verificado** (no PC do Luiz): compila sem erros; `Validate Content` sem erros; `TalentChecks` ALL PASSED (4219);
+  a checagem da migração passou.
+- **Resultado no simulador** (rótulo `melhorias-mago-elite`, seeds 1000–1019, 20 runs por classe, sem balanceamento):
+  vitórias Guerreiro 55%, Mago 15%, Ladino 50% (antes 60/20/55%); 94% das derrotas antes do andar 10, a maioria
+  na primeira elite (Ogro Brutamontes: 16 de 36 golpes finais); nenhuma inversão de XP entre normal e elite. Teste
+  em Play Mode (run de Mago, perfil real restaurado): Meteoro só antes de andar, desfazer o andar o libera de novo,
+  Exausto apaga o pé no turno seguinte, um golpe anunciado por inimigo vivo a cada turno depois do primeiro, mapa sem
+  números nos nós e com o ícone de elite.
+- **Pendências:**
+  - ainda há turnos sem golpe: o Totem e os inimigos de suporte quando curam, protegem ou invocam, e o primeiro turno
+    da batalha;
+  - o bot não pesa o Exausto ao escolher o Meteoro;
+  - a Tempestade pode ser usada com o Mago Exausto (gasta um andar que ele não tinha);
+  - a prévia da elite cita o consumível mesmo com `eliteConsumableOffers` 0;
+  - um save antigo parado no meio da recompensa da elite retoma só a melhoria;
+  - os ícones `BattleEasy`/`BattleHard` e chaves de UI antigas ficaram sem uso;
+  - a elite dá cerca de 2,7 vezes o XP da normal (o design sugeria ×1,5) e os níveis finais por rota não foram
+    medidos de novo.
+
+### 2026-10-19 — Novo molde de combate (Into the Breach + Slay the Spire)
+Pedido do Luiz: mudar a direção do combate para o molde do *Into the Breach* (golpes anunciados, previsão,
+empurrões como arma) e a progressão para o do *Slay the Spire* (talentos que mudam regras, melhorias de skill).
+Design escrito antes em `docs/GDD.md` e `docs/design/` (commit `d578655`); implementação nos commits `9996383`
+(lote A), `63ff2dc` (lote B), `e99c87b`/`57a22c3` (lote C1), `650886b`/`37ff643` (arte), `1f0ec15` (conteúdo),
+`792d38c` (bot e áreas pares), `d481779` (ajuste provisório) e `05353f2` (detalhes da previsão). Base: `8b0df7e`.
+- **Decisões do Luiz:**
+  - sem ataque básico (`hasBasicAttack` desligado em todos os personagens): toda ação é uma skill;
+  - cada classe começa com 3 skills e libera até 3 por talentos (`TalentOfferSettings.maxSkillTalents` 3; 6
+    espaços em `SkillSettings`); o andar do jogador é de 2 casas (`walkDistance`);
+  - golpes de inimigo anunciados um turno antes, que acompanham quem é empurrado e atingem todos menos quem lança;
+  - ordem fixa e numerada dos inimigos; mirar e confirmar com previsão do resultado;
+  - talentos de número removidos (48 assets de talento saíram); talentos de regra no lugar;
+  - uma melhoria por skill (1 de 2 variantes), no acampamento ou ao vencer uma elite.
+- **Turno** (`TurnManager`, `EnemyController`, `Turns/ActingOrder`): o inimigo dispara o golpe preparado
+  (`Enemy.AdvanceTelegraph`), anda e prepara o próximo; disparar não gasta o agir (`CombatSettings.firingUsesAction`
+  desligado). A batalha começa sem golpe preparado. O terreno temporário perde uma rodada antes da vez do jogador
+  (`GridController.TickTemporaryTerrain`).
+- **Golpes anunciados** (`SkillDefinition`: `telegraphed`, `windupTurns`, `telegraphFollowsCaster`,
+  `cancelledByDisplacement`, `interruptibleByStates`; `SkillTelegraph.Shift`): as 26 skills de
+  `Skills/Enemies/` são anunciadas com `windupTurns` 1 e alvo `EveryoneButCaster`. `TelegraphResolvedEvent`.
+- **Previsão** (pasta nova `Gameplay/Forecast`): `ActionForecast` (dano, mortes, deslocamentos, interrompidos),
+  `ThreatForecast`/`TelegraphForecast`, `ForecastView`, `ForecastSprites`, `ForecastSettings`
+  (`Settings/Combat/ForecastSettings.asset`; `strikeOrderSpacing` 9). Mirar e confirmar:
+  `GameplayInputSettings.confirmTargetedActions` (ligado), `PlayerCharacterController.AimedCell`/`ConfirmAim`/
+  `CancelAction`, `ActionAimChangedEvent`, botões `cancel-action-btn` e `confirm-action-btn` no `GameScreen.uxml`.
+  `EnemyIconsView` mostra a ordem e os turnos do golpe; os detalhes do inimigo mostram "Ordem" e o golpe preparado.
+- **Skills que movem e criam terreno** (`MovementSkillEffects.cs`): `SwapSkillEffect`, `DashToTargetSkillEffect`,
+  `CreateTerrainSkillEffect` (+`ETerrainPlacement`); terreno temporário em `GridController.SetTerrain` e
+  `TerrainCellSpec.TurnsLeft`; terreno novo `IceWall`. `CharactersSwappedEvent`.
+- **Talentos de regra** (`States/Effects/RuleTalentEffects.cs`): `DominoEffect`, `DisplacementTrailEffect`,
+  `SlipperyPushEffect`, `CounterstrikeEffect`, `SwapStepEffect`, e `OnKillEffect.grantExtraWalk`
+  (`ExtraWalkGrantedEvent`); consultados com `StateContainer.FindEffect<T>`.
+- **IA:** `ApproachForSkillAction` (assets `ApproachMelee`/`ApproachMid`/`ApproachRanged`) anda até de onde uma
+  skill pronta alcança o jogador; behaviors novos `Skirmisher` e `Stationary`.
+- **Run** (`RunManager`, `RunState`, `RunSettings`): acampamento com descansar (`healFraction` 0,4) ou treinar
+  (`campOffersSkillUpgrade`; `CampEnteredEvent`); melhoria de skill (`SkillDefinition.upgrades`/`upgradeOf`,
+  `SkillUpgradeOfferEvent`, `SkillUpgradedEvent`, modal `UI/Overlays/SkillUpgrade` com `SkillUpgradeController`);
+  elite nas batalhas difíceis (`BattleGenerationSettings.hardBattlesHaveElite`, `EnemyConfig.isUnique`: Golem de
+  Lava, Ogro Brutamontes e Cavaleiro Esqueleto) com melhoria ao vencer (`eliteGrantsSkillUpgrade`); nó de talento
+  custa 2 de vida máxima (`ETalentNodeCost.MaxHp`, `talentNodeCostMaxHp`, `PlayerRunState.MaxHpBonus`).
+- **Progressão** (`ProgressionSettings`): +1 de vida máxima por nível sem cura (`maxHpPerLevel` 1,
+  `levelUpHealFraction` 0); curva 150 + 100 por nível, nível máximo 12.
+- **Combate** (`CombatSettings`): `minimumDamage` 0 (a armadura pode zerar um golpe de 1); colisão 1, 0 por casa
+  não percorrida, 1 a quem é atingido, ignorando a defesa.
+- **Áreas:** `Linear` aceita tamanho par (`SkillDefinition.NeedsOddSize`).
+- **Conteúdo** (migração por script no Editor): 18 skills de classe com 36 variantes em `Skills/<Classe>/Upgrades/`,
+  26 golpes de inimigo, 27 inimigos (10 com arte nova do PixelLab), estados novos Cego e Congelado (Blindado, Exposto,
+  Fraquejado e outros ajustados), ícones novos em `Art/Sprites/Icons/` e `Art/Sprites/Terrain/IceWall.png`, textos nos 3 idiomas.
+- **Valores provisórios** (ajuste pelo simulador; o balanceamento continua pausado): vida das classes Guerreiro 18,
+  Mago 14, Ladino 15; Slime 4; orçamento de ameaça do andar 1 = 2; chefe Rei Goblin com 22 de vida, imóvel, com
+  escolta Guarda, Xamã, Artilharia e Lanceiro Goblin.
+- **Simulador:** o `BattleBot` lê `ActionForecast`/`ThreatForecast` (`BattleBotOptions.redirectedStrikeWeight` 1,
+  `dodgeAfterActingFactor` 0,5); `MapPolicy` responde ao acampamento e à melhoria; o relatório ganhou os golpes de
+  inimigos em inimigos.
+- **Verificado:** validador sem erros; simulador com 20 runs por classe (seeds 1000–1019); teste de interface em
+  Play Mode (run de Guerreiro, 5 turnos com capturas, perfil real restaurado): ordem numerada, selo do golpe,
+  células marcadas com o total previsto, previsão ao mirar, vida do jogador caindo exatamente o previsto, nenhum golpe
+  preparado no primeiro turno. As checagens de talentos foram reescritas para o conteúdo novo.
+- **Resultado no simulador** (rótulo `novo-molde-inicio-chefe`, sem balanceamento): vitórias Guerreiro 60%, Mago
+  20%, Ladino 55%; 73% das derrotas antes do andar 10; chefe vencido em todas as vezes que foi alcançado. O Mago é o
+  mais fraco (quase não mata por colisão; o bot usa pouco o controle).
+- **Pendências:** o empurrão em cadeia do Dominó não entra na previsão (`DisplacementResolver.Predict`);
+  balanceamento (números provisórios); `BasicAttack`, `ChaseTarget` e `KeepDistance` ficaram sem uso.
+
+### 2026-10-19 — Ícones das skills, inimigos de teste e padrão de arte
+Pedidos do Luiz.
+- **Ícones das skills** (`Art/Sprites/Icons/Skills/`, PixelLab): os 15 placeholders de `Placeholders/Skills` movidos
+  (GUIDs mantidos) e redesenhados, mais os das habilidades novas; `Placeholders/` ficou só com `Vfx`.
+- **Inimigos de teste com arte própria** (design em `docs/design/inimigos.md`, "Inimigos novos de teste"): Goblin
+  Bombardeiro (Chuva de Fogo, telegrafada), Ogro Brutamontes (Pancada Esmagadora, telegrafada, sem empurrão para a
+  IA usar sempre) e Aranha Tecelã (Teia, aplica o estado novo Enredado). Sprites e animações em
+  `Art/Sprites/Enemies/` e `Art/Animations/Enemies/`, configs, skills, estado, textos nos 3 idiomas e entradas no
+  pool de `BattleGenerationSettings` (andares 6, 12 e 4). Só dados e arte; nenhum código mudou.
+- **Padrão de arte** na seção "Arte (padrão visual)" deste arquivo; detalhes em `docs/projeto/arte.md`.
+- **Verificado:** validador sem erros; teste em Play Mode com os três inimigos (Teia aplicou Enredado, a Chuva de Fogo
+  marcou 9 células e disparou no turno seguinte).
 
 ### 2026-10-18 — Arte final dos ícones, terreno e slots (PixelLab)
 Pedido do Luiz: trocar todos os placeholders em uso, menos os das skills, com coerência visual. Guia em

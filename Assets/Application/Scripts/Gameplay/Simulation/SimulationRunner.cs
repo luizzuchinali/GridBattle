@@ -512,6 +512,10 @@ namespace GridBattle.Gameplay.Simulation
                     return BattleStep();
                 case ERunPhase.ConsumableOffer:
                     return _mapPolicy.AnswerConsumableOffer(_runs);
+                case ERunPhase.Camp:
+                    return _mapPolicy.AnswerCamp(_runs);
+                case ERunPhase.SkillUpgrade:
+                    return _mapPolicy.AnswerSkillUpgrade(_runs);
                 default:
                     // A talent node waits for its offer, a finished run for its event.
                     return false;

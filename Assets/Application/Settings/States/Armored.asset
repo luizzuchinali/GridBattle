@@ -37,14 +37,14 @@ MonoBehaviour:
   maxStacks: 1
   showInDetails: 1
   effects:
-  - rid: 8661860360884846692
+  - rid: 8661860679606599748
   references:
     version: 2
     RefIds:
-    - rid: 8661860360884846692
+    - rid: 8661860679606599748
       type: {class: AttributeModifierEffect, ns: GridBattle.Gameplay.States.Effects, asm: Assembly-CSharp}
       data:
         modifiers:
         - attribute: 7
           type: 0
-          value: 4
+          value: 1

@@ -65,7 +65,7 @@ namespace GridBattle.Gameplay.Entities.Skills
 
             var area = Mathf.Clamp(skill.AreaSize + 2 * modifiers.AreaSteps, SkillDefinition.MinAreaSize,
                 SkillDefinition.MaxAreaSize);
-            AreaSize = area % 2 == 0 ? area - 1 : area;
+            AreaSize = area % 2 == 0 && SkillDefinition.NeedsOddSize(skill.AreaShape) ? area - 1 : area;
 
             // Self-centered skills (range 0) and unlimited ones keep their kind: a range bonus makes no sense there.
             Range = skill.IsSelfCentered || skill.UnlimitedRange ? skill.Range : Mathf.Max(0, skill.Range + modifiers.Range);
@@ -102,7 +102,10 @@ namespace GridBattle.Gameplay.Entities.Skills
         /// </summary>
         public int Damage => CombatResolver.Settings.RoundValue(BaseDamage * _scaling);
 
-        /// <summary>Area size (odd, 1 to <see cref="SkillDefinition.MaxAreaSize"/>) with the modifiers.</summary>
+        /// <summary>
+        /// Area size (1 to <see cref="SkillDefinition.MaxAreaSize"/>; odd unless the shape is a line from the target) with
+        /// the modifiers.
+        /// </summary>
         public int AreaSize { get; }
 
         /// <summary>Range of the skill with the modifiers, before the caster's Skill Range attribute.</summary>

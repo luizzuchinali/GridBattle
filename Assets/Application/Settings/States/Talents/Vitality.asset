@@ -34,17 +34,17 @@ MonoBehaviour:
   icon: {fileID: 21300000, guid: 3964bab9d00cd3d458691ca7c5f6ab13, type: 3}
   kind: 0
   stackPolicy: 2
-  maxStacks: 5
+  maxStacks: 2
   showInDetails: 1
   effects:
-  - rid: 8661860374469673026
+  - rid: 8661860679606599754
   references:
     version: 2
     RefIds:
-    - rid: 8661860374469673026
+    - rid: 8661860679606599754
       type: {class: AttributeModifierEffect, ns: GridBattle.Gameplay.States.Effects, asm: Assembly-CSharp}
       data:
         modifiers:
         - attribute: 0
           type: 0
-          value: 10
+          value: 2

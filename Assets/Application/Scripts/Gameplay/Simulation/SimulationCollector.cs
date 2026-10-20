@@ -267,6 +267,12 @@ namespace GridBattle.Gameplay.Simulation
                 _battle.DamageDealt += hit.Damage;
                 if (hit.Kind == EDamageKind.Collision && hit.Killed)
                     _battle.CollisionKills++;
+                if (hit.Attacker is Enemy && hit.Kind != EDamageKind.Collision)
+                {
+                    _battle.EnemyDamageToEnemies += hit.HpDamage;
+                    if (hit.Killed)
+                        _battle.EnemyKillsByEnemies++;
+                }
             }
         }
 
@@ -408,6 +414,8 @@ namespace GridBattle.Gameplay.Simulation
                 _run.CollisionDamageToEnemies += battle.CollisionDamageToEnemies;
                 _run.CollisionDamageToPlayer += battle.CollisionDamageToPlayer;
                 _run.CollisionKills += battle.CollisionKills;
+                _run.EnemyDamageToEnemies += battle.EnemyDamageToEnemies;
+                _run.EnemyKillsByEnemies += battle.EnemyKillsByEnemies;
                 _run.ForcedTerrainEnemies += battle.ForcedTerrainEnemies;
                 _run.ForcedTerrainPlayer += battle.ForcedTerrainPlayer;
                 _run.DamageDealt += battle.DamageDealt;

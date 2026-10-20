@@ -41,7 +41,7 @@ MonoBehaviour:
   states:
   - state: {fileID: 11400000, guid: 69962cb40aeb9e54f86ea8a08b723b08, type: 2}
     permanent: 0
-    duration: 3
+    duration: 2
     stacks: 1
   affectsPlayer: 1
   affectsEnemies: 1

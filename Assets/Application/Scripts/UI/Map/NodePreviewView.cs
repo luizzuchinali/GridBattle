@@ -12,9 +12,10 @@ using ZS.UI;
 namespace GridBattle.UI.Map
 {
     /// <summary>
-    /// Preview panel of the node picked on the map (mapa_e_nos): the type, the difficulty and total XP of a
-    /// battle, the enemies' roles with a count (never the exact enemies) and the terrain (a mini grid colored by
-    /// terrain kind and a legend), plus the confirm button. The only place that knows these elements in the UXML.
+    /// Preview panel of the node picked on the map (mapa_e_nos): the type (a battle is normal or elite; no XP is
+    /// shown), the reward of an elite battle in words, the enemies' roles with a count (never the exact enemies) and
+    /// the terrain (a mini grid colored by terrain kind and a legend), plus the confirm button. The only place that
+    /// knows these elements in the UXML.
     /// </summary>
     public sealed class NodePreviewView
     {
@@ -22,7 +23,7 @@ namespace GridBattle.UI.Map
         private readonly VisualElement _content;
         private readonly Image _icon;
         private readonly Label _title;
-        private readonly Label _xp;
+        private readonly Label _reward;
         private readonly Label _text;
         private readonly VisualElement _battle;
         private readonly Label _rolesCaption;
@@ -41,7 +42,7 @@ namespace GridBattle.UI.Map
             _content = root.Q<VisualElement>("preview-content");
             _icon = root.Q<Image>("preview-icon");
             _title = root.Q<Label>("preview-title");
-            _xp = root.Q<Label>("preview-xp");
+            _reward = root.Q<Label>("preview-reward");
             _text = root.Q<Label>("preview-text");
             _battle = root.Q<VisualElement>("preview-battle");
             _rolesCaption = root.Q<Label>("preview-roles-caption");
@@ -58,11 +59,11 @@ namespace GridBattle.UI.Map
         /// <summary>The node being previewed, or null.</summary>
         public MapNodeState Node => _node;
 
-        /// <summary>Title text of the preview ("Battle - Hard").</summary>
+        /// <summary>Title text of the preview ("Battle", "Elite Battle", "Camp"...).</summary>
         public string TitleText => _title != null ? _title.text : string.Empty;
 
-        /// <summary>Total XP text of the preview ("XP 45"), empty for nodes without a battle.</summary>
-        public string XpText => _xp != null ? _xp.text : string.Empty;
+        /// <summary>Reward line of an elite battle (no numbers), empty for the other nodes.</summary>
+        public string RewardText => _reward != null ? _reward.text : string.Empty;
 
         /// <summary>Number of role chips shown.</summary>
         public int RoleChipCount => _roles != null ? _roles.childCount : 0;
@@ -112,21 +113,22 @@ namespace GridBattle.UI.Map
             _icon.sprite = settings.GetNodeIcon(node);
             _title.text = GetTitle(node);
             _title.style.color = node.Type == EMapNodeType.Battle
-                ? settings.GetDifficultyColor(node.Difficulty)
+                ? settings.GetBattleColor(node)
                 : new Color(1f, 0.8f, 0f, 1f);
 
             var isBattle = node.Battle != null && (node.Type == EMapNodeType.Battle || node.Type == EMapNodeType.Boss);
+            var isElite = MapRules.IsEliteBattle(node);
             _battle.SetDisplayed(isBattle);
             _text.SetDisplayed(!isBattle);
-            _xp.SetDisplayed(isBattle);
-            _xp.text = isBattle ? HudText.Format("map.preview.xp", node.Battle.TotalXp) : string.Empty;
+            _reward.SetDisplayed(isElite);
+            _reward.text = isElite ? GetEliteReward() : string.Empty;
             _text.text = GetDescription(node);
 
             if (isBattle)
                 BuildBattle(node.Battle, settings);
         }
 
-        /// <summary>Localized title of a node: its type and, for battles, the difficulty.</summary>
+        /// <summary>Localized title of a node: its type (a battle is normal or elite).</summary>
         public static string GetTitle(MapNodeState node)
         {
             switch (node.Type)
@@ -136,9 +138,21 @@ namespace GridBattle.UI.Map
                 case EMapNodeType.Talent: return HudText.Get("map.node.talent");
                 case EMapNodeType.Consumable: return HudText.Get("map.node.consumable");
                 default:
-                    return HudText.Format("map.node.battle_difficulty", HudText.Get("map.node.battle"),
-                        HudText.Get("map.difficulty." + node.Difficulty.ToString().ToLowerInvariant()));
+                    return MapRules.IsEliteBattle(node)
+                        ? HudText.Get("map.node.elite_battle")
+                        : HudText.Get("map.node.battle");
             }
+        }
+
+        /// <summary>
+        /// What winning an elite battle gives, in words (the map shows no numbers): more XP, the consumable offers
+        /// and the skill upgrade, as <see cref="RunSettings"/> sets them.
+        /// </summary>
+        private static string GetEliteReward()
+        {
+            return RunSettings.Current.EliteGrantsSkillUpgrade
+                ? HudText.Get("map.preview.elite_reward")
+                : HudText.Get("map.preview.elite_reward_no_upgrade");
         }
 
         private static string GetDescription(MapNodeState node)
@@ -151,9 +165,13 @@ namespace GridBattle.UI.Map
             switch (node.Type)
             {
                 case EMapNodeType.Heal:
-                    return HudText.Format("map.node.heal.desc", settings.GetHealAmount(maxHp));
+                    return settings.CampOffersSkillUpgrade
+                        ? HudText.Format("map.node.camp.desc", settings.GetHealAmount(maxHp))
+                        : HudText.Format("map.node.heal.desc", settings.GetHealAmount(maxHp));
                 case EMapNodeType.Talent:
-                    return HudText.Format("map.node.talent.desc", settings.GetTalentNodeCost(hp, maxHp));
+                    return settings.TalentNodeCost == ETalentNodeCost.MaxHp
+                        ? HudText.Format("map.node.talent.desc_max_hp", settings.GetTalentNodeMaxHpCost(maxHp))
+                        : HudText.Format("map.node.talent.desc", settings.GetTalentNodeCost(hp, maxHp));
                 case EMapNodeType.Consumable:
                     return HudText.Get("map.node.consumable.desc");
                 default:

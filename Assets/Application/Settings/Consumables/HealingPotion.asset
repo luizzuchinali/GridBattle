@@ -40,6 +40,7 @@ MonoBehaviour:
   affects: 0
   effects:
   - rid: 8661860369686331454
+  visual: {fileID: 0}
   dropWeight: 3
   showInGlossary: 0
   references:
@@ -48,6 +49,6 @@ MonoBehaviour:
     - rid: 8661860369686331454
       type: {class: HealConsumableEffect, ns: GridBattle.Gameplay.Consumables, asm: Assembly-CSharp}
       data:
-        flatHeal: 30
+        flatHeal: 4
         maxHpFraction: 0
         refuseAtFullHp: 1

@@ -70,6 +70,8 @@ namespace GridBattle.Gameplay.Combat
             }
 
             damage *= Mathf.Max(0f, 1f + target.Get(EAttribute.DamageTaken));
+            if (adjustment.IncomingFlat != 0f)
+                damage = Mathf.Max(0f, damage + adjustment.IncomingFlat);
             if (adjustment.IncomingPercent != 0f)
                 damage *= Mathf.Max(0f, 1f + adjustment.IncomingPercent);
 

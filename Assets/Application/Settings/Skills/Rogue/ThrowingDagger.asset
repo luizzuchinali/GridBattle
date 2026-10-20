@@ -33,12 +33,12 @@ MonoBehaviour:
     m_LocalVariables: []
   icon: {fileID: 21300000, guid: f670150fe7aee64459a931279321907e, type: 3}
   type: 0
-  damage: 6
+  damage: 1
   areaShape: 0
   areaSize: 1
   selectionShape: 3
-  minRange: 1
-  range: 3
+  minRange: 2
+  range: 4
   rangeModifiable: 1
   unlimitedRange: 0
   targetCell: 0
@@ -51,8 +51,23 @@ MonoBehaviour:
   canMoveWhileWindingUp: 0
   cancelledByDisplacement: 0
   interruptibleByStates: 1
+  telegraphFollowsCaster: 1
   visual: {fileID: 11400000, guid: cbb7c437984ee8f4ea862823f1f9fb75, type: 2}
-  effects: []
+  upgrades:
+  - {fileID: 11400000, guid: 0b5cfd9f45d2cd34a853477de1505462, type: 2}
+  - {fileID: 11400000, guid: 882551ecefb7df143830c8dfc73b7bf1, type: 2}
+  upgradeOf: {fileID: 0}
+  effects:
+  - rid: 8661860679606599831
   references:
     version: 2
-    RefIds: []
+    RefIds:
+    - rid: 8661860679606599831
+      type: {class: ApplyStatesSkillEffect, ns: GridBattle.Gameplay.Entities.Skills, asm: Assembly-CSharp}
+      data:
+        recipient: 0
+        states:
+        - state: {fileID: 11400000, guid: d8706cfc9aa76d644afd24608e56aae8, type: 2}
+          permanent: 0
+          duration: 2
+          stacks: 1

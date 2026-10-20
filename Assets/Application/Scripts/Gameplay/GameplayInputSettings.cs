@@ -18,6 +18,16 @@ namespace GridBattle.Gameplay
                  "the right button opens the details right away.")]
         private float longPressSeconds = 0.45f;
 
+        [Header("Aiming")]
+        [SerializeField]
+        [Tooltip("A skill or item aimed at a cell is only used on a second tap on the same cell (or the Confirm " +
+                 "button): the first tap shows its area and what it would do (damage, kills, pushes, where the " +
+                 "enemies' strikes would land). Off = used on the first tap.")]
+        private bool confirmTargetedActions = true;
+
+        /// <summary>Whether targeted skills and items are aimed first and used on a confirmation.</summary>
+        public bool ConfirmTargetedActions => confirmTargetedActions;
+
         /// <summary>Seconds a touch has to be held on a cell to count as a long tap.</summary>
         public float LongPressSeconds => Mathf.Max(0.1f, longPressSeconds);
 

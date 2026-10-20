@@ -77,8 +77,12 @@ namespace GridBattle.Gameplay.Combat
         /// <summary>Fraction added to the damage the target takes (-0.2 = 20% less).</summary>
         public float IncomingPercent;
 
+        /// <summary>Added to the damage the target takes, after its defense (Exposed: +1; negative = a reduction).</summary>
+        public float IncomingFlat;
+
         /// <summary>Whether nothing changes (the plain formula applies).</summary>
-        public readonly bool IsNeutral => OutgoingFlat == 0f && OutgoingPercent == 0f && IncomingPercent == 0f;
+        public readonly bool IsNeutral => OutgoingFlat == 0f && OutgoingPercent == 0f && IncomingPercent == 0f &&
+                                          IncomingFlat == 0f;
 
         public void AddOutgoing(float percent, float flat = 0f)
         {
@@ -86,9 +90,10 @@ namespace GridBattle.Gameplay.Combat
             OutgoingFlat += flat;
         }
 
-        public void AddIncoming(float percent)
+        public void AddIncoming(float percent, float flat = 0f)
         {
             IncomingPercent += percent;
+            IncomingFlat += flat;
         }
     }
 }

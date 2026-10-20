@@ -260,7 +260,7 @@ namespace GridBattle.Gameplay.Talents
 
             foreach (var starting in playerClass.Skills)
             {
-                if (starting == skill) return true;
+                if (starting == skill || (skill != null && skill.IsSameSkillAs(starting))) return true;
             }
 
             return false;

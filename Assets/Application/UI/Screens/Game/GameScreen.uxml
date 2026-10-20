@@ -23,6 +23,8 @@
                 <ui:VisualElement class="turn-actions__spacer" picking-mode="Ignore"/>
                 <ui:Button name="undo-move-btn" text="Undo" class="text-button turn-button"/>
                 <ui:Button name="end-turn-btn" text="End turn" class="text-button turn-button"/>
+                <ui:Button name="cancel-action-btn" text="Cancel" class="text-button turn-button"/>
+                <ui:Button name="confirm-action-btn" text="Confirm" class="text-button turn-button turn-button--confirm"/>
             </ui:VisualElement>
         </ui:VisualElement>
         <ui:VisualElement name="item-bar" class="slot-bar" picking-mode="Ignore"/>

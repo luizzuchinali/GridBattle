@@ -33,10 +33,10 @@ MonoBehaviour:
     m_LocalVariables: []
   icon: {fileID: 21300000, guid: 697f98a594128eb4b8f3976d3ea17161, type: 3}
   type: 0
-  damage: 4
+  damage: 1
   areaShape: 0
-  areaSize: 3
-  selectionShape: 0
+  areaSize: 1
+  selectionShape: 1
   minRange: 1
   range: 3
   rangeModifiable: 1
@@ -45,20 +45,25 @@ MonoBehaviour:
   affects: 0
   requiresAffectedTarget: 0
   ignoresLineOfSight: 0
-  cooldown: 3
+  cooldown: 0
   telegraphed: 0
   windupTurns: 1
   canMoveWhileWindingUp: 0
   cancelledByDisplacement: 0
   interruptibleByStates: 1
+  telegraphFollowsCaster: 1
   visual: {fileID: 11400000, guid: c8d3a23a8fbcc2647abfdcc3df8f03f5, type: 2}
+  upgrades:
+  - {fileID: 11400000, guid: 092522e6f86fa234c979ee2c13e6e3d0, type: 2}
+  - {fileID: 11400000, guid: 986de770acba9e1469411c0b2b70b391, type: 2}
+  upgradeOf: {fileID: 0}
   effects:
-  - rid: 8661860384129155155
+  - rid: 8661860679606599808
   references:
     version: 2
     RefIds:
-    - rid: 8661860384129155155
+    - rid: 8661860679606599808
       type: {class: DisplaceSkillEffect, ns: GridBattle.Gameplay.Entities.Skills, asm: Assembly-CSharp}
       data:
-        mode: 2
+        mode: 0
         distance: 1

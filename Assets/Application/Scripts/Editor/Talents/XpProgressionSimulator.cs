@@ -14,20 +14,22 @@ namespace GridBattle.Editor.Talents
 {
     /// <summary>
     /// Edit-mode simulation of the XP economy (xp_e_niveis.md): generates maps with the real generators and
-    /// follows paths that always prefer Easy, Normal or Hard battles, to see how many levels each choice
+    /// follows paths that always prefer normal or elite battles, to see how many levels each choice
     /// reaches with the XP of the battles and the XP curve of <see cref="ProgressionSettings"/>. It is how the XP
     /// defaults of <see cref="BattleGenerationSettings"/> were tuned; run it again after changing the curve, the
     /// XP settings, the map length or the battle generator.
     /// </summary>
     public static class XpProgressionSimulator
     {
-        /// <summary>The difficulty a simulated player prefers when the floor offers a choice.</summary>
+        /// <summary>The kind of battle a simulated player prefers when the floor offers a choice.</summary>
         public enum EPathPolicy
         {
-            Easy,
             Normal,
-            Hard
+            Elite
         }
+
+        /// <summary>The kinds of battle, in the order of the columns of <see cref="DepthXp"/>.</summary>
+        private static readonly EBattleDifficulty[] Kinds = { EBattleDifficulty.Normal, EBattleDifficulty.Elite };
 
         /// <summary>Result of one policy over many maps.</summary>
         public sealed class PolicyResult
@@ -51,12 +53,12 @@ namespace GridBattle.Editor.Talents
             public double PreferredShare;
         }
 
-        /// <summary>Mean XP of the battles of one depth and difficulty.</summary>
+        /// <summary>Mean XP of the battles of one depth, normal (index 0) and elite (index 1).</summary>
         public sealed class DepthXp
         {
             public int Depth;
-            public readonly double[] Mean = new double[3];
-            public readonly int[] Samples = new int[3];
+            public readonly double[] Mean = new double[2];
+            public readonly int[] Samples = new int[2];
         }
 
         [MenuItem("GridBattle/Talents/Simulate XP Progression")]
@@ -117,7 +119,7 @@ namespace GridBattle.Editor.Talents
             }
         }
 
-        /// <summary>Mean XP of the generated battles by depth and difficulty (boss excluded).</summary>
+        /// <summary>Mean XP of the generated battles by depth, normal and elite (boss excluded).</summary>
         public static List<DepthXp> MeasureDepthXp(List<MapState> maps)
         {
             var sums = new Dictionary<int, double[]>();
@@ -130,12 +132,13 @@ namespace GridBattle.Editor.Talents
 
                     if (!sums.ContainsKey(node.Depth))
                     {
-                        sums[node.Depth] = new double[3];
-                        counts[node.Depth] = new int[3];
+                        sums[node.Depth] = new double[Kinds.Length];
+                        counts[node.Depth] = new int[Kinds.Length];
                     }
 
-                    sums[node.Depth][(int)node.Difficulty] += node.Battle.TotalXp;
-                    counts[node.Depth][(int)node.Difficulty]++;
+                    var kind = KindIndex(node.Difficulty);
+                    sums[node.Depth][kind] += node.Battle.TotalXp;
+                    counts[node.Depth][kind]++;
                 }
             }
 
@@ -145,7 +148,7 @@ namespace GridBattle.Editor.Talents
             foreach (var depth in depths)
             {
                 var row = new DepthXp { Depth = depth };
-                for (var d = 0; d < 3; d++)
+                for (var d = 0; d < Kinds.Length; d++)
                 {
                     row.Samples[d] = counts[depth][d];
                     row.Mean[d] = counts[depth][d] > 0 ? sums[depth][d] / counts[depth][d] : 0.0;
@@ -159,18 +162,18 @@ namespace GridBattle.Editor.Talents
 
         private static void AppendDepthTable(StringBuilder builder, List<MapState> maps, ProgressionSettings progression)
         {
-            builder.AppendLine("depth | XP to level (if level = depth) | mean XP Easy / Normal / Hard | Hard / XP to level");
+            builder.AppendLine("depth | XP to level (if level = depth) | mean XP Normal / Elite | Elite / XP to level");
             foreach (var row in MeasureDepthXp(maps))
             {
                 var need = progression.GetXpToNextLevel(row.Depth);
                 builder.AppendLine(
-                    $"{row.Depth,5} | {need,27} | {row.Mean[0],6:0} / {row.Mean[1],6:0} / {row.Mean[2],6:0} | {row.Mean[2] / need,6:0.00}");
+                    $"{row.Depth,5} | {need,27} | {row.Mean[0],6:0} / {row.Mean[1],6:0} | {row.Mean[1] / need,6:0.00}");
             }
         }
 
         /// <summary>
-        /// Follows a path through every map that always takes the battle of the preferred difficulty (then the
-        /// next closest one) and adds up the XP; non-battle nodes grant nothing. Levels follow the curve and the cap.
+        /// Follows a path through every map that always takes the battle of the preferred kind (then the other kind)
+        /// and adds up the XP; non-battle nodes grant nothing. Levels follow the curve and the cap.
         /// </summary>
         public static PolicyResult SimulatePolicy(List<MapState> maps, EPathPolicy policy, ProgressionSettings progression)
         {
@@ -202,7 +205,7 @@ namespace GridBattle.Editor.Talents
                     {
                         xp += next.Battle.TotalXp;
                         if (meanByDepth.TryGetValue(next.Depth, out var depthRow))
-                            idealXp += depthRow.Mean[(int)PreferredDifficulty(policy)];
+                            idealXp += depthRow.Mean[KindIndex(PreferredDifficulty(policy))];
                         battles++;
                         battlesWithChoice++;
                         if (next.Difficulty == PreferredDifficulty(policy)) preferred++;
@@ -251,17 +254,16 @@ namespace GridBattle.Editor.Talents
             return level;
         }
 
-        private static EBattleDifficulty PreferredDifficulty(EPathPolicy policy) => policy switch
-        {
-            EPathPolicy.Easy => EBattleDifficulty.Easy,
-            EPathPolicy.Hard => EBattleDifficulty.Hard,
-            _ => EBattleDifficulty.Normal,
-        };
+        private static EBattleDifficulty PreferredDifficulty(EPathPolicy policy) =>
+            policy == EPathPolicy.Elite ? EBattleDifficulty.Elite : EBattleDifficulty.Normal;
 
-        /// <summary>The battle node closest to the preferred difficulty (ties: first), else any node.</summary>
+        /// <summary>Column of a kind of battle in <see cref="DepthXp"/> (0 normal, 1 elite).</summary>
+        private static int KindIndex(EBattleDifficulty difficulty) => difficulty == EBattleDifficulty.Elite ? 1 : 0;
+
+        /// <summary>The battle node of the preferred kind (ties: first), then a battle of the other kind, else any node.</summary>
         private static MapNodeState Choose(List<MapNodeState> candidates, EPathPolicy policy)
         {
-            var preferred = (int)PreferredDifficulty(policy);
+            var preferred = PreferredDifficulty(policy);
             MapNodeState best = null;
             var bestScore = int.MaxValue;
             foreach (var node in candidates)
@@ -269,7 +271,7 @@ namespace GridBattle.Editor.Talents
                 if (node.Type == EMapNodeType.Boss) return node;
 
                 var score = node.Type == EMapNodeType.Battle
-                    ? Math.Abs((int)node.Difficulty - preferred)
+                    ? (node.Difficulty == preferred ? 0 : 1)
                     : 100;
                 if (score < bestScore)
                 {

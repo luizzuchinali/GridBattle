@@ -130,6 +130,7 @@ namespace GridBattle.Managers.Audio
 
         private static void OnXpRewardDropped(XpRewardDroppedEvent e)
         {
+            // One sound per kill (the orbs burst and fly together), never one per orb.
             if (e.Packets != null && e.Packets.Count > 0)
                 AudioManager.Play(ESfx.XpOrb);
         }

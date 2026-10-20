@@ -31,17 +31,17 @@ MonoBehaviour:
     m_FallbackState: 0
     m_WaitForCompletion: 0
     m_LocalVariables: []
-  icon: {fileID: 21300000, guid: 881a533c30dd0f1449e2cf5444293ec0, type: 3}
+  icon: {fileID: 21300000, guid: f670150fe7aee64459a931279321907e, type: 3}
   isPlaceholder: 1
   allowedClasses:
   - {fileID: 11400000, guid: 317c9296b1886594c806574a4d3d6726, type: 2}
-  requiredLevel: 2
+  requiredLevel: 3
   prerequisites: []
   maxRank: 1
-  baseWeight: 2
+  baseWeight: 1.5
   synergyTags:
-  - {fileID: 11400000, guid: dc99148dda435ab489bd4eb7df8b3289, type: 2}
   - {fileID: 11400000, guid: 55505cd50faa2184ebd8a2ed32e83013, type: 2}
+  - {fileID: 11400000, guid: dc99148dda435ab489bd4eb7df8b3289, type: 2}
   states: []
   unlockedSkill: {fileID: 11400000, guid: 8ce7125326b547148be0d49086fa0623, type: 2}
   references:

@@ -4,6 +4,7 @@ using GridBattle.Data;
 using GridBattle.Gameplay.Run;
 using JetBrains.Annotations;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace GridBattle.Gameplay.Map
 {
@@ -63,7 +64,7 @@ namespace GridBattle.Gameplay.Map
 
     /// <summary>
     /// Configuration of the map generator (GDD Mechanic 2, mapa_e_nos.md): shape of the map (floors, nodes per
-    /// floor, lanes, edges), the distribution of node types by depth and the difficulty of battle nodes. The
+    /// floor, lanes, edges), the distribution of node types by depth and how many battle nodes are elite. The
     /// exact format and the distribution are open questions in the design documents; the defaults give about 30
     /// nodes, as in the GDD's example.
     /// </summary>
@@ -134,24 +135,24 @@ namespace GridBattle.Gameplay.Map
         [Tooltip("Times a node's type is drawn again when it breaks the 'same type in a row' rule, before the last draw is accepted.")]
         private int typeRerollAttempts = 6;
 
-        [Header("Battle difficulty")]
+        [Header("Normal and elite battles")]
         [SerializeField]
         [Min(0f)]
-        [Tooltip("Open question (mapa_e_nos, difficulty in the same floor): relative chance of an Easy battle node.")]
-        private float easyWeight = 35f;
+        [Tooltip("Relative chance of a normal battle node (decision of 2026-10-20: battles are normal or elite).")]
+        private float normalWeight = 75f;
 
         [SerializeField]
         [Min(0f)]
-        private float normalWeight = 40f;
-
-        [SerializeField]
-        [Min(0f)]
-        private float hardWeight = 25f;
+        [FormerlySerializedAs("hardWeight")]
+        [Tooltip("Relative chance of an elite battle node (at least one elite, more XP, a consumable and a skill " +
+                 "upgrade). A node only becomes elite where Battle Generation Settings has an elite available at its " +
+                 "balance depth; elsewhere it is a normal battle.")]
+        private float eliteWeight = 25f;
 
         [SerializeField]
         [Tooltip("Risk and reward (GDD Mechanic 2): when a node leads to two or more battles (or the first floor " +
-                 "offers several), they get different difficulties whenever possible, so the player really chooses " +
-                 "between a safer and a more rewarding fight.")]
+                 "offers several) and they are all normal or all elite, one of them becomes the other kind whenever " +
+                 "possible, so the player really chooses between a safer and a more rewarding fight.")]
         private bool diversifyBattleChoices = true;
 
         public int FloorCount => Mathf.Max(2, floorCount);
@@ -186,13 +187,9 @@ namespace GridBattle.Gameplay.Map
         public int TypeRerollAttempts => Mathf.Max(1, typeRerollAttempts);
         public IReadOnlyList<MapNodeTypeBand> TypeBands => typeBands;
 
-        /// <summary>Weight of a battle difficulty.</summary>
-        public float GetDifficultyWeight(EBattleDifficulty difficulty) => difficulty switch
-        {
-            EBattleDifficulty.Easy => easyWeight,
-            EBattleDifficulty.Normal => normalWeight,
-            _ => hardWeight,
-        };
+        /// <summary>Relative chance of a normal or an elite battle node.</summary>
+        public float GetDifficultyWeight(EBattleDifficulty difficulty) =>
+            difficulty == EBattleDifficulty.Elite ? eliteWeight : normalWeight;
 
         /// <summary>The type band that applies to <paramref name="depth"/>, or null if none does (battles only).</summary>
         [CanBeNull]

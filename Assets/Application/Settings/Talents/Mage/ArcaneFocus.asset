@@ -37,10 +37,9 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 458abdf6a58316646803a046abb72a5c, type: 2}
   requiredLevel: 2
   prerequisites: []
-  maxRank: 2
-  baseWeight: 1.5
+  maxRank: 1
+  baseWeight: 1
   synergyTags:
-  - {fileID: 11400000, guid: dc99148dda435ab489bd4eb7df8b3289, type: 2}
   - {fileID: 11400000, guid: a888e3420b849914d8888d268af42916, type: 2}
   - {fileID: 11400000, guid: 14ab514c221772b41969c956a3e86745, type: 2}
   states:

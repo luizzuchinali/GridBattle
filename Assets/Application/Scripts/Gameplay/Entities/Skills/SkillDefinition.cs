@@ -85,6 +85,12 @@ namespace GridBattle.Gameplay.Entities.Skills
         public const int MinAreaSize = 1;
         public const int MaxAreaSize = 9;
 
+        /// <summary>
+        /// Whether an area of <paramref name="shape"/> is centered on the target and so needs an odd size. A Linear area
+        /// starts at the target and can have any length.
+        /// </summary>
+        public static bool NeedsOddSize(ESkillAreaShape shape) => shape != ESkillAreaShape.Linear;
+
         [Header("Classification")]
         [SerializeField]
         private ESkillType type = ESkillType.Offensive;
@@ -102,7 +108,8 @@ namespace GridBattle.Gameplay.Entities.Skills
 
         [SerializeField]
         [Range(MinAreaSize, MaxAreaSize)]
-        [Tooltip("Size of the area (odd number, 1 to 9). 1 = only the target cell.")]
+        [Tooltip("Size of the area (1 to 9; an odd number, except for Linear, which is the number of cells from the " +
+                 "target). 1 = only the target cell.")]
         private int areaSize = 1;
 
         [Header("Selection area (where it can be aimed)")]
@@ -159,6 +166,13 @@ namespace GridBattle.Gameplay.Entities.Skills
         [Tooltip("Player actions between uses (enemy turns for enemies). 0 = no cooldown.")]
         private int cooldown = 1;
 
+        [Header("Turn cost (player)")]
+        [SerializeField]
+        [Tooltip("Using the skill also spends the walk of the turn (a channelled spell): it can only be used before " +
+                 "walking (undoing the walk gives the chance back) and the caster does not walk after it this turn. " +
+                 "Player only: the enemy AI ignores it.")]
+        private bool usesWalk;
+
         [Header("Telegraph (enemies)")]
         [SerializeField]
         [Tooltip("An enemy prepares the skill instead of using it at once: the cells of its area are marked on the " +
@@ -185,11 +199,30 @@ namespace GridBattle.Gameplay.Entities.Skills
         [Tooltip("A state that prevents skills (Stunned, Frozen) cancels the prepared skill.")]
         private bool interruptibleByStates = true;
 
+        [SerializeField]
+        [Tooltip("Pushing, pulling or swapping the enemy that prepares moves the marked cells with it, keeping the " +
+                 "shape and direction (as in Into the Breach): the player can turn the strike against other enemies. " +
+                 "Off = the strike stays on the cells marked when it was prepared. Ignored when Cancelled By " +
+                 "Displacement is on.")]
+        private bool telegraphFollowsCaster = true;
+
         [Header("Look")]
         [SerializeField]
         [Tooltip("How the skill looks when used (gesture, projectile, effect on each cell of the area). Empty = the " +
                  "attack lunge for offensive skills. Visual only.")]
         private ActionVisualDefinition visual;
+
+        [Header("Upgrades (player skills)")]
+        [SerializeField]
+        [Tooltip("The improved versions the player can turn this skill into (at a camp, or after an elite battle): " +
+                 "pick 1 of them, once. Each variant is a whole skill asset whose Upgrade Of points back here. Empty = " +
+                 "the skill cannot be upgraded.")]
+        private List<SkillDefinition> upgrades = new();
+
+        [SerializeField]
+        [Tooltip("The skill this one is an upgrade of (set on the variants). Talents that modify the original also " +
+                 "modify the upgrade, and an upgrade cannot be upgraded again.")]
+        private SkillDefinition upgradeOf;
 
         [Header("Effects")]
         [SerializeReference]
@@ -215,6 +248,12 @@ namespace GridBattle.Gameplay.Entities.Skills
         public IReadOnlyList<SkillEffect> Effects => effects;
         public ActionVisualDefinition Visual => visual;
 
+        /// <summary>
+        /// Using it also spends the player's walk of the turn: only before walking, and no walk after it (the player's
+        /// controller enforces it, see PlayerCharacterController.CanUseSkillNow). The enemy AI ignores it.
+        /// </summary>
+        public bool UsesWalk => usesWalk;
+
         /// <summary>Enemies prepare it and it fires later on the marked cells (see <see cref="SkillTelegraph"/>).</summary>
         public bool Telegraphed => telegraphed;
 
@@ -224,6 +263,37 @@ namespace GridBattle.Gameplay.Entities.Skills
         public bool CanMoveWhileWindingUp => canMoveWhileWindingUp;
         public bool CancelledByDisplacement => cancelledByDisplacement;
         public bool InterruptibleByStates => interruptibleByStates;
+
+        /// <summary>The marked cells move with the caster when it is pushed, pulled or swapped.</summary>
+        public bool TelegraphFollowsCaster => telegraphFollowsCaster;
+
+        /// <summary>The improved versions of this skill (pick 1 of them); empty when it cannot be upgraded.</summary>
+        public IReadOnlyList<SkillDefinition> Upgrades => upgrades;
+
+        /// <summary>The skill this one is an upgrade of, or null for an original skill.</summary>
+        public SkillDefinition UpgradeOf => upgradeOf;
+
+        /// <summary>The original skill: itself, or the skill it upgrades.</summary>
+        public SkillDefinition Root => upgradeOf != null ? upgradeOf : this;
+
+        /// <summary>Whether the player can still upgrade this skill (an original skill with at least one variant).</summary>
+        public bool CanBeUpgraded
+        {
+            get
+            {
+                if (upgradeOf != null) return false;
+
+                foreach (var upgrade in upgrades)
+                {
+                    if (upgrade != null) return true;
+                }
+
+                return false;
+            }
+        }
+
+        /// <summary>Whether this skill is <paramref name="other"/> or an upgrade of it (or both upgrade the same skill).</summary>
+        public bool IsSameSkillAs(SkillDefinition other) => other != null && Root == other.Root;
 
         /// <summary>True for skills centered on the caster (range 0, not unlimited).</summary>
         public bool IsSelfCentered => !unlimitedRange && range == 0;
@@ -312,7 +382,7 @@ namespace GridBattle.Gameplay.Entities.Skills
 
             areaSize = Mathf.Clamp(areaSize, MinAreaSize, MaxAreaSize);
             windupTurns = Mathf.Max(1, windupTurns);
-            if (areaSize % 2 == 0)
+            if (areaSize % 2 == 0 && NeedsOddSize(areaShape))
                 areaSize++;
 
             // A self-centered skill aims at the caster's cell; otherwise the minimum cannot pass the maximum.

@@ -320,13 +320,16 @@ namespace GridBattle.Gameplay.Rules
         }
 
         /// <summary>
-        /// The cells <paramref name="character"/> can hit with its basic attack on its next turn, walking first: from
-        /// any cell it can walk to, its own included. Characters in the way are as they are now. Skills are not counted.
+        /// The cells <paramref name="character"/> can hit on its next turn, walking first: from any cell it can walk
+        /// to, its own included. Characters in the way are as they are now. With a basic attack, the cells it can
+        /// attack; without one (only skills, the 2026-10-19 direction), every cell the area of a ready skill covers
+        /// from a valid aim (for enemies with announced strikes: where they can mark).
         /// </summary>
         public static HashSet<Vector2Int> GetReachCells(GridController grid, Character character)
         {
             var reach = new HashSet<Vector2Int>();
             if (grid == null || character == null || character.IsDead) return reach;
+            if (!character.HasBasicAttack) return GetSkillReachCells(grid, character);
 
             var origins = new List<Vector2Int> { character.CurrentGridPos };
             var walk = character.WalkDistance;
@@ -351,6 +354,58 @@ namespace GridBattle.Gameplay.Rules
                         if (cell == character.CurrentGridPos || !grid.IsWalkable(cell)) continue;
                         if (IsInAttackRange(origin, cell, range))
                             reach.Add(cell);
+                    }
+                }
+            }
+
+            return reach;
+        }
+
+        /// <summary>
+        /// The cells the ready skills of <paramref name="character"/> can cover next turn, from every cell it can
+        /// walk to (probed with <see cref="GridController.ProbePosition"/>, nothing moves).
+        /// </summary>
+        public static HashSet<Vector2Int> GetSkillReachCells(GridController grid, Character character)
+        {
+            var reach = new HashSet<Vector2Int>();
+            if (grid == null || character == null || character.IsDead) return reach;
+
+            var origins = new List<Vector2Int> { character.CurrentGridPos };
+            var walk = character.WalkDistance;
+            for (var y = -walk; y <= walk; y++)
+            {
+                for (var x = -walk; x <= walk; x++)
+                {
+                    var cell = character.CurrentGridPos + new Vector2Int(x, y);
+                    if (CanWalkTo(grid, character, cell))
+                        origins.Add(cell);
+                }
+            }
+
+            var size = grid.Size;
+            foreach (var origin in origins)
+            {
+                using (grid.ProbePosition(character, origin))
+                {
+                    foreach (var skill in character.Skills)
+                    {
+                        if (skill == null || !character.Cooldowns.IsReady(skill)) continue;
+
+                        var effective = EffectiveSkill.Resolve(character, skill);
+                        for (var y = 0; y < size.y; y++)
+                        {
+                            for (var x = 0; x < size.x; x++)
+                            {
+                                var aim = new Vector2Int(x, y);
+                                if (!SkillTargeting.IsValidTarget(grid, character, effective, aim)) continue;
+
+                                foreach (var cell in SkillTargeting.GetAreaCells(grid, character, effective, aim))
+                                {
+                                    if (cell != character.CurrentGridPos)
+                                        reach.Add(cell);
+                                }
+                            }
+                        }
                     }
                 }
             }

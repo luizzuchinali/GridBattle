@@ -144,6 +144,9 @@ namespace GridBattle.UI.Overlays
             if (model.IsCharacter)
             {
                 AddRow(content, HudText.Get("details.hp"), model.Hp + " / " + model.MaxHp, null, "details-row--hp");
+                if (model.ActingOrder > 0)
+                    AddRow(content, HudText.Get("details.acting_order"),
+                        HudText.Format("details.acting_order_value", model.ActingOrder, model.ActingCount));
 
                 if (!string.IsNullOrEmpty(model.Preparing))
                 {

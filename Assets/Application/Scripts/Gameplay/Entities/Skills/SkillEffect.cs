@@ -95,8 +95,9 @@ namespace GridBattle.Gameplay.Entities.Skills
 
         public override void Apply(in SkillContext context)
         {
-            // Talents can lengthen the temporary states a skill applies (EffectiveSkill.StateDurationBonus).
-            var bonus = context.Effective.StateDurationBonus;
+            // Talents can lengthen the temporary states a skill applies to its targets (EffectiveSkill.StateDurationBonus),
+            // never the ones on its own caster: a drawback such as Exhausted keeps its authored length.
+            var bonus = recipient == ESkillEffectRecipient.Caster ? 0 : context.Effective.StateDurationBonus;
             foreach (var character in GetRecipients(context, recipient))
             {
                 if (character == null || character.IsDead) continue;

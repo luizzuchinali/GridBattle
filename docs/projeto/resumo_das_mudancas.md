@@ -4,12 +4,207 @@ tags:
   - resumo
 created: 2026-10-12
 ---
-# Resumo das mudanças (2026-10-05 a 2026-10-12)
+# Resumo das mudanças (2026-10-05 a 2026-10-20)
 
 Um resumo curto do que foi feito no jogo, para entender as mudanças sem ler
 os planos inteiros. Detalhes técnicos: [[guia_sistemas]] (como usar cada
 sistema pelo editor), [[simulador_balanceamento]], [[plano_implementacao_gdd]],
 [[plano_balanceamento]] e `AGENTS.md`.
+
+## Ajustes de 2026-10-20
+
+Cinco pedidos seus, feitos sobre o novo molde (seção seguinte). O design está
+no [[GDD]] e nos documentos de `docs/design/`; o uso pelo editor, em
+[[guia_sistemas]].
+
+### O que muda para quem joga
+
+- **Contras do Mago.** O Meteoro (e as variantes Meteoro Ardente e Meteoro
+  Veloz) é uma magia **canalizada**: gasta a ação e também o andar do turno,
+  então só pode ser usado antes de andar, e o Mago fica **Exausto** (não anda)
+  no turno seguinte. Muito dano em área, mas tem de ser lançado de um lugar
+  seguro. A Tempestade Elétrica (e a Rápida e a Ampla) também é canalizada,
+  sem o Exausto. Depois de andar, o botão dessas magias fica apagado; desfazer
+  o andar o acende de novo. A ficha da skill mostra "Em você: Exausto" e a
+  nota "Usa o andar do turno: só antes de andar, e não anda depois.".
+- **Golpe anunciado em todo turno.** Antes, um inimigo com um só golpe de
+  recarga 1 ou 2 marcava, disparava e ficava um ou dois turnos sem marca. Agora
+  todo inimigo tem um golpe **básico** sem recarga e um **especial** com
+  recarga: prepara o especial quando está pronto e o básico nos outros turnos.
+  Entraram 17 golpes novos (por exemplo, Estilingada, Investida, Grito Sônico,
+  Cuspe Ácido e Tornado), com ícones novos. A lista de cada inimigo está em
+  [[inimigos]].
+- **XP em explosão.** Quando um inimigo morre, sai um "bolo" de XP, como no
+  *Vampire Survivors*: as bolinhas aparecem juntas, se espalham numa mini
+  explosão e voam todas juntas para a barra, em cerca de 0,8 s, qualquer que
+  seja o XP. Cada abate tem no máximo 8 bolinhas; com mais XP, cada uma vale
+  mais. O jogo não fica mais parado esperando a fila de bolinhas em nível alto.
+- **Batalha normal ou de elite.** Não há mais fácil, normal e difícil. A
+  batalha de elite tem um inimigo único e dá mais XP (cerca de 2,7 vezes a
+  normal no mesmo andar), uma oferta de consumível ("Recompensa da elite",
+  escolher 1 de 3) e uma melhoria de skill. Os andares 1 a 3 só têm batalhas
+  normais, porque a primeira elite (Ogro brutamontes) entra no andar 4.
+- **Mapa sem XP.** O mapa não mostra mais o XP dos nós: só o ícone de elite
+  marca a batalha mais difícil. A prévia mostra "Batalha" ou "Batalha de
+  elite", os papéis, o terreno e, na elite, a recompensa em palavras.
+
+### Valores padrão escolhidos
+
+Todos provisórios (o balanceamento continua pausado).
+
+| Item | Valor |
+|---|---|
+| Skills canalizadas | Meteoro, Tempestade Elétrica e as variantes (`usesWalk`) |
+| Exausto | aplicado pelo Meteoro no próprio Mago por 2 turnos (o turno do lançamento e o seguinte, em que ele não anda) |
+| Bônus de duração dos talentos | não vale mais para estados que a skill aplica no próprio lançador |
+| Golpes dos inimigos | um básico com recarga 0 e um especial com recarga 2 nos golpes novos (os especiais antigos mantiveram a recarga) |
+| Orbs de XP | no máximo 8 por abate; explosão de 14 ± 6 px em 0,22 s, pausa de 0,08 s, voo de 0,45 s |
+| Tipos de batalha | normal 75, elite 25 (elite só onde há uma elite disponível) |
+| Batalha de elite | orçamento ×1,35, XP ×2 (o antigo difícil) |
+| Recompensa da elite | 1 oferta de consumível (`eliteConsumableOffers`), depois a melhoria de skill |
+
+### O que ainda pode acontecer
+
+- **Turno sem golpe anunciado:** quando nenhum golpe do inimigo alcança o
+  jogador (o Totem do raio nunca anda), quando um inimigo de apoio cura,
+  protege, invoca ou enfraquece (isso usa a ação dele), e no primeiro turno da
+  batalha (decisão de 2026-10-19).
+- **Tempestade com o Mago Exausto:** como a regra é "ainda não andou", dá para
+  usar a Tempestade no turno em que o Mago está Exausto.
+- **Bot do simulador e o Meteoro:** o bot ainda não pesa o custo de ficar sem
+  andar no turno seguinte.
+- **Saves antigos:** uma run salva antes da mudança continua; as batalhas
+  fáceis viram normais e as difíceis sem elite também.
+
+### Como foi verificado
+
+No seu PC: o projeto compila sem erros; `GridBattle > Validate Content` deu 0
+erros; as checagens de talentos passaram (4219 verificações); o script da
+migração confirmou que todo inimigo tem um golpe anunciado sem recarga e um
+com recarga.
+
+## Novo molde do combate (2026-10-19)
+
+O combate foi refeito no molde do *Into the Breach*, e a progressão no do
+*Slay the Spire*. O design está no [[GDD]] e em `docs/design/` (a referência
+do combate é `docs/design/sistema_combate.md`); o uso pelo editor está em
+[[guia_sistemas]]. As seções mais abaixo descrevem o jogo **antes** dessa
+mudança (por exemplo, o ataque básico e os talentos de número, que saíram).
+
+### O que muda para quem joga
+
+- **Sem ataque básico.** Toda ação é uma skill. Cada classe começa com 3
+  skills e libera até mais 3 por talentos (6 espaços na barra). O jogador anda
+  até 2 casas, age 1 vez e pode usar 1 item por turno, em qualquer ordem.
+- **Golpes anunciados.** Na vez de cada inimigo, ele dispara o golpe que
+  preparou no turno anterior, anda e prepara o próximo. As células do golpe
+  ficam marcadas no tabuleiro um turno antes. O golpe acerta todo mundo que
+  estiver nelas, menos quem lança: outros inimigos também. Se o jogador
+  empurrar, puxar ou trocar de lugar quem prepara, a área vai junto, e dá para
+  virar o golpe contra os outros inimigos. Matar quem prepara, ou atordoá-lo ou
+  congelá-lo, cancela o golpe. Curar, proteger, invocar e enfraquecer
+  continuam imediatos. No primeiro turno da batalha nenhum golpe está
+  preparado.
+- **Ordem fixa e numerada.** Os inimigos agem sempre na mesma ordem durante a
+  batalha, e o número de cada um aparece sobre a cabeça dele e na área do
+  golpe que ele preparou.
+- **Mirar e confirmar com previsão.** O primeiro toque numa célula só mira e
+  mostra o que aconteceria: dano, mortes, setas dos empurrões, onde cada um
+  terminaria e onde os golpes anunciados cairiam depois da ação. O segundo
+  toque (ou *Confirmar*) executa; *Cancelar* desfaz a mira.
+- **Talentos que mudam o jogo.** Os 48 talentos de número (mais dano, mais
+  área, menos recarga) saíram. Ficaram os que liberam skills, os de regra
+  (Dominó, Rastro de Chamas, Gelo Escorregadio, Contragolpe, Passo Trocado,
+  Ímpeto) e as passivas de classe.
+- **Melhoria de skill.** Cada skill melhora uma vez: escolher 1 entre 2
+  variantes (por exemplo, a Bola de Fogo vira Explosiva ou Arqueada). A
+  melhoria vem do acampamento ou de vencer uma elite.
+- **Acampamento.** O antigo nó de cura deixa escolher entre descansar (cura
+  40% da vida máxima) ou treinar (melhorar uma skill).
+- **Elite.** Toda batalha difícil tem uma elite (hoje Ogro brutamontes,
+  Cavaleiro esqueleto ou Golem de lava); vencê-la dá uma melhoria de skill.
+- **Vida.** Subir de nível dá +1 de vida máxima e não cura mais. O nó de
+  talento custa 2 de vida máxima pelo resto da run.
+- **Conteúdo novo:** 10 inimigos com arte própria (27 no total), skills novas
+  das três classes com as variantes de melhoria, ícones novos e a Muralha de
+  Gelo, um terreno criado por skill (ver [[arte]]).
+
+### Valores padrão escolhidos
+
+Todos provisórios: o balanceamento continua pausado (decisão sua de
+2026-10-06).
+
+| Item | Valor |
+|---|---|
+| Ataque básico | desligado em todos (jogador e inimigos) |
+| Skills | 3 iniciais por classe, até 3 por talentos (`maxSkillTalents` = 3) |
+| Andar do jogador | 2 casas |
+| Golpes dos inimigos | anunciados 1 turno antes, acertam todos menos quem lança, a área acompanha quem é deslocado, atordoar ou congelar cancela |
+| Disparar um golpe | não gasta o agir do inimigo (`firingUsesAction` desligado) |
+| Subir de nível | +1 de vida máxima, sem cura |
+| Curva de XP | 150 para o nível 2, +100 por nível, nível máximo 12 (cerca de 10 níveis por run; no simulador de XP, nível final médio 9,5 / 9,9 / 10,6 nas rotas fácil / normal / difícil) |
+| Nó de talento | custa 2 de vida máxima |
+| Acampamento | descansar (cura 40%) ou treinar (melhoria) |
+| Elite | dá uma melhoria ao vencer |
+| Melhorias | uma por skill, 1 entre 2 variantes |
+| Armadura e dano mínimo | o dano mínimo é 0: armadura −1 pode zerar um golpe de 1 |
+| Colisão | 1 de dano a quem é lançado, 0 por casa não percorrida, 1 a quem é atingido; ignora a armadura |
+| Vida das classes | Guerreiro 18, Mago 14, Ladino 15 |
+| Slime | 4 de vida |
+| Orçamento de ameaça do andar 1 | 2 (era 2,5) |
+| Chefe (provisório) | Rei Goblin, 22 de vida, imóvel, com escolta de Guarda Goblin, Xamã goblin, Goblin artilheiro e Goblin lanceiro |
+| Números da ordem na mesma célula | 9 px entre eles (antes 6 px fixos: "1 3" parecia "13") |
+
+### O que o simulador mostrou
+
+Depois do ajuste provisório, 20 runs por classe (seeds 1000 a 1019):
+
+- **Vitórias:** Guerreiro 60%, Mago 20%, Ladino 55%. 73% das derrotas
+  acontecem antes do andar 10. O chefe foi vencido em todas as runs que
+  chegaram até ele.
+- **Dano por batalha** (em % da vida máxima): andares 1 a 4, 21%; 5 a 9,
+  16%; 10 a 29, de 10 a 15%; chefe, 27%.
+- **Empurrões por run** (inimigos deslocados / colisões / mortes por
+  colisão): Guerreiro 61 / 43 / 38, Mago 20 / 7 / 6, Ladino 5 / 2 / 0.
+- **Golpes de inimigos em inimigos** (dano / mortes por run): Guerreiro
+  2,4 / 0,6, Mago 1,8 / 0,5, Ladino 6,0 / 2,1.
+- **O Mago é o mais fraco:** leva o mesmo dano por batalha que os outros e
+  quase não mata por colisão; o bot usa pouco o controle (Nova de Gelo 1,8 vez
+  por run).
+
+O bot do simulador agora lê a mesma previsão que o jogador vê: evita os golpes
+anunciados, valoriza desviar golpes para outros inimigos e conta que ainda
+pode andar depois de agir. Detalhes em [[simulador_balanceamento]].
+
+### O que o teste de interface mostrou
+
+Teste no Play Mode do seu PC (o perfil real foi guardado e restaurado): uma
+run de Guerreiro, a primeira batalha, 5 turnos com capturas de tela.
+Funcionou como o design pede:
+- a ordem dos inimigos aparece numerada sobre cada um, com um selo que mostra
+  a ordem, o ícone do golpe e o dano;
+- as células atingidas têm contorno vermelho, e o total previsto aparece sobre
+  o jogador ("-2");
+- ao mirar, a previsão mostra o dano no alvo ("-1"), a seta do empurrão, o
+  fantasma onde o empurrado termina e o golpe dele acompanhando-o (o dano
+  previsto no jogador cai de -3 para -2); quem morreria perde o selo do golpe;
+- o toque longo num inimigo mostra "Ordem 1 de 3" e "Preparando: <golpe> (em
+  1 turno)";
+- a vida do jogador caiu exatamente o previsto;
+- no primeiro turno nenhum golpe estava preparado, como manda o design.
+
+### O que ficou pendente
+
+- **Balanceamento:** continua pausado; os números acima são um primeiro
+  ajuste pelo simulador. O Mago precisa de atenção quando o balanceamento
+  voltar.
+- **Previsão do Dominó:** o empurrão em cadeia do talento Dominó ainda não
+  aparece na previsão (o jogo aplica, a tela não mostra antes).
+- **Visuais das skills:** continuam provisórios.
+- **Arte provisória:** 9 inimigos ainda usam a arte de outro inimigo com outra
+  cor, inclusive o chefe (lista em [[arte]]).
+- **Nada foi enviado ao repositório remoto** (decisão sua): as mudanças estão
+  em commits locais.
 
 ## Em uma frase
 

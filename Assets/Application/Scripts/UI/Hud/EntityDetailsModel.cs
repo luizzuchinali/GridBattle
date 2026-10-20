@@ -9,6 +9,7 @@ using GridBattle.Gameplay.Stats;
 using GridBattle.Gameplay.Terrain;
 using JetBrains.Annotations;
 using UnityEngine;
+using TurnOrder = GridBattle.Gameplay.Turns.ActingOrder;
 
 namespace GridBattle.UI.Hud
 {
@@ -177,6 +178,14 @@ namespace GridBattle.UI.Hud
         public List<DetailsSkill> Skills { get; } = new();
         public List<DetailsState> States { get; } = new();
 
+        /// <summary>
+        /// The enemy's place in the acting order of the enemy phase (1 = acts first; 0 for the player), out of
+        /// <see cref="ActingCount"/> living enemies.
+        /// </summary>
+        public int ActingOrder { get; private set; }
+
+        public int ActingCount { get; private set; }
+
         /// <summary>"Skill (in 1 turn)" for an enemy preparing a telegraphed skill (null otherwise).</summary>
         [CanBeNull]
         public string Preparing { get; private set; }
@@ -237,6 +246,13 @@ namespace GridBattle.UI.Hud
                 Behavior = enemy.EnemyConfig != null ? enemy.EnemyConfig.GetBehaviorDescription() : string.Empty;
             }
 
+            if (character is Enemy acting && !acting.IsDead)
+            {
+                var enemies = TurnOrder.GetEnemies();
+                ActingOrder = enemies.IndexOf(acting) + 1;
+                ActingCount = enemies.Count;
+            }
+
             if (character is Enemy { Telegraph: not null } preparing)
             {
                 var telegraph = preparing.Telegraph;
@@ -257,6 +273,9 @@ namespace GridBattle.UI.Hud
             var caster = telegraph.Caster != null && telegraph.Caster.Config != null
                 ? telegraph.Caster.Config.GetDisplayName()
                 : string.Empty;
+            var order = telegraph.Caster is Enemy enemy ? TurnOrder.GetRank(enemy) : 0;
+            if (order > 0)
+                caster = HudText.Format("details.telegraph.caster", caster, order);
             var player = PlayerCharacter.Active;
             var damage = player != null ? telegraph.PredictDamage(player) : 0;
             Telegraphs.Add(new DetailsTelegraph(telegraph.Skill.Icon, telegraph.Skill.GetDisplayName(), caster,
@@ -273,8 +292,11 @@ namespace GridBattle.UI.Hud
 
             // The basics always show; the others only when they have an effect (or the setting lists them all).
             AddAttribute(EAttribute.WalkRange, character.WalkDistance);
-            AddAttribute(EAttribute.AttackRange, stats.Get(EAttribute.AttackRange));
-            AddAttribute(EAttribute.BasicDamage, stats.Get(EAttribute.BasicDamage));
+            if (character.HasBasicAttack)
+            {
+                AddAttribute(EAttribute.AttackRange, stats.Get(EAttribute.AttackRange));
+                AddAttribute(EAttribute.BasicDamage, stats.Get(EAttribute.BasicDamage));
+            }
             AddAttribute(EAttribute.Defense, stats.Get(EAttribute.Defense));
             AddOptional(stats, EAttribute.CritChance, all);
             // The multiplier is never zero, so it follows the chance instead of the non-zero rule.

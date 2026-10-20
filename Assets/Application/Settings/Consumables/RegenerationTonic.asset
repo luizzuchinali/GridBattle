@@ -40,6 +40,7 @@ MonoBehaviour:
   affects: 0
   effects:
   - rid: 8661860369686331453
+  visual: {fileID: 0}
   dropWeight: 1
   showInGlossary: 0
   references:

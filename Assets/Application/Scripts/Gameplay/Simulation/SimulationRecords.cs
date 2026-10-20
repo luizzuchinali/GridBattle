@@ -16,7 +16,7 @@ namespace GridBattle.Gameplay.Simulation
         Aborted
     }
 
-    /// <summary>A battle node of a generated map (the data needed to compare XP between difficulties).</summary>
+    /// <summary>A battle node of a generated map (the data needed to compare the XP of normal and elite battles).</summary>
     public readonly struct MapNodeInfo
     {
         public MapNodeInfo(int depth, EMapNodeType type, EBattleDifficulty difficulty, int totalXp, int enemyCount)
@@ -47,7 +47,7 @@ namespace GridBattle.Gameplay.Simulation
         public int NodeId;
         public int Depth;
         public EMapNodeType NodeType;
-        public EBattleDifficulty Difficulty;
+        public EBattleDifficulty Difficulty = EBattleDifficulty.Normal;
 
         /// <summary>Config names of the enemies the battle started with.</summary>
         public List<string> EnemyNames = new();
@@ -115,6 +115,12 @@ namespace GridBattle.Gameplay.Simulation
 
         /// <summary>Enemies killed by collision damage.</summary>
         public int CollisionKills;
+
+        /// <summary>Damage enemies dealt to other enemies (strikes the player moved into them, or them into strikes).</summary>
+        public int EnemyDamageToEnemies;
+
+        /// <summary>Enemies killed by another enemy's hit.</summary>
+        public int EnemyKillsByEnemies;
 
         /// <summary>Terrain cells that applied their effect at once to a pushed or pulled enemy / the player.</summary>
         public int ForcedTerrainEnemies;
@@ -209,6 +215,8 @@ namespace GridBattle.Gameplay.Simulation
         public int CollisionDamageToEnemies;
         public int CollisionDamageToPlayer;
         public int CollisionKills;
+        public int EnemyDamageToEnemies;
+        public int EnemyKillsByEnemies;
         public int ForcedTerrainEnemies;
         public int ForcedTerrainPlayer;
         public int HealNodes;

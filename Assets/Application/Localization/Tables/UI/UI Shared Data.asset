@@ -903,6 +903,138 @@ MonoBehaviour:
     m_Key: details.preparing
     m_Metadata:
       m_Items: []
+  - m_Id: 5123293585154048
+    m_Key: camp.title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123293648068608
+    m_Key: camp.subtitle
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123293648068609
+    m_Key: camp.rest
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123293648068610
+    m_Key: camp.rest_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123293648068611
+    m_Key: camp.rest_full
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123293648068612
+    m_Key: camp.train
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123293648068613
+    m_Key: camp.train_desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123293648068614
+    m_Key: upgrade.title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123293648068615
+    m_Key: upgrade.subtitle
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123293648068616
+    m_Key: upgrade.subtitle_elite
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123293648068617
+    m_Key: upgrade.back_to_camp
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123293648068618
+    m_Key: upgrade.decline
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123293648068619
+    m_Key: upgrade.variants
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123293648068620
+    m_Key: upgrade.choose_variant
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123293648068621
+    m_Key: upgrade.back
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123293648068622
+    m_Key: upgrade.change
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123293648068623
+    m_Key: upgrade.change_new
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123293648068624
+    m_Key: upgrade.change_removed
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123293648068625
+    m_Key: map.node.elite
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123293648068626
+    m_Key: map.preview.xp_elite
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123293648068627
+    m_Key: map.node.camp.desc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123293648068628
+    m_Key: map.node.talent.desc_max_hp
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123293648068629
+    m_Key: hud.cancel_action
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123293648068630
+    m_Key: hud.confirm_action
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123293648068631
+    m_Key: details.acting_order
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123293648068632
+    m_Key: details.acting_order_value
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123293648068633
+    m_Key: details.telegraph.caster
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5570318269227008
+    m_Key: details.uses_walk
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5570318353113088
+    m_Key: map.node.elite_battle
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5570318353113089
+    m_Key: map.preview.elite_reward
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5570318353113090
+    m_Key: map.preview.elite_reward_no_upgrade
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5570318353113091
+    m_Key: consumable_offer.elite_title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5570318353113092
+    m_Key: details.action.on_caster
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

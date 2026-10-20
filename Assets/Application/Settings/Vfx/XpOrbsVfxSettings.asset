@@ -14,7 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GridBattle.UI.Vfx.XpOrbsVfxSettings
   orbSprite: {fileID: 1957544802, guid: 62a3f1345f5495642b6ab1f188fd400c, type: 3}
   orbSize: 8
-  flightDuration: 0.6
-  staggerDelay: 0.08
+  burstRadius: 14
+  burstRadiusVariance: 6
+  burstAngleJitter: 0.5
+  burstDuration: 0.22
+  burstEase: 8
+  holdDuration: 0.08
+  launchJitter: 0.06
+  flightDuration: 0.45
   arcHeight: 60
   flightEase: 4

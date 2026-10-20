@@ -13,11 +13,15 @@ MonoBehaviour:
   m_Name: RunSettings
   m_EditorClassIdentifier: Assembly-CSharp::GridBattle.Gameplay.Run.RunSettings
   debugSeed: 0
-  healFraction: 0.3
+  healFraction: 0.4
   healFlat: 0
-  talentNodeCost: 1
+  talentNodeCost: 3
   talentNodeCostHpFraction: 0.15
   talentNodeCostHpFlat: 10
+  talentNodeCostMaxHp: 2
+  campOffersSkillUpgrade: 1
+  eliteConsumableOffers: 1
+  eliteGrantsSkillUpgrade: 1
   temporaryStates: 0
   resetSkillCooldownsBetweenBattles: 1
   autosave: 1

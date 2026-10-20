@@ -51,6 +51,10 @@ namespace GridBattle.UI.Overlays
         [Tooltip("Screen of a test ad in the Editor (MonetizationSettings: Simulated). Real ads draw themselves.")]
         private ViewDefinition simulatedAdView;
 
+        [SerializeField]
+        [Tooltip("Camp (rest or train) and skill upgrade choice: opened by CampEnteredEvent and SkillUpgradeOfferEvent.")]
+        private ViewDefinition skillUpgradeView;
+
         [Header("Talent choice (interface 4.1)")]
         [SerializeField]
         [Tooltip("Skipping an offer asks for confirmation first (the level's talent is lost).")]
@@ -108,6 +112,7 @@ namespace GridBattle.UI.Overlays
         public ViewDefinition RemoveAdsView => removeAdsView;
         public ViewDefinition AdNoticeView => adNoticeView;
         public ViewDefinition SimulatedAdView => simulatedAdView;
+        public ViewDefinition SkillUpgradeView => skillUpgradeView;
         public bool ConfirmSkip => confirmSkip;
         public float AcquireEffectSeconds => acquireEffectSeconds;
         public int CardStaggerMs => cardStaggerMs;

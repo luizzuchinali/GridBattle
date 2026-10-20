@@ -19,12 +19,16 @@ namespace GridBattle.Gameplay.Events
         Cancelled,
 
         /// <summary>The preparation was restored from a battle save.</summary>
-        Restored
+        Restored,
+
+        /// <summary>The enemy was pushed, pulled or swapped and the marked cells moved with it.</summary>
+        Moved
     }
 
     /// <summary>
     /// Raised by <see cref="Enemy"/> whenever its telegraphed skill (<see cref="SkillTelegraph"/>) is prepared,
-    /// waits, fires, is cancelled or is restored: the cell marks, the icons over the enemy and the tutorial react.
+    /// waits, fires, is cancelled, is restored or moves with its displaced caster: the cell marks, the icons over the
+    /// enemy and the tutorial react.
     /// </summary>
     public class SkillTelegraphChangedEvent
     {

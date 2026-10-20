@@ -3,7 +3,7 @@ tags:
   - design
   - estados
 status: em definição (atributos e estados implementados, com valores iniciais configuráveis)
-updated: 2026-10-18
+updated: 2026-10-20
 ---
 # Atributos e Estados
 
@@ -28,8 +28,8 @@ As configurações da run (opções de talento, rerolls e banimentos) não são 
 |---|---|---|---|
 | Base | Vida máxima | Quantidade máxima de vida. | Implementado |
 | Base | Alcance de movimento | Distância que o personagem anda no andar do turno. | Implementado |
-| Base | Alcance de ataque | Distância do ataque básico. | Implementado |
-| Ofensivo | Dano básico | Dano do ataque básico. | Implementado |
+| Base | Alcance de ataque | Distância do ataque básico. | Implementado; sai do jogador com o ataque básico (decisão de 2026-10-19, só design) |
+| Ofensivo | Dano básico | Dano do ataque básico. | Implementado; sai do jogador com o ataque básico (decisão de 2026-10-19, só design) |
 | Ofensivo | Chance de crítico | Probabilidade de um ataque causar dano extra. | Implementado |
 | Ofensivo | Multiplicador de crítico | Quanto o crítico multiplica o dano. | Implementado |
 | Ofensivo | Penetração de defesa | Ignora parte da defesa do alvo. | Implementado |
@@ -50,8 +50,11 @@ Um estado tem um **nome** e concede um ou mais efeitos. Ao ser aplicado, recebe 
 | Regeneração (nome provisório)   | A cada turno do jogador, recupera vida. ❓ Valor fixo ou porcentagem da vida máxima (valor inicial: fixo). |
 | Escudo (nome provisório)        | Vida temporária que absorve dano antes da vida real. ❓ Como é obtido e se expira (valor inicial: some quando esgota e também ao fim da duração, se tiver).   |
 | Envenenado (nome provisório)    | Causa dano ao longo dos turnos.                                                     |
+| Exausto                         | Não pode andar. Contra das magias canalizadas fortes (decisão de 2026-10-20).       |
 
-Estão implementados (`Settings/States`, com valores iniciais configuráveis): Fraquejado (−50% de dano causado), Armadura de Espinhos (devolve 3 de dano), Roubo de vida (15% do dano causado), Regeneração (3 de vida no início de cada turno da portadora), Escudo (15 pontos de vida temporária, que somem ao esgotar) e Envenenado (3 de dano no início de cada turno da portadora), além do Blindado (defesa +4), usado nos inimigos que cobram a build. Fraquejado usa os atributos internos Dano causado e Dano recebido (ajustes percentuais de todo o dano). Detalhes em [[sistema_combate]] e valores em [[valores_padrao_em_aberto]].
+Estão implementados (`Settings/States`, com valores iniciais configuráveis): Fraquejado (−50% de dano causado), Armadura de Espinhos (devolve 3 de dano), Roubo de vida (15% do dano causado), Regeneração (3 de vida no início de cada turno da portadora), Escudo (15 pontos de vida temporária, que somem ao esgotar) e Envenenado (3 de dano no início de cada turno da portadora), além do Blindado (defesa +4), usado nos inimigos que cobram a build. Fraquejado usa os atributos internos Dano causado e Dano recebido (ajustes percentuais de todo o dano). Detalhes em [[sistema_combate]] e valores em [[valores_padrao_em_aberto]]. Os valores atuais, na escala de números pequenos de 2026-10-19, estão no catálogo de estados de [[sistema_combate]] (seção "Catálogo atual").
+
+**Exausto (2026-10-20, implementado):** debuff que impede andar (`BehaviorRestrictionEffect` com `PreventMovement`), com o ícone de uma bota presa a uma bola de ferro. O Meteoro do Mago (e as variantes) o aplica no próprio Mago por 2 turnos: o turno em que lançou conta como o primeiro, e no segundo, o turno seguinte, o Mago não anda. O bônus de duração de estados dos talentos não alonga estados que uma skill aplica no próprio lançador, para o contra não crescer sem querer.
 
 A lista final de estados, seus nomes e valores são ❓ a definir.
 

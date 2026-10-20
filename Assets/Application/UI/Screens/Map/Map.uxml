@@ -33,8 +33,8 @@
                 <ui:VisualElement class="preview-header" picking-mode="Ignore">
                     <ui:Image name="preview-icon" picking-mode="Ignore"/>
                     <ui:Label name="preview-title" text="Battle" picking-mode="Ignore"/>
-                    <ui:Label name="preview-xp" text="XP" picking-mode="Ignore"/>
                 </ui:VisualElement>
+                <ui:Label name="preview-reward" picking-mode="Ignore"/>
                 <ui:Label name="preview-text" picking-mode="Ignore"/>
                 <ui:VisualElement name="preview-battle" picking-mode="Ignore">
                     <ui:VisualElement class="preview-row" picking-mode="Ignore">

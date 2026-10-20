@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: BuffAllyShield
   m_EditorClassIdentifier: Assembly-CSharp::GridBattle.Gameplay.AI.Actions.BuffAllyAction
   id: 60bd8215aa035fe478c61938268a3178
-  cooldownTurns: 3
+  cooldownTurns: 2
   grant:
     state: {fileID: 11400000, guid: 055cbc9c55bdf15428b586172f7530db, type: 2}
     permanent: 0
-    duration: 3
+    duration: 2
     stacks: 1
   range: 3
   includeSelf: 0

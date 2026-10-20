@@ -37,13 +37,13 @@ MonoBehaviour:
   maxStacks: 1
   showInDetails: 1
   effects:
-  - rid: 8661860360884846689
+  - rid: 8661860679606599791
   references:
     version: 2
     RefIds:
-    - rid: 8661860360884846689
+    - rid: 8661860679606599791
       type: {class: PeriodicHealEffect, ns: GridBattle.Gameplay.States.Effects, asm: Assembly-CSharp}
       data:
-        flatHeal: 3
+        flatHeal: 1
         maxHpFraction: 0
         timing: 0

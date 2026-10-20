@@ -75,7 +75,10 @@ namespace GridBattle.Gameplay.Entities
 
         public int AttackDistance => Stats.GetInt(EAttribute.AttackRange);
         public int BasicAttackDamage => Stats.GetInt(EAttribute.BasicDamage);
-        public bool CanBasicAttack => !States.IsRestricted(EBehaviorRestriction.PreventBasicAttack);
+        public bool CanBasicAttack => HasBasicAttack && !States.IsRestricted(EBehaviorRestriction.PreventBasicAttack);
+
+        /// <summary>Whether the character has a basic attack (its config says; true without a config).</summary>
+        public bool HasBasicAttack => config == null || config.HasBasicAttack;
 
         /// <summary>
         /// Skills the character can use now (runtime list: the config's starting
@@ -339,6 +342,22 @@ namespace GridBattle.Gameplay.Entities
             }
         }
 
+        /// <summary>
+        /// Max HP added to the config's (after the spawn scaling): the player's levels and lasting run costs (see
+        /// <see cref="PlayerCharacter"/>). Call <see cref="RefreshBaseAttributes"/> when it changes.
+        /// </summary>
+        protected virtual int MaxHpBonus => 0;
+
+        /// <summary>
+        /// Applies the base attributes again (after <see cref="MaxHpBonus"/> changed): HP stays where it is, within
+        /// the new maximum, and the HP bar refreshes.
+        /// </summary>
+        public void RefreshBaseAttributes()
+        {
+            ApplyBaseAttributes();
+            OnStatesChanged();
+        }
+
         private void ApplyBaseAttributes()
         {
             if (config == null) return;
@@ -349,7 +368,7 @@ namespace GridBattle.Gameplay.Entities
             foreach (EAttribute attribute in Enum.GetValues(typeof(EAttribute)))
                 stats.SetBase(attribute, config.GetBaseAttribute(attribute));
 
-            stats.SetBase(EAttribute.MaxHp, config.MaxHp * _scaling.HpMultiplier);
+            stats.SetBase(EAttribute.MaxHp, Mathf.Max(1f, config.MaxHp * _scaling.HpMultiplier + MaxHpBonus));
             stats.SetBase(EAttribute.BasicDamage, config.BasicAttackDamage * _scaling.DamageMultiplier);
         }
 

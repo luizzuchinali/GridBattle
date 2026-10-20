@@ -33,13 +33,13 @@ MonoBehaviour:
     m_LocalVariables: []
   icon: {fileID: 21300000, guid: f3bd7b3ab8af71b42801aa5f019d9942, type: 3}
   type: 0
-  damage: 9
+  damage: 1
   areaShape: 2
-  areaSize: 5
+  areaSize: 4
   selectionShape: 1
   minRange: 1
-  range: 5
-  rangeModifiable: 1
+  range: 1
+  rangeModifiable: 0
   unlimitedRange: 0
   targetCell: 0
   affects: 0
@@ -51,8 +51,31 @@ MonoBehaviour:
   canMoveWhileWindingUp: 0
   cancelledByDisplacement: 0
   interruptibleByStates: 1
+  telegraphFollowsCaster: 1
   visual: {fileID: 11400000, guid: 6009c7493a55972498bca592880ae446, type: 2}
-  effects: []
+  upgrades:
+  - {fileID: 11400000, guid: 394789a2f89a3bf4f9bb60d7242efef9, type: 2}
+  - {fileID: 11400000, guid: 2282666ef4fe4b74b863cdbb936aba40, type: 2}
+  upgradeOf: {fileID: 0}
+  effects:
+  - rid: 8661860679606599766
+  - rid: 8661860679606599767
   references:
     version: 2
-    RefIds: []
+    RefIds:
+    - rid: 8661860679606599766
+      type: {class: ApplyStatesSkillEffect, ns: GridBattle.Gameplay.Entities.Skills, asm: Assembly-CSharp}
+      data:
+        recipient: 0
+        states:
+        - state: {fileID: 11400000, guid: 69962cb40aeb9e54f86ea8a08b723b08, type: 2}
+          permanent: 0
+          duration: 2
+          stacks: 1
+    - rid: 8661860679606599767
+      type: {class: CreateTerrainSkillEffect, ns: GridBattle.Gameplay.Entities.Skills, asm: Assembly-CSharp}
+      data:
+        terrain: {fileID: 11400000, guid: 64165f775a07f244db0d27d7d7f6aeff, type: 2}
+        cells: 1
+        turns: 2
+        replaceTerrain: 0

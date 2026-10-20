@@ -9,32 +9,54 @@ namespace GridBattle.Gameplay.Entities.Skills
 {
     /// <summary>
     /// A telegraphed skill being prepared by an enemy (<see cref="SkillDefinition.Telegraphed"/>): who prepares it,
-    /// the skill, the aimed cell, the cells of the area fixed when it was prepared (they never follow anybody) and the
-    /// turns of the enemy left until it fires (1 = on its next turn). Runtime state owned by the
-    /// <see cref="Enemy"/> (never by the skill asset) and saved with the battle (<see cref="TelegraphState"/>).
+    /// the skill, the aimed cell, the cells of the area fixed when it was prepared (they only move when the caster is
+    /// pushed, pulled or swapped and the skill follows it, see <see cref="SkillDefinition.TelegraphFollowsCaster"/>),
+    /// whether it was aimed at the player and the turns of the enemy left until it fires (1 = on its next turn).
+    /// Runtime state owned by the <see cref="Enemy"/> (never by the skill asset) and saved with the battle
+    /// (<see cref="TelegraphState"/>).
     /// </summary>
     public sealed class SkillTelegraph
     {
         private readonly List<Vector2Int> _cells;
 
         public SkillTelegraph(Character caster, SkillDefinition skill, Vector2Int targetPos,
-            IEnumerable<Vector2Int> cells, int turnsLeft)
+            IEnumerable<Vector2Int> cells, int turnsLeft, bool aimedAtPlayer = false)
         {
             Caster = caster;
             Skill = skill;
             TargetPos = targetPos;
             _cells = new List<Vector2Int>(cells);
             TurnsLeft = Mathf.Max(1, turnsLeft);
+            AimedAtPlayer = aimedAtPlayer;
         }
 
         public Character Caster { get; }
         public SkillDefinition Skill { get; }
 
-        /// <summary>The cell the skill was aimed at when it was prepared.</summary>
-        public Vector2Int TargetPos { get; }
+        /// <summary>The cell the skill was aimed at (moves with the marked cells).</summary>
+        public Vector2Int TargetPos { get; private set; }
 
-        /// <summary>The marked cells: the area of the skill when it was prepared, in row then column order.</summary>
+        /// <summary>The player stood in the area when the skill was prepared (the AI aims at the player).</summary>
+        public bool AimedAtPlayer { get; }
+
+        /// <summary>
+        /// The marked cells: the area of the skill when it was prepared, in row then column order. After a shift some
+        /// may lie outside the grid: they are never marked and never hit.
+        /// </summary>
         public IReadOnlyList<Vector2Int> Cells => _cells;
+
+        /// <summary>
+        /// Moves the marked cells and the aimed cell by <paramref name="delta"/> (the caster was displaced and the
+        /// skill keeps its shape and direction around it, as in Into the Breach).
+        /// </summary>
+        public void Shift(Vector2Int delta)
+        {
+            if (delta == Vector2Int.zero) return;
+
+            for (var i = 0; i < _cells.Count; i++)
+                _cells[i] += delta;
+            TargetPos += delta;
+        }
 
         /// <summary>Turns of the caster left until the skill fires (1 = on its next turn).</summary>
         public int TurnsLeft { get; private set; }
@@ -70,7 +92,7 @@ namespace GridBattle.Gameplay.Entities.Skills
                 : 0;
         }
 
-        /// <summary>Saved form (skill id, aimed cell, marked cells, turns left).</summary>
+        /// <summary>Saved form (skill id, aimed cell, marked cells, turns left, aimed at the player).</summary>
         public TelegraphState Capture()
         {
             var state = new TelegraphState
@@ -79,6 +101,7 @@ namespace GridBattle.Gameplay.Entities.Skills
                 TargetX = TargetPos.x,
                 TargetY = TargetPos.y,
                 TurnsLeft = TurnsLeft,
+                AimedAtPlayer = AimedAtPlayer,
             };
             foreach (var cell in _cells)
                 state.Cells.Add(new GridCellState { X = cell.x, Y = cell.y });
@@ -110,7 +133,7 @@ namespace GridBattle.Gameplay.Entities.Skills
             }
 
             return new SkillTelegraph(caster, skill, new Vector2Int(state.TargetX, state.TargetY), cells,
-                state.TurnsLeft);
+                state.TurnsLeft, state.AimedAtPlayer);
         }
 
         /// <summary>

@@ -23,7 +23,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 4496651681792
-    m_Localized: "Inflige un 50% menos de da\xF1o."
+    m_Localized: "Inflige 1 menos de da\xF1o con cada golpe."
     m_Metadata:
       m_Items: []
   - m_Id: 4497024974848
@@ -31,7 +31,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 4497024974849
-    m_Localized: "Al recibir un ataque, devuelve da\xF1o al atacante."
+    m_Localized: "Inflige 1 de da\xF1o a quien lo golpea."
     m_Metadata:
       m_Items: []
   - m_Id: 4497381490688
@@ -47,7 +47,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 4497729617921
-    m_Localized: Recupera vida al inicio de cada turno.
+    m_Localized: Recupera 1 PV al inicio de cada uno de sus turnos.
     m_Metadata:
       m_Items: []
   - m_Id: 4498077745152
@@ -55,7 +55,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 4498077745153
-    m_Localized: "Vida temporal que absorbe da\xF1o antes que la vida real."
+    m_Localized: "Absorbe el siguiente 1 de da\xF1o."
     m_Metadata:
       m_Items: []
   - m_Id: 4498425872384
@@ -63,7 +63,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 4498425872385
-    m_Localized: "Recibe da\xF1o al inicio de cada turno."
+    m_Localized: "Recibe 1 de da\xF1o al inicio de cada uno de sus turnos."
     m_Metadata:
       m_Items: []
   - m_Id: 7824852877312
@@ -71,7 +71,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 7824865460224
-    m_Localized: "Reduce el da\xF1o de cada golpe recibido."
+    m_Localized: "Bloquea 1 de da\xF1o de cada golpe. Los choques ignoran la armadura."
     m_Metadata:
       m_Items: []
   - m_Id: 7825255530496
@@ -127,7 +127,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 7828103462913
-    m_Localized: Te persigue y ataca de cerca.
+    m_Localized: Se acerca y golpea con su garrote una casilla adyacente en su siguiente turno.
     m_Metadata:
       m_Items: []
   - m_Id: 7828103462914
@@ -135,7 +135,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 7828103462915
-    m_Localized: Lento y resistente. Avanza hacia ti y ataca de cerca.
+    m_Localized: "Lento y resistente. Salpica \xE1cido en la casilla de enfrente y a sus lados."
     m_Metadata:
       m_Items: []
   - m_Id: 7828103462916
@@ -143,7 +143,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 7828103462917
-    m_Localized: "R\xE1pida y fr\xE1gil. Se acerca deprisa y muerde."
+    m_Localized: "R\xE1pida y fr\xE1gil. Se acerca deprisa y muerde una casilla adyacente."
     m_Metadata:
       m_Items: []
   - m_Id: 7828103462918
@@ -151,7 +151,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 7828103462919
-    m_Localized: "R\xE1pido y fr\xE1gil. Vuela hacia ti y ataca de cerca."
+    m_Localized: "R\xE1pido y fr\xE1gil. Se lanza sobre casillas en diagonal y, cada pocos turnos, chilla contra todas las casillas a su alrededor y empuja a quien est\xE9 en ellas."
     m_Metadata:
       m_Items: []
   - m_Id: 7828103462920
@@ -159,7 +159,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 7828103462921
-    m_Localized: Ataca desde lejos e intenta mantener esa distancia.
+    m_Localized: "Mantiene la distancia y dispara saetas de fuego en l\xEDnea recta que te dejan Ardiendo."
     m_Metadata:
       m_Items: []
   - m_Id: 7828212514816
@@ -167,7 +167,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 7828212514817
-    m_Localized: "Cura y protege a los aliados heridos y se mantiene lejos de ti. Elim\xEDnalo primero."
+    m_Localized: "Cura y protege a los aliados heridos y te electrocuta desde lejos. Elim\xEDnalo primero."
     m_Metadata:
       m_Items: []
   - m_Id: 7828325761024
@@ -175,7 +175,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 7828325761025
-    m_Localized: Invoca ratas para que luchen por ella y se mantiene lejos de ti.
+    m_Localized: Invoca ratas para que luchen por ella y chilla para empujarte.
     m_Metadata:
       m_Items: []
   - m_Id: 7828430618624
@@ -183,7 +183,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 7828430618625
-    m_Localized: Te debilita desde lejos y luego se acerca para atacar.
+    m_Localized: "Te debilita desde lejos y maldice una l\xEDnea, dej\xE1ndote Expuesto."
     m_Metadata:
       m_Items: []
   - m_Id: 7828539670528
@@ -191,7 +191,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 7828539670529
-    m_Localized: "La armadura bloquea parte de cada golpe, as\xED que los ataques d\xE9biles apenas le hacen da\xF1o."
+    m_Localized: "La armadura bloquea 1 de da\xF1o de cada golpe: emp\xFAjalo contra algo, los choques ignoran la armadura."
     m_Metadata:
       m_Items: []
   - m_Id: 7828652916736
@@ -199,7 +199,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 7828652916737
-    m_Localized: "Recupera vida cada turno. Haz da\xF1o r\xE1pido, antes de que se cure."
+    m_Localized: "Recupera 1 PV cada turno. Acaba con \xE9l r\xE1pido."
     m_Metadata:
       m_Items: []
   - m_Id: 7828757774336
@@ -207,7 +207,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 7828757774337
-    m_Localized: "Hiere a quien lo golpea. Ataca desde lejos o usa da\xF1o con el tiempo."
+    m_Localized: "Inflige 1 de da\xF1o a quien lo golpea. Mejor emp\xFAjalo contra otros: los choques no pinchan."
     m_Metadata:
       m_Items: []
   - m_Id: 7840745095168
@@ -215,7 +215,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 7840745095169
-    m_Localized: "Un golpe r\xE1pido contra un enemigo adyacente."
+    m_Localized: Golpea a un enemigo adyacente y lo empuja 1 casilla.
     m_Metadata:
       m_Items: []
   - m_Id: 7841101611008
@@ -223,7 +223,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 7841101611009
-    m_Localized: "Embiste con el escudo y golpea una l\xEDnea de enemigos."
+    m_Localized: "Embiste hasta 3 casillas en l\xEDnea recta. El enemigo al final recibe 1 de da\xF1o y es empujado 1 casilla."
     m_Metadata:
       m_Items: []
   - m_Id: 7841487486976
@@ -231,7 +231,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 7841487486977
-    m_Localized: "Lanza una bola de fuego que quema a los enemigos de un \xE1rea, desde cualquier punto de la cuadr\xEDcula."
+    m_Localized: "Lanza una bola de fuego a una casilla a 2-3: 2 de da\xF1o, y la casilla arde durante 2 rondas (1 de da\xF1o a quien termine su turno en ella)."
     m_Metadata:
       m_Items: []
   - m_Id: 7841844002816
@@ -239,7 +239,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 7841844002817
-    m_Localized: "Una explosi\xF3n de hielo que golpea a los enemigos alrededor del objetivo."
+    m_Localized: "Congela a todos a tu alrededor: 1 de da\xF1o, y en su siguiente turno no pueden caminar ni usar habilidades. Un enemigo congelado pierde su golpe preparado."
     m_Metadata:
       m_Items: []
   - m_Id: 7842200518656
@@ -247,7 +247,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 7842200518657
-    m_Localized: Un rayo que se abre en cono desde el objetivo.
+    m_Localized: "Rayos del cielo sobre una cruz de casillas a 2-4 (no necesita l\xEDnea de visi\xF3n): 1 de da\xF1o y aturde, cancelando los golpes preparados. Canalizada: tambi\xE9n gasta el movimiento del turno (\xFAsala antes de caminar)."
     m_Metadata:
       m_Items: []
   - m_Id: 7842586394624
@@ -255,7 +255,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 7842586394625
-    m_Localized: Lanza una daga a un enemigo lejano.
+    m_Localized: "Lanza una daga a un enemigo a 2-4 casillas en l\xEDnea o diagonal: 1 de da\xF1o y Expuesto (recibe 1 m\xE1s de cada golpe) hasta tu siguiente turno."
     m_Metadata:
       m_Items: []
   - m_Id: 7842947104768
@@ -263,7 +263,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 7842947104769
-    m_Localized: Lanza una bomba de humo a un enemigo a tu lado.
+    m_Localized: "Revienta una bomba de humo a tu alrededor: 1 de da\xF1o y ciega a todos a tu alrededor. Los enemigos cegados pierden su golpe preparado y no pueden preparar otro en su siguiente turno."
     m_Metadata:
       m_Items: []
   - m_Id: 7843299426304
@@ -271,7 +271,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 7843299426305
-    m_Localized: "Una daga envenenada que atraviesa una l\xEDnea de enemigos."
+    m_Localized: "Lanza una daga a una casilla a hasta 3 en l\xEDnea recta: 1 de da\xF1o y Envenenado (1 de da\xF1o al inicio de cada uno de sus 2 turnos siguientes)."
     m_Metadata:
       m_Items: []
   - m_Id: 7843660136448
@@ -279,7 +279,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 7843660136449
-    m_Localized: "Un largo rastro de veneno que golpea a todos los enemigos en l\xEDnea."
+    m_Localized: "Derrama veneno en una l\xEDnea de 4 casillas frente a ti: 1 de da\xF1o, Envenenado, y las casillas se vuelven un pantano venenoso durante 2 rondas."
     m_Metadata:
       m_Items: []
   - m_Id: 10290159910912
@@ -287,7 +287,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 10290247991296
-    m_Localized: "En cada turno puedes caminar una vez y actuar una vez (atacar o usar una habilidad), en cualquier orden. T\xF3cate o pulsa Terminar para acabar; luego los enemigos tambi\xE9n caminan y act\xFAan. Derrotarlos da XP: llena la barra para subir de nivel."
+    m_Localized: "En cada turno caminas una vez y usas una habilidad, en cualquier orden. Los enemigos marcan las casillas que golpear\xE1n en su siguiente turno: sal de las marcas, o emp\xFAjalos, arr\xE1stralos, at\xFArdelos o cong\xE9lalos. T\xF3cate o pulsa Terminar para acabar."
     m_Metadata:
       m_Items: []
   - m_Id: 10290373820416
@@ -311,15 +311,15 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 10290604507137
-    m_Localized: "Tu vida se mantiene en la siguiente batalla. Se recupera por completo al subir de nivel, y tambi\xE9n en nodos de curaci\xF3n o con tu build; vig\xEDlala al planear tu ruta."
+    m_Localized: Tu vida se mantiene en la siguiente batalla y no se recupera al subir de nivel. Descansa en los campamentos para curarte y planea tu ruta en torno a ellos.
     m_Metadata:
       m_Items: []
   - m_Id: 10290717753344
-    m_Localized: "Nodo de curaci\xF3n"
+    m_Localized: Campamento
     m_Metadata:
       m_Items: []
   - m_Id: 10290717753345
-    m_Localized: "Aqu\xED recuperas vida. Planea tu ruta para llegar a uno antes de que se acabe tu vida."
+    m_Localized: "En un campamento descansas para recuperar vida o entrenas para convertir una de tus habilidades en una versi\xF3n m\xE1s fuerte. Elige lo que necesita tu partida."
     m_Metadata:
       m_Items: []
   - m_Id: 10290826805248
@@ -327,7 +327,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 10290826805249
-    m_Localized: "Aqu\xED puedes obtener un talento fuera de las subidas de nivel, a cambio de un coste. Aseg\xFArate de que valga la pena."
+    m_Localized: "Aqu\xED puedes obtener un talento fuera de las subidas de nivel, a cambio de vida m\xE1xima. Aseg\xFArate de que valga la pena."
     m_Metadata:
       m_Items: []
   - m_Id: 10290944245760
@@ -351,7 +351,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 10291187515393
-    m_Localized: "Toca el bot\xF3n de una habilidad y luego una celda resaltada para usarla; t\xF3calo de nuevo para cancelar. Las habilidades tienen una recarga que se cuenta en tus acciones."
+    m_Localized: "Toca una habilidad y luego una casilla resaltada para apuntar: la vista previa muestra el da\xF1o, los empujones y d\xF3nde caer\xE1n los golpes marcados. Toca la misma casilla otra vez o Confirmar para usarla, o Cancelar para elegir de nuevo. Las habilidades tienen una recarga contada en tus turnos."
     m_Metadata:
       m_Items: []
   - m_Id: 141742633615360
@@ -359,7 +359,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 141742713307136
-    m_Localized: "Restaura 30 de vida. Usarla no gasta tu acci\xF3n."
+    m_Localized: "Restaura 4 de vida. Usarla no gasta tu acci\xF3n."
     m_Metadata:
       m_Items: []
   - m_Id: 141743153709056
@@ -367,7 +367,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 141743153709057
-    m_Localized: "L\xE1nzala hasta 3 casillas de distancia: causa 15 de da\xF1o a cada enemigo en un \xE1rea de 3x3. No gasta tu acci\xF3n."
+    m_Localized: "L\xE1nzala hasta 3 casillas de distancia: causa 2 de da\xF1o a cada enemigo en un \xE1rea de 3x3. No gasta tu acci\xF3n."
     m_Metadata:
       m_Items: []
   - m_Id: 141743547973632
@@ -375,7 +375,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 141743547973633
-    m_Localized: "Recupera vida con el tiempo durante 3 turnos. No gasta tu acci\xF3n."
+    m_Localized: "Recupera 1 PV al inicio de cada uno de tus 3 turnos siguientes. No gasta tu acci\xF3n."
     m_Metadata:
       m_Items: []
   - m_Id: 142151209156608
@@ -391,7 +391,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 142151704084481
-    m_Localized: Quema a quien termine su turno sobre ella.
+    m_Localized: "Inflige 1 de da\xF1o a quien termine su turno sobre ella."
     m_Metadata:
       m_Items: []
   - m_Id: 142152127709184
@@ -427,7 +427,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 151679891898369
-    m_Localized: Te embiste y golpea fuerte. Llega con dos guardias blindados.
+    m_Localized: "No puede ser empujado. Golpea las casillas a su alrededor y lanza ondas de choque en l\xEDnea; ambas alcanzan tambi\xE9n a sus guardias."
     m_Metadata:
       m_Items: []
   - m_Id: 151680038699008
@@ -439,7 +439,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 151680038699010
-    m_Localized: "Te persigue y ataca de cerca. Recibe menos da\xF1o de cada golpe."
+    m_Localized: Escolta blindada del rey. Te empuja, a menudo hacia el martillazo del rey.
     m_Metadata:
       m_Items: []
   - m_Id: 218482187194368
@@ -487,55 +487,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 218484057853953
-    m_Localized: "+10 de vida m\xE1xima por acumulaci\xF3n."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 218484464701440
-    m_Localized: Hoja Afilada
-    m_Metadata:
-      m_Items: []
-  - m_Id: 218484464701441
-    m_Localized: "+2 de da\xF1o del ataque b\xE1sico por acumulaci\xF3n."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 218484909297664
-    m_Localized: Ojo Agudo
-    m_Metadata:
-      m_Items: []
-  - m_Id: 218484909297665
-    m_Localized: "+5% de probabilidad de cr\xEDtico por acumulaci\xF3n."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 218485311950848
-    m_Localized: "Precisi\xF3n Letal"
-    m_Metadata:
-      m_Items: []
-  - m_Id: 218485311950849
-    m_Localized: "+0,25x al multiplicador de da\xF1o cr\xEDtico por acumulaci\xF3n."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 218485693632512
-    m_Localized: "Perforaci\xF3n de Armadura"
-    m_Metadata:
-      m_Items: []
-  - m_Id: 218485693632513
-    m_Localized: "Ignora el 10% de la defensa del objetivo por acumulaci\xF3n."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 218486079508480
-    m_Localized: Robustez
-    m_Metadata:
-      m_Items: []
-  - m_Id: 218486079508481
-    m_Localized: "+1 de defensa por acumulaci\xF3n."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 218486490550272
-    m_Localized: "Maestr\xEDa en Habilidades"
-    m_Metadata:
-      m_Items: []
-  - m_Id: 218486490550273
-    m_Localized: "+10% de da\xF1o en habilidades ofensivas por acumulaci\xF3n."
+    m_Localized: "+2 de vida m\xE1xima por rango."
     m_Metadata:
       m_Items: []
   - m_Id: 218486876426240
@@ -543,39 +495,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 218486876426241
-    m_Localized: "+1 de alcance de habilidades por acumulaci\xF3n."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 218487270690816
-    m_Localized: "Recuperaci\xF3n R\xE1pida"
-    m_Metadata:
-      m_Items: []
-  - m_Id: 218487270690817
-    m_Localized: "Las habilidades se recuperan 1 turno antes por acumulaci\xF3n."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 218487669149696
-    m_Localized: Armadura de Espinas
-    m_Metadata:
-      m_Items: []
-  - m_Id: 218487669149697
-    m_Localized: "Al recibir un ataque, devuelve 2 de da\xF1o al atacante por acumulaci\xF3n."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 218488046637056
-    m_Localized: Robo de Vida
-    m_Metadata:
-      m_Items: []
-  - m_Id: 218488046637057
-    m_Localized: "Recupera el 5% del da\xF1o infligido como vida por acumulaci\xF3n."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 218488432513024
-    m_Localized: "Regeneraci\xF3n"
-    m_Metadata:
-      m_Items: []
-  - m_Id: 218488432513025
-    m_Localized: "Recupera 2 de vida al inicio de cada uno de tus turnos por acumulaci\xF3n."
+    m_Localized: +1 de alcance para tus habilidades cuyo alcance puede crecer.
     m_Metadata:
       m_Items: []
   - m_Id: 218488814194688
@@ -584,14 +504,6 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 218488814194689
     m_Localized: "+1 opci\xF3n de talento en cada oferta por acumulaci\xF3n."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 218489191682048
-    m_Localized: Favor de la Fortuna
-    m_Metadata:
-      m_Items: []
-  - m_Id: 218489191682049
-    m_Localized: "+1 reroll de ofertas de talento por acumulaci\xF3n."
     m_Metadata:
       m_Items: []
   - m_Id: 218489581752320
@@ -607,55 +519,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 218489829216257
-    m_Localized: "+10 de vida m\xE1xima por rango."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 218490064097280
-    m_Localized: Hoja Afilada
-    m_Metadata:
-      m_Items: []
-  - m_Id: 218490064097281
-    m_Localized: "+2 de da\xF1o del ataque b\xE1sico por rango."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 218490298978304
-    m_Localized: Ojo Agudo
-    m_Metadata:
-      m_Items: []
-  - m_Id: 218490298978305
-    m_Localized: "+5% de probabilidad de cr\xEDtico por rango."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 218490542247936
-    m_Localized: "Precisi\xF3n Letal"
-    m_Metadata:
-      m_Items: []
-  - m_Id: 218490542247937
-    m_Localized: "+0,25x al multiplicador de da\xF1o cr\xEDtico por rango. Requiere Ojo Agudo."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 218490772934656
-    m_Localized: "Perforaci\xF3n de Armadura"
-    m_Metadata:
-      m_Items: []
-  - m_Id: 218490777128960
-    m_Localized: Ignora el 10% de la defensa del objetivo por rango.
-    m_Metadata:
-      m_Items: []
-  - m_Id: 218490995232768
-    m_Localized: Robustez
-    m_Metadata:
-      m_Items: []
-  - m_Id: 218490995232769
-    m_Localized: +1 de defensa por rango.
-    m_Metadata:
-      m_Items: []
-  - m_Id: 218491221725184
-    m_Localized: "Maestr\xEDa en Habilidades"
-    m_Metadata:
-      m_Items: []
-  - m_Id: 218491221725185
-    m_Localized: "+10% de da\xF1o en habilidades ofensivas por rango."
+    m_Localized: "+2 de vida m\xE1xima por rango."
     m_Metadata:
       m_Items: []
   - m_Id: 218491444023296
@@ -663,39 +527,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 218491444023297
-    m_Localized: +1 de alcance de habilidades por rango.
-    m_Metadata:
-      m_Items: []
-  - m_Id: 218491670515712
-    m_Localized: "Recuperaci\xF3n R\xE1pida"
-    m_Metadata:
-      m_Items: []
-  - m_Id: 218491670515713
-    m_Localized: Las habilidades se recuperan 1 turno antes por rango.
-    m_Metadata:
-      m_Items: []
-  - m_Id: 218491930562560
-    m_Localized: Armadura de Espinas
-    m_Metadata:
-      m_Items: []
-  - m_Id: 218491930562561
-    m_Localized: "Al recibir un ataque, devuelve 2 de da\xF1o al atacante por rango."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 218492148666368
-    m_Localized: Robo de Vida
-    m_Metadata:
-      m_Items: []
-  - m_Id: 218492148666369
-    m_Localized: "Recupera el 5% del da\xF1o infligido como vida por rango."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 218492383547392
-    m_Localized: "Regeneraci\xF3n"
-    m_Metadata:
-      m_Items: []
-  - m_Id: 218492383547393
-    m_Localized: Recupera 2 de vida al inicio de cada uno de tus turnos por rango.
+    m_Localized: +1 de alcance para tus habilidades cuyo alcance puede crecer.
     m_Metadata:
       m_Items: []
   - m_Id: 218492639399936
@@ -704,14 +536,6 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 218492639399937
     m_Localized: "+1 opci\xF3n de talento en cada oferta por rango."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 218492886863872
-    m_Localized: Favor de la Fortuna
-    m_Metadata:
-      m_Items: []
-  - m_Id: 218492886863873
-    m_Localized: +1 reroll de ofertas de talento por rango.
     m_Metadata:
       m_Items: []
   - m_Id: 218493130133504
@@ -723,11 +547,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 218493557952512
-    m_Localized: Muralla
+    m_Localized: Baluarte
     m_Metadata:
       m_Items: []
   - m_Id: 218493557952513
-    m_Localized: "Desbloquea Embestida con Escudo: embiste con el escudo y golpea una l\xEDnea de enemigos."
+    m_Localized: "Desbloquea Lanzamiento de Escudo: golpea a un enemigo a 2-4 casillas en l\xEDnea recta y lo empuja."
     m_Metadata:
       m_Items: []
   - m_Id: 218493989965824
@@ -735,7 +559,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 218493989965825
-    m_Localized: "Desbloquea Bola de Fuego: quema a los enemigos de un \xE1rea desde cualquier punto de la cuadr\xEDcula."
+    m_Localized: "Desbloquea Meteoro: 2 de da\xF1o en un \xE1rea de 3x3 lejana, empujando a todos lejos del centro."
     m_Metadata:
       m_Items: []
   - m_Id: 218494451339264
@@ -743,15 +567,15 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 218494451339265
-    m_Localized: "Dominio del hielo: tus habilidades infligen un 15 % m\xE1s de da\xF1o."
+    m_Localized: 'Desbloquea Muro de Hielo: levanta un muro de hielo de 3 casillas que bloquea el paso, la vista y los golpes.'
     m_Metadata:
       m_Items: []
   - m_Id: 218494916907008
-    m_Localized: Invocador de Tormentas
+    m_Localized: Conjurador de Tormentas
     m_Metadata:
       m_Items: []
   - m_Id: 218494921101312
-    m_Localized: "Desbloquea Tormenta El\xE9ctrica: un rayo que se abre en cono desde el objetivo."
+    m_Localized: "Desbloquea Tormenta El\xE9ctrica: rayos sobre una cruz de casillas lejanas que aturden, cancelando los golpes preparados."
     m_Metadata:
       m_Items: []
   - m_Id: 218495558635520
@@ -759,7 +583,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 218495558635521
-    m_Localized: 'Desbloquea Daga Arrojadiza: lanza una daga a un enemigo lejano.'
+    m_Localized: "Desbloquea Daga Arrojadiza: golpea a un enemigo lejano en l\xEDnea o diagonal y lo deja Expuesto."
     m_Metadata:
       m_Items: []
   - m_Id: 218496020008960
@@ -767,15 +591,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 218496020008961
-    m_Localized: 'Desbloquea Bomba de Humo: lanza una bomba de humo a un enemigo a tu lado.'
-    m_Metadata:
-      m_Items: []
-  - m_Id: 218496452022272
-    m_Localized: Manos Ligeras
-    m_Metadata:
-      m_Items: []
-  - m_Id: 218496452022273
-    m_Localized: "Manos r\xE1pidas: tus habilidades infligen un 15 % m\xE1s de da\xF1o."
+    m_Localized: 'Desbloquea Bomba de Humo: ciega a todos a tu alrededor, cancelando sus golpes preparados.'
     m_Metadata:
       m_Items: []
   - m_Id: 218496955338752
@@ -783,7 +599,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 218496955338753
-    m_Localized: "Desbloquea L\xEDnea Venenosa: una larga l\xEDnea de veneno que golpea a todos los enemigos en ella."
+    m_Localized: "Desbloquea L\xEDnea Venenosa: envenena una l\xEDnea de 4 casillas y la convierte en un pantano venenoso."
     m_Metadata:
       m_Items: []
   - m_Id: 220859090882560
@@ -798,20 +614,12 @@ MonoBehaviour:
     m_Localized: "P\xEDcaro"
     m_Metadata:
       m_Items: []
-  - m_Id: 302178474938368
-    m_Localized: Criomancia
+  - m_Id: 5123292117147649
+    m_Localized: Los enemigos congelados o helados que empujas se deslizan hasta chocar con algo.
     m_Metadata:
       m_Items: []
-  - m_Id: 302178546241536
-    m_Localized: "Tus habilidades infligen un 15 % m\xE1s de da\xF1o."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 302178680459264
-    m_Localized: Manos Ligeras
-    m_Metadata:
-      m_Items: []
-  - m_Id: 302178684653568
-    m_Localized: "Tus habilidades infligen un 15 % m\xE1s de da\xF1o."
+  - m_Id: 5123292117147648
+    m_Localized: Hielo Resbaladizo
     m_Metadata:
       m_Items: []
   - m_Id: 444084762312704
@@ -819,7 +627,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 444084842004480
-    m_Localized: "Golpea con el escudo a un enemigo adyacente y emp\xFAjalo 2 casillas. Los enemigos lanzados contra un obst\xE1culo, el borde u otro personaje reciben da\xF1o extra."
+    m_Localized: "Golpea a un enemigo adyacente: 2 de da\xF1o, lo empuja 2 casillas y lo aturde, cancelando su golpe preparado."
     m_Metadata:
       m_Items: []
   - m_Id: 444085320155136
@@ -827,7 +635,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 444085320155137
-    m_Localized: "Una r\xE1faga de viento que da\xF1a a los enemigos de un \xE1rea peque\xF1a y empuja a cada uno 1 casilla lejos de su centro. Los que chocan reciben da\xF1o extra."
+    m_Localized: "Una r\xE1faga de viento a una casilla a hasta 3 en l\xEDnea recta: 1 de da\xF1o y empuja al objetivo 1 casilla lejos de ti."
     m_Metadata:
       m_Items: []
   - m_Id: 444085714419712
@@ -835,7 +643,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 444085714419713
-    m_Localized: "Lanza un garfio a un enemigo lejano y tira de \xE9l hasta 3 casillas hacia ti, deteni\xE9ndolo a tu lado. Arr\xE1stralo a zonas peligrosas o contra otros enemigos."
+    m_Localized: "Lanza un garfio a un enemigo a 2-3 casillas en l\xEDnea recta: 1 de da\xF1o y lo arrastra hasta 3 casillas hacia ti."
     m_Metadata:
       m_Items: []
   - m_Id: 444086129655808
@@ -843,7 +651,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 444086129655809
-    m_Localized: Te lanza un garfio desde lejos y te arrastra hasta 3 casillas hacia el goblin.
+    m_Localized: "Marca una casilla a 2-4 en l\xEDnea recta y la engancha en su siguiente turno: 1 de da\xF1o y arrastra a quien est\xE9 all\xED hasta 3 casillas hacia el goblin."
     m_Metadata:
       m_Items: []
   - m_Id: 444086486171648
@@ -851,7 +659,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 444086486171649
-    m_Localized: "Golpea a todos alrededor del rey y los lanza 2 casillas hacia atr\xE1s."
+    m_Localized: "Marca una l\xEDnea de 4 casillas delante de \xE9l y lanza una onda de choque en su siguiente turno: 2 de da\xF1o y lanza a todos en ella 2 casillas atr\xE1s."
     m_Metadata:
       m_Items: []
   - m_Id: 444086842687488
@@ -859,23 +667,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 444086842687489
-    m_Localized: "Desbloquea Golpe de Escudo: golpea a un enemigo adyacente y emp\xFAjalo 2 casillas. Los enemigos que chocan contra algo reciben da\xF1o extra."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 444087199203328
-    m_Localized: Dominio del Viento
-    m_Metadata:
-      m_Items: []
-  - m_Id: 444087199203329
-    m_Localized: "Desbloquea R\xE1faga de Viento: una r\xE1faga que da\xF1a a los enemigos de un \xE1rea peque\xF1a y los empuja lejos de su centro."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 444087547330560
-    m_Localized: Garfio de Abordaje
-    m_Metadata:
-      m_Items: []
-  - m_Id: 444087547330561
-    m_Localized: "Desbloquea Garfio: tira de un enemigo lejano hasta 3 casillas hacia ti. Arr\xE1stralo a zonas peligrosas o contra otros enemigos."
+    m_Localized: "Desbloquea Sismo: parte el suelo en una l\xEDnea de 3 casillas frente a ti, golpeando y empujando a todos en ella."
     m_Metadata:
       m_Items: []
   - m_Id: 444087660576768
@@ -883,7 +675,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 444087660576769
-    m_Localized: Te engancha desde lejos y te arrastra hacia el grupo, y luego lucha de cerca.
+    m_Localized: Te engancha desde lejos y te arrastra hacia el grupo.
     m_Metadata:
       m_Items: []
   - m_Id: 458931054968832
@@ -899,7 +691,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 458931742834689
-    m_Localized: "Sufre 2 de da\xF1o al inicio de su turno por cada acumulaci\xF3n (hasta 3)."
+    m_Localized: "Recibe 1 de da\xF1o al inicio de cada uno de sus turnos."
     m_Metadata:
       m_Items: []
   - m_Id: 458932103544832
@@ -915,7 +707,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 458932476837889
-    m_Localized: "No puede moverse e inflige un 20% menos de da\xF1o."
+    m_Localized: Camina 1 casilla menos.
     m_Metadata:
       m_Items: []
   - m_Id: 458932833353728
@@ -923,7 +715,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 458932833353729
-    m_Localized: No puede moverse, atacar ni usar habilidades.
+    m_Localized: No puede caminar ni usar habilidades. Un golpe preparado se cancela.
     m_Metadata:
       m_Items: []
   - m_Id: 458933202452480
@@ -931,87 +723,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 458933202452481
-    m_Localized: "Recibe un 25% m\xE1s de da\xF1o."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458933571551232
-    m_Localized: Golpe Pesado
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458933571551233
-    m_Localized: "Golpe hace +3 de da\xF1o por rango."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458933923872768
-    m_Localized: Golpe Pesado
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458933923872769
-    m_Localized: "Golpe hace +3 de da\xF1o por rango."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458934280388608
-    m_Localized: Barrido Amplio
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458934280388609
-    m_Localized: "La l\xEDnea de Golpe crece 2 casillas por rango."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458934632710144
-    m_Localized: Barrido Amplio
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458934632710145
-    m_Localized: "La l\xEDnea de Golpe crece 2 casillas por rango."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458935052140544
-    m_Localized: "Golpe Empuj\xF3n"
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458935052140545
-    m_Localized: "Golpe tambi\xE9n empuja 1 casilla a los enemigos que alcanza."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458935479959552
-    m_Localized: "Golpe Empuj\xF3n"
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458935484153856
-    m_Localized: "Golpe tambi\xE9n empuja 1 casilla a los enemigos que alcanza."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458935916167168
-    m_Localized: "Frenes\xED Cuerpo a Cuerpo"
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458935916167169
-    m_Localized: "+7% de da\xF1o por enemigo adyacente (hasta 3) por rango, con ataques y habilidades."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458936364957696
-    m_Localized: "Frenes\xED Cuerpo a Cuerpo"
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458936364957697
-    m_Localized: "+7% de da\xF1o por enemigo adyacente (hasta 3) por rango, con ataques y habilidades."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458936805359616
-    m_Localized: "Mantener la L\xEDnea"
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458936805359617
-    m_Localized: "Recibes un 4% menos de da\xF1o de ataques por enemigo adyacente (hasta 3) por rango."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458937233178624
-    m_Localized: "Mantener la L\xEDnea"
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458937233178625
-    m_Localized: "Recibes un 4% menos de da\xF1o de ataques por enemigo adyacente (hasta 3) por rango."
+    m_Localized: "Recibe 1 m\xE1s de da\xF1o de cada golpe."
     m_Metadata:
       m_Items: []
   - m_Id: 458937702940672
@@ -1019,7 +731,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 458937702940673
-    m_Localized: Matar a un enemigo te cura 6 PV por rango.
+    m_Localized: Matar a un enemigo te cura 1 PV.
     m_Metadata:
       m_Items: []
   - m_Id: 458938113982464
@@ -1027,7 +739,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 458938113982465
-    m_Localized: Matar a un enemigo te cura 6 PV por rango.
+    m_Localized: Matar a un enemigo te cura 1 PV.
     m_Metadata:
       m_Items: []
   - m_Id: 458938508247040
@@ -1035,7 +747,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 458938508247041
-    m_Localized: "Los enemigos que empujas o arrastras contra algo reciben un 40% m\xE1s de da\xF1o por choque por rango."
+    m_Localized: "Los choques que provocas infligen 1 m\xE1s de da\xF1o."
     m_Metadata:
       m_Items: []
   - m_Id: 458938906705920
@@ -1043,247 +755,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 458938906705921
-    m_Localized: "Los enemigos que empujas o arrastras contra algo reciben un 40% m\xE1s de da\xF1o por choque por rango."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458939284193280
-    m_Localized: Golpe Conmocionante
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458939284193281
-    m_Localized: "Golpe de Escudo empuja 1 casilla m\xE1s por rango."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458939636514816
-    m_Localized: Golpe Conmocionante
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458939640709120
-    m_Localized: "Golpe de Escudo empuja 1 casilla m\xE1s por rango."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458939997224960
-    m_Localized: Golpe Sacudidor
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458939997224961
-    m_Localized: "Golpe de Escudo tambi\xE9n expone al enemigo 2 turnos: recibe un 25% m\xE1s de da\xF1o."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458940349546496
-    m_Localized: Golpe Sacudidor
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458940349546497
-    m_Localized: "Golpe de Escudo tambi\xE9n expone al enemigo 2 turnos: recibe un 25% m\xE1s de da\xF1o."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458940697673728
-    m_Localized: "Conmoci\xF3n"
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458940697673729
-    m_Localized: "Golpe de Escudo tambi\xE9n aturde al enemigo 1 turno."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458941049995264
-    m_Localized: "Conmoci\xF3n"
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458941049995265
-    m_Localized: "Golpe de Escudo tambi\xE9n aturde al enemigo 1 turno."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458941398122496
-    m_Localized: "Embestida R\xE1pida"
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458941398122497
-    m_Localized: La recarga de Embestida con Escudo baja 1 por rango.
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458941809164288
-    m_Localized: "Embestida R\xE1pida"
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458941809164289
-    m_Localized: La recarga de Embestida con Escudo baja 1 por rango.
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458942165680128
-    m_Localized: Aplanadora
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458942165680129
-    m_Localized: "Embestida con Escudo hace +4 de da\xF1o y puede empezar 1 casilla m\xE1s lejos por rango."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458942522195968
-    m_Localized: Aplanadora
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458942522195969
-    m_Localized: "Embestida con Escudo hace +4 de da\xF1o y puede empezar 1 casilla m\xE1s lejos por rango."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458942870323200
-    m_Localized: "Toque G\xE9lido"
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458942874517504
-    m_Localized: "Nova de Hielo enfr\xEDa a los enemigos 1 turno: no pueden moverse e infligen un 20% menos de da\xF1o."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458943222644736
-    m_Localized: "Toque G\xE9lido"
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458943222644737
-    m_Localized: "Nova de Hielo enfr\xEDa a los enemigos 1 turno: no pueden moverse e infligen un 20% menos de da\xF1o."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458943574966272
-    m_Localized: Hielo Veloz
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458943574966273
-    m_Localized: La recarga de Nova de Hielo baja 1.
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458943927287808
-    m_Localized: Hielo Veloz
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458943927287809
-    m_Localized: La recarga de Nova de Hielo baja 1.
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458944296386560
-    m_Localized: "Expansi\xF3n de Hielo"
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458944296386561
-    m_Localized: "El \xE1rea de Nova de Hielo crece un anillo (5x5 sin las esquinas)."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458944678068224
-    m_Localized: "Expansi\xF3n de Hielo"
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458944678068225
-    m_Localized: "El \xE1rea de Nova de Hielo crece un anillo (5x5 sin las esquinas)."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458945072332800
-    m_Localized: Piromancia
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458945072332801
-    m_Localized: "Bola de Fuego hace +2 de da\xF1o por rango."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458945437237248
-    m_Localized: Piromancia
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458945437237249
-    m_Localized: "Bola de Fuego hace +2 de da\xF1o por rango."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458945785364480
-    m_Localized: "Ignici\xF3n"
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458945785364481
-    m_Localized: "Bola de Fuego prende fuego a los enemigos 3 turnos (2 de da\xF1o por turno por acumulaci\xF3n): una acumulaci\xF3n por rango en cada impacto."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458946141880320
-    m_Localized: "Ignici\xF3n"
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458946141880321
-    m_Localized: "Bola de Fuego prende fuego a los enemigos 3 turnos (2 de da\xF1o por turno por acumulaci\xF3n): una acumulaci\xF3n por rango en cada impacto."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458946494201856
-    m_Localized: "Explosi\xF3n Ampliada"
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458946494201857
-    m_Localized: "El \xE1rea de Bola de Fuego crece un anillo (5x5 sin las esquinas)."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458946846523392
-    m_Localized: "Explosi\xF3n Ampliada"
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458946846523393
-    m_Localized: "El \xE1rea de Bola de Fuego crece un anillo (5x5 sin las esquinas)."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458947198844928
-    m_Localized: Invocador de Tormentas
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458947198844929
-    m_Localized: "Tormenta El\xE9ctrica hace +3 de da\xF1o por rango."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458947559555072
-    m_Localized: Invocador de Tormentas
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458947559555073
-    m_Localized: "Tormenta El\xE9ctrica hace +3 de da\xF1o por rango."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458947907682304
-    m_Localized: Frente de Tormenta
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458947907682305
-    m_Localized: "El cono de Tormenta El\xE9ctrica crece una fila y su alcance 1."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458948264198144
-    m_Localized: Frente de Tormenta
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458948268392448
-    m_Localized: "El cono de Tormenta El\xE9ctrica crece una fila y su alcance 1."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458948629102592
-    m_Localized: "Hurac\xE1n"
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458948629102593
-    m_Localized: "El \xE1rea de R\xE1faga de Viento crece un anillo (5x5 sin las esquinas)."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458948994007040
-    m_Localized: "Hurac\xE1n"
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458948994007041
-    m_Localized: "El \xE1rea de R\xE1faga de Viento crece un anillo (5x5 sin las esquinas)."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458949342134272
-    m_Localized: Fuerza del Vendaval
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458949342134273
-    m_Localized: "R\xE1faga de Viento empuja 1 casilla m\xE1s por rango."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458949694455808
-    m_Localized: Fuerza del Vendaval
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458949694455809
-    m_Localized: "R\xE1faga de Viento empuja 1 casilla m\xE1s por rango."
+    m_Localized: "Los choques que provocas infligen 1 m\xE1s de da\xF1o."
     m_Metadata:
       m_Items: []
   - m_Id: 458950071943168
@@ -1291,7 +763,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 458950071943169
-    m_Localized: "+20% de da\xF1o por rango a enemigos con un estado da\xF1ino (ardiendo, helado, envenenado...)."
+    m_Localized: "Tus habilidades infligen 1 m\xE1s de da\xF1o a los enemigos congelados o helados."
     m_Metadata:
       m_Items: []
   - m_Id: 458950432653312
@@ -1299,7 +771,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 458950432653313
-    m_Localized: "+20% de da\xF1o por rango a enemigos con un estado da\xF1ino (ardiendo, helado, envenenado...)."
+    m_Localized: "Tus habilidades infligen 1 m\xE1s de da\xF1o a los enemigos congelados o helados."
     m_Metadata:
       m_Items: []
   - m_Id: 458950780780544
@@ -1307,7 +779,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 458950780780545
-    m_Localized: "Las habilidades hacen +15% de da\xF1o por rango si no caminaste en este turno."
+    m_Localized: "Si no caminaste en este turno, tus habilidades infligen 1 m\xE1s de da\xF1o."
     m_Metadata:
       m_Items: []
   - m_Id: 458951166656512
@@ -1315,7 +787,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 458951166656513
-    m_Localized: "Las habilidades hacen +15% de da\xF1o por rango si no caminaste en este turno."
+    m_Localized: "Si no caminaste en este turno, tus habilidades infligen 1 m\xE1s de da\xF1o."
     m_Metadata:
       m_Items: []
   - m_Id: 458951573504000
@@ -1323,7 +795,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 458951573504001
-    m_Localized: Matar a un enemigo acorta 1 por rango las recargas de tus habilidades.
+    m_Localized: Matar a un enemigo acorta en 1 la recarga de tus habilidades.
     m_Metadata:
       m_Items: []
   - m_Id: 458951959379968
@@ -1331,7 +803,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 458951959379969
-    m_Localized: Matar a un enemigo acorta 1 por rango las recargas de tus habilidades.
+    m_Localized: Matar a un enemigo acorta en 1 la recarga de tus habilidades.
     m_Metadata:
       m_Items: []
   - m_Id: 458952328478720
@@ -1339,7 +811,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 458952328478721
-    m_Localized: "Tus habilidades envenenan a los enemigos que alcanzan: una acumulaci\xF3n de veneno por rango (1 de da\xF1o + 5% de su vida m\xE1xima por turno por acumulaci\xF3n, 4 turnos, hasta 5)."
+    m_Localized: Tus habilidades envenenan a cada enemigo que alcanzan.
     m_Metadata:
       m_Items: []
   - m_Id: 458952731131904
@@ -1347,183 +819,103 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 458952731131905
-    m_Localized: "Tus habilidades envenenan a los enemigos que alcanzan: una acumulaci\xF3n de veneno por rango (1 de da\xF1o + 5% de su vida m\xE1xima por turno por acumulaci\xF3n, 4 turnos, hasta 5)."
+    m_Localized: Tus habilidades envenenan a cada enemigo que alcanzan.
     m_Metadata:
       m_Items: []
-  - m_Id: 458953083453440
-    m_Localized: Arma Untada
+  - m_Id: 5123292607881217
+    m_Localized: Los enemigos que empujas o arrastras dejan fuego en las casillas que abandonan, durante 2 rondas.
     m_Metadata:
       m_Items: []
-  - m_Id: 458953087647744
-    m_Localized: "Tus ataques b\xE1sicos tambi\xE9n envenenan: 2 acumulaciones de veneno por rango (4 turnos)."
+  - m_Id: 5123292607881216
+    m_Localized: Rastro de Llamas
     m_Metadata:
       m_Items: []
-  - m_Id: 458953444163584
-    m_Localized: Arma Untada
+  - m_Id: 5123292452691969
+    m_Localized: Los enemigos que empujas o arrastras dejan fuego en las casillas que abandonan, durante 2 rondas.
     m_Metadata:
       m_Items: []
-  - m_Id: 458953444163585
-    m_Localized: "Tus ataques b\xE1sicos tambi\xE9n envenenan: 2 acumulaciones de veneno por rango (4 turnos)."
+  - m_Id: 5123292452691968
+    m_Localized: Rastro de Llamas
     m_Metadata:
       m_Items: []
-  - m_Id: 458953796485120
-    m_Localized: Dagas Afiladas
+  - m_Id: 5123292935036929
+    m_Localized: "Tu caminata tambi\xE9n puede intercambiar el lugar con un personaje adyacente."
     m_Metadata:
       m_Items: []
-  - m_Id: 458953796485121
-    m_Localized: "Daga Envenenada y Daga Arrojadiza hacen +4 de da\xF1o por rango."
+  - m_Id: 5123292935036928
+    m_Localized: Paso Cambiado
     m_Metadata:
       m_Items: []
-  - m_Id: 458954153000960
-    m_Localized: Dagas Afiladas
+  - m_Id: 5123292779847681
+    m_Localized: "Tu caminata tambi\xE9n puede intercambiar el lugar con un personaje adyacente."
     m_Metadata:
       m_Items: []
-  - m_Id: 458954153000961
-    m_Localized: "Daga Envenenada y Daga Arrojadiza hacen +4 de da\xF1o por rango."
+  - m_Id: 5123292779847680
+    m_Localized: Paso Cambiado
     m_Metadata:
       m_Items: []
-  - m_Id: 458954513711104
-    m_Localized: "Ojo de \xC1guila"
+  - m_Id: 5123291198595073
+    m_Localized: "Cuando un golpe dirigido a ti falla, el enemigo que golpe\xF3 queda Expuesto (recibe 1 m\xE1s de cada golpe) hasta el final de su siguiente turno."
     m_Metadata:
       m_Items: []
-  - m_Id: 458954513711105
-    m_Localized: "Daga Envenenada y Daga Arrojadiza llegan 1 casilla m\xE1s lejos por rango."
+  - m_Id: 5123291198595072
+    m_Localized: Contraataque
     m_Metadata:
       m_Items: []
-  - m_Id: 458954857644032
-    m_Localized: "Ojo de \xC1guila"
+  - m_Id: 5123291039211521
+    m_Localized: "Cuando un golpe dirigido a ti falla, el enemigo que golpe\xF3 queda Expuesto (recibe 1 m\xE1s de cada golpe) hasta el final de su siguiente turno."
     m_Metadata:
       m_Items: []
-  - m_Id: 458954857644033
-    m_Localized: "Daga Envenenada y Daga Arrojadiza llegan 1 casilla m\xE1s lejos por rango."
+  - m_Id: 5123291039211520
+    m_Localized: Contraataque
     m_Metadata:
       m_Items: []
-  - m_Id: 458955201576960
-    m_Localized: Lanzamiento Perforante
+  - m_Id: 5123291529945089
+    m_Localized: "Cuando un enemigo que empujas o arrastras choca contra otro personaje, ese tambi\xE9n es empujado 1 casilla en la misma direcci\xF3n."
     m_Metadata:
       m_Items: []
-  - m_Id: 458955201576961
-    m_Localized: "La l\xEDnea de Daga Envenenada es 2 casillas m\xE1s larga."
+  - m_Id: 5123291529945088
+    m_Localized: "Domin\xF3"
     m_Metadata:
       m_Items: []
-  - m_Id: 458955553898496
-    m_Localized: Lanzamiento Perforante
+  - m_Id: 5123291370561537
+    m_Localized: "Desbloquea Pisot\xF3n: golpea a todos a tu alrededor y los empuja 1 casilla."
     m_Metadata:
       m_Items: []
-  - m_Id: 458955553898497
-    m_Localized: "La l\xEDnea de Daga Envenenada es 2 casillas m\xE1s larga."
+  - m_Id: 5123291370561536
+    m_Localized: Paso Pesado
     m_Metadata:
       m_Items: []
-  - m_Id: 458955914608640
-    m_Localized: Daga Veloz
+  - m_Id: 5123292280725505
+    m_Localized: Los enemigos congelados o helados que empujas se deslizan hasta chocar con algo.
     m_Metadata:
       m_Items: []
-  - m_Id: 458955914608641
-    m_Localized: La recarga de Daga Envenenada baja 1.
+  - m_Id: 5123292280725504
+    m_Localized: Hielo Resbaladizo
     m_Metadata:
       m_Items: []
-  - m_Id: 458956275318784
-    m_Localized: Daga Veloz
+  - m_Id: 5123291685134337
+    m_Localized: "Cuando un enemigo que empujas o arrastras choca contra otro personaje, ese tambi\xE9n es empujado 1 casilla en la misma direcci\xF3n."
     m_Metadata:
       m_Items: []
-  - m_Id: 458956275318785
-    m_Localized: La recarga de Daga Envenenada baja 1.
+  - m_Id: 5123291685134336
+    m_Localized: "Domin\xF3"
     m_Metadata:
       m_Items: []
-  - m_Id: 458956627640320
-    m_Localized: Humo Asfixiante
+  - m_Id: 5123290875633665
+    m_Localized: Matar a un enemigo te da una caminata extra en este turno.
     m_Metadata:
       m_Items: []
-  - m_Id: 458956627640321
-    m_Localized: "Bomba de Humo debilita al enemigo 2 turnos: inflige un 50% menos de da\xF1o."
+  - m_Id: 5123290875633664
+    m_Localized: "\xCDmpetu"
     m_Metadata:
       m_Items: []
-  - m_Id: 458956996739072
-    m_Localized: Humo Asfixiante
+  - m_Id: 5123290720444417
+    m_Localized: Matar a un enemigo te da una caminata extra en este turno.
     m_Metadata:
       m_Items: []
-  - m_Id: 458956996739073
-    m_Localized: "Bomba de Humo debilita al enemigo 2 turnos: inflige un 50% menos de da\xF1o."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458957365837824
-    m_Localized: Humo Persistente
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458957365837825
-    m_Localized: "Los estados que aplica Bomba de Humo duran 1 turno m\xE1s por rango."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458957718159360
-    m_Localized: Humo Persistente
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458957718159361
-    m_Localized: "Los estados que aplica Bomba de Humo duran 1 turno m\xE1s por rango."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458958066286592
-    m_Localized: Humo Expansivo
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458958066286593
-    m_Localized: "El \xE1rea de Bomba de Humo crece un anillo (una cruz de 5 casillas)."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458958418608128
-    m_Localized: Humo Expansivo
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458958418608129
-    m_Localized: "El \xE1rea de Bomba de Humo crece un anillo (una cruz de 5 casillas)."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458958779318272
-    m_Localized: Garfio Aturdidor
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458958783512576
-    m_Localized: "Garfio tambi\xE9n aturde al enemigo 1 turno."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458959148417024
-    m_Localized: Garfio Aturdidor
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458959148417025
-    m_Localized: "Garfio tambi\xE9n aturde al enemigo 1 turno."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458959504932864
-    m_Localized: "Tir\xF3n Fuerte"
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458959504932865
-    m_Localized: "Garfio tira 1 casilla m\xE1s y llega 1 casilla m\xE1s lejos por rango."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458959886614528
-    m_Localized: "Tir\xF3n Fuerte"
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458959886614529
-    m_Localized: "Garfio tira 1 casilla m\xE1s y llega 1 casilla m\xE1s lejos por rango."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458960251518976
-    m_Localized: Dardo Venenoso
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458960251518977
-    m_Localized: "L\xEDnea Venenosa hace +4 de da\xF1o por rango."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458960670949376
-    m_Localized: Dardo Venenoso
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458960670949377
-    m_Localized: "L\xEDnea Venenosa hace +4 de da\xF1o por rango."
+  - m_Id: 5123290720444416
+    m_Localized: "\xCDmpetu"
     m_Metadata:
       m_Items: []
   - m_Id: 458961031659520
@@ -1531,7 +923,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 458961031659521
-    m_Localized: "+35% de da\xF1o por rango a enemigos envenenados."
+    m_Localized: "Tus habilidades infligen 1 m\xE1s de da\xF1o a los enemigos envenenados."
     m_Metadata:
       m_Items: []
   - m_Id: 458961388175360
@@ -1539,23 +931,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 458961388175361
-    m_Localized: "+35% de da\xF1o por rango a enemigos envenenados."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458961736302592
-    m_Localized: Golpea y Huye
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458961736302593
-    m_Localized: "+30% de da\xF1o por rango si caminaste en este turno antes de atacar."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458962084429824
-    m_Localized: Golpea y Huye
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458962084429825
-    m_Localized: "+30% de da\xF1o por rango si caminaste en este turno antes de atacar."
+    m_Localized: "Tus habilidades infligen 1 m\xE1s de da\xF1o a los enemigos envenenados."
     m_Metadata:
       m_Items: []
   - m_Id: 458962432557056
@@ -1563,7 +939,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 458962432557057
-    m_Localized: "+40% de da\xF1o por rango a enemigos sin ning\xFAn aliado al lado."
+    m_Localized: "Tus habilidades infligen 1 m\xE1s de da\xF1o a los enemigos sin aliados al lado."
     m_Metadata:
       m_Items: []
   - m_Id: 458962789072896
@@ -1571,7 +947,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 458962789072897
-    m_Localized: "+40% de da\xF1o por rango a enemigos sin ning\xFAn aliado al lado."
+    m_Localized: "Tus habilidades infligen 1 m\xE1s de da\xF1o a los enemigos sin aliados al lado."
     m_Metadata:
       m_Items: []
   - m_Id: 458963149783040
@@ -1579,7 +955,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 458963149783041
-    m_Localized: Matar a un enemigo te cura 12 PV por rango.
+    m_Localized: Matar a un enemigo te cura 1 PV.
     m_Metadata:
       m_Items: []
   - m_Id: 458963497910272
@@ -1587,51 +963,35 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 458963497910273
-    m_Localized: Matar a un enemigo te cura 12 PV por rango.
+    m_Localized: Matar a un enemigo te cura 1 PV.
     m_Metadata:
       m_Items: []
-  - m_Id: 463460722933760
-    m_Localized: Veneno Debilitante
+  - m_Id: 5123292951814147
+    m_Localized: No puede usar habilidades. Un golpe preparado se cancela.
     m_Metadata:
       m_Items: []
-  - m_Id: 463460781654016
-    m_Localized: "Los enemigos con un estado da\xF1ino (veneno, debilitado, helado...) te infligen un 15% menos de da\xF1o por rango."
+  - m_Id: 5123292951814146
+    m_Localized: Cegado
     m_Metadata:
       m_Items: []
-  - m_Id: 463461142364160
-    m_Localized: Veneno Debilitante
+  - m_Id: 5123292951814145
+    m_Localized: No puede caminar ni usar habilidades. Un golpe preparado se cancela.
     m_Metadata:
       m_Items: []
-  - m_Id: 463461142364161
-    m_Localized: "Los enemigos con un estado da\xF1ino (veneno, debilitado, helado...) te infligen un 15% menos de da\xF1o por rango."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 472301057474560
-    m_Localized: "\xC1gil"
-    m_Metadata:
-      m_Items: []
-  - m_Id: 472301116194816
-    m_Localized: "+12 de vida m\xE1xima por rango."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 472301472710656
-    m_Localized: "\xC1gil"
-    m_Metadata:
-      m_Items: []
-  - m_Id: 472301472710657
-    m_Localized: "+12 de vida m\xE1xima por rango."
+  - m_Id: 5123292951814144
+    m_Localized: Congelado
     m_Metadata:
       m_Items: []
   - m_Id: 2743378687893504
-    m_Localized: "Luchador de primera l\xEDnea, con la mayor vida de los tres. Pelea cuerpo a cuerpo, se fortalece rodeado de enemigos y los estrella contra obst\xE1culos y entre s\xED con su escudo."
+    m_Localized: "Luchador de primera l\xEDnea, con la mayor vida. Saca a los enemigos de posici\xF3n, los empuja unos contra otros y contra las paredes, y aturde a los que van a golpear."
     m_Metadata:
       m_Items: []
   - m_Id: 2743378734030848
-    m_Localized: "Controla el campo de batalla a distancia: congela, quema y empuja a grupos de enemigos. Tiene poca vida, as\xED que mantente lejos de la primera l\xEDnea."
+    m_Localized: 'Controla el campo de batalla a distancia: congela enemigos para cancelar sus golpes, prende fuego al suelo y mueve a los rivales con el viento. Tiene poca vida.'
     m_Metadata:
       m_Items: []
   - m_Id: 2743378734030849
-    m_Localized: "Asesino que desgasta a los enemigos con veneno, golpea fuerte a los objetivos aislados y arrastra a los rivales a donde son m\xE1s d\xE9biles."
+    m_Localized: 'Asesino escurridizo: envenena desde lejos, arrastra a los enemigos al peligro e intercambia lugares para volver sus golpes contra ellos.'
     m_Metadata:
       m_Items: []
   - m_Id: 4946699310063616
@@ -1639,7 +999,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 4946699347812352
-    m_Localized: "Levanta el martillo y marca las casillas a su alrededor. En su siguiente turno las golpea y alcanza a todos los que est\xE9n en ellas, tambi\xE9n a sus guardias."
+    m_Localized: "Levanta el martillo y marca las casillas a su alrededor. En su siguiente turno las golpea: 3 de da\xF1o a todos en ellas, tambi\xE9n a sus guardias."
     m_Metadata:
       m_Items: []
   - m_Id: 4946699561721856
@@ -1647,7 +1007,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 4946699561721857
-    m_Localized: "Este enemigo prepara un golpe: las casillas marcadas reciben el golpe en su siguiente turno. Sal del \xE1rea antes (todav\xEDa puedes atacar) o at\xFArdelo para cancelar el golpe. Mant\xE9n pulsada una casilla marcada para ver el da\xF1o."
+    m_Localized: "Este enemigo prepara un golpe: en su siguiente turno golpea las casillas marcadas y a quien est\xE9 en ellas, incluso a otros enemigos. Sal, emp\xFAjalo para que el golpe gire con \xE9l, empuja a otro enemigo dentro o at\xFArdelo para cancelarlo. Los n\xFAmeros muestran el orden en que act\xFAan los enemigos."
     m_Metadata:
       m_Items: []
   - m_Id: 5032682152599552
@@ -1655,7 +1015,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5032682282622976
-    m_Localized: No puede moverse.
+    m_Localized: No puede caminar.
     m_Metadata:
       m_Items: []
   - m_Id: 5032682580418560
@@ -1663,7 +1023,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5032682580418561
-    m_Localized: "Lanza bombas de fuego: marca un \xE1rea de 3x3 y, en su siguiente turno, golpea a todos los que est\xE9n en ella por 8 y los deja Ardiendo."
+    m_Localized: "Lanza bombas de fuego: marca un \xE1rea de 3x3 a 2-4 (por encima de obst\xE1culos) y golpea a todos en ella en su siguiente turno: 1 de da\xF1o y Ardiendo."
     m_Metadata:
       m_Items: []
   - m_Id: 5032682874019840
@@ -1671,7 +1031,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5032682874019841
-    m_Localized: "Levanta el garrote y marca una l\xEDnea de 3 casillas delante de \xE9l. En su siguiente turno la golpea: 14 de da\xF1o a todos los que est\xE9n en ella."
+    m_Localized: "Levanta el garrote y marca una l\xEDnea de 3 casillas delante de \xE9l. En su siguiente turno la golpea: 3 de da\xF1o a todos en ella."
     m_Metadata:
       m_Items: []
   - m_Id: 5032683163426816
@@ -1679,7 +1039,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5032683163426817
-    m_Localized: "Dispara una telara\xF1a desde 2 a 4 casillas en l\xEDnea recta: 2 de da\xF1o y no puedes moverte en tu siguiente turno."
+    m_Localized: "Marca una casilla a 2-4 en l\xEDnea recta y la cubre de telara\xF1a en su siguiente turno: 1 de da\xF1o, y quien est\xE9 all\xED no puede caminar en su siguiente turno."
     m_Metadata:
       m_Items: []
   - m_Id: 5032683788378112
@@ -1687,7 +1047,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5032683788378113
-    m_Localized: "Mantiene la distancia y lanza bombas de fuego: marca un \xE1rea y la golpea en su siguiente turno."
+    m_Localized: "Mantiene la distancia y lanza bombas de fuego por encima de obst\xE1culos: marca un \xE1rea de 3x3 y la golpea en su siguiente turno."
     m_Metadata:
       m_Items: []
   - m_Id: 5032684375580672
@@ -1695,7 +1055,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5032684375580673
-    m_Localized: "Lento y resistente. Prepara un golpe aplastante en l\xEDnea delante de \xE9l: ap\xE1rtate antes de su siguiente turno."
+    m_Localized: "\xC9lite. Lento y resistente: prepara un golpe aplastante en l\xEDnea delante de \xE9l. Ap\xE1rtate o g\xEDralo hacia sus aliados."
     m_Metadata:
       m_Items: []
   - m_Id: 5032684946006016
@@ -1703,7 +1063,735 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5032684946006017
-    m_Localized: "R\xE1pida y fr\xE1gil. Mantiene la distancia y te enreda para que no puedas caminar."
+    m_Localized: "R\xE1pida y fr\xE1gil. Cubre de telara\xF1a una casilla desde lejos para que no puedas caminar en tu siguiente turno."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123252296425472
+    m_Localized: Muro de Hielo
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123252422254592
+    m_Localized: 'Un muro de hielo: nadie puede ocupar esta casilla ni cruzarla, y detiene golpes y la vista. Se derrite tras unas rondas.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123252854267904
+    m_Localized: Tajo Amplio
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123252854267905
+    m_Localized: Golpea la casilla de enfrente y las de sus lados, y empuja 1 casilla a cada enemigo.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123253017845760
+    m_Localized: Golpe Pesado
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123253017845761
+    m_Localized: "Un golpe m\xE1s lento y pesado: 2 de da\xF1o y empuja al enemigo 2 casillas."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123253181423616
+    m_Localized: Embestida Larga
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123253181423617
+    m_Localized: "Embiste hasta 5 casillas en l\xEDnea recta y empuja 1 casilla al enemigo del final."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123253336612864
+    m_Localized: Embestida Aplastante
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123253336612865
+    m_Localized: "Embiste hasta 3 casillas en l\xEDnea recta y lanza 2 casillas al enemigo del final."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123253508579328
+    m_Localized: Golpe Retumbante
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123253508579329
+    m_Localized: "Golpea a un enemigo adyacente: 2 de da\xF1o, lo empuja 3 casillas y lo aturde."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123253672157184
+    m_Localized: Barrido de Escudo
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123253672157185
+    m_Localized: "Barre la casilla de enfrente y sus lados: 2 de da\xF1o, empuja 2 casillas y aturde a cada enemigo alcanzado."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123253835735040
+    m_Localized: "Pisot\xF3n"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123253835735041
+    m_Localized: "Pisotea el suelo: 1 de da\xF1o a todos a tu alrededor y los empuja 1 casilla."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123253999312896
+    m_Localized: "Pisot\xF3n Atronador"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123253999312897
+    m_Localized: "Pisotea el suelo: 1 de da\xF1o, empuja 1 casilla a todos a tu alrededor y los aturde."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123254171279360
+    m_Localized: "Pisot\xF3n Pesado"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123254171279361
+    m_Localized: "Pisotea el suelo: 1 de da\xF1o a todos a tu alrededor y los empuja 2 casillas."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123254326468608
+    m_Localized: Lanzamiento de Escudo
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123254326468609
+    m_Localized: "Lanza tu escudo a un enemigo a 2-4 casillas en l\xEDnea recta: 1 de da\xF1o y lo empuja 1 casilla."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123254481657856
+    m_Localized: Lanzamiento Aturdidor
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123254481657857
+    m_Localized: "Lanza tu escudo: 1 de da\xF1o, empuja 1 casilla y aturde al enemigo, cancelando su golpe preparado."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123254641041408
+    m_Localized: Lanzamiento Pesado
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123254641041409
+    m_Localized: "Lanza tu escudo con fuerza: 1 de da\xF1o y empuja al enemigo 2 casillas."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123254800424960
+    m_Localized: Sismo
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123254800424961
+    m_Localized: "Parte el suelo en una l\xEDnea de 3 casillas frente a ti: 1 de da\xF1o a todos en ella y los empuja 1 casilla."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123254959808512
+    m_Localized: Grieta Larga
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123254959808513
+    m_Localized: "La grieta recorre 5 casillas: 1 de da\xF1o a todos en ella y los empuja 1 casilla."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123255110803456
+    m_Localized: Sismo Profundo
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123255110803457
+    m_Localized: "Parte el suelo en una l\xEDnea de 3 casillas: 2 de da\xF1o a todos en ella y los empuja 1 casilla."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123255437959168
+    m_Localized: "R\xE1faga Fuerte"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123255437959169
+    m_Localized: "Una r\xE1faga m\xE1s fuerte: 1 de da\xF1o y empuja al objetivo 2 casillas lejos de ti."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123255597342720
+    m_Localized: Vendaval
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123255597342721
+    m_Localized: "Una r\xE1faga ancha: golpea la casilla objetivo y sus lados, y empuja a cada uno 1 casilla lejos de ti."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123255760920576
+    m_Localized: "Prisi\xF3n de Hielo"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123255760920577
+    m_Localized: "Congela a un personaje a hasta 3 casillas: 1 de da\xF1o, y no puede caminar ni usar habilidades en su siguiente turno."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123255916109824
+    m_Localized: "Congelaci\xF3n Profunda"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123255916109825
+    m_Localized: "Congela a todos a tu alrededor: 2 de da\xF1o, y en su siguiente turno no pueden caminar ni usar habilidades."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123256083881984
+    m_Localized: Bola de Fuego Explosiva
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123256083881985
+    m_Localized: "La bola de fuego estalla en cruz: 1 de da\xF1o en cada una de las 5 casillas, y todas arden durante 2 rondas."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123256243265536
+    m_Localized: Bola de Fuego Bombeada
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123256243265537
+    m_Localized: "Lanza la bola de fuego por encima de obst\xE1culos, a 2-4 casillas: 2 de da\xF1o, y la casilla arde durante 2 rondas."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123256419426304
+    m_Localized: Tormenta Amplia
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123256419426305
+    m_Localized: "La tormenta cubre un \xE1rea de 3x3: 1 de da\xF1o y aturde a todos en ella. Canalizada: tambi\xE9n gasta el movimiento del turno (\xFAsala antes de caminar)."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123256608169984
+    m_Localized: "Tormenta R\xE1pida"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123256608169985
+    m_Localized: "La misma tormenta, lista antes (recarga 3). Canalizada: tambi\xE9n gasta el movimiento del turno (\xFAsala antes de caminar)."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123256780136448
+    m_Localized: Muro de Hielo
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123256780136449
+    m_Localized: "Levanta un muro de hielo de 3 casillas, a hasta 3, durante 2 rondas. Bloquea el paso, la vista y los golpes. Los enemigos donde surge reciben 1 de da\xF1o y quedan helados (caminan 1 menos)."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123256939520000
+    m_Localized: Muro Largo
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123256939520001
+    m_Localized: El muro tiene 5 casillas de ancho.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123257107292160
+    m_Localized: Muro Duradero
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123257107292161
+    m_Localized: El muro dura 4 rondas.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123257270870016
+    m_Localized: Meteoro
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123257270870017
+    m_Localized: "Invoca un meteoro sobre un \xE1rea de 3x3 a 2-4 casillas (no necesita l\xEDnea de visi\xF3n): 2 de da\xF1o, y todos alrededor del centro son empujados 1 casilla. Canalizada: tambi\xE9n gasta el movimiento del turno (\xFAsala antes de caminar), y no puedes caminar en tu siguiente turno."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123257430253568
+    m_Localized: Meteoro Ardiente
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123257430253569
+    m_Localized: "El meteoro tambi\xE9n deja la casilla central ardiendo durante 2 rondas. Canalizada: tambi\xE9n gasta el movimiento del turno (\xFAsala antes de caminar), y no puedes caminar en tu siguiente turno."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123257581248512
+    m_Localized: Meteoro Veloz
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123257581248513
+    m_Localized: "El mismo meteoro, listo antes (recarga 4). Canalizada: tambi\xE9n gasta el movimiento del turno (\xFAsala antes de caminar), y no puedes caminar en tu siguiente turno."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123257904209920
+    m_Localized: Daga Perforante
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123257904209921
+    m_Localized: "La daga atraviesa: golpea al objetivo y la casilla detr\xE1s, y envenena a ambos."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123258063593472
+    m_Localized: Daga Debilitante
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123258063593473
+    m_Localized: "1 de da\xF1o y Debilitado en lugar de veneno: el objetivo inflige 1 menos de da\xF1o en su siguiente turno."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123258235559936
+    m_Localized: Garfio Largo
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123258235559937
+    m_Localized: El garfio alcanza de 2 a 5 casillas y arrastra hasta 4.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123258390749184
+    m_Localized: Garfio Aturdidor
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123258390749185
+    m_Localized: Arrastra al enemigo hasta 3 casillas y lo aturde, cancelando su golpe preparado.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123258550132736
+    m_Localized: "Paso Sombr\xEDo"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123258550132737
+    m_Localized: "Intercambia el lugar con un personaje a hasta 3 casillas; un enemigo recibe 1 de da\xF1o. El golpe preparado de un enemigo se mueve con \xE9l."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123258709516288
+    m_Localized: Paso Venenoso
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123258709516289
+    m_Localized: "Intercambia el lugar con un personaje; un enemigo recibe 1 de da\xF1o y queda Envenenado."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123258873094144
+    m_Localized: Paso Largo
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123258873094145
+    m_Localized: Intercambia el lugar con un personaje a hasta 5 casillas.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123259032477696
+    m_Localized: Abanico de Cuchillos
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123259032477697
+    m_Localized: 'Tres dagas: golpea al objetivo y a sus lados, y expone a cada enemigo alcanzado.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123259191861248
+    m_Localized: "Daga R\xE1pida"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123259191861249
+    m_Localized: 'Sin recarga: lanza una cada turno.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123259351244800
+    m_Localized: Humo Arrojado
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123259351244801
+    m_Localized: "Lanza la bomba de humo a hasta 3 casillas: ciega a todos en un \xE1rea de 3x3."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123259510628352
+    m_Localized: Humo Denso
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123259510628353
+    m_Localized: 'El humo persiste: los enemigos quedan cegados durante 2 de sus turnos.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123259665817600
+    m_Localized: "L\xEDnea Venenosa Larga"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123259665817601
+    m_Localized: "La l\xEDnea tiene 6 casillas."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123259829395456
+    m_Localized: Veneno Concentrado
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123259829395457
+    m_Localized: "2 de da\xF1o a todos en la l\xEDnea, Envenenado, y un pantano venenoso durante 2 rondas."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123259992973312
+    m_Localized: Garrotazo
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123259992973313
+    m_Localized: "Marca una casilla adyacente y la golpea en su siguiente turno: 1 de da\xF1o a quien est\xE9 all\xED."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123260152356864
+    m_Localized: Mordisco
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123260152356865
+    m_Localized: "Marca una casilla adyacente y la muerde en su siguiente turno: 1 de da\xF1o."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123260307546112
+    m_Localized: "Salpicadura \xC1cida"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123260307546113
+    m_Localized: "Marca la casilla de enfrente y sus lados, y las salpica en su siguiente turno: 1 de da\xF1o a cada una."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123260471123968
+    m_Localized: Saeta de Fuego
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123260471123969
+    m_Localized: "Marca una casilla a 2-3 en l\xEDnea recta y dispara en su siguiente turno: 1 de da\xF1o y Ardiendo durante 2 turnos."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123260626313216
+    m_Localized: Picado
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123260626313217
+    m_Localized: "Marca una casilla vecina en diagonal y se lanza sobre ella en su siguiente turno: 1 de da\xF1o."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123260798279680
+    m_Localized: Chispa
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123260802473984
+    m_Localized: "Marca una casilla a 2-3 y la electrocuta en su siguiente turno: 1 de da\xF1o."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123260961857536
+    m_Localized: Chillido
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123260961857537
+    m_Localized: "Marca una casilla a hasta 2 y chilla contra ella en su siguiente turno: 1 de da\xF1o y empuja 1 casilla."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123261129629696
+    m_Localized: Mirada Maldita
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123261129629697
+    m_Localized: "Marca una casilla a 2-4 en l\xEDnea recta y la maldice en su siguiente turno: 1 de da\xF1o y Expuesto (recibe 1 m\xE1s de cada golpe)."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123261301596160
+    m_Localized: "Empuj\xF3n de Escudo"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123261301596161
+    m_Localized: "Marca una casilla adyacente y la empuja en su siguiente turno: 1 de da\xF1o y empuja 1 casilla."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123261486145536
+    m_Localized: Estocada
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123261486145537
+    m_Localized: "Marca 2 casillas en l\xEDnea frente a \xE9l y ataca en su siguiente turno: 1 de da\xF1o a cada una."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123261649723392
+    m_Localized: Embestida
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123261649723393
+    m_Localized: "Marca una casilla adyacente y la embiste en su siguiente turno: 1 de da\xF1o y empuja 2 casillas."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123261809106944
+    m_Localized: Mortero
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123261809106945
+    m_Localized: "Marca una cruz de casillas a 2-5 (por encima de obst\xE1culos) y la bombardea en su siguiente turno: 1 de da\xF1o a cada una."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123262002044928
+    m_Localized: Descarga
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123262002044929
+    m_Localized: "Marca una l\xEDnea de 5 casillas y la golpea en su siguiente turno: 1 de da\xF1o a todos en ella."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123262165622784
+    m_Localized: Temblor
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123262165622785
+    m_Localized: "Marca todas las casillas a su alrededor y golpea el suelo en su siguiente turno: 2 de da\xF1o a cada una."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123262325006336
+    m_Localized: "Maldici\xF3n del Pantano"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123262325006337
+    m_Localized: "Marca una cruz de casillas a 2-4 y la maldice en su siguiente turno: 1 de da\xF1o, y las casillas se vuelven un pantano venenoso durante 2 rondas."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123262484389888
+    m_Localized: "Mordisco Vamp\xEDrico"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123262484389889
+    m_Localized: "Marca una casilla adyacente y la muerde en su siguiente turno: 1 de da\xF1o, y el murci\xE9lago recupera 1 PV."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123262643773440
+    m_Localized: "R\xE1faga"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123262643773441
+    m_Localized: "Marca una l\xEDnea de 3 casillas frente a \xE9l y sopla en su siguiente turno: 1 de da\xF1o y empuja 1 casilla a todos en ella."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123262803156992
+    m_Localized: "Barrido \xD3seo"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123262803156993
+    m_Localized: "Marca la casilla de enfrente y sus lados y las barre en su siguiente turno: 2 de da\xF1o a cada una."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123262954151936
+    m_Localized: "Carga Sombr\xEDa"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123262954151937
+    m_Localized: "Marca una casilla a 2-4 en l\xEDnea recta y carga contra ella en su siguiente turno: 2 de da\xF1o y empuja 1 casilla."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123263117729792
+    m_Localized: "Erupci\xF3n"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123263117729793
+    m_Localized: "Marca una cruz de casillas a hasta 3 y hace erupci\xF3n en su siguiente turno: 2 de da\xF1o, y las casillas arden durante 2 rondas."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123264095002624
+    m_Localized: Goblin lancero
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123264095002625
+    m_Localized: "Atraviesa 2 casillas en l\xEDnea con su lanza: quien est\xE9 detr\xE1s de ti tambi\xE9n recibe el golpe."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123264250191872
+    m_Localized: Escarabajo carnero
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123264250191873
+    m_Localized: "Embiste una casilla adyacente y te lanza 2 casillas: mira lo que tienes detr\xE1s."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123264417964032
+    m_Localized: Goblin artillero
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123264417964033
+    m_Localized: "Bombardea una cruz de casillas desde lejos, por encima de obst\xE1culos, y lanza piedras con la honda mientras recarga. Fr\xE1gil de cerca."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123264577347584
+    m_Localized: "T\xF3tem del rayo"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123264577347585
+    m_Localized: "Nunca camina. Golpea una l\xEDnea de 5 casillas y, mientras recarga, electrocuta todas las casillas a su alrededor; emp\xFAjalo para apuntar el rayo a sus aliados."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123264740925440
+    m_Localized: "G\xF3lem de piedra"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123264740925441
+    m_Localized: "Blindado y lento. Golpea todas las casillas a su alrededor por 2 de da\xF1o y, mientras se recupera, da pu\xF1etazos que te empujan."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123264904503296
+    m_Localized: Bruja del pantano
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123264904503297
+    m_Localized: Maldice una cruz de casillas y las convierte en un pantano venenoso, reduciendo el terreno seguro.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123265059692544
+    m_Localized: "Murci\xE9lago vampiro"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123265059692545
+    m_Localized: "R\xE1pido. Su mordisco lo cura, as\xED que siempre vuelve."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123265227464704
+    m_Localized: "Cham\xE1n del viento"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123265227464705
+    m_Localized: "Sopla una l\xEDnea de 3 casillas y empuja a todos en ella, a menudo hacia otros golpes."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123265382653952
+    m_Localized: Caballero esqueleto
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123265382653953
+    m_Localized: "\xC9lite. Barre 3 casillas delante de \xE9l y carga desde lejos para empujarte."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123265550426112
+    m_Localized: "G\xF3lem de lava"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123265550426113
+    m_Localized: "\xC9lite. Hace erupci\xF3n en una cruz de casillas y las deja ardiendo. Hiere a quien lo golpea."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5570314100088832
+    m_Localized: Agotado
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5570314234306560
+    m_Localized: No puede caminar.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5570314477576192
+    m_Localized: Hondazo
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5570314477576193
+    m_Localized: "Marca una casilla a 2-4 en l\xEDnea recta y le lanza una piedra con la honda en su siguiente turno: 1 de da\xF1o."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5570314725040128
+    m_Localized: Golpe Real
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5570314725040129
+    m_Localized: "Marca una casilla adyacente y la golpea con su martillo en su siguiente turno: 2 de da\xF1o."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5570314951532544
+    m_Localized: "Pu\xF1o de Magma"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5570314951532545
+    m_Localized: "Marca una casilla adyacente y la golpea en su siguiente turno: 1 de da\xF1o y Ardiendo durante 2 turnos."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5570315131887616
+    m_Localized: "Descarga Est\xE1tica"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5570315131887617
+    m_Localized: "Marca todas las casillas a su alrededor y las electrocuta en su siguiente turno: 1 de da\xF1o a cada una."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5570315324825600
+    m_Localized: "Pu\xF1etazo de Ogro"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5570315329019904
+    m_Localized: "Marca una casilla adyacente y la golpea con el pu\xF1o en su siguiente turno: 2 de da\xF1o y empuja 1 casilla."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5570315517763584
+    m_Localized: "Pu\xF1o de Piedra"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5570315517763585
+    m_Localized: "Marca una casilla adyacente y la golpea con el pu\xF1o en su siguiente turno: 1 de da\xF1o y empuja 1 casilla."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5570315744256000
+    m_Localized: Bola de Lodo
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5570315744256001
+    m_Localized: "Marca una casilla a 2-3 y le lanza lodo en su siguiente turno: 1 de da\xF1o."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5570315932999680
+    m_Localized: Carga
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5570315932999681
+    m_Localized: "Marca una casilla a 2-3 en l\xEDnea recta y carga contra ella en su siguiente turno: 1 de da\xF1o y empuja 1 casilla."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5570316113354752
+    m_Localized: Jabalina
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5570316117549056
+    m_Localized: "Marca una casilla a 2-4 en l\xEDnea recta y le lanza una jabalina en su siguiente turno: 1 de da\xF1o y empuja 1 casilla."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5570316318875648
+    m_Localized: "Arco El\xE9ctrico"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5570316318875649
+    m_Localized: "Marca una cruz de casillas a 2-3 y la alcanza con un rayo en su siguiente turno: 1 de da\xF1o a cada una."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5570316516007936
+    m_Localized: "Chillido S\xF3nico"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5570316516007937
+    m_Localized: "Marca todas las casillas a su alrededor y chilla en su siguiente turno: 1 de da\xF1o a cada una y empuja a todos 1 casilla."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5570316696363008
+    m_Localized: Estallido de Llamas
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5570316696363009
+    m_Localized: "Marca una cruz de casillas a 2-3 y estalla en llamas en su siguiente turno: 1 de da\xF1o y Ardiendo durante 2 turnos."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5570316893495296
+    m_Localized: Mirada Cegadora
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5570316893495297
+    m_Localized: "Marca una casilla a 2-4 en l\xEDnea recta y la mira fijamente en su siguiente turno: 1 de da\xF1o, y quien est\xE9 all\xED queda Cegado (no puede usar habilidades en su siguiente turno)."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5570317065461760
+    m_Localized: Mordisco Pestilente
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5570317065461761
+    m_Localized: "Marca una casilla adyacente y la muerde en su siguiente turno: 1 de da\xF1o y Envenenado durante 2 turnos."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5570317237428224
+    m_Localized: "R\xE1faga de P\xFAas"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5570317237428225
+    m_Localized: "Marca todas las casillas a su alrededor y dispara sus p\xFAas en su siguiente turno: 1 de da\xF1o a cada una."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5570317405200384
+    m_Localized: "Escupitajo \xC1cido"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5570317405200385
+    m_Localized: "Marca una casilla a 2-3 y le escupe \xE1cido en su siguiente turno: 1 de da\xF1o y Expuesto (recibe 1 m\xE1s de cada golpe)."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5570317619109888
+    m_Localized: Tornado
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5570317619109889
+    m_Localized: "Marca una cruz de casillas a 2-4 e invoca un tornado en su siguiente turno: 1 de da\xF1o y empuja a todos 1 casilla lejos del centro."
     m_Metadata:
       m_Items: []
   references:

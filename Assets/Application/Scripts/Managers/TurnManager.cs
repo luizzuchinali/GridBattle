@@ -17,7 +17,7 @@ namespace GridBattle.Managers
     /// and at its end the state durations go down (EntityTurnStarted/EndedEvent).
     /// The player's controller ends the player's turn (PlayerActionEvent: walk and
     /// action used, End turn, or a tap on the player); after the player's animations
-    /// the enemies act one at a time (closest to the player first, ties by y then x):
+    /// the enemies act one at a time, in the battle's fixed acting order (<see cref="ActingOrder"/>):
     /// each one walks and acts, its animations (walk, attack, impact) finish, and only
     /// then the next one starts. Then the turn returns to the player. Each step
     /// also waits for <see cref="TurnBlockers"/> (XP orbs that level up, talent
@@ -191,6 +191,8 @@ namespace GridBattle.Managers
                 await WaitForAnimationsAndBlockers();
                 if (!IsCurrent(version)) return;
 
+                // A round passed: temporary terrain (made by skills) loses a round before the player's turn is saved.
+                _grid.TickTemporaryTerrain();
                 await BeginPlayerTurn(version);
             }
             catch (OperationCanceledException)
@@ -225,23 +227,20 @@ namespace GridBattle.Managers
                 character.EndTurn();
         }
 
+        /// <summary>
+        /// The enemies' controllers in the fixed acting order of the battle (<see cref="ActingOrder"/>), the order the
+        /// numbers over them show.
+        /// </summary>
         private static List<EnemyController> GetEnemiesInActingOrder()
         {
-            var enemies = new List<EnemyController>(FindObjectsByType<EnemyController>(FindObjectsInactive.Exclude));
-            var player = PlayerCharacter.Active;
-            if (player == null) return enemies;
-
-            var playerPos = player.CurrentGridPos;
-            enemies.Sort((a, b) =>
+            var controllers = new List<EnemyController>();
+            foreach (var enemy in ActingOrder.GetEnemies())
             {
-                var posA = a.GetComponent<GridEntity>().CurrentGridPos;
-                var posB = b.GetComponent<GridEntity>().CurrentGridPos;
-                var byDistance = (posA - playerPos).sqrMagnitude.CompareTo((posB - playerPos).sqrMagnitude);
-                if (byDistance != 0) return byDistance;
-                var byY = posA.y.CompareTo(posB.y);
-                return byY != 0 ? byY : posA.x.CompareTo(posB.x);
-            });
-            return enemies;
+                if (enemy.TryGetComponent(out EnemyController controller))
+                    controllers.Add(controller);
+            }
+
+            return controllers;
         }
 
         private void SetTurn(ETurnOwner owner)

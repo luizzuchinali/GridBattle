@@ -33,34 +33,20 @@ MonoBehaviour:
     m_LocalVariables: []
   icon: {fileID: 21300000, guid: 76f26b4d1875ff842bee407242ef6395, type: 3}
   kind: 0
-  stackPolicy: 2
-  maxStacks: 3
+  stackPolicy: 0
+  maxStacks: 1
   showInDetails: 1
   effects:
-  - rid: 8661860390915014657
+  - rid: 8661860679606599778
   references:
     version: 2
     RefIds:
-    - rid: 8661860390915014657
-      type: {class: SkillModifierEffect, ns: GridBattle.Gameplay.States.Effects, asm: Assembly-CSharp}
+    - rid: 8661860679606599778
+      type: {class: ApplyStateOnHitEffect, ns: GridBattle.Gameplay.States.Effects, asm: Assembly-CSharp}
       data:
-        skills: []
-        damageFlat: 0
-        damagePercent: 0
-        areaSteps: 0
-        range: 0
-        cooldownReduction: 0
-        displacement: 0
-        stateDuration: 0
-        attachedEffects:
-        - rid: 8661860390915014658
-        repeatAttachedPerStack: 1
-    - rid: 8661860390915014658
-      type: {class: ApplyStatesSkillEffect, ns: GridBattle.Gameplay.Entities.Skills, asm: Assembly-CSharp}
-      data:
-        recipient: 0
+        appliesTo: 2
         states:
-        - state: {fileID: 11400000, guid: 6a75ff9af5119764f97e7a17c067d820, type: 2}
+        - state: {fileID: 11400000, guid: 69962cb40aeb9e54f86ea8a08b723b08, type: 2}
           permanent: 0
-          duration: 4
+          duration: 2
           stacks: 1

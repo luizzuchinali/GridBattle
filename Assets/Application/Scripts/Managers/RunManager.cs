@@ -6,11 +6,13 @@ using GridBattle.Data;
 using GridBattle.Gameplay;
 using GridBattle.Gameplay.Consumables;
 using GridBattle.Gameplay.Entities;
+using GridBattle.Gameplay.Entities.Skills;
 using GridBattle.Gameplay.Events;
 using GridBattle.Gameplay.Map;
 using GridBattle.Gameplay.Meta;
 using GridBattle.Gameplay.Run;
 using GridBattle.Gameplay.Simulation;
+using GridBattle.Gameplay.Talents;
 using GridBattle.Gameplay.Terrain;
 using GridBattle.Managers.Audio;
 using JetBrains.Annotations;
@@ -20,9 +22,10 @@ namespace GridBattle.Managers
 {
     /// <summary>
     /// The run as a finite map of nodes (GDD Mechanic 2, 2.1 and 8.1): starts a run (seed, class, generated map),
-    /// lets the player choose and enter nodes, resolves them (battle, heal, talent with a cost, consumable, final
-    /// boss), keeps the player's HP, level, XP and items between nodes, ends the run (victory on the boss, defeat on
-    /// death, give up) and saves automatically so a run resumes exactly where it stopped.
+    /// lets the player choose and enter nodes, resolves them (normal or elite battle, camp, talent with a cost,
+    /// consumable, final boss), gives the elite reward (consumable offers, then a skill upgrade), keeps the player's
+    /// HP, level, XP and items between nodes, ends the run (victory on the boss, defeat on death, give up) and saves
+    /// automatically so a run resumes exactly where it stopped.
     /// <para>
     /// The manager lives on the GameStateManager GameObject (DontDestroyOnLoad with it) and has no UI: the UI
     /// reads <see cref="CurrentRun"/> and <see cref="GetAvailableNodes"/>, listens to the events
@@ -181,8 +184,14 @@ namespace GridBattle.Managers
             }
         }
 
-        /// <summary>The consumables of a pending consumable-node offer, in the order offered (empty when none).</summary>
+        /// <summary>
+        /// The consumables of a pending consumable offer (a consumable node, or the reward of an elite battle), in the
+        /// order offered (empty when none).
+        /// </summary>
         public IReadOnlyList<ConsumableDefinition> PendingConsumableOptions => ResolveConsumableOptions();
+
+        /// <summary>The pending consumable offer is part of the reward of an elite battle (not a consumable node).</summary>
+        public bool IsEliteRewardOffer => _run != null && _run.Phase == ERunPhase.ConsumableOffer && _run.EliteRewardOffer;
 
         // ------------------------------------------------------------------------------------ lifecycle
 
@@ -327,6 +336,9 @@ namespace GridBattle.Managers
                 return false;
             }
 
+            // A map saved with the old easy, normal and hard battles plays with normal and elite battles.
+            MapRules.NormalizeDifficulties(run.Map);
+
             DiscardRun(false);
             BeginRun(run, playerClass, true);
             return true;
@@ -436,7 +448,8 @@ namespace GridBattle.Managers
         /// (<see cref="BattleStartedEvent"/>). Heal: heals the persistent HP and returns to the map. Talent: pays the
         /// HP cost and raises <see cref="TalentNodeEnteredEvent"/> (the node stays open until
         /// <see cref="CompleteTalentNode"/>). Consumable: draws the item(s) from the Consumables stream and gives it
-        /// or raises <see cref="ConsumableOfferEvent"/>. Returns false if the node is not available.
+        /// or raises <see cref="ConsumableOfferEvent"/>. Winning an elite battle gives its reward before the node
+        /// completes (see <see cref="IsEliteRewardOffer"/>). Returns false if the node is not available.
         /// </summary>
         public bool EnterNode(int id)
         {
@@ -526,9 +539,10 @@ namespace GridBattle.Managers
 
         /// <summary>
         /// The player takes option <paramref name="index"/> of the pending consumable offer. With a free slot (or
-        /// with the DiscardNew / ReplaceOldest policies) the item is received and the node completes; with a full
-        /// inventory under AskPlayer the choice is remembered (<see cref="EConsumableOfferResult.NeedsSlotChoice"/>)
-        /// and the UI follows with <see cref="ReplaceConsumable"/> or <see cref="DeclineConsumableOffer"/>.
+        /// with the DiscardNew / ReplaceOldest policies) the item is received and the node completes (an elite
+        /// reward goes on to its next step); with a full inventory under AskPlayer the choice is remembered
+        /// (<see cref="EConsumableOfferResult.NeedsSlotChoice"/>) and the UI follows with
+        /// <see cref="ReplaceConsumable"/> or <see cref="DeclineConsumableOffer"/>.
         /// </summary>
         public EConsumableOfferResult ChooseConsumableOffer(int index)
         {
@@ -545,17 +559,16 @@ namespace GridBattle.Managers
             }
 
             var result = inventory.Receive(options[index]);
-            var node = CurrentNode;
             switch (result)
             {
                 case EConsumableReceiveResult.Added:
-                    FinishConsumableNode(node, true);
+                    FinishConsumableOffer(true);
                     return EConsumableOfferResult.Added;
                 case EConsumableReceiveResult.ReplacedOldest:
-                    FinishConsumableNode(node, true);
+                    FinishConsumableOffer(true);
                     return EConsumableOfferResult.ReplacedOldest;
                 case EConsumableReceiveResult.DiscardedNew:
-                    FinishConsumableNode(node, false);
+                    FinishConsumableOffer(false);
                     return EConsumableOfferResult.DiscardedNew;
                 default:
                     _consumableChoice = index;
@@ -565,8 +578,8 @@ namespace GridBattle.Managers
 
         /// <summary>
         /// Full inventory: the chosen option (the only one, if the offer had a single option) takes the place of the
-        /// item in <paramref name="slot"/>, which is discarded; the node completes. Returns false if there is no
-        /// option chosen, or the slot is invalid.
+        /// item in <paramref name="slot"/>, which is discarded; the node completes (an elite reward goes on). Returns
+        /// false if there is no option chosen, or the slot is invalid.
         /// </summary>
         public bool ReplaceConsumable(int slot)
         {
@@ -579,16 +592,137 @@ namespace GridBattle.Managers
             var inventory = new ConsumableInventory(_run.Player.ConsumableIds);
             if (!inventory.Replace(slot, options[index])) return false;
 
-            FinishConsumableNode(CurrentNode, true);
+            FinishConsumableOffer(true);
             return true;
         }
 
-        /// <summary>The player takes nothing: the consumable node completes without an item.</summary>
+        /// <summary>
+        /// The player takes nothing: the consumable node completes without an item (an elite reward goes on to its
+        /// next step).
+        /// </summary>
         public bool DeclineConsumableOffer()
         {
             if (_run == null || _run.Phase != ERunPhase.ConsumableOffer) return false;
 
-            FinishConsumableNode(CurrentNode, false);
+            FinishConsumableOffer(false);
+            return true;
+        }
+
+        // ------------------------------------------------------------------------------------ camp and skill upgrades
+
+        /// <summary>The run player's skills that can still be upgraded (originals with variants), in skill bar order.</summary>
+        public List<SkillDefinition> GetUpgradableSkills()
+        {
+            var result = new List<SkillDefinition>();
+            if (_run == null) return result;
+
+            foreach (var skill in TalentRules.GetCurrentSkills(_run.Player, _class))
+            {
+                if (skill != null && skill.CanBeUpgraded)
+                    result.Add(skill);
+            }
+
+            return result;
+        }
+
+        /// <summary>HP resting at the camp would recover now (limited by the maximum).</summary>
+        public int GetCampHealAmount()
+        {
+            if (_run == null) return 0;
+
+            var maxHp = PlayerMaxHp;
+            var before = _run.Player.Hp;
+            var after = Mathf.Min(Mathf.Max(maxHp, before), before + RunSettings.Current.GetHealAmount(maxHp));
+            return Mathf.Max(0, after - before);
+        }
+
+        /// <summary>The player rests at the camp: heals and the node completes. Ignored outside the Camp phase.</summary>
+        public bool CampRest()
+        {
+            if (_run == null || _run.Phase != ERunPhase.Camp) return false;
+
+            var node = CurrentNode;
+            if (node == null) return false;
+
+            var healed = GetCampHealAmount();
+            _run.Player.Hp += healed;
+            AudioManager.Play(ESfx.Heal);
+            MetricsRecorder.Record("camp_choice", new { choice = "rest", healed });
+            CompleteNode(node, healed);
+            return true;
+        }
+
+        /// <summary>
+        /// The player trains at the camp instead of resting: the skill upgrade choice opens
+        /// (<see cref="SkillUpgradeOfferEvent"/>). False outside the Camp phase or with nothing to upgrade.
+        /// </summary>
+        public bool CampTrain()
+        {
+            if (_run == null || _run.Phase != ERunPhase.Camp) return false;
+            if (GetUpgradableSkills().Count == 0) return false;
+
+            _run.PendingNodeHpDelta = 0;
+            OpenSkillUpgrade(ESkillUpgradeSource.Camp, false);
+            return true;
+        }
+
+        /// <summary>
+        /// The player turns <paramref name="skill"/> into its upgrade number <paramref name="variant"/> for the rest
+        /// of the run; the node completes. False outside the SkillUpgrade phase, or for a skill the player does not
+        /// have or cannot upgrade.
+        /// </summary>
+        public bool ChooseSkillUpgrade(SkillDefinition skill, int variant)
+        {
+            if (_run == null || _run.Phase != ERunPhase.SkillUpgrade || skill == null) return false;
+            if (!GetUpgradableSkills().Contains(skill)) return false;
+            if (variant < 0 || variant >= skill.Upgrades.Count) return false;
+
+            var upgrade = skill.Upgrades[variant];
+            if (upgrade == null || string.IsNullOrEmpty(upgrade.Id)) return false;
+
+            var node = CurrentNode;
+            if (node == null) return false;
+
+            // The saved list may still be empty (the class's starting skills): it becomes explicit to be changed.
+            var ids = _run.Player.SkillIds;
+            if (ids.Count == 0)
+            {
+                foreach (var current in TalentRules.GetCurrentSkills(_run.Player, _class))
+                    ids.Add(current.Id);
+            }
+
+            var index = ids.IndexOf(skill.Id);
+            if (index < 0) return false;
+            ids[index] = upgrade.Id;
+
+            AudioManager.Play(ESfx.TalentChosen);
+            MetricsRecorder.Record("skill_upgraded", new
+            {
+                source = _run.PendingUpgradeSource.ToString(),
+                skill = new { id = skill.Id, name = skill.name },
+                upgrade = new { id = upgrade.Id, name = upgrade.name },
+            });
+            EventBus.Raise(new SkillUpgradedEvent(skill, upgrade));
+
+            CompleteNode(node, _run.PendingNodeHpDelta);
+            return true;
+        }
+
+        /// <summary>
+        /// The player does not upgrade now: at a camp the rest or train choice comes back; after an elite battle the
+        /// reward is given up and the node completes.
+        /// </summary>
+        public bool DeclineSkillUpgrade()
+        {
+            if (_run == null || _run.Phase != ERunPhase.SkillUpgrade) return false;
+
+            var node = CurrentNode;
+            if (node == null) return false;
+
+            if (_run.PendingUpgradeSource == ESkillUpgradeSource.Camp)
+                OpenCamp(node, false);
+            else
+                CompleteNode(node, _run.PendingNodeHpDelta);
             return true;
         }
 
@@ -637,7 +771,30 @@ namespace GridBattle.Managers
                 case ERunPhase.ConsumableOffer:
                     ClearBoard();
                     AudioManager.SetMusicContext(EMusicContext.Map);
-                    RaiseConsumableOffer();
+                    if (CurrentNode == null)
+                        OpenMap(true);
+                    else if (ResolveConsumableOptions().Count == 0)
+                        FinishConsumableOffer(false);
+                    else
+                        RaiseConsumableOffer();
+                    break;
+                case ERunPhase.Camp:
+                    ClearBoard();
+                    AudioManager.SetMusicContext(EMusicContext.Map);
+                    if (CurrentNode != null)
+                        OpenCamp(CurrentNode, true);
+                    else
+                        OpenMap(true);
+                    break;
+                case ERunPhase.SkillUpgrade:
+                    ClearBoard();
+                    AudioManager.SetMusicContext(EMusicContext.Map);
+                    if (CurrentNode == null)
+                        OpenMap(true);
+                    else if (GetUpgradableSkills().Count == 0)
+                        CompleteNode(CurrentNode, _run.PendingNodeHpDelta);
+                    else
+                        OpenSkillUpgrade(run.PendingUpgradeSource, true);
                     break;
                 default:
                     ClearBoard();
@@ -652,6 +809,9 @@ namespace GridBattle.Managers
             _run.Phase = ERunPhase.Map;
             _run.Battle = null;
             _run.PendingConsumableOptions.Clear();
+            _run.EliteRewardOffer = false;
+            _run.EliteOffersLeft = 0;
+            _run.PendingNodeHpDelta = 0;
             _turnSave = null;
             _battleActive = false;
             _saveWindowOpen = false;
@@ -727,6 +887,14 @@ namespace GridBattle.Managers
 
         private void ResolveHeal(MapNodeState node)
         {
+            // A camp: the player chooses between resting and training (when there is a skill to upgrade).
+            if (RunSettings.Current.CampOffersSkillUpgrade && GetUpgradableSkills().Count > 0)
+            {
+                TutorialService.Notify(ETutorialTrigger.FirstHealNode);
+                OpenCamp(node, false);
+                return;
+            }
+
             var settings = RunSettings.Current;
             var maxHp = PlayerMaxHp;
             var before = _run.Player.Hp;
@@ -736,6 +904,23 @@ namespace GridBattle.Managers
             CompleteNode(node, _run.Player.Hp - before);
         }
 
+        private void OpenCamp(MapNodeState node, bool resumed)
+        {
+            _run.Phase = ERunPhase.Camp;
+            SaveCurrent();
+            RaiseProgress();
+            EventBus.Raise(new CampEnteredEvent(node, GetCampHealAmount(), resumed));
+        }
+
+        private void OpenSkillUpgrade(ESkillUpgradeSource source, bool resumed)
+        {
+            _run.Phase = ERunPhase.SkillUpgrade;
+            _run.PendingUpgradeSource = source;
+            SaveCurrent();
+            RaiseProgress();
+            EventBus.Raise(new SkillUpgradeOfferEvent(CurrentNode, source, GetUpgradableSkills(), resumed));
+        }
+
         private void ResolveTalent(MapNodeState node)
         {
             var settings = RunSettings.Current;
@@ -743,29 +928,49 @@ namespace GridBattle.Managers
             var cost = settings.GetTalentNodeCost(before, PlayerMaxHp);
             _run.Player.Hp = before - cost;
 
+            // A lasting cost: the maximum goes down for the rest of the run and the HP follows it when above.
+            var maxHpCost = settings.GetTalentNodeMaxHpCost(PlayerMaxHp);
+            if (maxHpCost > 0)
+            {
+                _run.Player.MaxHpBonus -= maxHpCost;
+                _run.Player.Hp = Mathf.Clamp(_run.Player.Hp, 1, Mathf.Max(1, PlayerMaxHp));
+            }
+
             _run.Phase = ERunPhase.TalentNode;
             SaveCurrent();
             RaiseProgress();
             TutorialService.Notify(ETutorialTrigger.FirstTalentNode);
-            EventBus.Raise(new TalentNodeEnteredEvent(node, cost, false));
+            EventBus.Raise(new TalentNodeEnteredEvent(node, cost, false, maxHpCost));
         }
 
         private void ResolveConsumable(MapNodeState node)
         {
             TutorialService.Notify(ETutorialTrigger.FirstConsumableNode);
 
+            // A single option taken at once (or an empty pool): nothing to choose, the node is done.
+            if (!OpenConsumableOffer(false))
+                CompleteNode(node, 0);
+        }
+
+        /// <summary>
+        /// Draws a consumable offer (pool and choice count of <see cref="ConsumableSettings"/>) from the Consumables
+        /// stream, for a consumable node or for the reward of an elite battle (<paramref name="eliteReward"/>). A
+        /// single option goes straight to the inventory (or is lost to the full inventory policy); otherwise the run
+        /// waits in the ConsumableOffer phase (saved) and <see cref="ConsumableOfferEvent"/> asks the player. Returns
+        /// whether the offer waits for the player.
+        /// </summary>
+        private bool OpenConsumableOffer(bool eliteReward)
+        {
+            _run.PendingConsumableOptions.Clear();
+            _run.EliteRewardOffer = false;
+            _consumableChoice = -1;
+
             var options = ConsumableGrant.Roll(GameRandom.Stream(ERandomStream.Consumables), ConsumableSettings.Current);
             if (options.Count == 0)
             {
-                Debug.LogWarning("The consumable pool is empty; the node granted nothing.", this);
-                CompleteNode(node, 0);
-                return;
+                Debug.LogWarning("The consumable pool is empty; the offer granted nothing.", this);
+                return false;
             }
-
-            _run.PendingConsumableOptions.Clear();
-            foreach (var option in options)
-                _run.PendingConsumableOptions.Add(option.Id);
-            _consumableChoice = -1;
 
             if (options.Count == 1)
             {
@@ -774,17 +979,21 @@ namespace GridBattle.Managers
                 {
                     case EConsumableReceiveResult.Added:
                     case EConsumableReceiveResult.ReplacedOldest:
-                        FinishConsumableNode(node, true);
-                        return;
+                        AudioManager.Play(ESfx.ConsumableGained);
+                        return false;
                     case EConsumableReceiveResult.DiscardedNew:
-                        FinishConsumableNode(node, false);
-                        return;
+                        return false;
                 }
             }
 
+            foreach (var option in options)
+                _run.PendingConsumableOptions.Add(option.Id);
+
+            _run.EliteRewardOffer = eliteReward;
             _run.Phase = ERunPhase.ConsumableOffer;
             SaveCurrent();
             RaiseConsumableOffer();
+            return true;
         }
 
         private void RaiseConsumableOffer()
@@ -793,11 +1002,18 @@ namespace GridBattle.Managers
             EventBus.Raise(new ConsumableOfferEvent(CurrentNode, ResolveConsumableOptions(), inventory.IsFull));
         }
 
-        private void FinishConsumableNode(MapNodeState node, bool gained)
+        /// <summary>The pending consumable offer was answered: the consumable node completes, or the elite reward goes on.</summary>
+        private void FinishConsumableOffer(bool gained)
         {
             if (gained)
                 AudioManager.Play(ESfx.ConsumableGained);
-            if (node != null)
+
+            var node = CurrentNode;
+            if (node == null) return;
+
+            if (_run.EliteRewardOffer)
+                ContinueEliteReward(node);
+            else
                 CompleteNode(node, 0);
         }
 
@@ -839,8 +1055,46 @@ namespace GridBattle.Managers
 
             if (node.Type == EMapNodeType.Boss)
                 FinishRun(ERunEndReason.Victory, false);
+            else if (MapRules.IsEliteBattle(node))
+                BeginEliteReward(node);
             else
                 CompleteNode(node, _run.Player.Hp - _battleStartHp);
+        }
+
+        /// <summary>
+        /// An elite battle was won: the board goes away (one frame later, like the map) and its reward starts: the
+        /// consumable offers (<see cref="RunSettings.EliteConsumableOffers"/>), then the skill upgrade
+        /// (<see cref="RunSettings.EliteGrantsSkillUpgrade"/>, when a skill can still be upgraded). The node completes
+        /// after the last of them, with the HP change of the battle. Every step is saved, so a reload resumes it.
+        /// </summary>
+        private void BeginEliteReward(MapNodeState node)
+        {
+            _run.Battle = null;
+            _turnSave = null;
+            _run.PendingNodeHpDelta = _run.Player.Hp - _battleStartHp;
+            _run.EliteOffersLeft = RunSettings.Current.EliteConsumableOffers;
+            _ = ClearBoardNextFrame(++_boardVersion);
+            AudioManager.SetMusicContext(EMusicContext.Map);
+            ContinueEliteReward(node);
+        }
+
+        /// <summary>The next step of the elite reward: a consumable offer while any is left, then the skill upgrade, then the end of the node.</summary>
+        private void ContinueEliteReward(MapNodeState node)
+        {
+            _run.EliteRewardOffer = false;
+            _run.PendingConsumableOptions.Clear();
+            _consumableChoice = -1;
+
+            while (_run.EliteOffersLeft > 0)
+            {
+                _run.EliteOffersLeft--;
+                if (OpenConsumableOffer(true)) return;
+            }
+
+            if (RunSettings.Current.EliteGrantsSkillUpgrade && GetUpgradableSkills().Count > 0)
+                OpenSkillUpgrade(ESkillUpgradeSource.Elite, false);
+            else
+                CompleteNode(node, _run.PendingNodeHpDelta);
         }
 
         private object BattleResult(MapNodeState node, bool victory, int hpBefore, int hpAfter)

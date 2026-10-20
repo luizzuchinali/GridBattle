@@ -23,7 +23,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 4496651681792
-    m_Localized: Causa 50% menos dano.
+    m_Localized: Causa 1 de dano a menos em cada golpe.
     m_Metadata:
       m_Items: []
   - m_Id: 4497024974848
@@ -31,7 +31,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 4497024974849
-    m_Localized: Ao ser atacado, devolve dano ao atacante.
+    m_Localized: Causa 1 de dano em quem o atinge.
     m_Metadata:
       m_Items: []
   - m_Id: 4497381490688
@@ -47,7 +47,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 4497729617921
-    m_Localized: "Recupera vida no in\xEDcio de cada turno."
+    m_Localized: "Recupera 1 PV no in\xEDcio de cada um dos seus turnos."
     m_Metadata:
       m_Items: []
   - m_Id: 4498077745152
@@ -55,7 +55,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 4498077745153
-    m_Localized: "Vida tempor\xE1ria que absorve dano antes da vida real."
+    m_Localized: "Absorve o pr\xF3ximo 1 de dano."
     m_Metadata:
       m_Items: []
   - m_Id: 4498425872384
@@ -63,7 +63,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 4498425872385
-    m_Localized: "Sofre dano no in\xEDcio de cada turno."
+    m_Localized: "Leva 1 de dano no in\xEDcio de cada um dos seus turnos."
     m_Metadata:
       m_Items: []
   - m_Id: 7824852877312
@@ -71,7 +71,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 7824865460224
-    m_Localized: Reduz o dano de cada golpe recebido.
+    m_Localized: "Bloqueia 1 de dano de cada golpe. Colis\xF5es ignoram a armadura."
     m_Metadata:
       m_Items: []
   - m_Id: 7825255530496
@@ -127,7 +127,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 7828103462913
-    m_Localized: "Persegue voc\xEA e ataca de perto."
+    m_Localized: "Chega perto e acerta o porrete numa casa adjacente no pr\xF3ximo turno."
     m_Metadata:
       m_Items: []
   - m_Id: 7828103462914
@@ -135,7 +135,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 7828103462915
-    m_Localized: "Lento e resistente. Avan\xE7a at\xE9 voc\xEA e ataca de perto."
+    m_Localized: "Lento e resistente. Respinga \xE1cido na casa da frente e nos lados."
     m_Metadata:
       m_Items: []
   - m_Id: 7828103462916
@@ -143,7 +143,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 7828103462917
-    m_Localized: "R\xE1pido e fr\xE1gil. Se aproxima depressa e morde."
+    m_Localized: "R\xE1pido e fr\xE1gil. Se aproxima depressa e morde uma casa adjacente."
     m_Metadata:
       m_Items: []
   - m_Id: 7828103462918
@@ -151,7 +151,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 7828103462919
-    m_Localized: "R\xE1pido e fr\xE1gil. Voa at\xE9 voc\xEA e ataca de perto."
+    m_Localized: "R\xE1pido e fr\xE1gil. Mergulha nas casas da diagonal e, de tempos em tempos, grita contra todas as casas ao redor, empurrando quem estiver nelas."
     m_Metadata:
       m_Items: []
   - m_Id: 7828103462920
@@ -159,7 +159,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 7828103462921
-    m_Localized: "Ataca de longe e tenta manter essa dist\xE2ncia."
+    m_Localized: "Mant\xE9m dist\xE2ncia e dispara setas flamejantes em linha reta que deixam voc\xEA Queimando."
     m_Metadata:
       m_Items: []
   - m_Id: 7828212514816
@@ -167,7 +167,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 7828212514817
-    m_Localized: "Cura e protege os aliados feridos e se mant\xE9m longe de voc\xEA. Elimine-o primeiro."
+    m_Localized: "Cura e protege os aliados feridos e eletrifica voc\xEA de longe. Elimine-o primeiro."
     m_Metadata:
       m_Items: []
   - m_Id: 7828325761024
@@ -175,7 +175,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 7828325761025
-    m_Localized: "Invoca ratos para lutar por ela e se mant\xE9m longe de voc\xEA."
+    m_Localized: "Invoca ratos para lutar por ela e guincha para empurrar voc\xEA."
     m_Metadata:
       m_Items: []
   - m_Id: 7828430618624
@@ -183,7 +183,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 7828430618625
-    m_Localized: "Enfraquece voc\xEA de longe e depois se aproxima para atacar."
+    m_Localized: "Enfraquece voc\xEA de longe e amaldi\xE7oa uma linha, deixando voc\xEA Exposto."
     m_Metadata:
       m_Items: []
   - m_Id: 7828539670528
@@ -191,7 +191,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 7828539670529
-    m_Localized: "A armadura bloqueia parte de cada golpe, ent\xE3o ataques fracos mal o arranham."
+    m_Localized: "A armadura bloqueia 1 de dano de cada golpe: empurre-o contra algo, colis\xF5es ignoram a armadura."
     m_Metadata:
       m_Items: []
   - m_Id: 7828652916736
@@ -199,7 +199,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 7828652916737
-    m_Localized: "Recupera vida a cada turno. Cause dano r\xE1pido, antes que ele se cure."
+    m_Localized: "Recupera 1 PV a cada turno. Acabe com ele r\xE1pido."
     m_Metadata:
       m_Items: []
   - m_Id: 7828757774336
@@ -207,7 +207,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 7828757774337
-    m_Localized: Fere quem o atinge. Ataque de longe ou use dano ao longo do tempo.
+    m_Localized: "Causa 1 de dano em quem o atinge. Melhor empurr\xE1-lo contra outros: colis\xF5es n\xE3o espetam."
     m_Metadata:
       m_Items: []
   - m_Id: 7840745095168
@@ -215,7 +215,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 7840745095169
-    m_Localized: "Um golpe r\xE1pido contra um inimigo adjacente."
+    m_Localized: Golpeia um inimigo adjacente e o empurra 1 casa.
     m_Metadata:
       m_Items: []
   - m_Id: 7841101611008
@@ -223,7 +223,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 7841101611009
-    m_Localized: "Avan\xE7a com o escudo e atinge uma linha de inimigos."
+    m_Localized: "Avan\xE7a at\xE9 3 casas em linha reta. O inimigo no fim leva 1 de dano e \xE9 empurrado 1 casa."
     m_Metadata:
       m_Items: []
   - m_Id: 7841487486976
@@ -231,7 +231,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 7841487486977
-    m_Localized: "Lan\xE7a uma bola de fogo que queima os inimigos de uma \xE1rea, de qualquer ponto do grid."
+    m_Localized: "Lan\xE7a uma bola de fogo numa casa a 2-3: 2 de dano, e a casa queima por 2 rodadas (1 de dano em quem terminar o turno nela)."
     m_Metadata:
       m_Items: []
   - m_Id: 7841844002816
@@ -239,7 +239,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 7841844002817
-    m_Localized: "Uma explos\xE3o de gelo que atinge os inimigos ao redor do alvo."
+    m_Localized: "Congela todos ao seu redor: 1 de dano, e no pr\xF3ximo turno deles n\xE3o podem andar nem usar skills. Um inimigo congelado perde o golpe preparado."
     m_Metadata:
       m_Items: []
   - m_Id: 7842200518656
@@ -247,7 +247,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 7842200518657
-    m_Localized: Um raio que se abre em cone a partir do alvo.
+    m_Localized: "Raios do c\xE9u numa cruz de casas a 2-4 (n\xE3o precisa de linha de vis\xE3o): 1 de dano e atordoa, cancelando os golpes preparados. Canalizada: gasta tamb\xE9m o andar do turno (use antes de andar)."
     m_Metadata:
       m_Items: []
   - m_Id: 7842586394624
@@ -255,7 +255,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 7842586394625
-    m_Localized: Arremessa uma adaga em um inimigo distante.
+    m_Localized: "Arremessa uma adaga num inimigo a 2-4 casas em linha ou diagonal: 1 de dano e Exposto (leva 1 a mais de cada golpe) at\xE9 o seu pr\xF3ximo turno."
     m_Metadata:
       m_Items: []
   - m_Id: 7842947104768
@@ -263,7 +263,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 7842947104769
-    m_Localized: "Lan\xE7a uma bomba de fuma\xE7a em um inimigo ao seu lado."
+    m_Localized: "Estoura uma bomba de fuma\xE7a ao seu redor: 1 de dano e cega todos ao seu redor. Inimigos cegos perdem o golpe preparado e n\xE3o podem preparar outro no pr\xF3ximo turno."
     m_Metadata:
       m_Items: []
   - m_Id: 7843299426304
@@ -271,7 +271,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 7843299426305
-    m_Localized: Uma adaga envenenada que atravessa uma linha de inimigos.
+    m_Localized: "Arremessa uma adaga numa casa a at\xE9 3 em linha reta: 1 de dano e Envenenado (1 de dano no in\xEDcio de cada um dos 2 pr\xF3ximos turnos dele)."
     m_Metadata:
       m_Items: []
   - m_Id: 7843660136448
@@ -279,7 +279,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 7843660136449
-    m_Localized: Um longo rastro de veneno que atinge todos os inimigos em linha.
+    m_Localized: "Derrama veneno numa linha de 4 casas \xE0 sua frente: 1 de dano, Envenenado, e as casas viram um p\xE2ntano venenoso por 2 rodadas."
     m_Metadata:
       m_Items: []
   - m_Id: 10290159910912
@@ -287,7 +287,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 10290247991296
-    m_Localized: "Em cada turno voc\xEA anda uma vez e age uma vez (ataque ou habilidade), na ordem que quiser. Toque em si mesmo ou em Encerrar para terminar; depois os inimigos tamb\xE9m andam e agem. Derrot\xE1-los d\xE1 XP: encha a barra para subir de n\xEDvel."
+    m_Localized: "Em cada turno voc\xEA anda uma vez e usa uma skill, na ordem que quiser. Os inimigos marcam as casas que v\xE3o golpear no pr\xF3ximo turno: saia das marcas, ou empurre, puxe, atordoe ou congele os inimigos. Toque em si mesmo ou em Encerrar para terminar."
     m_Metadata:
       m_Items: []
   - m_Id: 10290373820416
@@ -311,15 +311,15 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 10290604507137
-    m_Localized: "Sua vida se mant\xE9m na pr\xF3xima batalha. Ela se recupera toda ao subir de n\xEDvel, e tamb\xE9m em n\xF3s de cura ou pela sua build; fique de olho ao planejar sua rota."
+    m_Localized: "Sua vida se mant\xE9m na pr\xF3xima batalha e n\xE3o volta ao subir de n\xEDvel. Descanse nos acampamentos para se curar e planeje sua rota em torno deles."
     m_Metadata:
       m_Items: []
   - m_Id: 10290717753344
-    m_Localized: "N\xF3 de cura"
+    m_Localized: Acampamento
     m_Metadata:
       m_Items: []
   - m_Id: 10290717753345
-    m_Localized: "Aqui voc\xEA recupera vida. Planeje sua rota para chegar a um antes que sua vida acabe."
+    m_Localized: "No acampamento voc\xEA descansa para recuperar vida ou treina para transformar uma das suas skills numa vers\xE3o mais forte. Escolha o que a sua run precisa."
     m_Metadata:
       m_Items: []
   - m_Id: 10290826805248
@@ -327,7 +327,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 10290826805249
-    m_Localized: "Aqui voc\xEA pode obter um talento fora das subidas de n\xEDvel, pagando um custo. Veja se vale a pena."
+    m_Localized: "Aqui voc\xEA pode obter um talento fora das subidas de n\xEDvel, pagando com vida m\xE1xima. Veja se vale a pena."
     m_Metadata:
       m_Items: []
   - m_Id: 10290944245760
@@ -351,7 +351,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 10291187515393
-    m_Localized: "Toque no bot\xE3o de uma skill e depois em uma c\xE9lula destacada para us\xE1-la; toque de novo para cancelar. As skills t\xEAm um tempo de recarga, contado em a\xE7\xF5es."
+    m_Localized: "Toque numa skill e depois numa casa destacada para mirar: a pr\xE9via mostra o dano, os empurr\xF5es e onde os golpes marcados v\xE3o cair. Toque de novo na mesma casa ou em Confirmar para usar, ou em Cancelar para escolher outra vez. As skills t\xEAm uma recarga contada nos seus turnos."
     m_Metadata:
       m_Items: []
   - m_Id: 141742633615360
@@ -359,7 +359,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 141742713307136
-    m_Localized: "Restaura 30 de vida. Us\xE1-la n\xE3o gasta a sua a\xE7\xE3o."
+    m_Localized: "Restaura 4 de vida. Us\xE1-la n\xE3o gasta a sua a\xE7\xE3o."
     m_Metadata:
       m_Items: []
   - m_Id: 141743153709056
@@ -367,7 +367,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 141743153709057
-    m_Localized: "Arremesse a at\xE9 3 c\xE9lulas: causa 15 de dano a cada inimigo em uma \xE1rea 3x3. N\xE3o gasta a sua a\xE7\xE3o."
+    m_Localized: "Arremesse at\xE9 3 casas de dist\xE2ncia: causa 2 de dano em cada inimigo numa \xE1rea 3x3. N\xE3o gasta a sua a\xE7\xE3o."
     m_Metadata:
       m_Items: []
   - m_Id: 141743547973632
@@ -375,7 +375,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 141743547973633
-    m_Localized: "Recupera vida ao longo de 3 turnos. N\xE3o gasta a sua a\xE7\xE3o."
+    m_Localized: "Recupera 1 PV no in\xEDcio de cada um dos seus 3 pr\xF3ximos turnos. N\xE3o gasta a sua a\xE7\xE3o."
     m_Metadata:
       m_Items: []
   - m_Id: 142151209156608
@@ -391,7 +391,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 142151704084481
-    m_Localized: Queima quem terminar o turno sobre ela.
+    m_Localized: Causa 1 de dano em quem terminar o turno sobre ela.
     m_Metadata:
       m_Items: []
   - m_Id: 142152127709184
@@ -427,7 +427,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 151679891898369
-    m_Localized: "Avan\xE7a em voc\xEA e bate forte. Vem com dois guardas blindados."
+    m_Localized: "N\xE3o pode ser empurrado. Esmaga as casas ao redor e lan\xE7a ondas de choque em linha; as duas tamb\xE9m atingem os guardas."
     m_Metadata:
       m_Items: []
   - m_Id: 151680038699008
@@ -439,7 +439,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 151680038699010
-    m_Localized: "Persegue voc\xEA e ataca de perto. Recebe menos dano de cada golpe."
+    m_Localized: "Escolta blindada do rei. Empurra voc\xEA, muitas vezes para a martelada do rei."
     m_Metadata:
       m_Items: []
   - m_Id: 218482187194368
@@ -487,55 +487,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 218484057853953
-    m_Localized: "+10 de vida m\xE1xima por ac\xFAmulo."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 218484464701440
-    m_Localized: "L\xE2mina Afiada"
-    m_Metadata:
-      m_Items: []
-  - m_Id: 218484464701441
-    m_Localized: "+2 de dano do ataque b\xE1sico por ac\xFAmulo."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 218484909297664
-    m_Localized: "Olho Agu\xE7ado"
-    m_Metadata:
-      m_Items: []
-  - m_Id: 218484909297665
-    m_Localized: "+5% de chance de cr\xEDtico por ac\xFAmulo."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 218485311950848
-    m_Localized: "Precis\xE3o Letal"
-    m_Metadata:
-      m_Items: []
-  - m_Id: 218485311950849
-    m_Localized: "+0,25x no multiplicador de dano cr\xEDtico por ac\xFAmulo."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 218485693632512
-    m_Localized: "Perfura\xE7\xE3o de Armadura"
-    m_Metadata:
-      m_Items: []
-  - m_Id: 218485693632513
-    m_Localized: "Ignora 10% da defesa do alvo por ac\xFAmulo."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 218486079508480
-    m_Localized: Robustez
-    m_Metadata:
-      m_Items: []
-  - m_Id: 218486079508481
-    m_Localized: "+1 de defesa por ac\xFAmulo."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 218486490550272
-    m_Localized: Maestria em Habilidades
-    m_Metadata:
-      m_Items: []
-  - m_Id: 218486490550273
-    m_Localized: "+10% de dano nas habilidades ofensivas por ac\xFAmulo."
+    m_Localized: "+2 de vida m\xE1xima por n\xEDvel do talento."
     m_Metadata:
       m_Items: []
   - m_Id: 218486876426240
@@ -543,39 +495,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 218486876426241
-    m_Localized: "+1 de alcance das habilidades por ac\xFAmulo."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 218487270690816
-    m_Localized: "Recupera\xE7\xE3o R\xE1pida"
-    m_Metadata:
-      m_Items: []
-  - m_Id: 218487270690817
-    m_Localized: "As habilidades se recuperam 1 turno antes por ac\xFAmulo."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 218487669149696
-    m_Localized: Armadura de Espinhos
-    m_Metadata:
-      m_Items: []
-  - m_Id: 218487669149697
-    m_Localized: "Ao ser atacado, devolve 2 de dano ao atacante por ac\xFAmulo."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 218488046637056
-    m_Localized: Roubo de Vida
-    m_Metadata:
-      m_Items: []
-  - m_Id: 218488046637057
-    m_Localized: "Recupera 5% do dano causado como vida por ac\xFAmulo."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 218488432513024
-    m_Localized: "Regenera\xE7\xE3o"
-    m_Metadata:
-      m_Items: []
-  - m_Id: 218488432513025
-    m_Localized: "Recupera 2 de vida no in\xEDcio de cada um dos seus turnos por ac\xFAmulo."
+    m_Localized: +1 de alcance para as suas skills cujo alcance pode crescer.
     m_Metadata:
       m_Items: []
   - m_Id: 218488814194688
@@ -584,14 +504,6 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 218488814194689
     m_Localized: "+1 op\xE7\xE3o de talento em cada oferta por ac\xFAmulo."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 218489191682048
-    m_Localized: Favor da Sorte
-    m_Metadata:
-      m_Items: []
-  - m_Id: 218489191682049
-    m_Localized: "+1 reroll das ofertas de talento por ac\xFAmulo."
     m_Metadata:
       m_Items: []
   - m_Id: 218489581752320
@@ -607,55 +519,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 218489829216257
-    m_Localized: "+10 de vida m\xE1xima por n\xEDvel do talento."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 218490064097280
-    m_Localized: "L\xE2mina Afiada"
-    m_Metadata:
-      m_Items: []
-  - m_Id: 218490064097281
-    m_Localized: "+2 de dano do ataque b\xE1sico por n\xEDvel do talento."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 218490298978304
-    m_Localized: "Olho Agu\xE7ado"
-    m_Metadata:
-      m_Items: []
-  - m_Id: 218490298978305
-    m_Localized: "+5% de chance de cr\xEDtico por n\xEDvel do talento."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 218490542247936
-    m_Localized: "Precis\xE3o Letal"
-    m_Metadata:
-      m_Items: []
-  - m_Id: 218490542247937
-    m_Localized: "+0,25x no multiplicador de dano cr\xEDtico por n\xEDvel do talento. Requer Olho Agu\xE7ado."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 218490772934656
-    m_Localized: "Perfura\xE7\xE3o de Armadura"
-    m_Metadata:
-      m_Items: []
-  - m_Id: 218490777128960
-    m_Localized: "Ignora 10% da defesa do alvo por n\xEDvel do talento."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 218490995232768
-    m_Localized: Robustez
-    m_Metadata:
-      m_Items: []
-  - m_Id: 218490995232769
-    m_Localized: "+1 de defesa por n\xEDvel do talento."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 218491221725184
-    m_Localized: Maestria em Habilidades
-    m_Metadata:
-      m_Items: []
-  - m_Id: 218491221725185
-    m_Localized: "+10% de dano nas habilidades ofensivas por n\xEDvel do talento."
+    m_Localized: "+2 de vida m\xE1xima por n\xEDvel do talento."
     m_Metadata:
       m_Items: []
   - m_Id: 218491444023296
@@ -663,39 +527,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 218491444023297
-    m_Localized: "+1 de alcance das habilidades por n\xEDvel do talento."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 218491670515712
-    m_Localized: "Recupera\xE7\xE3o R\xE1pida"
-    m_Metadata:
-      m_Items: []
-  - m_Id: 218491670515713
-    m_Localized: "As habilidades se recuperam 1 turno antes por n\xEDvel."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 218491930562560
-    m_Localized: Armadura de Espinhos
-    m_Metadata:
-      m_Items: []
-  - m_Id: 218491930562561
-    m_Localized: "Ao ser atacado, devolve 2 de dano ao atacante por n\xEDvel do talento."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 218492148666368
-    m_Localized: Roubo de Vida
-    m_Metadata:
-      m_Items: []
-  - m_Id: 218492148666369
-    m_Localized: "Recupera 5% do dano causado como vida por n\xEDvel do talento."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 218492383547392
-    m_Localized: "Regenera\xE7\xE3o"
-    m_Metadata:
-      m_Items: []
-  - m_Id: 218492383547393
-    m_Localized: "Recupera 2 de vida no in\xEDcio de cada um dos seus turnos por n\xEDvel do talento."
+    m_Localized: +1 de alcance para as suas skills cujo alcance pode crescer.
     m_Metadata:
       m_Items: []
   - m_Id: 218492639399936
@@ -704,14 +536,6 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 218492639399937
     m_Localized: "+1 op\xE7\xE3o de talento em cada oferta por n\xEDvel do talento."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 218492886863872
-    m_Localized: Favor da Sorte
-    m_Metadata:
-      m_Items: []
-  - m_Id: 218492886863873
-    m_Localized: "+1 reroll das ofertas de talento por n\xEDvel do talento."
     m_Metadata:
       m_Items: []
   - m_Id: 218493130133504
@@ -727,7 +551,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 218493557952513
-    m_Localized: "Desbloqueia Investida com Escudo: avan\xE7a com o escudo e atinge uma linha de inimigos."
+    m_Localized: 'Desbloqueia Arremesso de Escudo: atinge um inimigo a 2-4 casas em linha reta e o empurra.'
     m_Metadata:
       m_Items: []
   - m_Id: 218493989965824
@@ -735,7 +559,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 218493989965825
-    m_Localized: "Desbloqueia Bola de Fogo: queima os inimigos de uma \xE1rea de qualquer ponto do grid."
+    m_Localized: "Desbloqueia Meteoro: 2 de dano numa \xE1rea 3x3 distante, empurrando todos para longe do centro."
     m_Metadata:
       m_Items: []
   - m_Id: 218494451339264
@@ -743,7 +567,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 218494451339265
-    m_Localized: "Dom\xEDnio do gelo: suas skills causam 15% a mais de dano."
+    m_Localized: "Desbloqueia Muralha de Gelo: ergue uma muralha de gelo de 3 casas que bloqueia o caminho, a vis\xE3o e os golpes."
     m_Metadata:
       m_Items: []
   - m_Id: 218494916907008
@@ -751,7 +575,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 218494921101312
-    m_Localized: "Desbloqueia Tempestade El\xE9trica: um raio que se abre em cone a partir do alvo."
+    m_Localized: "Desbloqueia Tempestade El\xE9trica: raios numa cruz de casas distantes que atordoam, cancelando os golpes preparados."
     m_Metadata:
       m_Items: []
   - m_Id: 218495558635520
@@ -759,7 +583,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 218495558635521
-    m_Localized: 'Desbloqueia Adaga de Arremesso: arremessa uma adaga em um inimigo distante.'
+    m_Localized: 'Desbloqueia Adaga de Arremesso: atinge um inimigo distante em linha ou diagonal e o deixa Exposto.'
     m_Metadata:
       m_Items: []
   - m_Id: 218496020008960
@@ -767,15 +591,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 218496020008961
-    m_Localized: "Desbloqueia Bomba de Fuma\xE7a: lan\xE7a uma bomba de fuma\xE7a em um inimigo ao seu lado."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 218496452022272
-    m_Localized: "M\xE3os Ligeiras"
-    m_Metadata:
-      m_Items: []
-  - m_Id: 218496452022273
-    m_Localized: "M\xE3os r\xE1pidas: suas skills causam 15% a mais de dano."
+    m_Localized: "Desbloqueia Bomba de Fuma\xE7a: cega todos ao seu redor, cancelando os golpes preparados."
     m_Metadata:
       m_Items: []
   - m_Id: 218496955338752
@@ -783,7 +599,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 218496955338753
-    m_Localized: 'Desbloqueia Linha Venenosa: uma longa linha de veneno que atinge todos os inimigos nela.'
+    m_Localized: "Desbloqueia Linha Venenosa: envenena uma linha de 4 casas e a transforma em p\xE2ntano venenoso."
     m_Metadata:
       m_Items: []
   - m_Id: 220859090882560
@@ -798,20 +614,12 @@ MonoBehaviour:
     m_Localized: Ladino
     m_Metadata:
       m_Items: []
-  - m_Id: 302178474938368
-    m_Localized: Criomancia
+  - m_Id: 5123292117147649
+    m_Localized: "Inimigos congelados ou gelados que voc\xEA empurra deslizam at\xE9 bater em algo."
     m_Metadata:
       m_Items: []
-  - m_Id: 302178546241536
-    m_Localized: Suas skills causam 15% a mais de dano.
-    m_Metadata:
-      m_Items: []
-  - m_Id: 302178680459264
-    m_Localized: "M\xE3os Ligeiras"
-    m_Metadata:
-      m_Items: []
-  - m_Id: 302178684653568
-    m_Localized: Suas skills causam 15% a mais de dano.
+  - m_Id: 5123292117147648
+    m_Localized: Gelo Escorregadio
     m_Metadata:
       m_Items: []
   - m_Id: 444084762312704
@@ -819,7 +627,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 444084842004480
-    m_Localized: "Acerta um inimigo adjacente com o escudo e o empurra 2 casas. Inimigos lan\xE7ados contra um obst\xE1culo, a borda ou outro personagem sofrem dano extra."
+    m_Localized: 'Golpeia um inimigo adjacente: 2 de dano, o empurra 2 casas e o atordoa, cancelando o golpe preparado.'
     m_Metadata:
       m_Items: []
   - m_Id: 444085320155136
@@ -827,7 +635,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 444085320155137
-    m_Localized: "Uma rajada de vento que fere os inimigos de uma \xE1rea pequena e empurra cada um 1 casa para longe do centro. Os que colidem sofrem dano extra."
+    m_Localized: "Uma rajada de vento numa casa a at\xE9 3 em linha reta: 1 de dano e empurra o alvo 1 casa para longe de voc\xEA."
     m_Metadata:
       m_Items: []
   - m_Id: 444085714419712
@@ -835,7 +643,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 444085714419713
-    m_Localized: "Lan\xE7a um gancho em um inimigo distante e o puxa at\xE9 3 casas em sua dire\xE7\xE3o, parando ao seu lado. Arraste-o para \xE1reas perigosas ou contra outros inimigos."
+    m_Localized: "Lan\xE7a um gancho num inimigo a 2-3 casas em linha reta: 1 de dano e o puxa at\xE9 3 casas em sua dire\xE7\xE3o."
     m_Metadata:
       m_Items: []
   - m_Id: 444086129655808
@@ -843,7 +651,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 444086129655809
-    m_Localized: "Lan\xE7a um gancho em voc\xEA de longe e arrasta voc\xEA at\xE9 3 casas em dire\xE7\xE3o ao goblin."
+    m_Localized: "Marca uma casa a 2-4 em linha reta e a fisga no pr\xF3ximo turno: 1 de dano e puxa quem estiver l\xE1 at\xE9 3 casas em dire\xE7\xE3o ao goblin."
     m_Metadata:
       m_Items: []
   - m_Id: 444086486171648
@@ -851,7 +659,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 444086486171649
-    m_Localized: "Atinge todos ao redor do rei e os arremessa 2 casas para tr\xE1s."
+    m_Localized: "Marca uma linha de 4 casas \xE0 frente e lan\xE7a uma onda de choque no pr\xF3ximo turno: 2 de dano e arremessa todos nela 2 casas para tr\xE1s."
     m_Metadata:
       m_Items: []
   - m_Id: 444086842687488
@@ -859,23 +667,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 444086842687489
-    m_Localized: "Desbloqueia Golpe de Escudo: acerta um inimigo adjacente e o empurra 2 casas. Inimigos lan\xE7ados contra algo sofrem dano extra."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 444087199203328
-    m_Localized: "Dom\xEDnio do Vento"
-    m_Metadata:
-      m_Items: []
-  - m_Id: 444087199203329
-    m_Localized: "Desbloqueia Rajada de Vento: uma rajada que fere os inimigos de uma \xE1rea pequena e os empurra para longe do centro."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 444087547330560
-    m_Localized: Gancho de Abordagem
-    m_Metadata:
-      m_Items: []
-  - m_Id: 444087547330561
-    m_Localized: "Desbloqueia Gancho: puxa um inimigo distante at\xE9 3 casas em sua dire\xE7\xE3o. Arraste-o para \xE1reas perigosas ou contra outros inimigos."
+    m_Localized: "Desbloqueia Abalo S\xEDsmico: racha o ch\xE3o numa linha de 3 casas \xE0 sua frente, atingindo e empurrando todos nela."
     m_Metadata:
       m_Items: []
   - m_Id: 444087660576768
@@ -883,7 +675,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 444087660576769
-    m_Localized: "Fisga voc\xEA de longe e arrasta voc\xEA para perto do grupo, depois luta de perto."
+    m_Localized: "Fisga voc\xEA de longe e arrasta voc\xEA para perto do grupo."
     m_Metadata:
       m_Items: []
   - m_Id: 458931054968832
@@ -899,7 +691,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 458931742834689
-    m_Localized: "Sofre 2 de dano no in\xEDcio do seu turno por pilha (at\xE9 3)."
+    m_Localized: "Leva 1 de dano no in\xEDcio de cada um dos seus turnos."
     m_Metadata:
       m_Items: []
   - m_Id: 458932103544832
@@ -911,11 +703,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 458932476837888
-    m_Localized: Congelado
+    m_Localized: Gelado
     m_Metadata:
       m_Items: []
   - m_Id: 458932476837889
-    m_Localized: "N\xE3o consegue se mover e causa 20% menos dano."
+    m_Localized: Anda 1 casa a menos.
     m_Metadata:
       m_Items: []
   - m_Id: 458932833353728
@@ -923,7 +715,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 458932833353729
-    m_Localized: "N\xE3o pode se mover, atacar nem usar habilidades."
+    m_Localized: "N\xE3o pode andar nem usar skills. Um golpe preparado \xE9 cancelado."
     m_Metadata:
       m_Items: []
   - m_Id: 458933202452480
@@ -931,87 +723,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 458933202452481
-    m_Localized: Sofre 25% mais dano.
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458933571551232
-    m_Localized: Golpe Pesado
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458933571551233
-    m_Localized: "Golpe causa +3 de dano por n\xEDvel."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458933923872768
-    m_Localized: Golpe Pesado
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458933923872769
-    m_Localized: "Golpe causa +3 de dano por n\xEDvel."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458934280388608
-    m_Localized: Golpe Amplo
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458934280388609
-    m_Localized: "A linha do Golpe cresce 2 casas por n\xEDvel."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458934632710144
-    m_Localized: Golpe Amplo
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458934632710145
-    m_Localized: "A linha do Golpe cresce 2 casas por n\xEDvel."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458935052140544
-    m_Localized: "Golpe Empurr\xE3o"
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458935052140545
-    m_Localized: "O Golpe tamb\xE9m empurra 1 casa os inimigos atingidos."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458935479959552
-    m_Localized: "Golpe Empurr\xE3o"
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458935484153856
-    m_Localized: "O Golpe tamb\xE9m empurra 1 casa os inimigos atingidos."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458935916167168
-    m_Localized: Frenesi Corpo a Corpo
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458935916167169
-    m_Localized: "+7% de dano por inimigo adjacente (at\xE9 3) por n\xEDvel, com ataques e habilidades."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458936364957696
-    m_Localized: Frenesi Corpo a Corpo
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458936364957697
-    m_Localized: "+7% de dano por inimigo adjacente (at\xE9 3) por n\xEDvel, com ataques e habilidades."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458936805359616
-    m_Localized: Segurar a Linha
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458936805359617
-    m_Localized: "Recebe 4% menos dano de ataques por inimigo adjacente (at\xE9 3) por n\xEDvel."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458937233178624
-    m_Localized: Segurar a Linha
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458937233178625
-    m_Localized: "Recebe 4% menos dano de ataques por inimigo adjacente (at\xE9 3) por n\xEDvel."
+    m_Localized: Leva 1 de dano a mais de cada golpe.
     m_Metadata:
       m_Items: []
   - m_Id: 458937702940672
@@ -1019,7 +731,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 458937702940673
-    m_Localized: "Matar um inimigo cura 6 PV por n\xEDvel."
+    m_Localized: Matar um inimigo cura 1 PV.
     m_Metadata:
       m_Items: []
   - m_Id: 458938113982464
@@ -1027,7 +739,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 458938113982465
-    m_Localized: "Matar um inimigo cura 6 PV por n\xEDvel."
+    m_Localized: Matar um inimigo cura 1 PV.
     m_Metadata:
       m_Items: []
   - m_Id: 458938508247040
@@ -1035,7 +747,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 458938508247041
-    m_Localized: "Inimigos que voc\xEA empurra ou puxa contra algo sofrem 40% mais dano de colis\xE3o por n\xEDvel."
+    m_Localized: "As colis\xF5es que voc\xEA causa d\xE3o 1 de dano a mais."
     m_Metadata:
       m_Items: []
   - m_Id: 458938906705920
@@ -1043,247 +755,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 458938906705921
-    m_Localized: "Inimigos que voc\xEA empurra ou puxa contra algo sofrem 40% mais dano de colis\xE3o por n\xEDvel."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458939284193280
-    m_Localized: Golpe Concussivo
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458939284193281
-    m_Localized: "O Golpe de Escudo empurra 1 casa a mais por n\xEDvel."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458939636514816
-    m_Localized: Golpe Concussivo
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458939640709120
-    m_Localized: "O Golpe de Escudo empurra 1 casa a mais por n\xEDvel."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458939997224960
-    m_Localized: Golpe Abalador
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458939997224961
-    m_Localized: "O Golpe de Escudo tamb\xE9m exp\xF5e o inimigo por 2 turnos: ele sofre 25% mais dano."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458940349546496
-    m_Localized: Golpe Abalador
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458940349546497
-    m_Localized: "O Golpe de Escudo tamb\xE9m exp\xF5e o inimigo por 2 turnos: ele sofre 25% mais dano."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458940697673728
-    m_Localized: "Concuss\xE3o"
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458940697673729
-    m_Localized: "O Golpe de Escudo tamb\xE9m atordoa o inimigo por 1 turno."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458941049995264
-    m_Localized: "Concuss\xE3o"
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458941049995265
-    m_Localized: "O Golpe de Escudo tamb\xE9m atordoa o inimigo por 1 turno."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458941398122496
-    m_Localized: "Investida R\xE1pida"
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458941398122497
-    m_Localized: "A recarga da Investida com Escudo diminui 1 por n\xEDvel."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458941809164288
-    m_Localized: "Investida R\xE1pida"
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458941809164289
-    m_Localized: "A recarga da Investida com Escudo diminui 1 por n\xEDvel."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458942165680128
-    m_Localized: Trator
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458942165680129
-    m_Localized: "A Investida com Escudo causa +4 de dano e pode come\xE7ar 1 casa mais longe por n\xEDvel."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458942522195968
-    m_Localized: Trator
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458942522195969
-    m_Localized: "A Investida com Escudo causa +4 de dano e pode come\xE7ar 1 casa mais longe por n\xEDvel."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458942870323200
-    m_Localized: "Toque G\xE9lido"
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458942874517504
-    m_Localized: "A Nova de Gelo congela os inimigos por 1 turno: eles n\xE3o se movem e causam 20% menos dano."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458943222644736
-    m_Localized: "Toque G\xE9lido"
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458943222644737
-    m_Localized: "A Nova de Gelo congela os inimigos por 1 turno: eles n\xE3o se movem e causam 20% menos dano."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458943574966272
-    m_Localized: Gelo Veloz
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458943574966273
-    m_Localized: A recarga da Nova de Gelo diminui 1.
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458943927287808
-    m_Localized: Gelo Veloz
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458943927287809
-    m_Localized: A recarga da Nova de Gelo diminui 1.
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458944296386560
-    m_Localized: "Expans\xE3o de Gelo"
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458944296386561
-    m_Localized: "A \xE1rea da Nova de Gelo cresce um anel (5x5 sem os cantos)."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458944678068224
-    m_Localized: "Expans\xE3o de Gelo"
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458944678068225
-    m_Localized: "A \xE1rea da Nova de Gelo cresce um anel (5x5 sem os cantos)."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458945072332800
-    m_Localized: Piromancia
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458945072332801
-    m_Localized: "A Bola de Fogo causa +2 de dano por n\xEDvel."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458945437237248
-    m_Localized: Piromancia
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458945437237249
-    m_Localized: "A Bola de Fogo causa +2 de dano por n\xEDvel."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458945785364480
-    m_Localized: "Igni\xE7\xE3o"
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458945785364481
-    m_Localized: "A Bola de Fogo incendeia os inimigos por 3 turnos (2 de dano por turno por pilha): uma pilha por n\xEDvel a cada acerto."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458946141880320
-    m_Localized: "Igni\xE7\xE3o"
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458946141880321
-    m_Localized: "A Bola de Fogo incendeia os inimigos por 3 turnos (2 de dano por turno por pilha): uma pilha por n\xEDvel a cada acerto."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458946494201856
-    m_Localized: "Explos\xE3o Ampliada"
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458946494201857
-    m_Localized: "A \xE1rea da Bola de Fogo cresce um anel (5x5 sem os cantos)."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458946846523392
-    m_Localized: "Explos\xE3o Ampliada"
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458946846523393
-    m_Localized: "A \xE1rea da Bola de Fogo cresce um anel (5x5 sem os cantos)."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458947198844928
-    m_Localized: Invocador de Tempestades
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458947198844929
-    m_Localized: "A Tempestade El\xE9trica causa +3 de dano por n\xEDvel."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458947559555072
-    m_Localized: Invocador de Tempestades
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458947559555073
-    m_Localized: "A Tempestade El\xE9trica causa +3 de dano por n\xEDvel."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458947907682304
-    m_Localized: Frente de Tempestade
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458947907682305
-    m_Localized: "O cone da Tempestade El\xE9trica cresce uma fileira e o alcance 1."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458948264198144
-    m_Localized: Frente de Tempestade
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458948268392448
-    m_Localized: "O cone da Tempestade El\xE9trica cresce uma fileira e o alcance 1."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458948629102592
-    m_Localized: "Furac\xE3o"
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458948629102593
-    m_Localized: "A \xE1rea da Rajada de Vento cresce um anel (5x5 sem os cantos)."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458948994007040
-    m_Localized: "Furac\xE3o"
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458948994007041
-    m_Localized: "A \xE1rea da Rajada de Vento cresce um anel (5x5 sem os cantos)."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458949342134272
-    m_Localized: "For\xE7a do Vendaval"
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458949342134273
-    m_Localized: "A Rajada de Vento empurra 1 casa a mais por n\xEDvel."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458949694455808
-    m_Localized: "For\xE7a do Vendaval"
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458949694455809
-    m_Localized: "A Rajada de Vento empurra 1 casa a mais por n\xEDvel."
+    m_Localized: "As colis\xF5es que voc\xEA causa d\xE3o 1 de dano a mais."
     m_Metadata:
       m_Items: []
   - m_Id: 458950071943168
@@ -1291,7 +763,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 458950071943169
-    m_Localized: "+20% de dano por n\xEDvel a inimigos com um estado nocivo (queimando, congelado, envenenado...)."
+    m_Localized: Suas skills causam 1 de dano a mais em inimigos congelados ou gelados.
     m_Metadata:
       m_Items: []
   - m_Id: 458950432653312
@@ -1299,7 +771,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 458950432653313
-    m_Localized: "+20% de dano por n\xEDvel a inimigos com um estado nocivo (queimando, congelado, envenenado...)."
+    m_Localized: Suas skills causam 1 de dano a mais em inimigos congelados ou gelados.
     m_Metadata:
       m_Items: []
   - m_Id: 458950780780544
@@ -1307,7 +779,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 458950780780545
-    m_Localized: "As habilidades causam +15% de dano por n\xEDvel se voc\xEA n\xE3o andou neste turno."
+    m_Localized: "Se voc\xEA n\xE3o andou neste turno, suas skills causam 1 de dano a mais."
     m_Metadata:
       m_Items: []
   - m_Id: 458951166656512
@@ -1315,7 +787,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 458951166656513
-    m_Localized: "As habilidades causam +15% de dano por n\xEDvel se voc\xEA n\xE3o andou neste turno."
+    m_Localized: "Se voc\xEA n\xE3o andou neste turno, suas skills causam 1 de dano a mais."
     m_Metadata:
       m_Items: []
   - m_Id: 458951573504000
@@ -1323,7 +795,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 458951573504001
-    m_Localized: "Matar um inimigo reduz em 1 por n\xEDvel as recargas das suas habilidades."
+    m_Localized: Matar um inimigo reduz em 1 a recarga das suas skills.
     m_Metadata:
       m_Items: []
   - m_Id: 458951959379968
@@ -1331,7 +803,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 458951959379969
-    m_Localized: "Matar um inimigo reduz em 1 por n\xEDvel as recargas das suas habilidades."
+    m_Localized: Matar um inimigo reduz em 1 a recarga das suas skills.
     m_Metadata:
       m_Items: []
   - m_Id: 458952328478720
@@ -1339,7 +811,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 458952328478721
-    m_Localized: "Suas habilidades envenenam os inimigos atingidos: uma pilha de veneno por n\xEDvel (1 de dano + 5% da vida m\xE1xima por turno por pilha, 4 turnos, at\xE9 5)."
+    m_Localized: Suas skills envenenam cada inimigo que atingem.
     m_Metadata:
       m_Items: []
   - m_Id: 458952731131904
@@ -1347,183 +819,103 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 458952731131905
-    m_Localized: "Suas habilidades envenenam os inimigos atingidos: uma pilha de veneno por n\xEDvel (1 de dano + 5% da vida m\xE1xima por turno por pilha, 4 turnos, at\xE9 5)."
+    m_Localized: Suas skills envenenam cada inimigo que atingem.
     m_Metadata:
       m_Items: []
-  - m_Id: 458953083453440
-    m_Localized: Arma Envenenada
+  - m_Id: 5123292607881217
+    m_Localized: "Inimigos que voc\xEA empurra ou puxa deixam fogo nas casas por onde saem, por 2 rodadas."
     m_Metadata:
       m_Items: []
-  - m_Id: 458953087647744
-    m_Localized: "Seus ataques b\xE1sicos tamb\xE9m envenenam: 2 pilhas de veneno por n\xEDvel (4 turnos)."
+  - m_Id: 5123292607881216
+    m_Localized: Rastro de Chamas
     m_Metadata:
       m_Items: []
-  - m_Id: 458953444163584
-    m_Localized: Arma Envenenada
+  - m_Id: 5123292452691969
+    m_Localized: "Inimigos que voc\xEA empurra ou puxa deixam fogo nas casas por onde saem, por 2 rodadas."
     m_Metadata:
       m_Items: []
-  - m_Id: 458953444163585
-    m_Localized: "Seus ataques b\xE1sicos tamb\xE9m envenenam: 2 pilhas de veneno por n\xEDvel (4 turnos)."
+  - m_Id: 5123292452691968
+    m_Localized: Rastro de Chamas
     m_Metadata:
       m_Items: []
-  - m_Id: 458953796485120
-    m_Localized: Adagas Afiadas
+  - m_Id: 5123292935036929
+    m_Localized: "O seu andar tamb\xE9m pode trocar de lugar com um personagem adjacente."
     m_Metadata:
       m_Items: []
-  - m_Id: 458953796485121
-    m_Localized: "A Adaga Envenenada e a Adaga de Arremesso causam +4 de dano por n\xEDvel."
+  - m_Id: 5123292935036928
+    m_Localized: Passo Trocado
     m_Metadata:
       m_Items: []
-  - m_Id: 458954153000960
-    m_Localized: Adagas Afiadas
+  - m_Id: 5123292779847681
+    m_Localized: "O seu andar tamb\xE9m pode trocar de lugar com um personagem adjacente."
     m_Metadata:
       m_Items: []
-  - m_Id: 458954153000961
-    m_Localized: "A Adaga Envenenada e a Adaga de Arremesso causam +4 de dano por n\xEDvel."
+  - m_Id: 5123292779847680
+    m_Localized: Passo Trocado
     m_Metadata:
       m_Items: []
-  - m_Id: 458954513711104
-    m_Localized: "Olho de \xC1guia"
+  - m_Id: 5123291198595073
+    m_Localized: "Quando um golpe mirado em voc\xEA erra, o inimigo que golpeou fica Exposto (leva 1 a mais de cada golpe) at\xE9 o fim do pr\xF3ximo turno dele."
     m_Metadata:
       m_Items: []
-  - m_Id: 458954513711105
-    m_Localized: "A Adaga Envenenada e a Adaga de Arremesso alcan\xE7am 1 casa a mais por n\xEDvel."
+  - m_Id: 5123291198595072
+    m_Localized: Contragolpe
     m_Metadata:
       m_Items: []
-  - m_Id: 458954857644032
-    m_Localized: "Olho de \xC1guia"
+  - m_Id: 5123291039211521
+    m_Localized: "Quando um golpe mirado em voc\xEA erra, o inimigo que golpeou fica Exposto (leva 1 a mais de cada golpe) at\xE9 o fim do pr\xF3ximo turno dele."
     m_Metadata:
       m_Items: []
-  - m_Id: 458954857644033
-    m_Localized: "A Adaga Envenenada e a Adaga de Arremesso alcan\xE7am 1 casa a mais por n\xEDvel."
+  - m_Id: 5123291039211520
+    m_Localized: Contragolpe
     m_Metadata:
       m_Items: []
-  - m_Id: 458955201576960
-    m_Localized: Arremesso Perfurante
+  - m_Id: 5123291529945089
+    m_Localized: "Quando um inimigo que voc\xEA empurra ou puxa bate em outro personagem, esse tamb\xE9m \xE9 empurrado 1 casa na mesma dire\xE7\xE3o."
     m_Metadata:
       m_Items: []
-  - m_Id: 458955201576961
-    m_Localized: A linha da Adaga Envenenada fica 2 casas mais longa.
+  - m_Id: 5123291529945088
+    m_Localized: "Domin\xF3"
     m_Metadata:
       m_Items: []
-  - m_Id: 458955553898496
-    m_Localized: Arremesso Perfurante
+  - m_Id: 5123291370561537
+    m_Localized: "Desbloqueia Pis\xE3o: atinge todos ao seu redor e os empurra 1 casa para longe."
     m_Metadata:
       m_Items: []
-  - m_Id: 458955553898497
-    m_Localized: A linha da Adaga Envenenada fica 2 casas mais longa.
+  - m_Id: 5123291370561536
+    m_Localized: Passo Pesado
     m_Metadata:
       m_Items: []
-  - m_Id: 458955914608640
-    m_Localized: Adaga Veloz
+  - m_Id: 5123292280725505
+    m_Localized: "Inimigos congelados ou gelados que voc\xEA empurra deslizam at\xE9 bater em algo."
     m_Metadata:
       m_Items: []
-  - m_Id: 458955914608641
-    m_Localized: A recarga da Adaga Envenenada diminui 1.
+  - m_Id: 5123292280725504
+    m_Localized: Gelo Escorregadio
     m_Metadata:
       m_Items: []
-  - m_Id: 458956275318784
-    m_Localized: Adaga Veloz
+  - m_Id: 5123291685134337
+    m_Localized: "Quando um inimigo que voc\xEA empurra ou puxa bate em outro personagem, esse tamb\xE9m \xE9 empurrado 1 casa na mesma dire\xE7\xE3o."
     m_Metadata:
       m_Items: []
-  - m_Id: 458956275318785
-    m_Localized: A recarga da Adaga Envenenada diminui 1.
+  - m_Id: 5123291685134336
+    m_Localized: "Domin\xF3"
     m_Metadata:
       m_Items: []
-  - m_Id: 458956627640320
-    m_Localized: "Fuma\xE7a Sufocante"
+  - m_Id: 5123290875633665
+    m_Localized: "Matar um inimigo d\xE1 a voc\xEA um andar a mais neste turno."
     m_Metadata:
       m_Items: []
-  - m_Id: 458956627640321
-    m_Localized: "A Bomba de Fuma\xE7a enfraquece o inimigo por 2 turnos: ele causa 50% menos dano."
+  - m_Id: 5123290875633664
+    m_Localized: "\xCDmpeto"
     m_Metadata:
       m_Items: []
-  - m_Id: 458956996739072
-    m_Localized: "Fuma\xE7a Sufocante"
+  - m_Id: 5123290720444417
+    m_Localized: "Matar um inimigo d\xE1 a voc\xEA um andar a mais neste turno."
     m_Metadata:
       m_Items: []
-  - m_Id: 458956996739073
-    m_Localized: "A Bomba de Fuma\xE7a enfraquece o inimigo por 2 turnos: ele causa 50% menos dano."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458957365837824
-    m_Localized: "Fuma\xE7a Persistente"
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458957365837825
-    m_Localized: "Os estados que a Bomba de Fuma\xE7a aplica duram 1 turno a mais por n\xEDvel."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458957718159360
-    m_Localized: "Fuma\xE7a Persistente"
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458957718159361
-    m_Localized: "Os estados que a Bomba de Fuma\xE7a aplica duram 1 turno a mais por n\xEDvel."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458958066286592
-    m_Localized: "Fuma\xE7a Expansiva"
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458958066286593
-    m_Localized: "A \xE1rea da Bomba de Fuma\xE7a cresce um anel (uma cruz de 5 casas)."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458958418608128
-    m_Localized: "Fuma\xE7a Expansiva"
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458958418608129
-    m_Localized: "A \xE1rea da Bomba de Fuma\xE7a cresce um anel (uma cruz de 5 casas)."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458958779318272
-    m_Localized: Gancho Atordoante
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458958783512576
-    m_Localized: "O Gancho tamb\xE9m atordoa o inimigo por 1 turno."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458959148417024
-    m_Localized: Gancho Atordoante
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458959148417025
-    m_Localized: "O Gancho tamb\xE9m atordoa o inimigo por 1 turno."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458959504932864
-    m_Localized: "Pux\xE3o Forte"
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458959504932865
-    m_Localized: "O Gancho puxa 1 casa a mais e alcan\xE7a 1 casa a mais por n\xEDvel."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458959886614528
-    m_Localized: "Pux\xE3o Forte"
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458959886614529
-    m_Localized: "O Gancho puxa 1 casa a mais e alcan\xE7a 1 casa a mais por n\xEDvel."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458960251518976
-    m_Localized: Dardo Venenoso
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458960251518977
-    m_Localized: "A Linha Venenosa causa +4 de dano por n\xEDvel."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458960670949376
-    m_Localized: Dardo Venenoso
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458960670949377
-    m_Localized: "A Linha Venenosa causa +4 de dano por n\xEDvel."
+  - m_Id: 5123290720444416
+    m_Localized: "\xCDmpeto"
     m_Metadata:
       m_Items: []
   - m_Id: 458961031659520
@@ -1531,7 +923,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 458961031659521
-    m_Localized: "+35% de dano por n\xEDvel a inimigos envenenados."
+    m_Localized: Suas skills causam 1 de dano a mais em inimigos envenenados.
     m_Metadata:
       m_Items: []
   - m_Id: 458961388175360
@@ -1539,23 +931,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 458961388175361
-    m_Localized: "+35% de dano por n\xEDvel a inimigos envenenados."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458961736302592
-    m_Localized: Bate e Corre
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458961736302593
-    m_Localized: "+30% de dano por n\xEDvel se voc\xEA andou neste turno antes de atacar."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458962084429824
-    m_Localized: Bate e Corre
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458962084429825
-    m_Localized: "+30% de dano por n\xEDvel se voc\xEA andou neste turno antes de atacar."
+    m_Localized: Suas skills causam 1 de dano a mais em inimigos envenenados.
     m_Metadata:
       m_Items: []
   - m_Id: 458962432557056
@@ -1563,7 +939,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 458962432557057
-    m_Localized: "+40% de dano por n\xEDvel a inimigos sem nenhum aliado ao lado."
+    m_Localized: Suas skills causam 1 de dano a mais em inimigos sem aliados ao lado.
     m_Metadata:
       m_Items: []
   - m_Id: 458962789072896
@@ -1571,7 +947,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 458962789072897
-    m_Localized: "+40% de dano por n\xEDvel a inimigos sem nenhum aliado ao lado."
+    m_Localized: Suas skills causam 1 de dano a mais em inimigos sem aliados ao lado.
     m_Metadata:
       m_Items: []
   - m_Id: 458963149783040
@@ -1579,7 +955,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 458963149783041
-    m_Localized: "Matar um inimigo cura 12 PV por n\xEDvel."
+    m_Localized: Matar um inimigo cura 1 PV.
     m_Metadata:
       m_Items: []
   - m_Id: 458963497910272
@@ -1587,51 +963,35 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 458963497910273
-    m_Localized: "Matar um inimigo cura 12 PV por n\xEDvel."
+    m_Localized: Matar um inimigo cura 1 PV.
     m_Metadata:
       m_Items: []
-  - m_Id: 463460722933760
-    m_Localized: Veneno Debilitante
+  - m_Id: 5123292951814147
+    m_Localized: "N\xE3o pode usar skills. Um golpe preparado \xE9 cancelado."
     m_Metadata:
       m_Items: []
-  - m_Id: 463460781654016
-    m_Localized: "Inimigos com um estado nocivo (veneno, fraquejado, congelado...) causam 15% menos dano a voc\xEA por n\xEDvel."
+  - m_Id: 5123292951814146
+    m_Localized: Cego
     m_Metadata:
       m_Items: []
-  - m_Id: 463461142364160
-    m_Localized: Veneno Debilitante
+  - m_Id: 5123292951814145
+    m_Localized: "N\xE3o pode andar nem usar skills. Um golpe preparado \xE9 cancelado."
     m_Metadata:
       m_Items: []
-  - m_Id: 463461142364161
-    m_Localized: "Inimigos com um estado nocivo (veneno, fraquejado, congelado...) causam 15% menos dano a voc\xEA por n\xEDvel."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 472301057474560
-    m_Localized: "\xC1gil"
-    m_Metadata:
-      m_Items: []
-  - m_Id: 472301116194816
-    m_Localized: "+12 de vida m\xE1xima por n\xEDvel."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 472301472710656
-    m_Localized: "\xC1gil"
-    m_Metadata:
-      m_Items: []
-  - m_Id: 472301472710657
-    m_Localized: "+12 de vida m\xE1xima por n\xEDvel."
+  - m_Id: 5123292951814144
+    m_Localized: Congelado
     m_Metadata:
       m_Items: []
   - m_Id: 2743378687893504
-    m_Localized: "Brig\xE3o da linha de frente, com a maior vida dos tr\xEAs. Luta de perto, fica mais forte cercado de inimigos e arremessa os oponentes contra obst\xE1culos e uns contra os outros com o escudo."
+    m_Localized: "Lutador da linha de frente, com a maior vida. Tira os inimigos de posi\xE7\xE3o, joga uns contra os outros e contra paredes, e atordoa quem vai golpear."
     m_Metadata:
       m_Items: []
   - m_Id: 2743378734030848
-    m_Localized: "Controla o campo de batalha \xE0 dist\xE2ncia: congela, queima e empurra grupos de inimigos. Tem pouca vida, ent\xE3o fique longe da linha de frente."
+    m_Localized: "Controla o campo de batalha de longe: congela inimigos para cancelar golpes, p\xF5e fogo no ch\xE3o e empurra os rivais com o vento. Tem pouca vida."
     m_Metadata:
       m_Items: []
   - m_Id: 2743378734030849
-    m_Localized: "Assassino que desgasta os inimigos com veneno, golpeia forte alvos isolados e arrasta os oponentes para onde s\xE3o mais fracos."
+    m_Localized: 'Assassino escorregadio: envenena de longe, puxa os inimigos para o perigo e troca de lugar para virar os golpes deles contra eles mesmos.'
     m_Metadata:
       m_Items: []
   - m_Id: 4946699310063616
@@ -1639,7 +999,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 4946699347812352
-    m_Localized: "Levanta o martelo e marca as c\xE9lulas em volta. No pr\xF3ximo turno dele, golpeia todas e acerta quem estiver nelas, os Guardas tamb\xE9m."
+    m_Localized: "Levanta o martelo e marca as casas ao redor. No pr\xF3ximo turno ele as esmaga: 3 de dano em todos nelas, inclusive nos guardas."
     m_Metadata:
       m_Items: []
   - m_Id: 4946699561721856
@@ -1647,7 +1007,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 4946699561721857
-    m_Localized: "Este inimigo est\xE1 preparando um golpe: as c\xE9lulas marcadas s\xE3o atingidas no pr\xF3ximo turno dele. Saia da \xE1rea antes disso (o ataque continua livre) ou atordoe-o para cancelar o golpe. Toque longo numa c\xE9lula marcada mostra o dano."
+    m_Localized: "Este inimigo est\xE1 preparando um golpe: no pr\xF3ximo turno ele atinge as casas marcadas e quem estiver nelas, inclusive outros inimigos. Saia, empurre-o para o golpe virar junto, empurre outro inimigo para dentro ou atordoe-o para cancelar. Os n\xFAmeros mostram a ordem em que os inimigos agem."
     m_Metadata:
       m_Items: []
   - m_Id: 5032682152599552
@@ -1655,7 +1015,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5032682282622976
-    m_Localized: "N\xE3o consegue se mover."
+    m_Localized: "N\xE3o pode andar."
     m_Metadata:
       m_Items: []
   - m_Id: 5032682580418560
@@ -1663,7 +1023,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5032682580418561
-    m_Localized: "Arremessa bombas de fogo: marca uma \xE1rea 3x3 e, no pr\xF3ximo turno dele, acerta 8 em todos que estiverem nela e deixa Queimando."
+    m_Localized: "Arremessa bombas de fogo: marca uma \xE1rea 3x3 a 2-4 (por cima de obst\xE1culos) e atinge todos nela no pr\xF3ximo turno: 1 de dano e Queimando."
     m_Metadata:
       m_Items: []
   - m_Id: 5032682874019840
@@ -1671,7 +1031,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5032682874019841
-    m_Localized: "Levanta a clava e marca uma linha de 3 c\xE9lulas \xE0 frente dele. No pr\xF3ximo turno dele, golpeia: 14 de dano em todos que estiverem nela."
+    m_Localized: "Levanta o porrete e marca uma linha de 3 casas \xE0 frente. No pr\xF3ximo turno ele a esmaga: 3 de dano em todos nela."
     m_Metadata:
       m_Items: []
   - m_Id: 5032683163426816
@@ -1679,7 +1039,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5032683163426817
-    m_Localized: "Dispara uma teia de 2 a 4 c\xE9lulas de dist\xE2ncia, em linha reta: 2 de dano e voc\xEA n\xE3o consegue andar no seu pr\xF3ximo turno."
+    m_Localized: "Marca uma casa a 2-4 em linha reta e a cobre de teia no pr\xF3ximo turno: 1 de dano, e quem estiver l\xE1 n\xE3o pode andar no pr\xF3ximo turno."
     m_Metadata:
       m_Items: []
   - m_Id: 5032683788378112
@@ -1687,7 +1047,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5032683788378113
-    m_Localized: "Mant\xE9m dist\xE2ncia e arremessa bombas de fogo: marca uma \xE1rea e a acerta no pr\xF3ximo turno dele."
+    m_Localized: "Mant\xE9m dist\xE2ncia e arremessa bombas de fogo por cima de obst\xE1culos: marca uma \xE1rea 3x3 e a atinge no pr\xF3ximo turno."
     m_Metadata:
       m_Items: []
   - m_Id: 5032684375580672
@@ -1695,7 +1055,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5032684375580673
-    m_Localized: "Lento e resistente. Prepara uma pancada esmagadora em linha \xE0 frente dele: saia do caminho antes do pr\xF3ximo turno dele."
+    m_Localized: "Elite. Lento e resistente: prepara uma pancada esmagadora em linha \xE0 frente. Saia da frente ou vire-o para os aliados."
     m_Metadata:
       m_Items: []
   - m_Id: 5032684946006016
@@ -1703,7 +1063,735 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5032684946006017
-    m_Localized: "R\xE1pida e fr\xE1gil. Mant\xE9m dist\xE2ncia e enreda voc\xEA para que n\xE3o consiga andar."
+    m_Localized: "R\xE1pida e fr\xE1gil. Cobre uma casa de teia de longe para voc\xEA n\xE3o poder andar no pr\xF3ximo turno."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123252296425472
+    m_Localized: Muralha de Gelo
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123252422254592
+    m_Localized: "Uma muralha de gelo: ningu\xE9m pode ocupar nem atravessar esta casa, e ela bloqueia golpes e a vis\xE3o. Derrete depois de algumas rodadas."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123252854267904
+    m_Localized: Golpe Amplo
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123252854267905
+    m_Localized: Golpeia a casa da frente e as dos lados dela, empurrando cada inimigo 1 casa.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123253017845760
+    m_Localized: Golpe Pesado
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123253017845761
+    m_Localized: 'Um golpe mais lento e pesado: 2 de dano e empurra o inimigo 2 casas.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123253181423616
+    m_Localized: Investida Longa
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123253181423617
+    m_Localized: "Avan\xE7a at\xE9 5 casas em linha reta e empurra 1 casa o inimigo no fim."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123253336612864
+    m_Localized: Investida Esmagadora
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123253336612865
+    m_Localized: "Avan\xE7a at\xE9 3 casas em linha reta e arremessa 2 casas o inimigo no fim."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123253508579328
+    m_Localized: Golpe Retumbante
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123253508579329
+    m_Localized: 'Golpeia um inimigo adjacente: 2 de dano, o empurra 3 casas e o atordoa.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123253672157184
+    m_Localized: Varredura de Escudo
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123253672157185
+    m_Localized: 'Varre a casa da frente e os lados: 2 de dano, empurra 2 casas e atordoa cada inimigo atingido.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123253835735040
+    m_Localized: "Pis\xE3o"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123253835735041
+    m_Localized: "Pisa forte no ch\xE3o: 1 de dano em todos ao seu redor e os empurra 1 casa para longe."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123253999312896
+    m_Localized: "Pis\xE3o Trovejante"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123253999312897
+    m_Localized: "Pisa forte no ch\xE3o: 1 de dano, empurra todos ao seu redor 1 casa e os atordoa."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123254171279360
+    m_Localized: "Pis\xE3o Pesado"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123254171279361
+    m_Localized: "Pisa forte no ch\xE3o: 1 de dano em todos ao seu redor e os empurra 2 casas para longe."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123254326468608
+    m_Localized: Arremesso de Escudo
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123254326468609
+    m_Localized: 'Arremessa o escudo num inimigo a 2-4 casas em linha reta: 1 de dano e o empurra 1 casa.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123254481657856
+    m_Localized: Arremesso Atordoante
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123254481657857
+    m_Localized: 'Arremessa o escudo: 1 de dano, empurra 1 casa e atordoa o inimigo, cancelando o golpe preparado.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123254641041408
+    m_Localized: Arremesso Pesado
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123254641041409
+    m_Localized: "Arremessa o escudo com for\xE7a: 1 de dano e empurra o inimigo 2 casas."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123254800424960
+    m_Localized: "Abalo S\xEDsmico"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123254800424961
+    m_Localized: "Racha o ch\xE3o numa linha de 3 casas \xE0 sua frente: 1 de dano em todos nela e os empurra 1 casa."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123254959808512
+    m_Localized: Fenda Longa
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123254959808513
+    m_Localized: 'A fenda percorre 5 casas: 1 de dano em todos nela e os empurra 1 casa.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123255110803456
+    m_Localized: Abalo Profundo
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123255110803457
+    m_Localized: "Racha o ch\xE3o numa linha de 3 casas: 2 de dano em todos nela e os empurra 1 casa."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123255437959168
+    m_Localized: Rajada Forte
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123255437959169
+    m_Localized: "Uma rajada mais forte: 1 de dano e empurra o alvo 2 casas para longe de voc\xEA."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123255597342720
+    m_Localized: Ventania
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123255597342721
+    m_Localized: "Uma rajada larga: atinge a casa alvo e os lados dela, empurrando cada um 1 casa para longe de voc\xEA."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123255760920576
+    m_Localized: "Pris\xE3o de Gelo"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123255760920577
+    m_Localized: "Congela um personagem a at\xE9 3 casas: 1 de dano, e ele n\xE3o pode andar nem usar skills no pr\xF3ximo turno."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123255916109824
+    m_Localized: Congelamento Profundo
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123255916109825
+    m_Localized: "Congela todos ao seu redor: 2 de dano, e no pr\xF3ximo turno deles n\xE3o podem andar nem usar skills."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123256083881984
+    m_Localized: Bola de Fogo Explosiva
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123256083881985
+    m_Localized: 'A bola de fogo explode em cruz: 1 de dano em cada uma das 5 casas, e todas queimam por 2 rodadas.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123256243265536
+    m_Localized: Bola de Fogo Arqueada
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123256243265537
+    m_Localized: "Lan\xE7a a bola de fogo por cima de obst\xE1culos, a 2-4 casas: 2 de dano, e a casa queima por 2 rodadas."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123256419426304
+    m_Localized: Tempestade Ampla
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123256419426305
+    m_Localized: "A tempestade cobre uma \xE1rea 3x3: 1 de dano e atordoa todos nela. Canalizada: gasta tamb\xE9m o andar do turno (use antes de andar)."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123256608169984
+    m_Localized: "Tempestade R\xE1pida"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123256608169985
+    m_Localized: "A mesma tempestade, pronta mais cedo (recarga 3). Canalizada: gasta tamb\xE9m o andar do turno (use antes de andar)."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123256780136448
+    m_Localized: Muralha de Gelo
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123256780136449
+    m_Localized: "Ergue uma muralha de gelo de 3 casas, a at\xE9 3, por 2 rodadas. Bloqueia o caminho, a vis\xE3o e os golpes. Inimigos onde ela surge levam 1 de dano e ficam gelados (andam 1 a menos)."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123256939520000
+    m_Localized: Muralha Longa
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123256939520001
+    m_Localized: A muralha tem 5 casas de largura.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123257107292160
+    m_Localized: Muralha Duradoura
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123257107292161
+    m_Localized: A muralha dura 4 rodadas.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123257270870016
+    m_Localized: Meteoro
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123257270870017
+    m_Localized: "Invoca um meteoro numa \xE1rea 3x3 a 2-4 casas (n\xE3o precisa de linha de vis\xE3o): 2 de dano, e todos ao redor do centro s\xE3o empurrados 1 casa. Canalizada: gasta tamb\xE9m o andar do turno (use antes de andar), e voc\xEA n\xE3o anda no pr\xF3ximo turno."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123257430253568
+    m_Localized: Meteoro Ardente
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123257430253569
+    m_Localized: "O meteoro tamb\xE9m deixa a casa central queimando por 2 rodadas. Canalizada: gasta tamb\xE9m o andar do turno (use antes de andar), e voc\xEA n\xE3o anda no pr\xF3ximo turno."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123257581248512
+    m_Localized: Meteoro Veloz
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123257581248513
+    m_Localized: "O mesmo meteoro, pronto mais cedo (recarga 4). Canalizada: gasta tamb\xE9m o andar do turno (use antes de andar), e voc\xEA n\xE3o anda no pr\xF3ximo turno."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123257904209920
+    m_Localized: Adaga Perfurante
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123257904209921
+    m_Localized: "A adaga atravessa: atinge o alvo e a casa atr\xE1s dele, envenenando os dois."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123258063593472
+    m_Localized: Adaga Debilitante
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123258063593473
+    m_Localized: "1 de dano e Fraquejado em vez de veneno: o alvo causa 1 de dano a menos no pr\xF3ximo turno."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123258235559936
+    m_Localized: Gancho Longo
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123258235559937
+    m_Localized: "O gancho alcan\xE7a de 2 a 5 casas e puxa at\xE9 4."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123258390749184
+    m_Localized: Gancho Atordoante
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123258390749185
+    m_Localized: "Puxa o inimigo at\xE9 3 casas e o atordoa, cancelando o golpe preparado."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123258550132736
+    m_Localized: Passo das Sombras
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123258550132737
+    m_Localized: "Troca de lugar com um personagem a at\xE9 3 casas; um inimigo leva 1 de dano. O golpe preparado de um inimigo se move com ele."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123258709516288
+    m_Localized: Passo Venenoso
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123258709516289
+    m_Localized: Troca de lugar com um personagem; um inimigo leva 1 de dano e fica Envenenado.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123258873094144
+    m_Localized: Passo Longo
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123258873094145
+    m_Localized: "Troca de lugar com um personagem a at\xE9 5 casas."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123259032477696
+    m_Localized: Leque de Facas
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123259032477697
+    m_Localized: "Tr\xEAs adagas: atinge o alvo e os lados dele, expondo cada inimigo atingido."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123259191861248
+    m_Localized: "Adaga R\xE1pida"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123259191861249
+    m_Localized: 'Sem recarga: arremesse uma a cada turno.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123259351244800
+    m_Localized: "Fuma\xE7a Arremessada"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123259351244801
+    m_Localized: "Arremessa a bomba de fuma\xE7a a at\xE9 3 casas: cega todos numa \xE1rea 3x3."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123259510628352
+    m_Localized: "Fuma\xE7a Densa"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123259510628353
+    m_Localized: "A fuma\xE7a persiste: os inimigos ficam cegos por 2 dos seus turnos."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123259665817600
+    m_Localized: Linha Venenosa Longa
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123259665817601
+    m_Localized: A linha tem 6 casas.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123259829395456
+    m_Localized: Veneno Concentrado
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123259829395457
+    m_Localized: "2 de dano em todos na linha, Envenenado, e um p\xE2ntano venenoso por 2 rodadas."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123259992973312
+    m_Localized: Porretada
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123259992973313
+    m_Localized: "Marca uma casa adjacente e a golpeia no pr\xF3ximo turno: 1 de dano em quem estiver l\xE1."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123260152356864
+    m_Localized: Mordida
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123260152356865
+    m_Localized: "Marca uma casa adjacente e a morde no pr\xF3ximo turno: 1 de dano."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123260307546112
+    m_Localized: "Respingo \xC1cido"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123260307546113
+    m_Localized: "Marca a casa da frente e os lados, e respinga nelas no pr\xF3ximo turno: 1 de dano em cada."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123260471123968
+    m_Localized: Seta Flamejante
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123260471123969
+    m_Localized: "Marca uma casa a 2-3 em linha reta e dispara no pr\xF3ximo turno: 1 de dano e Queimando por 2 turnos."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123260626313216
+    m_Localized: Rasante
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123260626313217
+    m_Localized: "Marca uma casa vizinha na diagonal e mergulha nela no pr\xF3ximo turno: 1 de dano."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123260798279680
+    m_Localized: "Fa\xEDsca"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123260802473984
+    m_Localized: "Marca uma casa a 2-3 e a eletrifica no pr\xF3ximo turno: 1 de dano."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123260961857536
+    m_Localized: Guincho
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123260961857537
+    m_Localized: "Marca uma casa a at\xE9 2 e guincha contra ela no pr\xF3ximo turno: 1 de dano e empurra 1 casa."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123261129629696
+    m_Localized: Olhar Maldito
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123261129629697
+    m_Localized: "Marca uma casa a 2-4 em linha reta e a amaldi\xE7oa no pr\xF3ximo turno: 1 de dano e Exposto (leva 1 a mais de cada golpe)."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123261301596160
+    m_Localized: "Empurr\xE3o de Escudo"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123261301596161
+    m_Localized: "Marca uma casa adjacente e a empurra no pr\xF3ximo turno: 1 de dano e empurra 1 casa."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123261486145536
+    m_Localized: Estocada
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123261486145537
+    m_Localized: "Marca 2 casas em linha \xE0 frente e estoca no pr\xF3ximo turno: 1 de dano em cada."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123261649723392
+    m_Localized: Chifrada
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123261649723393
+    m_Localized: "Marca uma casa adjacente e a acerta com os chifres no pr\xF3ximo turno: 1 de dano e empurra 2 casas."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123261809106944
+    m_Localized: Morteiro
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123261809106945
+    m_Localized: "Marca uma cruz de casas a 2-5 (por cima de obst\xE1culos) e a bombardeia no pr\xF3ximo turno: 1 de dano em cada."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123262002044928
+    m_Localized: Descarga
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123262002044929
+    m_Localized: "Marca uma linha de 5 casas e a atinge no pr\xF3ximo turno: 1 de dano em todos nela."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123262165622784
+    m_Localized: Tremor
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123262165622785
+    m_Localized: "Marca todas as casas ao redor e soca o ch\xE3o no pr\xF3ximo turno: 2 de dano em cada."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123262325006336
+    m_Localized: "Maldi\xE7\xE3o do P\xE2ntano"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123262325006337
+    m_Localized: "Marca uma cruz de casas a 2-4 e a amaldi\xE7oa no pr\xF3ximo turno: 1 de dano, e as casas viram um p\xE2ntano venenoso por 2 rodadas."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123262484389888
+    m_Localized: "Mordida Vamp\xEDrica"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123262484389889
+    m_Localized: "Marca uma casa adjacente e a morde no pr\xF3ximo turno: 1 de dano, e o morcego recupera 1 PV."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123262643773440
+    m_Localized: Lufada
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123262643773441
+    m_Localized: "Marca uma linha de 3 casas \xE0 frente e sopra no pr\xF3ximo turno: 1 de dano e empurra 1 casa todos nela."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123262803156992
+    m_Localized: "Varredura \xD3ssea"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123262803156993
+    m_Localized: "Marca a casa da frente e os lados e as varre no pr\xF3ximo turno: 2 de dano em cada."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123262954151936
+    m_Localized: Investida Sombria
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123262954151937
+    m_Localized: "Marca uma casa a 2-4 em linha reta e avan\xE7a contra ela no pr\xF3ximo turno: 2 de dano e empurra 1 casa."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123263117729792
+    m_Localized: "Erup\xE7\xE3o"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123263117729793
+    m_Localized: "Marca uma cruz de casas a at\xE9 3 e entra em erup\xE7\xE3o no pr\xF3ximo turno: 2 de dano, e as casas queimam por 2 rodadas."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123264095002624
+    m_Localized: Goblin lanceiro
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123264095002625
+    m_Localized: "Estoca 2 casas em linha com a lan\xE7a: quem estiver atr\xE1s de voc\xEA tamb\xE9m \xE9 atingido."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123264250191872
+    m_Localized: "Besouro ar\xEDete"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123264250191873
+    m_Localized: "D\xE1 uma chifrada numa casa adjacente e arremessa voc\xEA 2 casas: veja o que est\xE1 atr\xE1s de voc\xEA."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123264417964032
+    m_Localized: Goblin artilheiro
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123264417964033
+    m_Localized: "Bombardeia uma cruz de casas de longe, por cima de obst\xE1culos, e atira pedras com o estilingue enquanto recarrega. Fr\xE1gil de perto."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123264577347584
+    m_Localized: Totem do raio
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123264577347585
+    m_Localized: "Nunca anda. Atinge uma linha de 5 casas e, enquanto recarrega, d\xE1 choque em todas as casas ao redor; empurre-o para mirar o raio nos aliados dele."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123264740925440
+    m_Localized: Golem de pedra
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123264740925441
+    m_Localized: "Blindado e lento. Soca todas as casas ao redor causando 2 de dano e, enquanto se recupera, d\xE1 socos que empurram voc\xEA."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123264904503296
+    m_Localized: "Bruxa do p\xE2ntano"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123264904503297
+    m_Localized: "Amaldi\xE7oa uma cruz de casas e as transforma em p\xE2ntano venenoso, diminuindo o ch\xE3o seguro."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123265059692544
+    m_Localized: Morcego vampiro
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123265059692545
+    m_Localized: "R\xE1pido. A mordida cura o morcego, ent\xE3o ele sempre volta."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123265227464704
+    m_Localized: "Xam\xE3 do vento"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123265227464705
+    m_Localized: Sopra uma linha de 3 casas e empurra todos nela, muitas vezes para outros golpes.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123265382653952
+    m_Localized: Cavaleiro esqueleto
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123265382653953
+    m_Localized: "Elite. Varre 3 casas \xE0 frente e avan\xE7a de longe para empurrar voc\xEA."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123265550426112
+    m_Localized: Golem de lava
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123265550426113
+    m_Localized: "Elite. Entra em erup\xE7\xE3o numa cruz de casas e as deixa queimando. Fere quem o atinge."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5570314100088832
+    m_Localized: Exausto
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5570314234306560
+    m_Localized: "N\xE3o pode andar."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5570314477576192
+    m_Localized: Estilingada
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5570314477576193
+    m_Localized: "Marca uma casa a 2-4 em linha reta e atira uma pedra nela no pr\xF3ximo turno: 1 de dano."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5570314725040128
+    m_Localized: Golpe Real
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5570314725040129
+    m_Localized: "Marca uma casa adjacente e a golpeia com o martelo no pr\xF3ximo turno: 2 de dano."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5570314951532544
+    m_Localized: Punho de Magma
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5570314951532545
+    m_Localized: "Marca uma casa adjacente e a soca no pr\xF3ximo turno: 1 de dano e Queimando por 2 turnos."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5570315131887616
+    m_Localized: "Choque Est\xE1tico"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5570315131887617
+    m_Localized: "Marca todas as casas ao redor e d\xE1 choque nelas no pr\xF3ximo turno: 1 de dano em cada."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5570315324825600
+    m_Localized: Soco de Ogro
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5570315329019904
+    m_Localized: "Marca uma casa adjacente e a soca no pr\xF3ximo turno: 2 de dano e empurra 1 casa."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5570315517763584
+    m_Localized: Soco de Pedra
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5570315517763585
+    m_Localized: "Marca uma casa adjacente e a soca no pr\xF3ximo turno: 1 de dano e empurra 1 casa."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5570315744256000
+    m_Localized: Bola de Lama
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5570315744256001
+    m_Localized: "Marca uma casa a 2-3 e joga lama nela no pr\xF3ximo turno: 1 de dano."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5570315932999680
+    m_Localized: Investida
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5570315932999681
+    m_Localized: "Marca uma casa a 2-3 em linha reta e avan\xE7a contra ela no pr\xF3ximo turno: 1 de dano e empurra 1 casa."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5570316113354752
+    m_Localized: Dardo
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5570316117549056
+    m_Localized: "Marca uma casa a 2-4 em linha reta e arremessa um dardo nela no pr\xF3ximo turno: 1 de dano e empurra 1 casa."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5570316318875648
+    m_Localized: "Arco El\xE9trico"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5570316318875649
+    m_Localized: "Marca uma cruz de casas a 2-3 e a atinge com um raio no pr\xF3ximo turno: 1 de dano em cada."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5570316516007936
+    m_Localized: "Grito S\xF4nico"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5570316516007937
+    m_Localized: "Marca todas as casas ao redor e grita no pr\xF3ximo turno: 1 de dano em cada e empurra todos 1 casa para longe."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5570316696363008
+    m_Localized: "Explos\xE3o de Chamas"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5570316696363009
+    m_Localized: "Marca uma cruz de casas a 2-3 e explode em chamas no pr\xF3ximo turno: 1 de dano e Queimando por 2 turnos."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5570316893495296
+    m_Localized: Olhar Ofuscante
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5570316893495297
+    m_Localized: "Marca uma casa a 2-4 em linha reta e a encara no pr\xF3ximo turno: 1 de dano, e quem estiver l\xE1 fica Cego (n\xE3o pode usar skills no pr\xF3ximo turno)."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5570317065461760
+    m_Localized: Mordida Pestilenta
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5570317065461761
+    m_Localized: "Marca uma casa adjacente e a morde no pr\xF3ximo turno: 1 de dano e Envenenado por 2 turnos."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5570317237428224
+    m_Localized: Rajada de Espinhos
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5570317237428225
+    m_Localized: "Marca todas as casas ao redor e dispara os espinhos no pr\xF3ximo turno: 1 de dano em cada."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5570317405200384
+    m_Localized: "Cuspe \xC1cido"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5570317405200385
+    m_Localized: "Marca uma casa a 2-3 e cospe \xE1cido nela no pr\xF3ximo turno: 1 de dano e Exposto (leva 1 a mais de cada golpe)."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5570317619109888
+    m_Localized: Tornado
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5570317619109889
+    m_Localized: "Marca uma cruz de casas a 2-4 e invoca um tornado no pr\xF3ximo turno: 1 de dano e empurra todos 1 casa para longe do centro."
     m_Metadata:
       m_Items: []
   references:

@@ -51,6 +51,9 @@ namespace GridBattle.Gameplay.Map
         /// <summary>Whether the enemy can be drawn at <paramref name="depth"/>.</summary>
         public bool IsAvailableAt(int depth) =>
             enemy != null && weight > 0f && depth >= minDepth && (maxDepth <= 0 || depth <= maxDepth);
+
+        /// <summary>Whether the entry is an elite (a unique enemy that is not a boss) that can be drawn at <paramref name="depth"/>.</summary>
+        public bool IsEliteAt(int depth) => IsAvailableAt(depth) && enemy.IsUnique && !enemy.IsBoss;
     }
 
     /// <summary>Where the XP of a generated battle comes from.</summary>
@@ -63,18 +66,18 @@ namespace GridBattle.Gameplay.Map
         EnemyThreat,
 
         /// <summary>
-        /// The battle grants XP in proportion to the threat budget of its depth and difficulty, split among the
-        /// enemies by their threat: a harder difficulty always grants more, whatever enemies were drawn.
+        /// The battle grants XP in proportion to the threat budget of its depth and kind (normal or elite), split
+        /// among the enemies by their threat: an elite battle always grants more, whatever enemies were drawn.
         /// </summary>
         ThreatBudget
     }
 
-    /// <summary>How a battle difficulty changes the generated battle.</summary>
+    /// <summary>How the kind of a battle (normal or elite) changes the generated battle.</summary>
     [Serializable]
     public sealed class BattleDifficultyProfile
     {
         [SerializeField]
-        private EBattleDifficulty difficulty;
+        private EBattleDifficulty difficulty = EBattleDifficulty.Normal;
 
         [SerializeField]
         [Min(0f)]
@@ -135,7 +138,7 @@ namespace GridBattle.Gameplay.Map
         public int Max => max;
     }
 
-    /// <summary>One point of the budget curve: the threat budget (Normal difficulty) at a depth.</summary>
+    /// <summary>One point of the budget curve: the threat budget of a normal battle at a depth.</summary>
     [Serializable]
     public sealed class BudgetPoint
     {
@@ -243,8 +246,9 @@ namespace GridBattle.Gameplay.Map
 
     /// <summary>
     /// Configuration of the battle generator (balanceamento_e_geracao.md, "Geração das batalhas"): the enemy
-    /// pool by depth, the threat formula, the budget per depth and difficulty, enemy scaling, XP, limits,
-    /// composition rules, placement and the final boss. Everything the document leaves open is a field here.
+    /// pool by depth, the threat formula, the budget per depth and kind of battle (normal or elite), enemy scaling,
+    /// XP, limits, composition rules, placement, the elites and the final boss. Everything the document leaves open
+    /// is a field here.
     /// </summary>
     [CreateAssetMenu(fileName = "BattleGenerationSettings", menuName = "GridBattle/Map/Battle Generation Settings",
         order = 1)]
@@ -265,7 +269,9 @@ namespace GridBattle.Gameplay.Map
 
         [Header("Enemy pool")]
         [SerializeField]
-        [Tooltip("Enemies the generator can draw, with the depths they appear at (min/max depth) and their weight. Bosses are not drawn from here.")]
+        [Tooltip("Enemies the generator can draw, with the depths they appear at (min/max depth) and their weight. Bosses are not drawn from here. " +
+                 "Unique enemies (Enemy Config > Is Unique) are only drawn as the elite of an elite battle (one per battle, by weight), and the map " +
+                 "only makes elite nodes at the depths where one is available.")]
         private List<EnemyPoolEntry> pool = new();
 
         [Header("Threat formula (balanceamento_e_geracao.md, suggestion)")]
@@ -318,12 +324,12 @@ namespace GridBattle.Gameplay.Map
         private int maxAttempts = 12;
 
         [SerializeField]
-        [Tooltip("Open question (mapa_e_nos, difficulty): effect of each difficulty. Default: Easy 0.75 / Normal 1 / Hard 1.35 of the budget.")]
+        [Tooltip("Effect of each kind of battle: Normal, and Elite (the battle with an elite; its threat comes out of " +
+                 "the budget). Default: Normal 1 / Elite 1.35 of the budget, Elite x2 XP.")]
         private List<BattleDifficultyProfile> difficulties = new()
         {
-            new BattleDifficultyProfile(EBattleDifficulty.Easy, 0.75f),
             new BattleDifficultyProfile(EBattleDifficulty.Normal, 1f),
-            new BattleDifficultyProfile(EBattleDifficulty.Hard, 1.35f),
+            new BattleDifficultyProfile(EBattleDifficulty.Elite, 1.35f, 1f, 2f),
         };
 
         [Header("Enemy scaling by depth")]
@@ -343,8 +349,8 @@ namespace GridBattle.Gameplay.Map
 
         [Header("XP")]
         [SerializeField]
-        [Tooltip("Where the XP of a battle comes from. Threat Budget (default) makes Easy < Normal < Hard on the same depth: " +
-                 "the battle grants Budget x XP Per Threat x (1 + XP Per Depth x (depth - 1)) x the difficulty's XP multiplier, split among the enemies by threat. " +
+        [Tooltip("Where the XP of a battle comes from. Threat Budget (default) makes Normal < Elite on the same depth: " +
+                 "the battle grants Budget x XP Per Threat x (1 + XP Per Depth x (depth - 1)) x the profile's XP multiplier, split among the enemies by threat. " +
                  "Enemy Reward uses the XP Reward of each enemy config (grown by XP Per Depth); Enemy Threat, the threat of each enemy x XP Per Threat. " +
                  "GridBattle > Talents > Simulate XP Progression shows the levels each path reaches.")]
         private EBattleXpSource xpSource = EBattleXpSource.ThreatBudget;
@@ -451,7 +457,23 @@ namespace GridBattle.Gameplay.Map
         public bool AllowHazardCells => allowHazardCells;
         public IReadOnlyList<EnemyConfig> BossEncounter => bossEncounter;
 
-        /// <summary>The profile of a difficulty (a neutral one if the list has none for it).</summary>
+        /// <summary>
+        /// Whether an elite battle can be made at <paramref name="depth"/> (a whole balance depth): the pool has a
+        /// unique enemy (Enemy Config > Is Unique) that is not a boss and is available there. The map only makes
+        /// elite nodes where this holds, so every elite battle holds an elite.
+        /// </summary>
+        public bool HasEliteAt(int depth)
+        {
+            foreach (var entry in pool)
+            {
+                if (entry != null && entry.IsEliteAt(depth))
+                    return true;
+            }
+
+            return false;
+        }
+
+        /// <summary>The profile of a kind of battle (a neutral one if the list has none for it).</summary>
         public BattleDifficultyProfile GetProfile(EBattleDifficulty difficulty)
         {
             foreach (var profile in difficulties)
@@ -464,14 +486,14 @@ namespace GridBattle.Gameplay.Map
         }
 
         /// <summary>
-        /// Threat budget of a depth and difficulty (the depth-1 budget plus the per-depth increment, times the
-        /// difficulty). Depths here are balance depths (<see cref="MapGenerationSettings.GetBalanceDepth"/>).
+        /// Threat budget of a depth and kind of battle (the depth-1 budget plus the per-depth increment, times the
+        /// profile's multiplier). Depths here are balance depths (<see cref="MapGenerationSettings.GetBalanceDepth"/>).
         /// </summary>
         public float GetBudget(float depth, EBattleDifficulty difficulty) =>
             GetBaseBudgetAt(depth) * GetProfile(difficulty).BudgetMultiplier;
 
         /// <summary>
-        /// Normal-difficulty budget of a depth: the budget curve when it has points, else the base budget plus the
+        /// Budget of a normal battle at a depth: the budget curve when it has points, else the base budget plus the
         /// per-depth increment.
         /// </summary>
         public float GetBaseBudgetAt(float depth)
@@ -496,7 +518,7 @@ namespace GridBattle.Gameplay.Map
         }
 
         /// <summary>
-        /// Threat budget the XP of a depth and difficulty is sized from: the battle budget unless
+        /// Threat budget the XP of a depth and kind of battle is sized from: the battle budget unless
         /// <c>XP Base Budget</c> sets its own curve.
         /// </summary>
         public float GetXpBudget(float depth, EBattleDifficulty difficulty)
@@ -526,10 +548,10 @@ namespace GridBattle.Gameplay.Map
         /// <summary>Factor of the XP of a depth (1 + XP Per Depth x (depth - 1)).</summary>
         public float GetXpDepthFactor(float depth) => 1f + xpPerDepth * Mathf.Max(0f, depth - 1f);
 
-        /// <summary>HP multiplier of the enemies of a depth (before the difficulty's strength multiplier).</summary>
+        /// <summary>HP multiplier of the enemies of a depth (before the profile's strength multiplier).</summary>
         public float GetHpMultiplier(float depth) => Grow(hpPerDepth, depth);
 
-        /// <summary>Damage multiplier of the enemies of a depth (before the difficulty's strength multiplier).</summary>
+        /// <summary>Damage multiplier of the enemies of a depth (before the profile's strength multiplier).</summary>
         public float GetDamageMultiplier(float depth) => Grow(damagePerDepth, depth);
 
         /// <summary>The limit set for a role, or -1 when it has none.</summary>

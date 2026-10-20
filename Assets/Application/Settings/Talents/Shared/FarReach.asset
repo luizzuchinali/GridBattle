@@ -36,7 +36,7 @@ MonoBehaviour:
   allowedClasses: []
   requiredLevel: 3
   prerequisites: []
-  maxRank: 2
+  maxRank: 1
   baseWeight: 1
   synergyTags:
   - {fileID: 11400000, guid: dc99148dda435ab489bd4eb7df8b3289, type: 2}

@@ -77,10 +77,15 @@ namespace GridBattle.Gameplay.States.Effects
         public IReadOnlyList<SkillEffect> AttachedEffects => attachedEffects;
         public bool RepeatAttachedPerStack => repeatAttachedPerStack;
 
-        /// <summary>Whether the modifier applies to the skill (the list is empty or contains it).</summary>
+        /// <summary>
+        /// Whether the modifier applies to the skill (the list is empty or contains it, or the skill is an upgrade of
+        /// one in the list).
+        /// </summary>
         public bool AppliesTo(SkillDefinition skill)
         {
-            return skill != null && (skills.Count == 0 || skills.Contains(skill));
+            return skill != null &&
+                   (skills.Count == 0 || skills.Contains(skill) ||
+                    (skill.UpgradeOf != null && skills.Contains(skill.UpgradeOf)));
         }
 
         public override void CollectSkillModifiers(Character holder, StateInstance state, SkillDefinition skill,

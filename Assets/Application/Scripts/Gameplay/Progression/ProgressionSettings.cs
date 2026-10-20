@@ -39,6 +39,12 @@ namespace GridBattle.Gameplay.Progression
         [Tooltip("Fraction of the max HP restored for each level gained (1 = full heal, 0 = none). User decision (2026-10-06): full heal.")]
         private float levelUpHealFraction = 1f;
 
+        [SerializeField]
+        [Min(0)]
+        [Tooltip("Maximum HP gained for each level above 1, without healing (decision of 2026-10-19: with small " +
+                 "numbers +1 is felt, and the player sees the character grow). 0 = levels do not change the maximum.")]
+        private int maxHpPerLevel = 1;
+
         /// <summary>XP needed to go from level 1 to 2.</summary>
         public int BaseXpToLevelUp => Mathf.Max(1, baseXpToLevelUp);
 
@@ -53,6 +59,12 @@ namespace GridBattle.Gameplay.Progression
 
         /// <summary>Fraction of the max HP restored for each level gained.</summary>
         public float LevelUpHealFraction => Mathf.Clamp01(levelUpHealFraction);
+
+        /// <summary>Maximum HP gained for each level above 1.</summary>
+        public int MaxHpPerLevel => Mathf.Max(0, maxHpPerLevel);
+
+        /// <summary>Maximum HP a character of <paramref name="level"/> has above its class's base.</summary>
+        public int GetMaxHpBonus(int level) => (Mathf.Max(1, level) - 1) * MaxHpPerLevel;
 
         /// <summary>The settings asset registered in <see cref="GameSettings"/> (defaults if missing).</summary>
         public static ProgressionSettings Current => GameSettings.Get<ProgressionSettings>();

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using GridBattle.Gameplay.AI;
+using GridBattle.Gameplay.Combat;
 using GridBattle.Gameplay.Entities;
 using GridBattle.Gameplay.Events;
 using GridBattle.Gameplay.Run;
@@ -12,7 +13,8 @@ namespace GridBattle.Gameplay.Controllers
     /// The behavior (action priority and types) is data, not code. Owns the
     /// enemy's <see cref="EnemyMemory"/> (action cooldowns), which goes down at the
     /// end of each of this enemy's own turns. A telegraphed skill being prepared
-    /// (<see cref="Enemy.Telegraph"/>) is resolved before the behavior runs.
+    /// (<see cref="Enemy.Telegraph"/>) is resolved before the behavior runs: the enemy fires, then walks and prepares
+    /// the next one.
     /// </summary>
     [RequireComponent(typeof(Enemy))]
     public class EnemyController : CharacterControllerBase<Enemy>
@@ -42,15 +44,17 @@ namespace GridBattle.Gameplay.Controllers
                 _target = PlayerCharacter.Active;
             if (_target == null) return;
 
-            // A telegraphed skill being prepared comes first: it fires now (the action of the turn, the walk stays
-            // free) or keeps waiting (the action, and the walk unless the skill lets the enemy move).
+            // A telegraphed skill being prepared comes first. Firing it uses nothing by default (decision of
+            // 2026-10-19: fire, walk, then prepare the next strike; CombatSettings.FiringUsesAction restores the old
+            // rule); still waiting uses the action, and the walk unless the skill lets the enemy move.
             var walkUsed = false;
             var actionUsed = false;
             var telegraph = Owner.Telegraph;
             if (telegraph != null && Owner.AdvanceTelegraph(Grid))
             {
-                actionUsed = true;
-                walkUsed = Owner.Telegraph != null && !telegraph.Skill.CanMoveWhileWindingUp;
+                var waiting = Owner.Telegraph != null;
+                actionUsed = waiting || CombatResolver.Settings.FiringUsesAction;
+                walkUsed = waiting && !telegraph.Skill.CanMoveWhileWindingUp;
             }
 
             if (Owner.IsDead || (walkUsed && actionUsed)) return;

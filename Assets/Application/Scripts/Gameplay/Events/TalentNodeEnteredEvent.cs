@@ -14,14 +14,18 @@ namespace GridBattle.Gameplay.Events
         /// <summary>HP the node cost (already deducted from the run's HP; 0 when free or when the player had 1 HP).</summary>
         public int HpCost { get; }
 
+        /// <summary>Maximum HP the node took for the rest of the run (cost type MaxHp; already deducted).</summary>
+        public int MaxHpCost { get; }
+
         /// <summary>The run was loaded from the save while this node was open (the cost was already paid).</summary>
         public bool Resumed { get; }
 
-        public TalentNodeEnteredEvent(MapNodeState node, int hpCost, bool resumed)
+        public TalentNodeEnteredEvent(MapNodeState node, int hpCost, bool resumed, int maxHpCost = 0)
         {
             Node = node;
             HpCost = hpCost;
             Resumed = resumed;
+            MaxHpCost = maxHpCost;
         }
     }
 }

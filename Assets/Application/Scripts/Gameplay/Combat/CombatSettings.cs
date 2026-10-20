@@ -88,6 +88,13 @@ namespace GridBattle.Gameplay.Combat
         [Tooltip("Being pushed into the edge of the grid counts as a collision (damage as above). When off the character just stops.")]
         private bool edgeCountsAsCollision = true;
 
+        [Header("Announced strikes (enemies)")]
+        [SerializeField]
+        [Tooltip("Firing a prepared strike uses the enemy's action of that turn (the rule of 2026-10-18: each enemy " +
+                 "strikes every other turn). Off (decision of 2026-10-19): firing uses nothing, so the enemy fires, " +
+                 "walks and prepares the next strike in the same turn and strikes every turn, as in Into the Breach.")]
+        private bool firingUsesAction;
+
         [Header("Line of sight (skills)")]
         [SerializeField]
         [Tooltip("Skills need a clear line from the caster to the aimed cell: obstacles that block sight (Terrain " +
@@ -135,6 +142,7 @@ namespace GridBattle.Gameplay.Combat
         public EDistanceMetric AttackMetric => attackMetric;
         public EDistanceMetric SkillRangeMetric => skillRangeMetric;
         public EDistanceMetric AdjacencyMetric => adjacencyMetric;
+        public bool FiringUsesAction => firingUsesAction;
         public bool SkillsNeedLineOfSight => skillsNeedLineOfSight;
         public bool CharactersBlockLineOfSight => charactersBlockLineOfSight;
 

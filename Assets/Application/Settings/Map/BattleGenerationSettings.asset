@@ -36,75 +36,111 @@ MonoBehaviour:
     minDepth: 1
     maxDepth: 0
     weight: 1
-  - enemy: {fileID: 11400000, guid: 378f7c028221c15459442d61ff4833f7, type: 2}
-    minDepth: 7
-    maxDepth: 0
-    weight: 1
-  - enemy: {fileID: 11400000, guid: d1fc8030f8fd68b43991ef0d4dcee979, type: 2}
-    minDepth: 7
-    maxDepth: 0
-    weight: 1
-  - enemy: {fileID: 11400000, guid: f2b5fdbcc8ae5fe4f8cc87ffcd234213, type: 2}
-    minDepth: 10
-    maxDepth: 0
-    weight: 1
-  - enemy: {fileID: 11400000, guid: 3ee972eb10e2efc4ea9cd410775be2c9, type: 2}
-    minDepth: 10
-    maxDepth: 0
-    weight: 1
-  - enemy: {fileID: 11400000, guid: f2517ae6ccda85b44beb9ab916f0d719, type: 2}
-    minDepth: 13
-    maxDepth: 0
-    weight: 1
-  - enemy: {fileID: 11400000, guid: b0697e0d892950d48ba95c908c8f9f01, type: 2}
-    minDepth: 16
-    maxDepth: 0
-    weight: 1
-  - enemy: {fileID: 11400000, guid: 4ace365b3f483414fb999bfc553de2aa, type: 2}
-    minDepth: 8
+  - enemy: {fileID: 11400000, guid: 1394253b5aa4e4a458cd01e39bdbe44b, type: 2}
+    minDepth: 3
     maxDepth: 0
     weight: 1
   - enemy: {fileID: 11400000, guid: b6c261fb01b004d4c97e3c4a4dba841c, type: 2}
     minDepth: 4
     maxDepth: 0
     weight: 1
+  - enemy: {fileID: 11400000, guid: 2807dba9f8aeb1f4696489b50a2c9bd7, type: 2}
+    minDepth: 5
+    maxDepth: 0
+    weight: 1
   - enemy: {fileID: 11400000, guid: b706201cf99d2414bb52616b68324cc6, type: 2}
     minDepth: 6
     maxDepth: 0
     weight: 1
-  - enemy: {fileID: 11400000, guid: bb5ad6b0422e91349a08146b5913b0b2, type: 2}
+  - enemy: {fileID: 11400000, guid: d72ab2e23c118c147a623666ea712625, type: 2}
+    minDepth: 6
+    maxDepth: 0
+    weight: 1
+  - enemy: {fileID: 11400000, guid: 378f7c028221c15459442d61ff4833f7, type: 2}
+    minDepth: 7
+    maxDepth: 0
+    weight: 0.8
+  - enemy: {fileID: 11400000, guid: d1fc8030f8fd68b43991ef0d4dcee979, type: 2}
+    minDepth: 7
+    maxDepth: 0
+    weight: 1
+  - enemy: {fileID: 11400000, guid: 4ace365b3f483414fb999bfc553de2aa, type: 2}
+    minDepth: 8
+    maxDepth: 0
+    weight: 1
+  - enemy: {fileID: 11400000, guid: 9ab19a4dd46e1a141b951d8098bf2ba3, type: 2}
+    minDepth: 9
+    maxDepth: 0
+    weight: 1
+  - enemy: {fileID: 11400000, guid: 3ee972eb10e2efc4ea9cd410775be2c9, type: 2}
+    minDepth: 10
+    maxDepth: 0
+    weight: 1
+  - enemy: {fileID: 11400000, guid: f2b5fdbcc8ae5fe4f8cc87ffcd234213, type: 2}
+    minDepth: 10
+    maxDepth: 0
+    weight: 1
+  - enemy: {fileID: 11400000, guid: 10d3293e807e1454692a4c19f461ec0e, type: 2}
+    minDepth: 11
+    maxDepth: 0
+    weight: 1
+  - enemy: {fileID: 11400000, guid: 57c17e1635c95f140a4bb4f03054f454, type: 2}
     minDepth: 12
+    maxDepth: 0
+    weight: 1
+  - enemy: {fileID: 11400000, guid: f2517ae6ccda85b44beb9ab916f0d719, type: 2}
+    minDepth: 13
+    maxDepth: 0
+    weight: 1
+  - enemy: {fileID: 11400000, guid: 9ce2c2412dd615e46b1cc7b16cf0bae5, type: 2}
+    minDepth: 14
+    maxDepth: 0
+    weight: 1
+  - enemy: {fileID: 11400000, guid: ec57127ea0b6fe7479966ea8ccec853a, type: 2}
+    minDepth: 15
+    maxDepth: 0
+    weight: 1
+  - enemy: {fileID: 11400000, guid: b0697e0d892950d48ba95c908c8f9f01, type: 2}
+    minDepth: 16
+    maxDepth: 0
+    weight: 0.8
+  - enemy: {fileID: 11400000, guid: bb5ad6b0422e91349a08146b5913b0b2, type: 2}
+    minDepth: 4
+    maxDepth: 0
+    weight: 1
+  - enemy: {fileID: 11400000, guid: fffc756da722a0548992395367a8b611, type: 2}
+    minDepth: 10
+    maxDepth: 0
+    weight: 1
+  - enemy: {fileID: 11400000, guid: ee3f24a60a542684c8cc118f174e0c69, type: 2}
+    minDepth: 18
     maxDepth: 0
     weight: 1
   threatDivisor: 50
   movementCoefficient: 0.25
   rangeCoefficient: 0.5
   useScaledThreat: 1
-  baseBudget: 6
-  budgetPerDepth: 0.52
+  baseBudget: 2.5
+  budgetPerDepth: 0.2
   budgetPoints:
   - depth: 1
-    budget: 6
+    budget: 2
   - depth: 5
-    budget: 9
+    budget: 3.5
   - depth: 10
-    budget: 13
+    budget: 4.5
   - depth: 15
-    budget: 16.5
+    budget: 5.5
   - depth: 20
-    budget: 22
+    budget: 6.5
   - depth: 25
-    budget: 33
+    budget: 7.5
   - depth: 30
-    budget: 48
+    budget: 8.5
   budgetTolerance: 0.3
   overshootAllowance: 0.5
   maxAttempts: 12
   difficulties:
-  - difficulty: 0
-    budgetMultiplier: 0.75
-    strengthMultiplier: 1
-    xpMultiplier: 0.65
   - difficulty: 1
     budgetMultiplier: 1
     strengthMultiplier: 1
@@ -113,16 +149,16 @@ MonoBehaviour:
     budgetMultiplier: 1.35
     strengthMultiplier: 1
     xpMultiplier: 2
-  hpPerDepth: 0.021
-  damagePerDepth: 0.0145
+  hpPerDepth: 0
+  damagePerDepth: 0
   compoundScaling: 0
   xpSource: 2
   xpBaseBudget: 6
   xpBudgetPerDepth: 0.52
   xpPerDepth: 0.07
   xpPerThreat: 6.9
-  minEnemies: 1
-  maxEnemies: 8
+  minEnemies: 2
+  maxEnemies: 6
   maxOccupancy: 0.4
   requireFrontline: 1
   roleLimits:
@@ -171,3 +207,5 @@ MonoBehaviour:
   - {fileID: 11400000, guid: fc3211cb5dfc0e9489f95f490ff2da49, type: 2}
   - {fileID: 11400000, guid: 79fb46051b81a144699d5cd43b748de2, type: 2}
   - {fileID: 11400000, guid: 378f7c028221c15459442d61ff4833f7, type: 2}
+  - {fileID: 11400000, guid: 57c17e1635c95f140a4bb4f03054f454, type: 2}
+  - {fileID: 11400000, guid: 1394253b5aa4e4a458cd01e39bdbe44b, type: 2}

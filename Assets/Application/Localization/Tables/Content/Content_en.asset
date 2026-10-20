@@ -23,7 +23,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 4496651681792
-    m_Localized: Deals 50% less damage.
+    m_Localized: Deals 1 less damage with every hit.
     m_Metadata:
       m_Items: []
   - m_Id: 4497024974848
@@ -31,7 +31,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 4497024974849
-    m_Localized: When attacked, deals damage back to the attacker.
+    m_Localized: Deals 1 damage to whoever hits it.
     m_Metadata:
       m_Items: []
   - m_Id: 4497381490688
@@ -47,7 +47,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 4497729617921
-    m_Localized: Recovers HP at the start of each turn.
+    m_Localized: Recovers 1 HP at the start of each of its turns.
     m_Metadata:
       m_Items: []
   - m_Id: 4498077745152
@@ -55,7 +55,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 4498077745153
-    m_Localized: Temporary HP that absorbs damage before real HP.
+    m_Localized: Absorbs the next 1 damage.
     m_Metadata:
       m_Items: []
   - m_Id: 4498425872384
@@ -63,7 +63,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 4498425872385
-    m_Localized: Takes damage at the start of each turn.
+    m_Localized: Takes 1 damage at the start of each of its turns.
     m_Metadata:
       m_Items: []
   - m_Id: 7824852877312
@@ -71,7 +71,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 7824865460224
-    m_Localized: Reduces the damage of every hit received.
+    m_Localized: Blocks 1 damage from every hit. Collisions ignore armor.
     m_Metadata:
       m_Items: []
   - m_Id: 7825255530496
@@ -127,7 +127,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 7828103462913
-    m_Localized: Chases you and attacks up close.
+    m_Localized: Walks up to you and swings its club at an adjacent cell on its next turn.
     m_Metadata:
       m_Items: []
   - m_Id: 7828103462914
@@ -135,7 +135,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 7828103462915
-    m_Localized: Slow and sturdy. Advances on you and attacks up close.
+    m_Localized: Slow and sturdy. Splashes acid on the cell in front of it and both sides.
     m_Metadata:
       m_Items: []
   - m_Id: 7828103462916
@@ -143,7 +143,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 7828103462917
-    m_Localized: Fast and fragile. Closes in quickly and bites.
+    m_Localized: Fast and fragile. Closes in quickly and bites an adjacent cell.
     m_Metadata:
       m_Items: []
   - m_Id: 7828103462918
@@ -151,7 +151,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 7828103462919
-    m_Localized: Fast and fragile. Flits toward you and attacks up close.
+    m_Localized: Fast and fragile. Dives on diagonal cells and, every few turns, shrieks at every cell around it, pushing whoever is there.
     m_Metadata:
       m_Items: []
   - m_Id: 7828103462920
@@ -159,7 +159,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 7828103462921
-    m_Localized: Attacks from a distance and tries to hold that range.
+    m_Localized: Keeps its distance and shoots flame bolts in a straight line that set you Burning.
     m_Metadata:
       m_Items: []
   - m_Id: 7828212514816
@@ -167,7 +167,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 7828212514817
-    m_Localized: Heals and shields injured allies and keeps away from you. Take it out first.
+    m_Localized: Heals and shields injured allies and zaps you from a distance. Take it out first.
     m_Metadata:
       m_Items: []
   - m_Id: 7828325761024
@@ -175,7 +175,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 7828325761025
-    m_Localized: Summons rats to fight for her and keeps away from you.
+    m_Localized: Summons rats to fight for her and screeches to push you back.
     m_Metadata:
       m_Items: []
   - m_Id: 7828430618624
@@ -183,7 +183,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 7828430618625
-    m_Localized: Weakens you from a distance, then closes in to attack.
+    m_Localized: Weakens you from a distance and curses a line, leaving you Exposed.
     m_Metadata:
       m_Items: []
   - m_Id: 7828539670528
@@ -191,7 +191,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 7828539670529
-    m_Localized: Armor blocks part of every hit, so weak attacks barely scratch it.
+    m_Localized: 'Armor blocks 1 damage from every hit: push it into things, collisions ignore armor.'
     m_Metadata:
       m_Items: []
   - m_Id: 7828652916736
@@ -199,7 +199,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 7828652916737
-    m_Localized: Recovers HP every turn. Deal damage fast, before it heals.
+    m_Localized: Recovers 1 HP every turn. Finish it quickly.
     m_Metadata:
       m_Items: []
   - m_Id: 7828757774336
@@ -207,7 +207,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 7828757774337
-    m_Localized: Hurts whoever hits it. Attack from afar or use damage over time.
+    m_Localized: 'Deals 1 damage to whoever hits it. Push it into others instead: collisions do not prick.'
     m_Metadata:
       m_Items: []
   - m_Id: 7840745095168
@@ -215,7 +215,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 7840745095169
-    m_Localized: A quick strike against an adjacent enemy.
+    m_Localized: Hit an adjacent enemy and push it 1 cell.
     m_Metadata:
       m_Items: []
   - m_Id: 7841101611008
@@ -223,7 +223,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 7841101611009
-    m_Localized: Charge with your shield and hit a line of enemies.
+    m_Localized: Charge up to 3 cells in a straight line. An enemy at the end takes 1 damage and is pushed 1 cell.
     m_Metadata:
       m_Items: []
   - m_Id: 7841487486976
@@ -231,7 +231,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 7841487486977
-    m_Localized: Hurl a fireball that burns every enemy in an area, from anywhere on the grid.
+    m_Localized: 'Hurl a fireball at a cell 2 to 3 cells away: 2 damage, and the cell burns for 2 rounds (1 damage to whoever ends a turn on it).'
     m_Metadata:
       m_Items: []
   - m_Id: 7841844002816
@@ -239,7 +239,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 7841844002817
-    m_Localized: A burst of frost that hits enemies around the target.
+    m_Localized: 'Freeze everyone around you: 1 damage, and on their next turn they cannot walk or use skills. A frozen enemy loses its prepared strike.'
     m_Metadata:
       m_Items: []
   - m_Id: 7842200518656
@@ -247,7 +247,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 7842200518657
-    m_Localized: Lightning that spreads out in a cone from the target.
+    m_Localized: 'Lightning from the sky on a cross of cells 2 to 4 cells away (no line of sight needed): 1 damage and stuns, cancelling prepared strikes. Channelled: it also spends the walk of the turn (use it before walking).'
     m_Metadata:
       m_Items: []
   - m_Id: 7842586394624
@@ -255,7 +255,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 7842586394625
-    m_Localized: Throw a dagger at a distant enemy.
+    m_Localized: 'Throw a dagger at an enemy 2 to 4 cells away in a line or diagonal: 1 damage and Exposed (takes 1 more damage from every hit) until your next turn.'
     m_Metadata:
       m_Items: []
   - m_Id: 7842947104768
@@ -263,7 +263,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 7842947104769
-    m_Localized: Throw a smoke bomb at an enemy next to you.
+    m_Localized: 'Burst a smoke bomb around you: 1 damage and blinds everyone around you. Blinded enemies lose their prepared strike and cannot prepare one on their next turn.'
     m_Metadata:
       m_Items: []
   - m_Id: 7843299426304
@@ -271,7 +271,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 7843299426305
-    m_Localized: A poisoned dagger that pierces a line of enemies.
+    m_Localized: 'Throw a dagger at a cell up to 3 cells away in a straight line: 1 damage and Poisoned (1 damage at the start of each of its next 2 turns).'
     m_Metadata:
       m_Items: []
   - m_Id: 7843660136448
@@ -279,7 +279,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 7843660136449
-    m_Localized: A long trail of poison that hits every enemy in a line.
+    m_Localized: 'Spill poison in a line of 4 cells in front of you: 1 damage, Poisoned, and the cells become a poison bog for 2 rounds.'
     m_Metadata:
       m_Items: []
   - m_Id: 10290159910912
@@ -287,7 +287,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 10290247991296
-    m_Localized: 'Each turn you can walk once and act once (attack or skill), in any order. Tap yourself or End turn to finish; then the enemies walk and act too. Defeating them gives XP: fill the bar to level up.'
+    m_Localized: 'Each turn you walk once and use one skill, in any order. Enemies mark the cells they will strike on their next turn: step out of the marks, or push, pull, stun or freeze them. Tap yourself or End turn to finish.'
     m_Metadata:
       m_Items: []
   - m_Id: 10290373820416
@@ -311,15 +311,15 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 10290604507137
-    m_Localized: Your HP carries over to the next battle. It fully recovers when you level up, and also at heal nodes or through your build, so keep an eye on it when planning your route.
+    m_Localized: Your HP carries over to the next battle and does not come back when you level up. Rest at camps to heal, and plan your route around them.
     m_Metadata:
       m_Items: []
   - m_Id: 10290717753344
-    m_Localized: Heal node
+    m_Localized: Camp
     m_Metadata:
       m_Items: []
   - m_Id: 10290717753345
-    m_Localized: Here you recover HP. Plan your route so you reach one before your HP runs out.
+    m_Localized: At a camp you either rest to recover HP or train to turn one of your skills into a stronger version. Choose what your run needs.
     m_Metadata:
       m_Items: []
   - m_Id: 10290826805248
@@ -327,7 +327,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 10290826805249
-    m_Localized: Here you can get a talent outside of leveling up, at a cost. Make sure the price is worth it.
+    m_Localized: Here you can get a talent outside of leveling up, at the cost of maximum HP. Make sure it is worth it.
     m_Metadata:
       m_Items: []
   - m_Id: 10290944245760
@@ -351,7 +351,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 10291187515393
-    m_Localized: Tap a skill button, then a highlighted cell to use it; tap the button again to cancel. Skills have a cooldown counted in your actions.
+    m_Localized: 'Tap a skill, then a highlighted cell to aim: the preview shows the damage, the pushes and where the marked strikes will land. Tap the same cell again or Confirm to use it, or Cancel to choose again. Skills have a cooldown counted in your turns.'
     m_Metadata:
       m_Items: []
   - m_Id: 141742633615360
@@ -359,7 +359,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 141742713307136
-    m_Localized: Restores 30 HP. Using it does not cost your action.
+    m_Localized: Restores 4 HP. Using it does not cost your action.
     m_Metadata:
       m_Items: []
   - m_Id: 141743153709056
@@ -367,7 +367,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 141743153709057
-    m_Localized: 'Throw it up to 3 cells away: deals 15 damage to every enemy in a 3x3 area. Does not cost your action.'
+    m_Localized: 'Throw it up to 3 cells away: deals 2 damage to every enemy in a 3x3 area. Does not cost your action.'
     m_Metadata:
       m_Items: []
   - m_Id: 141743547973632
@@ -375,7 +375,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 141743547973633
-    m_Localized: Recover health over time for 3 turns. Does not cost your action.
+    m_Localized: Recover 1 HP at the start of each of your next 3 turns. Does not cost your action.
     m_Metadata:
       m_Items: []
   - m_Id: 142151209156608
@@ -391,7 +391,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 142151704084481
-    m_Localized: Burns whoever ends their turn on it.
+    m_Localized: Deals 1 damage to whoever ends their turn on it.
     m_Metadata:
       m_Items: []
   - m_Id: 142152127709184
@@ -427,7 +427,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 151679891898369
-    m_Localized: Charges you and hits hard. Comes with two armored guards.
+    m_Localized: Cannot be pushed. Slams the cells around him and sends shockwaves down a line; both also hit his guards.
     m_Metadata:
       m_Items: []
   - m_Id: 151680038699008
@@ -439,7 +439,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 151680038699010
-    m_Localized: Chases you and attacks up close. Takes less damage from every hit.
+    m_Localized: Armored escort of the king. Shoves you around, often into the king's slam.
     m_Metadata:
       m_Items: []
   - m_Id: 218482187194368
@@ -487,55 +487,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 218484057853953
-    m_Localized: +10 maximum HP per stack.
-    m_Metadata:
-      m_Items: []
-  - m_Id: 218484464701440
-    m_Localized: Sharpened Blade
-    m_Metadata:
-      m_Items: []
-  - m_Id: 218484464701441
-    m_Localized: +2 basic attack damage per stack.
-    m_Metadata:
-      m_Items: []
-  - m_Id: 218484909297664
-    m_Localized: Keen Eye
-    m_Metadata:
-      m_Items: []
-  - m_Id: 218484909297665
-    m_Localized: +5% critical chance per stack.
-    m_Metadata:
-      m_Items: []
-  - m_Id: 218485311950848
-    m_Localized: Lethal Precision
-    m_Metadata:
-      m_Items: []
-  - m_Id: 218485311950849
-    m_Localized: +0.25x critical damage multiplier per stack.
-    m_Metadata:
-      m_Items: []
-  - m_Id: 218485693632512
-    m_Localized: Armor Piercing
-    m_Metadata:
-      m_Items: []
-  - m_Id: 218485693632513
-    m_Localized: Ignores 10% of the target's defense per stack.
-    m_Metadata:
-      m_Items: []
-  - m_Id: 218486079508480
-    m_Localized: Toughness
-    m_Metadata:
-      m_Items: []
-  - m_Id: 218486079508481
-    m_Localized: +1 defense per stack.
-    m_Metadata:
-      m_Items: []
-  - m_Id: 218486490550272
-    m_Localized: Skill Mastery
-    m_Metadata:
-      m_Items: []
-  - m_Id: 218486490550273
-    m_Localized: +10% damage on offensive skills per stack.
+    m_Localized: +2 maximum HP per rank.
     m_Metadata:
       m_Items: []
   - m_Id: 218486876426240
@@ -543,39 +495,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 218486876426241
-    m_Localized: +1 skill range per stack.
-    m_Metadata:
-      m_Items: []
-  - m_Id: 218487270690816
-    m_Localized: Quick Recovery
-    m_Metadata:
-      m_Items: []
-  - m_Id: 218487270690817
-    m_Localized: Skills recover 1 turn sooner per stack.
-    m_Metadata:
-      m_Items: []
-  - m_Id: 218487669149696
-    m_Localized: Thorn Armor
-    m_Metadata:
-      m_Items: []
-  - m_Id: 218487669149697
-    m_Localized: When attacked, deals 2 damage back to the attacker per stack.
-    m_Metadata:
-      m_Items: []
-  - m_Id: 218488046637056
-    m_Localized: Life Steal
-    m_Metadata:
-      m_Items: []
-  - m_Id: 218488046637057
-    m_Localized: Recovers 5% of the damage dealt as HP per stack.
-    m_Metadata:
-      m_Items: []
-  - m_Id: 218488432513024
-    m_Localized: Regeneration
-    m_Metadata:
-      m_Items: []
-  - m_Id: 218488432513025
-    m_Localized: Recovers 2 HP at the start of each of your turns per stack.
+    m_Localized: +1 range for your skills whose range can grow.
     m_Metadata:
       m_Items: []
   - m_Id: 218488814194688
@@ -584,14 +504,6 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 218488814194689
     m_Localized: +1 talent option in every offer per stack.
-    m_Metadata:
-      m_Items: []
-  - m_Id: 218489191682048
-    m_Localized: Fortune's Favor
-    m_Metadata:
-      m_Items: []
-  - m_Id: 218489191682049
-    m_Localized: +1 reroll for talent offers per stack.
     m_Metadata:
       m_Items: []
   - m_Id: 218489581752320
@@ -607,55 +519,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 218489829216257
-    m_Localized: +10 maximum HP per rank.
-    m_Metadata:
-      m_Items: []
-  - m_Id: 218490064097280
-    m_Localized: Sharpened Blade
-    m_Metadata:
-      m_Items: []
-  - m_Id: 218490064097281
-    m_Localized: +2 basic attack damage per rank.
-    m_Metadata:
-      m_Items: []
-  - m_Id: 218490298978304
-    m_Localized: Keen Eye
-    m_Metadata:
-      m_Items: []
-  - m_Id: 218490298978305
-    m_Localized: +5% critical chance per rank.
-    m_Metadata:
-      m_Items: []
-  - m_Id: 218490542247936
-    m_Localized: Lethal Precision
-    m_Metadata:
-      m_Items: []
-  - m_Id: 218490542247937
-    m_Localized: +0.25x critical damage multiplier per rank. Requires Keen Eye.
-    m_Metadata:
-      m_Items: []
-  - m_Id: 218490772934656
-    m_Localized: Armor Piercing
-    m_Metadata:
-      m_Items: []
-  - m_Id: 218490777128960
-    m_Localized: Ignores 10% of the target's defense per rank.
-    m_Metadata:
-      m_Items: []
-  - m_Id: 218490995232768
-    m_Localized: Toughness
-    m_Metadata:
-      m_Items: []
-  - m_Id: 218490995232769
-    m_Localized: +1 defense per rank.
-    m_Metadata:
-      m_Items: []
-  - m_Id: 218491221725184
-    m_Localized: Skill Mastery
-    m_Metadata:
-      m_Items: []
-  - m_Id: 218491221725185
-    m_Localized: +10% damage on offensive skills per rank.
+    m_Localized: +2 maximum HP per rank.
     m_Metadata:
       m_Items: []
   - m_Id: 218491444023296
@@ -663,39 +527,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 218491444023297
-    m_Localized: +1 skill range per rank.
-    m_Metadata:
-      m_Items: []
-  - m_Id: 218491670515712
-    m_Localized: Quick Recovery
-    m_Metadata:
-      m_Items: []
-  - m_Id: 218491670515713
-    m_Localized: Skills recover 1 turn sooner per rank.
-    m_Metadata:
-      m_Items: []
-  - m_Id: 218491930562560
-    m_Localized: Thorn Armor
-    m_Metadata:
-      m_Items: []
-  - m_Id: 218491930562561
-    m_Localized: When attacked, deals 2 damage back to the attacker per rank.
-    m_Metadata:
-      m_Items: []
-  - m_Id: 218492148666368
-    m_Localized: Life Steal
-    m_Metadata:
-      m_Items: []
-  - m_Id: 218492148666369
-    m_Localized: Recovers 5% of the damage dealt as HP per rank.
-    m_Metadata:
-      m_Items: []
-  - m_Id: 218492383547392
-    m_Localized: Regeneration
-    m_Metadata:
-      m_Items: []
-  - m_Id: 218492383547393
-    m_Localized: Recovers 2 HP at the start of each of your turns per rank.
+    m_Localized: +1 range for your skills whose range can grow.
     m_Metadata:
       m_Items: []
   - m_Id: 218492639399936
@@ -704,14 +536,6 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 218492639399937
     m_Localized: +1 talent option in every offer per rank.
-    m_Metadata:
-      m_Items: []
-  - m_Id: 218492886863872
-    m_Localized: Fortune's Favor
-    m_Metadata:
-      m_Items: []
-  - m_Id: 218492886863873
-    m_Localized: +1 reroll for talent offers per rank.
     m_Metadata:
       m_Items: []
   - m_Id: 218493130133504
@@ -727,7 +551,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 218493557952513
-    m_Localized: 'Unlocks Shield Charge: charge with your shield and hit a line of enemies.'
+    m_Localized: 'Unlocks Shield Throw: hit an enemy 2 to 4 cells away in a straight line and push it.'
     m_Metadata:
       m_Items: []
   - m_Id: 218493989965824
@@ -735,7 +559,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 218493989965825
-    m_Localized: 'Unlocks Fireball: burn every enemy in an area from anywhere on the grid.'
+    m_Localized: 'Unlocks Meteor: 2 damage on a 3x3 area far away, pushing everyone away from its center.'
     m_Metadata:
       m_Items: []
   - m_Id: 218494451339264
@@ -743,15 +567,15 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 218494451339265
-    m_Localized: 'Mastery of ice: your skills deal 15% more damage.'
+    m_Localized: 'Unlocks Ice Wall: raise a wall of ice 3 cells wide that blocks walking, sight and strikes.'
     m_Metadata:
       m_Items: []
   - m_Id: 218494916907008
-    m_Localized: Stormcaller
+    m_Localized: Storm Conjurer
     m_Metadata:
       m_Items: []
   - m_Id: 218494921101312
-    m_Localized: 'Unlocks Lightning Storm: lightning that spreads out in a cone from the target.'
+    m_Localized: 'Unlocks Lightning Storm: lightning on a cross of cells far away that stuns, cancelling prepared strikes.'
     m_Metadata:
       m_Items: []
   - m_Id: 218495558635520
@@ -759,7 +583,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 218495558635521
-    m_Localized: 'Unlocks Throwing Dagger: throw a dagger at a distant enemy.'
+    m_Localized: 'Unlocks Throwing Dagger: hit an enemy far away in a line or diagonal and leave it Exposed.'
     m_Metadata:
       m_Items: []
   - m_Id: 218496020008960
@@ -767,15 +591,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 218496020008961
-    m_Localized: 'Unlocks Smoke Bomb: throw a smoke bomb at an enemy next to you.'
-    m_Metadata:
-      m_Items: []
-  - m_Id: 218496452022272
-    m_Localized: Quick Hands
-    m_Metadata:
-      m_Items: []
-  - m_Id: 218496452022273
-    m_Localized: 'Quick hands: your skills deal 15% more damage.'
+    m_Localized: 'Unlocks Smoke Bomb: blind everyone around you, cancelling their prepared strikes.'
     m_Metadata:
       m_Items: []
   - m_Id: 218496955338752
@@ -783,7 +599,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 218496955338753
-    m_Localized: 'Unlocks Poison Line: a long line of venom that hits every enemy in it.'
+    m_Localized: 'Unlocks Poison Line: poison a line of 4 cells and turn it into a poison bog.'
     m_Metadata:
       m_Items: []
   - m_Id: 220859090882560
@@ -798,20 +614,12 @@ MonoBehaviour:
     m_Localized: Rogue
     m_Metadata:
       m_Items: []
-  - m_Id: 302178474938368
-    m_Localized: Cryomancy
+  - m_Id: 5123292117147649
+    m_Localized: Frozen or chilled enemies you push slide until they hit something.
     m_Metadata:
       m_Items: []
-  - m_Id: 302178546241536
-    m_Localized: Your skills deal 15% more damage.
-    m_Metadata:
-      m_Items: []
-  - m_Id: 302178680459264
-    m_Localized: Nimble Hands
-    m_Metadata:
-      m_Items: []
-  - m_Id: 302178684653568
-    m_Localized: Your skills deal 15% more damage.
+  - m_Id: 5123292117147648
+    m_Localized: Slippery Ice
     m_Metadata:
       m_Items: []
   - m_Id: 444084762312704
@@ -819,7 +627,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 444084842004480
-    m_Localized: Slam an adjacent enemy with your shield and shove it back 2 cells. Enemies thrown against an obstacle, the edge or another character take extra damage.
+    m_Localized: 'Slam an adjacent enemy: 2 damage, push it 2 cells and stun it, cancelling its prepared strike.'
     m_Metadata:
       m_Items: []
   - m_Id: 444085320155136
@@ -827,7 +635,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 444085320155137
-    m_Localized: A blast of wind that hurts enemies in a small area and pushes each one 1 cell away from its center. Enemies that collide take extra damage.
+    m_Localized: 'A blast of wind at a cell up to 3 cells away in a straight line: 1 damage and pushes the target 1 cell away from you.'
     m_Metadata:
       m_Items: []
   - m_Id: 444085714419712
@@ -835,7 +643,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 444085714419713
-    m_Localized: Throw a hook at a distant enemy and yank it up to 3 cells toward you, stopping next to you. Drag it into hazards or other enemies.
+    m_Localized: 'Throw a hook at an enemy 2 to 3 cells away in a straight line: 1 damage and pull it up to 3 cells toward you.'
     m_Metadata:
       m_Items: []
   - m_Id: 444086129655808
@@ -843,7 +651,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 444086129655809
-    m_Localized: Throws a hook at you from a distance and drags you up to 3 cells toward the goblin.
+    m_Localized: 'Marks a cell 2 to 4 cells away in a straight line and hooks it on its next turn: 1 damage and drags whoever is there up to 3 cells toward the goblin.'
     m_Metadata:
       m_Items: []
   - m_Id: 444086486171648
@@ -851,7 +659,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 444086486171649
-    m_Localized: Hits everyone around the king and throws them back 2 cells.
+    m_Localized: 'Marks a line of 4 cells in front of him and sends a shockwave through it on its next turn: 2 damage and throws everyone on it back 2 cells.'
     m_Metadata:
       m_Items: []
   - m_Id: 444086842687488
@@ -859,23 +667,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 444086842687489
-    m_Localized: 'Unlocks Shield Bash: hit an adjacent enemy and shove it back 2 cells. Enemies slammed into something take extra damage.'
-    m_Metadata:
-      m_Items: []
-  - m_Id: 444087199203328
-    m_Localized: Wind Mastery
-    m_Metadata:
-      m_Items: []
-  - m_Id: 444087199203329
-    m_Localized: 'Unlocks Gust: a blast of wind that damages enemies in a small area and pushes them away from its center.'
-    m_Metadata:
-      m_Items: []
-  - m_Id: 444087547330560
-    m_Localized: Grappling Hook
-    m_Metadata:
-      m_Items: []
-  - m_Id: 444087547330561
-    m_Localized: 'Unlocks Hook: yank a distant enemy up to 3 cells toward you. Pull it into hazards or other enemies.'
+    m_Localized: 'Unlocks Quake: split the ground in a line of 3 cells in front of you, hitting and pushing everyone on it.'
     m_Metadata:
       m_Items: []
   - m_Id: 444087660576768
@@ -883,7 +675,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 444087660576769
-    m_Localized: Hooks you from a distance and drags you toward the group, then fights up close.
+    m_Localized: Hooks you from a distance and drags you toward the group.
     m_Metadata:
       m_Items: []
   - m_Id: 458931054968832
@@ -899,7 +691,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 458931742834689
-    m_Localized: Takes 2 damage at the start of its turn for each stack (up to 3 stacks).
+    m_Localized: Takes 1 damage at the start of each of its turns.
     m_Metadata:
       m_Items: []
   - m_Id: 458932103544832
@@ -915,7 +707,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 458932476837889
-    m_Localized: Cannot move and deals 20% less damage.
+    m_Localized: Walks 1 cell less.
     m_Metadata:
       m_Items: []
   - m_Id: 458932833353728
@@ -923,7 +715,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 458932833353729
-    m_Localized: Cannot move, attack or use skills.
+    m_Localized: Cannot walk or use skills. A prepared strike is cancelled.
     m_Metadata:
       m_Items: []
   - m_Id: 458933202452480
@@ -931,87 +723,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 458933202452481
-    m_Localized: Takes 25% more damage.
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458933571551232
-    m_Localized: Heavy Strike
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458933571551233
-    m_Localized: Strike deals +3 damage per rank.
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458933923872768
-    m_Localized: Heavy Strike
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458933923872769
-    m_Localized: Strike deals +3 damage per rank.
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458934280388608
-    m_Localized: Wide Swing
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458934280388609
-    m_Localized: Strike's line grows by 2 cells per rank.
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458934632710144
-    m_Localized: Wide Swing
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458934632710145
-    m_Localized: Strike's line grows by 2 cells per rank.
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458935052140544
-    m_Localized: Shoving Strike
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458935052140545
-    m_Localized: Strike also pushes the enemies it hits 1 cell away.
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458935479959552
-    m_Localized: Shoving Strike
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458935484153856
-    m_Localized: Strike also pushes the enemies it hits 1 cell away.
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458935916167168
-    m_Localized: Melee Frenzy
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458935916167169
-    m_Localized: +7% damage per adjacent enemy (up to 3 enemies) per rank, with attacks and skills.
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458936364957696
-    m_Localized: Melee Frenzy
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458936364957697
-    m_Localized: +7% damage per adjacent enemy (up to 3 enemies) per rank, with attacks and skills.
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458936805359616
-    m_Localized: Hold the Line
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458936805359617
-    m_Localized: Take 4% less damage from attacks per adjacent enemy (up to 3 enemies) per rank.
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458937233178624
-    m_Localized: Hold the Line
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458937233178625
-    m_Localized: Take 4% less damage from attacks per adjacent enemy (up to 3 enemies) per rank.
+    m_Localized: Takes 1 more damage from every hit.
     m_Metadata:
       m_Items: []
   - m_Id: 458937702940672
@@ -1019,7 +731,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 458937702940673
-    m_Localized: Killing an enemy heals you for 6 HP per rank.
+    m_Localized: Killing an enemy heals you for 1 HP.
     m_Metadata:
       m_Items: []
   - m_Id: 458938113982464
@@ -1027,7 +739,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 458938113982465
-    m_Localized: Killing an enemy heals you for 6 HP per rank.
+    m_Localized: Killing an enemy heals you for 1 HP.
     m_Metadata:
       m_Items: []
   - m_Id: 458938508247040
@@ -1035,7 +747,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 458938508247041
-    m_Localized: Enemies you push or pull into something take 40% more collision damage per rank.
+    m_Localized: Collisions you cause deal 1 more damage.
     m_Metadata:
       m_Items: []
   - m_Id: 458938906705920
@@ -1043,247 +755,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 458938906705921
-    m_Localized: Enemies you push or pull into something take 40% more collision damage per rank.
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458939284193280
-    m_Localized: Concussive Bash
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458939284193281
-    m_Localized: Shield Bash pushes 1 cell farther per rank.
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458939636514816
-    m_Localized: Concussive Bash
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458939640709120
-    m_Localized: Shield Bash pushes 1 cell farther per rank.
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458939997224960
-    m_Localized: Rattling Bash
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458939997224961
-    m_Localized: 'Shield Bash also exposes the enemy for 2 turns: it takes 25% more damage.'
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458940349546496
-    m_Localized: Rattling Bash
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458940349546497
-    m_Localized: 'Shield Bash also exposes the enemy for 2 turns: it takes 25% more damage.'
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458940697673728
-    m_Localized: Concussion
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458940697673729
-    m_Localized: Shield Bash also stuns the enemy for 1 turn.
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458941049995264
-    m_Localized: Concussion
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458941049995265
-    m_Localized: Shield Bash also stuns the enemy for 1 turn.
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458941398122496
-    m_Localized: Rapid Charge
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458941398122497
-    m_Localized: Shield Charge cooldown -1 per rank.
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458941809164288
-    m_Localized: Rapid Charge
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458941809164289
-    m_Localized: Shield Charge cooldown -1 per rank.
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458942165680128
-    m_Localized: Bulldozer
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458942165680129
-    m_Localized: Shield Charge deals +4 damage and can start 1 cell farther per rank.
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458942522195968
-    m_Localized: Bulldozer
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458942522195969
-    m_Localized: Shield Charge deals +4 damage and can start 1 cell farther per rank.
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458942870323200
-    m_Localized: Chilling Touch
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458942874517504
-    m_Localized: 'Frost Nova chills the enemies for 1 turn: they cannot move and deal 20% less damage.'
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458943222644736
-    m_Localized: Chilling Touch
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458943222644737
-    m_Localized: 'Frost Nova chills the enemies for 1 turn: they cannot move and deal 20% less damage.'
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458943574966272
-    m_Localized: Quick Frost
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458943574966273
-    m_Localized: Frost Nova cooldown -1.
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458943927287808
-    m_Localized: Quick Frost
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458943927287809
-    m_Localized: Frost Nova cooldown -1.
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458944296386560
-    m_Localized: Frost Expansion
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458944296386561
-    m_Localized: Frost Nova's area grows by one ring (5x5 without the corners).
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458944678068224
-    m_Localized: Frost Expansion
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458944678068225
-    m_Localized: Frost Nova's area grows by one ring (5x5 without the corners).
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458945072332800
-    m_Localized: Pyromancy
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458945072332801
-    m_Localized: Fireball deals +2 damage per rank.
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458945437237248
-    m_Localized: Pyromancy
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458945437237249
-    m_Localized: Fireball deals +2 damage per rank.
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458945785364480
-    m_Localized: Ignite
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458945785364481
-    m_Localized: 'Fireball sets enemies ablaze for 3 turns (2 damage per turn per stack): one burn stack per rank on each hit.'
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458946141880320
-    m_Localized: Ignite
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458946141880321
-    m_Localized: 'Fireball sets enemies ablaze for 3 turns (2 damage per turn per stack): one burn stack per rank on each hit.'
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458946494201856
-    m_Localized: Wide Blast
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458946494201857
-    m_Localized: Fireball's area grows by one ring (5x5 without the corners).
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458946846523392
-    m_Localized: Wide Blast
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458946846523393
-    m_Localized: Fireball's area grows by one ring (5x5 without the corners).
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458947198844928
-    m_Localized: Storm Caller
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458947198844929
-    m_Localized: Lightning Storm deals +3 damage per rank.
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458947559555072
-    m_Localized: Storm Caller
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458947559555073
-    m_Localized: Lightning Storm deals +3 damage per rank.
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458947907682304
-    m_Localized: Storm Front
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458947907682305
-    m_Localized: Lightning Storm's cone grows by one row and its range by 1.
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458948264198144
-    m_Localized: Storm Front
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458948268392448
-    m_Localized: Lightning Storm's cone grows by one row and its range by 1.
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458948629102592
-    m_Localized: Hurricane
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458948629102593
-    m_Localized: Gust's area grows by one ring (5x5 without the corners).
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458948994007040
-    m_Localized: Hurricane
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458948994007041
-    m_Localized: Gust's area grows by one ring (5x5 without the corners).
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458949342134272
-    m_Localized: Gale Force
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458949342134273
-    m_Localized: Gust pushes 1 cell farther per rank.
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458949694455808
-    m_Localized: Gale Force
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458949694455809
-    m_Localized: Gust pushes 1 cell farther per rank.
+    m_Localized: Collisions you cause deal 1 more damage.
     m_Metadata:
       m_Items: []
   - m_Id: 458950071943168
@@ -1291,7 +763,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 458950071943169
-    m_Localized: +20% damage per rank to enemies with a harmful state (burning, chilled, poisoned...).
+    m_Localized: Your skills deal 1 more damage to frozen or chilled enemies.
     m_Metadata:
       m_Items: []
   - m_Id: 458950432653312
@@ -1299,7 +771,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 458950432653313
-    m_Localized: +20% damage per rank to enemies with a harmful state (burning, chilled, poisoned...).
+    m_Localized: Your skills deal 1 more damage to frozen or chilled enemies.
     m_Metadata:
       m_Items: []
   - m_Id: 458950780780544
@@ -1307,7 +779,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 458950780780545
-    m_Localized: Skills deal +15% damage per rank if you have not walked this turn.
+    m_Localized: If you have not walked this turn, your skills deal 1 more damage.
     m_Metadata:
       m_Items: []
   - m_Id: 458951166656512
@@ -1315,7 +787,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 458951166656513
-    m_Localized: Skills deal +15% damage per rank if you have not walked this turn.
+    m_Localized: If you have not walked this turn, your skills deal 1 more damage.
     m_Metadata:
       m_Items: []
   - m_Id: 458951573504000
@@ -1323,7 +795,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 458951573504001
-    m_Localized: Killing an enemy shortens your running skill cooldowns by 1 per rank.
+    m_Localized: Killing an enemy shortens the cooldown of your skills by 1.
     m_Metadata:
       m_Items: []
   - m_Id: 458951959379968
@@ -1331,7 +803,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 458951959379969
-    m_Localized: Killing an enemy shortens your running skill cooldowns by 1 per rank.
+    m_Localized: Killing an enemy shortens the cooldown of your skills by 1.
     m_Metadata:
       m_Items: []
   - m_Id: 458952328478720
@@ -1339,7 +811,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 458952328478721
-    m_Localized: 'Your skills poison the enemies they hit: one venom stack per rank (1 damage + 5% of its max HP per turn per stack, 4 turns, up to 5 stacks).'
+    m_Localized: Your skills poison every enemy they hit.
     m_Metadata:
       m_Items: []
   - m_Id: 458952731131904
@@ -1347,183 +819,103 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 458952731131905
-    m_Localized: 'Your skills poison the enemies they hit: one venom stack per rank (1 damage + 5% of its max HP per turn per stack, 4 turns, up to 5 stacks).'
+    m_Localized: Your skills poison every enemy they hit.
     m_Metadata:
       m_Items: []
-  - m_Id: 458953083453440
-    m_Localized: Coated Weapon
+  - m_Id: 5123292607881217
+    m_Localized: Enemies you push or pull leave fire on the cells they leave behind, for 2 rounds.
     m_Metadata:
       m_Items: []
-  - m_Id: 458953087647744
-    m_Localized: 'Your basic attacks also poison: 2 venom stacks per rank (4 turns).'
+  - m_Id: 5123292607881216
+    m_Localized: Flame Trail
     m_Metadata:
       m_Items: []
-  - m_Id: 458953444163584
-    m_Localized: Coated Weapon
+  - m_Id: 5123292452691969
+    m_Localized: Enemies you push or pull leave fire on the cells they leave behind, for 2 rounds.
     m_Metadata:
       m_Items: []
-  - m_Id: 458953444163585
-    m_Localized: 'Your basic attacks also poison: 2 venom stacks per rank (4 turns).'
+  - m_Id: 5123292452691968
+    m_Localized: Flame Trail
     m_Metadata:
       m_Items: []
-  - m_Id: 458953796485120
-    m_Localized: Sharpened Daggers
+  - m_Id: 5123292935036929
+    m_Localized: Your walk can also trade places with an adjacent character instead.
     m_Metadata:
       m_Items: []
-  - m_Id: 458953796485121
-    m_Localized: Poisoned Dagger and Throwing Dagger deal +4 damage per rank.
+  - m_Id: 5123292935036928
+    m_Localized: Swap Step
     m_Metadata:
       m_Items: []
-  - m_Id: 458954153000960
-    m_Localized: Sharpened Daggers
+  - m_Id: 5123292779847681
+    m_Localized: Your walk can also trade places with an adjacent character instead.
     m_Metadata:
       m_Items: []
-  - m_Id: 458954153000961
-    m_Localized: Poisoned Dagger and Throwing Dagger deal +4 damage per rank.
+  - m_Id: 5123292779847680
+    m_Localized: Swap Step
     m_Metadata:
       m_Items: []
-  - m_Id: 458954513711104
-    m_Localized: Eagle Eye
+  - m_Id: 5123291198595073
+    m_Localized: When a strike aimed at you misses, the enemy that struck becomes Exposed (takes 1 more damage from every hit) until the end of its next turn.
     m_Metadata:
       m_Items: []
-  - m_Id: 458954513711105
-    m_Localized: Poisoned Dagger and Throwing Dagger reach 1 cell farther per rank.
+  - m_Id: 5123291198595072
+    m_Localized: Counterstrike
     m_Metadata:
       m_Items: []
-  - m_Id: 458954857644032
-    m_Localized: Eagle Eye
+  - m_Id: 5123291039211521
+    m_Localized: When a strike aimed at you misses, the enemy that struck becomes Exposed (takes 1 more damage from every hit) until the end of its next turn.
     m_Metadata:
       m_Items: []
-  - m_Id: 458954857644033
-    m_Localized: Poisoned Dagger and Throwing Dagger reach 1 cell farther per rank.
+  - m_Id: 5123291039211520
+    m_Localized: Counterstrike
     m_Metadata:
       m_Items: []
-  - m_Id: 458955201576960
-    m_Localized: Piercing Throw
+  - m_Id: 5123291529945089
+    m_Localized: When an enemy you push or pull slams into another character, that one is pushed 1 cell too, in the same direction.
     m_Metadata:
       m_Items: []
-  - m_Id: 458955201576961
-    m_Localized: Poisoned Dagger's line gets 2 cells longer.
+  - m_Id: 5123291529945088
+    m_Localized: Domino
     m_Metadata:
       m_Items: []
-  - m_Id: 458955553898496
-    m_Localized: Piercing Throw
+  - m_Id: 5123291370561537
+    m_Localized: 'Unlocks Stomp: hit everyone around you and push them 1 cell away.'
     m_Metadata:
       m_Items: []
-  - m_Id: 458955553898497
-    m_Localized: Poisoned Dagger's line gets 2 cells longer.
+  - m_Id: 5123291370561536
+    m_Localized: Heavy Step
     m_Metadata:
       m_Items: []
-  - m_Id: 458955914608640
-    m_Localized: Swift Dagger
+  - m_Id: 5123292280725505
+    m_Localized: Frozen or chilled enemies you push slide until they hit something.
     m_Metadata:
       m_Items: []
-  - m_Id: 458955914608641
-    m_Localized: Poisoned Dagger cooldown -1.
+  - m_Id: 5123292280725504
+    m_Localized: Slippery Ice
     m_Metadata:
       m_Items: []
-  - m_Id: 458956275318784
-    m_Localized: Swift Dagger
+  - m_Id: 5123291685134337
+    m_Localized: When an enemy you push or pull slams into another character, that one is pushed 1 cell too, in the same direction.
     m_Metadata:
       m_Items: []
-  - m_Id: 458956275318785
-    m_Localized: Poisoned Dagger cooldown -1.
+  - m_Id: 5123291685134336
+    m_Localized: Domino
     m_Metadata:
       m_Items: []
-  - m_Id: 458956627640320
-    m_Localized: Choking Smoke
+  - m_Id: 5123290875633665
+    m_Localized: Killing an enemy gives you an extra walk this turn.
     m_Metadata:
       m_Items: []
-  - m_Id: 458956627640321
-    m_Localized: 'Smoke Bomb weakens the enemy for 2 turns: it deals 50% less damage.'
+  - m_Id: 5123290875633664
+    m_Localized: Momentum
     m_Metadata:
       m_Items: []
-  - m_Id: 458956996739072
-    m_Localized: Choking Smoke
+  - m_Id: 5123290720444417
+    m_Localized: Killing an enemy gives you an extra walk this turn.
     m_Metadata:
       m_Items: []
-  - m_Id: 458956996739073
-    m_Localized: 'Smoke Bomb weakens the enemy for 2 turns: it deals 50% less damage.'
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458957365837824
-    m_Localized: Lingering Smoke
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458957365837825
-    m_Localized: The states Smoke Bomb applies last 1 more turn per rank.
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458957718159360
-    m_Localized: Lingering Smoke
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458957718159361
-    m_Localized: The states Smoke Bomb applies last 1 more turn per rank.
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458958066286592
-    m_Localized: Billowing Smoke
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458958066286593
-    m_Localized: Smoke Bomb's area grows by one ring (a plus of 5 cells).
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458958418608128
-    m_Localized: Billowing Smoke
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458958418608129
-    m_Localized: Smoke Bomb's area grows by one ring (a plus of 5 cells).
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458958779318272
-    m_Localized: Stunning Hook
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458958783512576
-    m_Localized: Hook also stuns the enemy for 1 turn.
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458959148417024
-    m_Localized: Stunning Hook
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458959148417025
-    m_Localized: Hook also stuns the enemy for 1 turn.
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458959504932864
-    m_Localized: Strong Pull
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458959504932865
-    m_Localized: Hook pulls 1 cell farther and reaches 1 cell farther per rank.
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458959886614528
-    m_Localized: Strong Pull
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458959886614529
-    m_Localized: Hook pulls 1 cell farther and reaches 1 cell farther per rank.
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458960251518976
-    m_Localized: Venom Bolt
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458960251518977
-    m_Localized: Poison Line deals +4 damage per rank.
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458960670949376
-    m_Localized: Venom Bolt
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458960670949377
-    m_Localized: Poison Line deals +4 damage per rank.
+  - m_Id: 5123290720444416
+    m_Localized: Momentum
     m_Metadata:
       m_Items: []
   - m_Id: 458961031659520
@@ -1531,7 +923,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 458961031659521
-    m_Localized: +35% damage per rank to poisoned enemies.
+    m_Localized: Your skills deal 1 more damage to poisoned enemies.
     m_Metadata:
       m_Items: []
   - m_Id: 458961388175360
@@ -1539,23 +931,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 458961388175361
-    m_Localized: +35% damage per rank to poisoned enemies.
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458961736302592
-    m_Localized: Hit and Run
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458961736302593
-    m_Localized: +30% damage per rank if you walked earlier this turn, before attacking.
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458962084429824
-    m_Localized: Hit and Run
-    m_Metadata:
-      m_Items: []
-  - m_Id: 458962084429825
-    m_Localized: +30% damage per rank if you walked earlier this turn, before attacking.
+    m_Localized: Your skills deal 1 more damage to poisoned enemies.
     m_Metadata:
       m_Items: []
   - m_Id: 458962432557056
@@ -1563,7 +939,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 458962432557057
-    m_Localized: +40% damage per rank to enemies with no ally next to them.
+    m_Localized: Your skills deal 1 more damage to enemies with no ally next to them.
     m_Metadata:
       m_Items: []
   - m_Id: 458962789072896
@@ -1571,7 +947,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 458962789072897
-    m_Localized: +40% damage per rank to enemies with no ally next to them.
+    m_Localized: Your skills deal 1 more damage to enemies with no ally next to them.
     m_Metadata:
       m_Items: []
   - m_Id: 458963149783040
@@ -1579,7 +955,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 458963149783041
-    m_Localized: Killing an enemy heals you for 12 HP per rank.
+    m_Localized: Killing an enemy heals you for 1 HP.
     m_Metadata:
       m_Items: []
   - m_Id: 458963497910272
@@ -1587,51 +963,35 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 458963497910273
-    m_Localized: Killing an enemy heals you for 12 HP per rank.
+    m_Localized: Killing an enemy heals you for 1 HP.
     m_Metadata:
       m_Items: []
-  - m_Id: 463460722933760
-    m_Localized: Crippling Venom
+  - m_Id: 5123292951814147
+    m_Localized: Cannot use skills. A prepared strike is cancelled.
     m_Metadata:
       m_Items: []
-  - m_Id: 463460781654016
-    m_Localized: Enemies with a harmful state (venom, weakened, chilled...) deal 15% less damage to you per rank.
+  - m_Id: 5123292951814146
+    m_Localized: Blinded
     m_Metadata:
       m_Items: []
-  - m_Id: 463461142364160
-    m_Localized: Crippling Venom
+  - m_Id: 5123292951814145
+    m_Localized: Cannot walk or use skills. A prepared strike is cancelled.
     m_Metadata:
       m_Items: []
-  - m_Id: 463461142364161
-    m_Localized: Enemies with a harmful state (venom, weakened, chilled...) deal 15% less damage to you per rank.
-    m_Metadata:
-      m_Items: []
-  - m_Id: 472301057474560
-    m_Localized: Nimble
-    m_Metadata:
-      m_Items: []
-  - m_Id: 472301116194816
-    m_Localized: +12 max HP per rank.
-    m_Metadata:
-      m_Items: []
-  - m_Id: 472301472710656
-    m_Localized: Nimble
-    m_Metadata:
-      m_Items: []
-  - m_Id: 472301472710657
-    m_Localized: +12 max HP per rank.
+  - m_Id: 5123292951814144
+    m_Localized: Frozen
     m_Metadata:
       m_Items: []
   - m_Id: 2743378687893504
-    m_Localized: Frontline brawler with the most HP of the three. Fights up close, grows stronger when surrounded and slams enemies into walls and into each other with his shield.
+    m_Localized: Frontline brawler with the most HP. Shoves enemies out of position, into each other and into walls, and stuns the ones about to strike.
     m_Metadata:
       m_Items: []
   - m_Id: 2743378734030848
-    m_Localized: 'Controls the battlefield from a distance: freezes, burns and pushes groups of enemies. Has little HP, so keep away from the front line.'
+    m_Localized: 'Controls the battlefield from afar: freezes enemies to cancel their strikes, sets the ground on fire and blows foes around. Has little HP.'
     m_Metadata:
       m_Items: []
   - m_Id: 2743378734030849
-    m_Localized: Assassin who wears enemies down with poison, strikes isolated targets hard and drags foes to where they are weakest.
+    m_Localized: 'Slippery assassin: poisons from afar, hooks enemies into danger and trades places to turn their strikes against them.'
     m_Metadata:
       m_Items: []
   - m_Id: 4946699310063616
@@ -1639,7 +999,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 4946699347812352
-    m_Localized: Raises the hammer and marks the cells around him. On his next turn he smashes them, hitting everyone on them, his guards too.
+    m_Localized: 'Raises the hammer and marks the cells around him. On his next turn he smashes them: 3 damage to everyone on them, his guards too.'
     m_Metadata:
       m_Items: []
   - m_Id: 4946699561721856
@@ -1647,7 +1007,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 4946699561721857
-    m_Localized: 'This enemy is preparing a strike: the marked cells are hit on its next turn. Walk out of the area before then (you can still attack) or stun it to cancel the strike. Long press a marked cell to see the damage.'
+    m_Localized: 'This enemy is preparing a strike: on its next turn it hits the marked cells and whoever stands on them, other enemies included. Step out, push it so the strike turns with it, push another enemy in, or stun it to cancel. The numbers show the order the enemies act in.'
     m_Metadata:
       m_Items: []
   - m_Id: 5032682152599552
@@ -1655,7 +1015,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5032682282622976
-    m_Localized: Cannot move.
+    m_Localized: Cannot walk.
     m_Metadata:
       m_Items: []
   - m_Id: 5032682580418560
@@ -1663,7 +1023,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5032682580418561
-    m_Localized: 'Lobs fire bombs: marks a 3x3 area and, on his next turn, hits everyone in it for 8 and sets them Burning.'
+    m_Localized: 'Lobs fire bombs: marks a 3x3 area 2 to 4 cells away (over obstacles) and hits everyone in it on its next turn for 1 damage and Burning.'
     m_Metadata:
       m_Items: []
   - m_Id: 5032682874019840
@@ -1671,7 +1031,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5032682874019841
-    m_Localized: 'Raises the club and marks a line of 3 cells in front of him. On his next turn he smashes it: 14 damage to everyone in it.'
+    m_Localized: 'Raises the club and marks a line of 3 cells in front of him. On his next turn he smashes it: 3 damage to everyone in it.'
     m_Metadata:
       m_Items: []
   - m_Id: 5032683163426816
@@ -1679,7 +1039,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5032683163426817
-    m_Localized: 'Shoots a web from 2 to 4 cells away in a straight line: 2 damage and you cannot move on your next turn.'
+    m_Localized: 'Marks a cell 2 to 4 cells away in a straight line and webs it on its next turn: 1 damage, and whoever is there cannot walk on their next turn.'
     m_Metadata:
       m_Items: []
   - m_Id: 5032683788378112
@@ -1687,7 +1047,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5032683788378113
-    m_Localized: 'Keeps his distance and lobs fire bombs: he marks an area and hits it on his next turn.'
+    m_Localized: 'Keeps his distance and lobs fire bombs over obstacles: he marks a 3x3 area and hits it on his next turn.'
     m_Metadata:
       m_Items: []
   - m_Id: 5032684375580672
@@ -1695,7 +1055,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5032684375580673
-    m_Localized: 'Slow and tough. Winds up a crushing blow in a line in front of him: step aside before his next turn.'
+    m_Localized: 'Elite. Slow and tough: winds up a crushing blow on a line in front of him. Step aside, or turn him toward his allies.'
     m_Metadata:
       m_Items: []
   - m_Id: 5032684946006016
@@ -1703,7 +1063,735 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 5032684946006017
-    m_Localized: Quick and fragile. Keeps her distance and webs you in place so you cannot walk.
+    m_Localized: Quick and fragile. Webs a cell from afar so you cannot walk on your next turn.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123252296425472
+    m_Localized: Ice Wall
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123252422254592
+    m_Localized: 'A wall of ice: nobody can stand on it or cross it, and it stops strikes and sight. It melts after a few rounds.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123252854267904
+    m_Localized: Cleave
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123252854267905
+    m_Localized: Hit the cell in front of you and the cells on both sides of it, pushing each enemy 1 cell.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123253017845760
+    m_Localized: Heavy Blow
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123253017845761
+    m_Localized: 'A slower, heavier hit: 2 damage and pushes the enemy 2 cells.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123253181423616
+    m_Localized: Long Charge
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123253181423617
+    m_Localized: Charge up to 5 cells in a straight line and push the enemy at the end 1 cell.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123253336612864
+    m_Localized: Crushing Charge
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123253336612865
+    m_Localized: Charge up to 3 cells in a straight line and send the enemy at the end flying 2 cells.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123253508579328
+    m_Localized: Resounding Bash
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123253508579329
+    m_Localized: 'Slam an adjacent enemy: 2 damage, push it 3 cells and stun it.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123253672157184
+    m_Localized: Shield Sweep
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123253672157185
+    m_Localized: 'Sweep the cell in front of you and both sides: 2 damage, push 2 cells and stun every enemy hit.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123253835735040
+    m_Localized: Stomp
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123253835735041
+    m_Localized: 'Stomp the ground: 1 damage to everyone around you and push them 1 cell away.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123253999312896
+    m_Localized: Thunder Stomp
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123253999312897
+    m_Localized: 'Stomp the ground: 1 damage, push everyone around you 1 cell and stun them.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123254171279360
+    m_Localized: Heavy Stomp
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123254171279361
+    m_Localized: 'Stomp the ground: 1 damage to everyone around you and push them 2 cells away.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123254326468608
+    m_Localized: Shield Throw
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123254326468609
+    m_Localized: 'Throw your shield at an enemy 2 to 4 cells away in a straight line: 1 damage and push it 1 cell.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123254481657856
+    m_Localized: Stunning Throw
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123254481657857
+    m_Localized: 'Throw your shield: 1 damage, push 1 cell and stun the enemy, cancelling its prepared strike.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123254641041408
+    m_Localized: Heavy Throw
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123254641041409
+    m_Localized: 'Throw your shield hard: 1 damage and push the enemy 2 cells.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123254800424960
+    m_Localized: Quake
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123254800424961
+    m_Localized: 'Split the ground in a line of 3 cells in front of you: 1 damage to everyone on it and push them 1 cell.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123254959808512
+    m_Localized: Long Fissure
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123254959808513
+    m_Localized: 'The crack runs 5 cells: 1 damage to everyone on it and push them 1 cell.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123255110803456
+    m_Localized: Deep Quake
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123255110803457
+    m_Localized: 'Split the ground in a line of 3 cells: 2 damage to everyone on it and push them 1 cell.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123255437959168
+    m_Localized: Strong Gust
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123255437959169
+    m_Localized: 'A stronger blast: 1 damage and pushes the target 2 cells away from you.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123255597342720
+    m_Localized: Gale
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123255597342721
+    m_Localized: 'A wide blast: hits the target cell and both sides of it, pushing each one 1 cell away from you.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123255760920576
+    m_Localized: Ice Prison
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123255760920577
+    m_Localized: 'Freeze one character up to 3 cells away: 1 damage, and it cannot walk or use skills on its next turn.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123255916109824
+    m_Localized: Deep Freeze
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123255916109825
+    m_Localized: 'Freeze everyone around you: 2 damage, and on their next turn they cannot walk or use skills.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123256083881984
+    m_Localized: Explosive Fireball
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123256083881985
+    m_Localized: 'The fireball bursts in a cross: 1 damage to each of the 5 cells, and all of them burn for 2 rounds.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123256243265536
+    m_Localized: Lobbed Fireball
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123256243265537
+    m_Localized: 'Lob the fireball over obstacles, 2 to 4 cells away: 2 damage, and the cell burns for 2 rounds.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123256419426304
+    m_Localized: Wide Storm
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123256419426305
+    m_Localized: 'The storm covers a 3x3 area: 1 damage and stuns everyone in it. Channelled: it also spends the walk of the turn (use it before walking).'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123256608169984
+    m_Localized: Quick Storm
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123256608169985
+    m_Localized: 'The same storm, ready again sooner (cooldown 3). Channelled: it also spends the walk of the turn (use it before walking).'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123256780136448
+    m_Localized: Ice Wall
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123256780136449
+    m_Localized: Raise a wall of ice 3 cells wide, up to 3 cells away, for 2 rounds. It blocks walking, sight and strikes. Enemies where it rises take 1 damage and are chilled (walk 1 less) instead.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123256939520000
+    m_Localized: Long Wall
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123256939520001
+    m_Localized: The wall is 5 cells wide.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123257107292160
+    m_Localized: Lasting Wall
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123257107292161
+    m_Localized: The wall lasts 4 rounds.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123257270870016
+    m_Localized: Meteor
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123257270870017
+    m_Localized: 'Call a meteor on a 3x3 area 2 to 4 cells away (no line of sight needed): 2 damage, and everyone around the center is pushed 1 cell away from it. Channelled: it also spends the walk of the turn (use it before walking), and you cannot walk on your next turn.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123257430253568
+    m_Localized: Burning Meteor
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123257430253569
+    m_Localized: 'The meteor also leaves the center cell burning for 2 rounds. Channelled: it also spends the walk of the turn (use it before walking), and you cannot walk on your next turn.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123257581248512
+    m_Localized: Swift Meteor
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123257581248513
+    m_Localized: 'The same meteor, ready again sooner (cooldown 4). Channelled: it also spends the walk of the turn (use it before walking), and you cannot walk on your next turn.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123257904209920
+    m_Localized: Piercing Dagger
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123257904209921
+    m_Localized: 'The dagger goes through: it hits the target and the cell behind it, poisoning both.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123258063593472
+    m_Localized: Crippling Dagger
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123258063593473
+    m_Localized: '1 damage and Weakened instead of poison: the target deals 1 less damage on its next turn.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123258235559936
+    m_Localized: Long Hook
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123258235559937
+    m_Localized: The hook reaches 2 to 5 cells away and pulls up to 4 cells.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123258390749184
+    m_Localized: Stunning Hook
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123258390749185
+    m_Localized: Pull the enemy up to 3 cells and stun it, cancelling its prepared strike.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123258550132736
+    m_Localized: Shadow Step
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123258550132737
+    m_Localized: Trade places with a character up to 3 cells away; an enemy takes 1 damage. An enemy's prepared strike moves with it.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123258709516288
+    m_Localized: Venom Step
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123258709516289
+    m_Localized: Trade places with a character; an enemy takes 1 damage and is Poisoned.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123258873094144
+    m_Localized: Long Step
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123258873094145
+    m_Localized: Trade places with a character up to 5 cells away.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123259032477696
+    m_Localized: Fan of Knives
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123259032477697
+    m_Localized: 'Three daggers: hit the target and both sides of it, exposing each enemy hit.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123259191861248
+    m_Localized: Quick Dagger
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123259191861249
+    m_Localized: 'No cooldown: throw one every turn.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123259351244800
+    m_Localized: Thrown Smoke
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123259351244801
+    m_Localized: 'Throw the smoke bomb up to 3 cells away: it blinds everyone in a 3x3 area.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123259510628352
+    m_Localized: Dense Smoke
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123259510628353
+    m_Localized: 'The smoke lingers: enemies stay blinded for 2 of their turns.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123259665817600
+    m_Localized: Long Poison Line
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123259665817601
+    m_Localized: The line is 6 cells long.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123259829395456
+    m_Localized: Concentrated Poison
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123259829395457
+    m_Localized: 2 damage to everyone on the line, Poisoned, and a poison bog for 2 rounds.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123259992973312
+    m_Localized: Club Swing
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123259992973313
+    m_Localized: 'Marks an adjacent cell and smashes it on its next turn: 1 damage to whoever stands there.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123260152356864
+    m_Localized: Bite
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123260152356865
+    m_Localized: 'Marks an adjacent cell and bites it on its next turn: 1 damage.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123260307546112
+    m_Localized: Acid Splash
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123260307546113
+    m_Localized: 'Marks the cell in front of it and both sides, and splashes them on its next turn: 1 damage to each.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123260471123968
+    m_Localized: Flame Bolt
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123260471123969
+    m_Localized: 'Marks a cell 2 to 3 cells away in a straight line and shoots it on its next turn: 1 damage and Burning for 2 turns.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123260626313216
+    m_Localized: Dive
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123260626313217
+    m_Localized: 'Marks a diagonal neighbour cell and dives on it on its next turn: 1 damage.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123260798279680
+    m_Localized: Spark
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123260802473984
+    m_Localized: 'Marks a cell 2 to 3 cells away and zaps it on its next turn: 1 damage.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123260961857536
+    m_Localized: Screech
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123260961857537
+    m_Localized: 'Marks a cell up to 2 cells away and screeches at it on its next turn: 1 damage and pushes 1 cell.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123261129629696
+    m_Localized: Hex Gaze
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123261129629697
+    m_Localized: 'Marks a cell 2 to 4 cells away in a straight line and curses it on its next turn: 1 damage and Exposed (takes 1 more damage from every hit).'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123261301596160
+    m_Localized: Shield Shove
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123261301596161
+    m_Localized: 'Marks an adjacent cell and shoves it on its next turn: 1 damage and pushes 1 cell.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123261486145536
+    m_Localized: Spear Thrust
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123261486145537
+    m_Localized: 'Marks 2 cells in a line in front of it and thrusts on its next turn: 1 damage to each.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123261649723392
+    m_Localized: Ram
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123261649723393
+    m_Localized: 'Marks an adjacent cell and rams it on its next turn: 1 damage and pushes 2 cells.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123261809106944
+    m_Localized: Mortar
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123261809106945
+    m_Localized: 'Marks a cross of cells 2 to 5 cells away (over obstacles) and shells it on its next turn: 1 damage to each.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123262002044928
+    m_Localized: Lightning Bolt
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123262002044929
+    m_Localized: 'Marks a line of 5 cells and strikes it on its next turn: 1 damage to everyone on it.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123262165622784
+    m_Localized: Tremor
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123262165622785
+    m_Localized: 'Marks every cell around it and pounds the ground on its next turn: 2 damage to each.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123262325006336
+    m_Localized: Bog Curse
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123262325006337
+    m_Localized: 'Marks a cross of cells 2 to 4 cells away and curses it on its next turn: 1 damage, and the cells become a poison bog for 2 rounds.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123262484389888
+    m_Localized: Vampire Bite
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123262484389889
+    m_Localized: 'Marks an adjacent cell and bites it on its next turn: 1 damage, and the bat heals 1 HP.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123262643773440
+    m_Localized: Wind Gust
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123262643773441
+    m_Localized: 'Marks a line of 3 cells in front of it and blows on its next turn: 1 damage and pushes everyone on it 1 cell.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123262803156992
+    m_Localized: Bone Sweep
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123262803156993
+    m_Localized: 'Marks the cell in front of it and both sides and sweeps them on its next turn: 2 damage to each.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123262954151936
+    m_Localized: Dark Charge
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123262954151937
+    m_Localized: 'Marks a cell 2 to 4 cells away in a straight line and charges it on its next turn: 2 damage and pushes 1 cell.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123263117729792
+    m_Localized: Eruption
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123263117729793
+    m_Localized: 'Marks a cross of cells up to 3 cells away and erupts on its next turn: 2 damage, and the cells burn for 2 rounds.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123264095002624
+    m_Localized: Goblin Lancer
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123264095002625
+    m_Localized: 'Thrusts its spear through 2 cells in a line: whoever stands behind you gets hit too.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123264250191872
+    m_Localized: Ram Beetle
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123264250191873
+    m_Localized: 'Rams an adjacent cell and throws you 2 cells: watch what is behind you.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123264417964032
+    m_Localized: Goblin Artillerist
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123264417964033
+    m_Localized: Shells a cross of cells from far away, over obstacles, and slings stones while it reloads. Fragile up close.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123264577347584
+    m_Localized: Lightning Totem
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123264577347585
+    m_Localized: Never walks. Strikes a line of 5 cells and, while it recharges, shocks every cell around it; push it to aim the bolt at its allies.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123264740925440
+    m_Localized: Stone Golem
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123264740925441
+    m_Localized: Armored and slow. Pounds every cell around it for 2 damage and, while it recovers, punches and pushes you.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123264904503296
+    m_Localized: Swamp Witch
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123264904503297
+    m_Localized: Curses a cross of cells and turns them into a poison bog, shrinking the safe ground.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123265059692544
+    m_Localized: Vampire Bat
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123265059692545
+    m_Localized: Fast. Its bite heals it, so it keeps coming back.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123265227464704
+    m_Localized: Wind Shaman
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123265227464705
+    m_Localized: Blows a line of 3 cells and pushes everyone on it, often into other strikes.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123265382653952
+    m_Localized: Skeleton Knight
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123265382653953
+    m_Localized: Elite. Sweeps 3 cells in front of it, and charges from afar to push you.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123265550426112
+    m_Localized: Lava Golem
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123265550426113
+    m_Localized: Elite. Erupts on a cross of cells and leaves them burning. Hurts whoever hits it.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5570314100088832
+    m_Localized: Exhausted
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5570314234306560
+    m_Localized: Cannot walk.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5570314477576192
+    m_Localized: Sling Shot
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5570314477576193
+    m_Localized: 'Marks a cell 2 to 4 cells away in a straight line and slings a stone at it on its next turn: 1 damage.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5570314725040128
+    m_Localized: Royal Blow
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5570314725040129
+    m_Localized: 'Marks an adjacent cell and smashes it with his hammer on his next turn: 2 damage.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5570314951532544
+    m_Localized: Magma Fist
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5570314951532545
+    m_Localized: 'Marks an adjacent cell and punches it on its next turn: 1 damage and Burning for 2 turns.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5570315131887616
+    m_Localized: Static Shock
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5570315131887617
+    m_Localized: 'Marks every cell around it and shocks them on its next turn: 1 damage to each.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5570315324825600
+    m_Localized: Ogre Punch
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5570315329019904
+    m_Localized: 'Marks an adjacent cell and punches it on his next turn: 2 damage and pushes 1 cell.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5570315517763584
+    m_Localized: Stone Fist
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5570315517763585
+    m_Localized: 'Marks an adjacent cell and punches it on its next turn: 1 damage and pushes 1 cell.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5570315744256000
+    m_Localized: Mud Bolt
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5570315744256001
+    m_Localized: 'Marks a cell 2 to 3 cells away and throws mud at it on its next turn: 1 damage.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5570315932999680
+    m_Localized: Charge
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5570315932999681
+    m_Localized: 'Marks a cell 2 to 3 cells away in a straight line and charges it on its next turn: 1 damage and pushes 1 cell.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5570316113354752
+    m_Localized: Javelin
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5570316117549056
+    m_Localized: 'Marks a cell 2 to 4 cells away in a straight line and throws a javelin at it on its next turn: 1 damage and pushes 1 cell.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5570316318875648
+    m_Localized: Arc Lightning
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5570316318875649
+    m_Localized: 'Marks a cross of cells 2 to 3 cells away and strikes it with lightning on its next turn: 1 damage to each.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5570316516007936
+    m_Localized: Sonic Shriek
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5570316516007937
+    m_Localized: 'Marks every cell around it and shrieks on its next turn: 1 damage to each and pushes everyone 1 cell away.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5570316696363008
+    m_Localized: Flame Burst
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5570316696363009
+    m_Localized: 'Marks a cross of cells 2 to 3 cells away and bursts into flames on its next turn: 1 damage and Burning for 2 turns.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5570316893495296
+    m_Localized: Blinding Gaze
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5570316893495297
+    m_Localized: 'Marks a cell 2 to 4 cells away in a straight line and glares at it on its next turn: 1 damage, and whoever is there is Blinded (cannot use skills on their next turn).'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5570317065461760
+    m_Localized: Plague Bite
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5570317065461761
+    m_Localized: 'Marks an adjacent cell and bites it on its next turn: 1 damage and Poisoned for 2 turns.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5570317237428224
+    m_Localized: Quill Burst
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5570317237428225
+    m_Localized: 'Marks every cell around it and shoots its quills on its next turn: 1 damage to each.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5570317405200384
+    m_Localized: Acid Spit
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5570317405200385
+    m_Localized: 'Marks a cell 2 to 3 cells away and spits acid at it on its next turn: 1 damage and Exposed (takes 1 more damage from every hit).'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5570317619109888
+    m_Localized: Tornado
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5570317619109889
+    m_Localized: 'Marks a cross of cells 2 to 4 cells away and summons a tornado on its next turn: 1 damage and pushes everyone 1 cell away from the center.'
     m_Metadata:
       m_Items: []
   references:

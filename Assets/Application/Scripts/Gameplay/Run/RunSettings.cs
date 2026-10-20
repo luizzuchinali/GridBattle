@@ -13,7 +13,13 @@ namespace GridBattle.Gameplay.Run
         HpFraction,
 
         /// <summary>The player loses a flat amount of HP.</summary>
-        HpFlat
+        HpFlat,
+
+        /// <summary>
+        /// The player loses maximum HP for the rest of the run (a lasting cost, decision of 2026-10-19: levels no
+        /// longer heal, so an HP cost would fade at the next camp).
+        /// </summary>
+        MaxHp
     }
 
     /// <summary>What happens to the player's states when a battle ends (estados_e_atributos, open question).</summary>
@@ -64,6 +70,31 @@ namespace GridBattle.Gameplay.Run
         [Tooltip("HP lost (cost type HpFlat). The cost never kills: at least 1 HP is left.")]
         private int talentNodeCostHpFlat = 10;
 
+        [SerializeField]
+        [Min(0)]
+        [Tooltip("Maximum HP lost for the rest of the run (cost type MaxHp). The maximum never goes below 1; the HP " +
+                 "drops with it when it is above the new maximum.")]
+        private int talentNodeCostMaxHp = 2;
+
+        [Header("Camp and skill upgrades")]
+        [SerializeField]
+        [Tooltip("The camp (the heal node) lets the player choose between healing and upgrading a skill (decision of " +
+                 "2026-10-19). Off = it only heals, as before.")]
+        private bool campOffersSkillUpgrade = true;
+
+        [Header("Elite reward")]
+        [SerializeField]
+        [Min(0)]
+        [Tooltip("Consumable offers given after winning an elite battle, before its skill upgrade. Each one is the " +
+                 "consumable node's offer (choose 1 of Consumable Settings > Choice Count; a full inventory follows " +
+                 "its policy). 0 = none.")]
+        private int eliteConsumableOffers = 1;
+
+        [SerializeField]
+        [Tooltip("Winning an elite battle also gives a skill upgrade (after its consumable offers), when a skill can " +
+                 "still be upgraded.")]
+        private bool eliteGrantsSkillUpgrade = true;
+
         [Header("Between battles")]
         [SerializeField]
         [Tooltip("Open question (estados_e_atributos, temporary states between battles): ClearTemporary removes states with a duration after each battle and keeps permanent ones; KeepTemporary keeps everything.")]
@@ -91,6 +122,10 @@ namespace GridBattle.Gameplay.Run
         public ETalentNodeCost TalentNodeCost => talentNodeCost;
         public float TalentNodeCostHpFraction => talentNodeCostHpFraction;
         public int TalentNodeCostHpFlat => talentNodeCostHpFlat;
+        public int TalentNodeCostMaxHp => talentNodeCostMaxHp;
+        public bool CampOffersSkillUpgrade => campOffersSkillUpgrade;
+        public int EliteConsumableOffers => Mathf.Max(0, eliteConsumableOffers);
+        public bool EliteGrantsSkillUpgrade => eliteGrantsSkillUpgrade;
         public ETemporaryStatePolicy TemporaryStates => temporaryStates;
         public bool ResetSkillCooldownsBetweenBattles => resetSkillCooldownsBetweenBattles;
         public bool Autosave => autosave;
@@ -108,6 +143,8 @@ namespace GridBattle.Gameplay.Run
         /// </summary>
         public int GetTalentNodeCost(int hp, int maxHp)
         {
+            if (talentNodeCost == ETalentNodeCost.MaxHp) return 0;
+
             var cost = talentNodeCost switch
             {
                 ETalentNodeCost.HpFraction => Mathf.RoundToInt(maxHp * talentNodeCostHpFraction),
@@ -116,6 +153,17 @@ namespace GridBattle.Gameplay.Run
             };
 
             return Mathf.Clamp(cost, 0, Mathf.Max(0, hp - 1));
+        }
+
+        /// <summary>
+        /// Maximum HP the talent node takes for the rest of the run from a player with <paramref name="maxHp"/>
+        /// (cost type MaxHp; 0 for the other types). The maximum never goes below 1.
+        /// </summary>
+        public int GetTalentNodeMaxHpCost(int maxHp)
+        {
+            if (talentNodeCost != ETalentNodeCost.MaxHp) return 0;
+
+            return Mathf.Clamp(talentNodeCostMaxHp, 0, Mathf.Max(0, maxHp - 1));
         }
     }
 }

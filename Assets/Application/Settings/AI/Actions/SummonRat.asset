@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: SummonRat
   m_EditorClassIdentifier: Assembly-CSharp::GridBattle.Gameplay.AI.Actions.SummonAction
   id: 8cd17a1150b85fc44b25463dd378c17a
-  cooldownTurns: 2
+  cooldownTurns: 3
   minion: {fileID: 11400000, guid: e61374142aec0a942ae1367641c0fba2, type: 2}
   maxAlive: 2
-  maxTotalSummons: 6
+  maxTotalSummons: 4
   summonRadius: 1
   summonedGrantXp: 0

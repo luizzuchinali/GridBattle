@@ -37,13 +37,13 @@ MonoBehaviour:
   maxStacks: 1
   showInDetails: 1
   effects:
-  - rid: 8661860360884846685
+  - rid: 8661860679606599846
   references:
     version: 2
     RefIds:
-    - rid: 8661860360884846685
+    - rid: 8661860679606599846
       type: {class: PeriodicDamageEffect, ns: GridBattle.Gameplay.States.Effects, asm: Assembly-CSharp}
       data:
-        flatDamage: 3
+        flatDamage: 1
         maxHpFraction: 0
         timing: 0

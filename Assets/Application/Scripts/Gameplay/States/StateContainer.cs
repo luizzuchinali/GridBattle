@@ -241,6 +241,35 @@ namespace GridBattle.Gameplay.States
             }
         }
 
+        /// <summary>
+        /// The first effect of type <typeparamref name="T"/> among the active states, with the state that holds it
+        /// (rule talents are queried this way: "does the holder push in chains?"). Null when none has it.
+        /// </summary>
+        public T FindEffect<T>(out StateInstance holder) where T : StateEffect
+        {
+            foreach (var state in _states)
+            {
+                if (state.Removed) continue;
+                foreach (var effect in state.Definition.Effects)
+                {
+                    if (effect is T found)
+                    {
+                        holder = state;
+                        return found;
+                    }
+                }
+            }
+
+            holder = null;
+            return null;
+        }
+
+        /// <summary>The first effect of type <typeparamref name="T"/> among the active states, or null.</summary>
+        public T FindEffect<T>() where T : StateEffect => FindEffect<T>(out _);
+
+        /// <summary>Whether an active state has an effect of type <typeparamref name="T"/>.</summary>
+        public bool HasEffect<T>() where T : StateEffect => FindEffect<T>(out _) != null;
+
         public EBehaviorRestriction Restrictions
         {
             get

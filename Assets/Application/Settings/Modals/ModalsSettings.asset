@@ -21,6 +21,7 @@ MonoBehaviour:
   removeAdsView: {fileID: 11400000, guid: d8782b045a9d4ca6b09d0341805de329, type: 2}
   adNoticeView: {fileID: 11400000, guid: 7838e3af18bd4ada950fb80aed3a89c3, type: 2}
   simulatedAdView: {fileID: 11400000, guid: 0b90c1e0620849048c7ad85bd74cf241, type: 2}
+  skillUpgradeView: {fileID: 11400000, guid: 855114f6fe794897a265578ba56fab06, type: 2}
   confirmSkip: 1
   acquireEffectSeconds: 0.35
   cardStaggerMs: 70

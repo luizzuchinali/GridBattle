@@ -33,21 +33,21 @@ MonoBehaviour:
     m_LocalVariables: []
   icon: {fileID: 21300000, guid: 55e6b476f5ab91f4c897e52bdba9ede7, type: 3}
   kind: 0
-  stackPolicy: 2
-  maxStacks: 2
+  stackPolicy: 0
+  maxStacks: 1
   showInDetails: 1
   effects:
-  - rid: 8661860384129156087
+  - rid: 8661860679606599770
   references:
     version: 2
     RefIds:
-    - rid: 8661860384129156087
+    - rid: 8661860679606599770
       type: {class: ConditionalDamageEffect, ns: GridBattle.Gameplay.States.Effects, asm: Assembly-CSharp}
       data:
         direction: 0
-        appliesTo: 3
+        appliesTo: 2
         condition: 7
         states: []
         maxCount: 3
-        percent: 0.4
-        flat: 0
+        percent: 0
+        flat: 1

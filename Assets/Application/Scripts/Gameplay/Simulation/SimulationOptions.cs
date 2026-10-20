@@ -5,20 +5,20 @@ using UnityEngine;
 
 namespace GridBattle.Gameplay.Simulation
 {
-    /// <summary>Difficulty the map bot prefers when it picks a battle node.</summary>
+    /// <summary>
+    /// Kind of battle the map bot prefers when it picks a battle node. The numbers are kept from the old policies
+    /// (Easy 0, Normal 1, Hard 2, Mixed 3): a saved Hard becomes Elite, and an old Easy plays as Normal.
+    /// </summary>
     public enum EMapPolicy
     {
-        /// <summary>Always the easiest battle available.</summary>
-        Easy,
+        /// <summary>Normal battles; an elite one only when no normal battle is available.</summary>
+        Normal = 1,
 
-        /// <summary>Normal battles, the closest difficulty when there is none.</summary>
-        Normal,
+        /// <summary>Elite battles; a normal one only when no elite battle is available.</summary>
+        Elite = 2,
 
-        /// <summary>Always the hardest battle available.</summary>
-        Hard,
-
-        /// <summary>Any battle, drawn with the bot's own random stream.</summary>
-        Mixed
+        /// <summary>Any battle, normal or elite, drawn with the bot's own random stream.</summary>
+        Mixed = 3
     }
 
     /// <summary>How the talent bot answers a talent offer.</summary>
@@ -39,7 +39,7 @@ namespace GridBattle.Gameplay.Simulation
     public sealed class MapPolicyOptions
     {
         [SerializeField]
-        [Tooltip("Difficulty preferred when choosing between battle nodes.")]
+        [Tooltip("Kind of battle preferred when choosing between battle nodes: Normal, Elite or Mixed (either).")]
         private EMapPolicy policy = EMapPolicy.Mixed;
 
         [SerializeField]
@@ -72,7 +72,14 @@ namespace GridBattle.Gameplay.Simulation
         [Tooltip("Relative chance of a consumable node.")]
         private float consumableWeight = 1f;
 
+        [SerializeField]
+        [Range(0f, 1f)]
+        [Tooltip("At a camp the bot rests when its HP fraction is below this value, and trains (upgrades a skill) " +
+                 "otherwise.")]
+        private float campRestBelowHpFraction = 0.7f;
+
         public EMapPolicy Policy { get => policy; set => policy = value; }
+        public float CampRestBelowHpFraction { get => campRestBelowHpFraction; set => campRestBelowHpFraction = value; }
         public float HealBelowHpFraction { get => healBelowHpFraction; set => healBelowHpFraction = value; }
         public float TalentNodeMinHpFraction { get => talentNodeMinHpFraction; set => talentNodeMinHpFraction = value; }
         public float BattleWeight { get => battleWeight; set => battleWeight = value; }
@@ -182,6 +189,20 @@ namespace GridBattle.Gameplay.Simulation
         private float telegraphDamageWeight = 1f;
 
         [SerializeField]
+        [Min(0f)]
+        [Tooltip("Value of each point of damage an enemy's prepared strike would deal to other enemies after the bot's " +
+                 "action (pushed into the line of fire, or the strike moved with its caster), in the unit of the " +
+                 "expected damage of an action. The forecast the player sees (ActionForecast and ThreatForecast) is " +
+                 "the one the bot reads.")]
+        private float redirectedStrikeWeight = 1f;
+
+        [SerializeField]
+        [Range(0f, 1f)]
+        [Tooltip("Share of the strikes' cost the bot counts when it acts from where it stands with its walk still " +
+                 "free (it can usually step out of them afterwards). 1 = as if it could not walk any more.")]
+        private float dodgeAfterActingFactor = 0.5f;
+
+        [SerializeField]
         [Min(1)]
         [Tooltip("After this many player turns in one battle the bot stops weighing hazard and bonus cells (only a cell that would kill " +
                  "it still counts), walks straight to its target and chases the enemies of Focus Role Order even when a ranged skill " +
@@ -248,6 +269,8 @@ namespace GridBattle.Gameplay.Simulation
         public float HazardPenalty { get => hazardPenalty; set => hazardPenalty = value; }
         public float BonusReward { get => bonusReward; set => bonusReward = value; }
         public float TelegraphDamageWeight { get => telegraphDamageWeight; set => telegraphDamageWeight = value; }
+        public float RedirectedStrikeWeight { get => redirectedStrikeWeight; set => redirectedStrikeWeight = value; }
+        public float DodgeAfterActingFactor { get => dodgeAfterActingFactor; set => dodgeAfterActingFactor = value; }
         public int StallTurns { get => stallTurns; set => stallTurns = value; }
         public int RushMaxStreak { get => rushMaxStreak; set => rushMaxStreak = value; }
         public float RoleTierDistanceBonus { get => roleTierDistanceBonus; set => roleTierDistanceBonus = value; }

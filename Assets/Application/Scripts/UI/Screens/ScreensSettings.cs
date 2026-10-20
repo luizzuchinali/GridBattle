@@ -1,7 +1,9 @@
 using GridBattle.Data;
+using GridBattle.Gameplay.Map;
 using GridBattle.Gameplay.Run;
 using GridBattle.Gameplay.Terrain;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace GridBattle.UI.Screens
 {
@@ -43,15 +45,13 @@ namespace GridBattle.UI.Screens
 
         [Header("Map nodes")]
         [SerializeField]
-        [Tooltip("Placeholder-friendly: replace the PNGs to change the art. Easy, normal and hard battles differ in " +
-                 "shape and color so they read at a glance.")]
-        private Sprite battleEasyIcon;
-
-        [SerializeField]
+        [Tooltip("A normal battle. Replace the PNGs to change the art.")]
         private Sprite battleNormalIcon;
 
         [SerializeField]
-        private Sprite battleHardIcon;
+        [Tooltip("A battle with an elite (more XP; its reward: a consumable and a skill upgrade). It must read apart " +
+                 "from the normal battle at a glance: the map shows no XP. Empty = the normal battle icon.")]
+        private Sprite battleEliteIcon;
 
         [SerializeField]
         private Sprite healIcon;
@@ -64,11 +64,6 @@ namespace GridBattle.UI.Screens
 
         [SerializeField]
         private Sprite bossIcon;
-
-        [SerializeField]
-        [Tooltip("Shows the total XP of a battle under its node on the map (GDD 5.1: difficulty and XP must read " +
-                 "at a glance).")]
-        private bool showNodeXp = true;
 
         [Header("Map lines")]
         [SerializeField]
@@ -87,15 +82,13 @@ namespace GridBattle.UI.Screens
         [Tooltip("Every other connection.")]
         private Color dimColor = new(0.35f, 0.31f, 0.27f, 1f);
 
-        [Header("Difficulty colors")]
-        [SerializeField]
-        private Color easyColor = new(0.45f, 0.84f, 0.49f, 1f);
-
+        [Header("Battle colors (node preview title)")]
         [SerializeField]
         private Color normalColor = new(0.92f, 0.75f, 0.27f, 1f);
 
         [SerializeField]
-        private Color hardColor = new(0.93f, 0.41f, 0.36f, 1f);
+        [FormerlySerializedAs("hardColor")]
+        private Color eliteColor = new(0.93f, 0.41f, 0.36f, 1f);
 
         [Header("Node preview")]
         [SerializeField]
@@ -131,7 +124,6 @@ namespace GridBattle.UI.Screens
         public int NodeSize => nodeSize;
         public int MapPadding => mapPadding;
         public float ScrollFocus => scrollFocus;
-        public bool ShowNodeXp => showNodeXp;
         public int LineWidth => lineWidth;
         public Color PathColor => pathColor;
         public Color AvailableColor => availableColor;
@@ -144,7 +136,7 @@ namespace GridBattle.UI.Screens
         /// <summary>The settings asset registered in <see cref="GameSettings"/> (defaults if missing).</summary>
         public static ScreensSettings Current => GameSettings.Get<ScreensSettings>();
 
-        /// <summary>Icon of a node on the map (battles by difficulty).</summary>
+        /// <summary>Icon of a node on the map (a battle is normal or elite).</summary>
         public Sprite GetNodeIcon(MapNodeState node)
         {
             switch (node.Type)
@@ -154,21 +146,12 @@ namespace GridBattle.UI.Screens
                 case EMapNodeType.Consumable: return consumableIcon;
                 case EMapNodeType.Boss: return bossIcon;
                 default:
-                    return node.Difficulty switch
-                    {
-                        EBattleDifficulty.Easy => battleEasyIcon,
-                        EBattleDifficulty.Hard => battleHardIcon,
-                        _ => battleNormalIcon,
-                    };
+                    return MapRules.IsEliteBattle(node) && battleEliteIcon != null ? battleEliteIcon : battleNormalIcon;
             }
         }
 
-        public Color GetDifficultyColor(EBattleDifficulty difficulty) => difficulty switch
-        {
-            EBattleDifficulty.Easy => easyColor,
-            EBattleDifficulty.Hard => hardColor,
-            _ => normalColor,
-        };
+        /// <summary>Title color of a battle node in the preview (normal or elite).</summary>
+        public Color GetBattleColor(MapNodeState node) => MapRules.IsEliteBattle(node) ? eliteColor : normalColor;
 
         public Color GetTerrainColor(ETerrainKind kind) => kind switch
         {

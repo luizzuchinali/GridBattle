@@ -35,14 +35,15 @@ MonoBehaviour:
   sprite: {fileID: -6875030544314791255, guid: ba84a32339c1a0a42bce9679f4c1ae14, type: 3}
   animatorController: {fileID: 9100000, guid: 1a8dc2d1c17e13e4797d8c37d2f2c34c, type: 2}
   tint: {r: 1, g: 1, b: 1, a: 1}
-  maxHp: 60
+  maxHp: 7
   walkDistance: 1
+  hasBasicAttack: 0
   attackDistance: 1
   basicAttackDamage: 7
   critChance: 0
   critMultiplier: 2
   defensePenetration: 0
-  defense: 1
+  defense: 0
   skillDamageBonus: 0
   skillRange: 0
   cooldownReduction: 0
@@ -51,10 +52,13 @@ MonoBehaviour:
   maxHpPercentDamageMultiplier: 1
   skills:
   - {fileID: 11400000, guid: bb51954dd01342b41b70d76caf5adc61, type: 2}
+  - {fileID: 11400000, guid: b9474497dfd84c14a913f98f7c64cf54, type: 2}
   initialStates: []
   prefab: {fileID: 2069839144374370989, guid: 4cf13f1910da4e14296e096a872f8cf2, type: 3}
   role: {fileID: 11400000, guid: 17f7d49c6240e3e4fbd0d2c7588e2107, type: 2}
   isBoss: 0
+  isUnique: 1
+  threat: 3.5
   behavior: {fileID: 11400000, guid: bfaaa7d80498e5e47ac0a7a9815afae7, type: 2}
   behaviorDescription:
     m_TableReference:

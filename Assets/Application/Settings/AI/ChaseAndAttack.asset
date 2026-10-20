@@ -13,6 +13,5 @@ MonoBehaviour:
   m_Name: ChaseAndAttack
   m_EditorClassIdentifier: Assembly-CSharp::GridBattle.Gameplay.AI.EnemyBehavior
   actions:
+  - {fileID: 11400000, guid: d28ad3cd17821ad4d998bdaf373b2a44, type: 2}
   - {fileID: 11400000, guid: 3e13a9d097dfc2e4aa0ce7abb923b950, type: 2}
-  - {fileID: 11400000, guid: 731a0a1959b25f941b34c00a4d8f3b97, type: 2}
-  - {fileID: 11400000, guid: 97ee48450a84d154cb6b05f59c21651c, type: 2}

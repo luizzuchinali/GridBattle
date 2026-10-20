@@ -65,10 +65,17 @@ namespace GridBattle.Gameplay.Run
                 modifier.OnPlayerSpawned(player, run, restoredFromSnapshot);
         }
 
-        /// <summary>Maximum HP of the run's player outside battles: the class base through every modifier.</summary>
+        /// <summary>
+        /// Maximum HP of the run's player outside battles: the class base with the levels and the run's lasting
+        /// bonus (<see cref="PlayerRunState.MaxHpBonus"/>), through every modifier.
+        /// </summary>
         public static int GetMaxHp(PlayerRunState run, PlayerCharacterConfig playerClass)
         {
+            // The class's base plus what the levels and the run's lasting costs add (the same as in battle, see
+            // PlayerCharacter), then the modules.
             var maxHp = playerClass != null ? playerClass.MaxHp : 1;
+            if (run != null)
+                maxHp += Progression.ProgressionSettings.Current.GetMaxHpBonus(run.Level) + run.MaxHpBonus;
             foreach (var modifier in Modifiers.ToArray())
                 maxHp = modifier.ModifyMaxHp(run, playerClass, maxHp);
 

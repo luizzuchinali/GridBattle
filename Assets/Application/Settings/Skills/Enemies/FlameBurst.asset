@@ -1,0 +1,72 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6eef7bd41a83def4b92a13c21f9f56c7, type: 3}
+  m_Name: FlameBurst
+  m_EditorClassIdentifier: Assembly-CSharp::GridBattle.Gameplay.Entities.Skills.SkillDefinition
+  id: e61dae2b2e91ff245aeb17a538f44379
+  displayName:
+    m_TableReference:
+      m_TableCollectionName: Content
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: skill.flame_burst.name
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  description:
+    m_TableReference:
+      m_TableCollectionName: Content
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: skill.flame_burst.desc
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  icon: {fileID: 21300000, guid: 4f7943c9b1a2448daec91787e66f2976, type: 3}
+  type: 0
+  damage: 1
+  areaShape: 1
+  areaSize: 3
+  selectionShape: 0
+  minRange: 2
+  range: 3
+  rangeModifiable: 0
+  unlimitedRange: 0
+  targetCell: 0
+  affects: 5
+  requiresAffectedTarget: 0
+  ignoresLineOfSight: 0
+  cooldown: 2
+  usesWalk: 0
+  telegraphed: 1
+  windupTurns: 1
+  canMoveWhileWindingUp: 0
+  cancelledByDisplacement: 0
+  interruptibleByStates: 1
+  telegraphFollowsCaster: 1
+  visual: {fileID: 11400000, guid: 86ac907ee200f4a4d840844969aa0bbf, type: 2}
+  upgrades: []
+  upgradeOf: {fileID: 0}
+  effects:
+  - rid: 8661860704513163333
+  references:
+    version: 2
+    RefIds:
+    - rid: 8661860704513163333
+      type: {class: ApplyStatesSkillEffect, ns: GridBattle.Gameplay.Entities.Skills, asm: Assembly-CSharp}
+      data:
+        recipient: 0
+        states:
+        - state: {fileID: 11400000, guid: a9d3178df6bf70043bddf65c01b5c6b4, type: 2}
+          permanent: 0
+          duration: 2
+          stacks: 1

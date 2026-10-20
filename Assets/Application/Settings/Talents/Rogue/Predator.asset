@@ -35,14 +35,13 @@ MonoBehaviour:
   isPlaceholder: 1
   allowedClasses:
   - {fileID: 11400000, guid: 317c9296b1886594c806574a4d3d6726, type: 2}
-  requiredLevel: 3
+  requiredLevel: 2
   prerequisites: []
-  maxRank: 2
-  baseWeight: 2.5
+  maxRank: 1
+  baseWeight: 1
   synergyTags:
-  - {fileID: 11400000, guid: 14ab514c221772b41969c956a3e86745, type: 2}
   - {fileID: 11400000, guid: 8e6b5e3faa33a5b4bba8010bce3c89e6, type: 2}
-  - {fileID: 11400000, guid: 55505cd50faa2184ebd8a2ed32e83013, type: 2}
+  - {fileID: 11400000, guid: 14ab514c221772b41969c956a3e86745, type: 2}
   states:
   - state: {fileID: 11400000, guid: 78113cc5d8133e142ba1f64bc3214d9b, type: 2}
     permanent: 1

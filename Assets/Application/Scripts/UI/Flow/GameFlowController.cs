@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using GridBattle.Gameplay.Events;
+using GridBattle.Gameplay.Map;
 using GridBattle.Gameplay.Meta;
 using GridBattle.Gameplay.Monetization;
 using GridBattle.Gameplay.Run;
@@ -117,6 +118,8 @@ namespace GridBattle.UI.Flow
             EventBus.Subscribe<BattleStartedEvent>(OnBattleStarted);
             EventBus.Subscribe<RunEndedEvent>(OnRunEnded);
             EventBus.Subscribe<ConsumableOfferEvent>(OnConsumableOffer);
+            EventBus.Subscribe<CampEnteredEvent>(OnCampEntered);
+            EventBus.Subscribe<SkillUpgradeOfferEvent>(OnSkillUpgradeOffer);
             EventBus.Subscribe<MenuOpenedEvent>(OnMenuOpened);
             EventBus.Subscribe<TalentOfferOpenedEvent>(OnTalentOfferOpened);
             EventBus.Subscribe<GlossaryRequestedEvent>(OnGlossaryRequested);
@@ -139,6 +142,8 @@ namespace GridBattle.UI.Flow
             EventBus.Unsubscribe<BattleStartedEvent>(OnBattleStarted);
             EventBus.Unsubscribe<RunEndedEvent>(OnRunEnded);
             EventBus.Unsubscribe<ConsumableOfferEvent>(OnConsumableOffer);
+            EventBus.Unsubscribe<CampEnteredEvent>(OnCampEntered);
+            EventBus.Unsubscribe<SkillUpgradeOfferEvent>(OnSkillUpgradeOffer);
             EventBus.Unsubscribe<MenuOpenedEvent>(OnMenuOpened);
             EventBus.Unsubscribe<TalentOfferOpenedEvent>(OnTalentOfferOpened);
             EventBus.Unsubscribe<GlossaryRequestedEvent>(OnGlossaryRequested);
@@ -279,9 +284,33 @@ namespace GridBattle.UI.Flow
             ShowScreen(mainMenuScreen);
         }
 
+        /// <summary>
+        /// A consumable offer: from a consumable node the map is already showing; the reward of an elite battle comes
+        /// right after the battle, so the map comes first (the battle screen goes away) and the window opens over it.
+        /// </summary>
         private void OnConsumableOffer(ConsumableOfferEvent e)
         {
+            if (MapRules.IsEliteBattle(e.Node))
+                ShowScreen(mapScreen);
             ShowModalWhenOnMap(consumableOfferOverlay, e);
+        }
+
+        private void OnCampEntered(CampEnteredEvent e)
+        {
+            ShowModalWhenOnMap(ModalsSettings.Current.SkillUpgradeView, e);
+        }
+
+        /// <summary>
+        /// A skill upgrade to choose: from a camp the map is already showing; after an elite battle the map comes
+        /// first (the battle screen goes away) and the window opens over it.
+        /// </summary>
+        private void OnSkillUpgradeOffer(SkillUpgradeOfferEvent e)
+        {
+            if (SimMode.IsActive) return;
+
+            if (e.Source == ESkillUpgradeSource.Elite && !e.Resumed)
+                ShowScreen(mapScreen);
+            ShowModalWhenOnMap(ModalsSettings.Current.SkillUpgradeView, e);
         }
 
         private void OnMenuOpened(MenuOpenedEvent e)

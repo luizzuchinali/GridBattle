@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using GridBattle.Gameplay.Combat;
 using GridBattle.Gameplay.Entities;
+using GridBattle.Gameplay.States.Effects;
 using GridBattle.Gameplay.Terrain;
 using JetBrains.Annotations;
 using UnityEngine;
@@ -252,6 +253,20 @@ namespace GridBattle.Gameplay.Rules
         }
 
         /// <summary>
+        /// Cells <paramref name="target"/> is displaced by a use of <paramref name="distance"/> cells: the distance
+        /// itself, or more when a rule talent of the caster makes the target slide
+        /// (<see cref="SlipperyPushEffect"/>, pushes only).
+        /// </summary>
+        public static int GetDistance([CanBeNull] Character caster, Character target, EDisplacementMode mode,
+            int distance)
+        {
+            if (caster == null || target == null || mode == EDisplacementMode.TowardCaster) return distance;
+
+            var slippery = caster.States.FindEffect<SlipperyPushEffect>();
+            return slippery != null && slippery.Slides(target) ? Math.Max(distance, slippery.SlideDistance) : distance;
+        }
+
+        /// <summary>
         /// Predicts the displacement of every target of one skill use, in application order, each one seeing the
         /// moves of the ones before it. Nothing is changed. Deaths are not predicted, so a character killed by a
         /// collision still blocks the characters displaced after it.
@@ -267,7 +282,7 @@ namespace GridBattle.Gameplay.Rules
                 if (target == null || target.IsDead) continue;
 
                 var direction = GetDirection(mode, casterPos, target.CurrentGridPos, areaCenter);
-                var result = Compute(grid, target, direction, distance,
+                var result = Compute(grid, target, direction, GetDistance(caster, target, mode, distance),
                     mode == EDisplacementMode.TowardCaster ? casterPos : null, moved);
                 if (result.CellsMoved > 0)
                     moved[target] = result.Final;

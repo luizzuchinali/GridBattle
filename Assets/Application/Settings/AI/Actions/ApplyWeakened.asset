@@ -17,7 +17,7 @@ MonoBehaviour:
   grant:
     state: {fileID: 11400000, guid: 8acf221e846cb3741a0c5c8d32372265, type: 2}
     permanent: 0
-    duration: 2
+    duration: 1
     stacks: 1
   range: 3
   skipIfTargetHasState: 1

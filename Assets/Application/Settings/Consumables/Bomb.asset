@@ -49,4 +49,4 @@ MonoBehaviour:
     - rid: 8661860369686331455
       type: {class: DamageConsumableEffect, ns: GridBattle.Gameplay.Consumables, asm: Assembly-CSharp}
       data:
-        damage: 15
+        damage: 2

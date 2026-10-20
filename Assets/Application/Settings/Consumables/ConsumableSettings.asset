@@ -20,7 +20,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: c28750548bb4a794ea783d0e21d8b6f6, type: 2}
   - {fileID: 11400000, guid: 9563bc73932e34f45bd5fac6bba777f1, type: 2}
   - {fileID: 11400000, guid: 70956fae1ae59b04cade0bfc9aee3d44, type: 2}
-  choiceCount: 1
+  choiceCount: 3
   debugStartingConsumables:
   - {fileID: 11400000, guid: c28750548bb4a794ea783d0e21d8b6f6, type: 2}
   - {fileID: 11400000, guid: 9563bc73932e34f45bd5fac6bba777f1, type: 2}

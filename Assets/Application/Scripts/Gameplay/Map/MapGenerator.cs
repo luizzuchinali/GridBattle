@@ -28,7 +28,7 @@ namespace GridBattle.Gameplay.Map
             var state = new MapState { FloorCount = map.FloorCount, Lanes = map.Lanes };
             var floors = BuildShape(random.Derive(ERandomStream.Map, ShapeKey), map, state);
             AssignTypes(random.Derive(ERandomStream.Map, TypeKey), map, state, floors);
-            AssignDifficulties(random.Derive(ERandomStream.Map, DifficultyKey), map, state);
+            AssignDifficulties(random.Derive(ERandomStream.Map, DifficultyKey), map, battle, state);
             GenerateBattles(random, map, battle, terrain, state);
             return state;
         }
@@ -145,7 +145,7 @@ namespace GridBattle.Gameplay.Map
             }
         }
 
-        // ------------------------------------------------------------------- types and difficulties
+        // ------------------------------------------------------------------- types, normal and elite battles
 
         private static void AssignTypes(Rng rng, MapGenerationSettings map, MapState state, List<List<int>> floors)
         {
@@ -218,33 +218,44 @@ namespace GridBattle.Gameplay.Map
             return false;
         }
 
-        private static void AssignDifficulties(Rng rng, MapGenerationSettings map, MapState state)
+        /// <summary>
+        /// Makes each battle node normal or elite by the weights of <paramref name="map"/>. A node only becomes elite
+        /// when the battle generator has an elite at its balance depth (<see cref="CanBeElite"/>), so every elite
+        /// battle holds one.
+        /// </summary>
+        private static void AssignDifficulties(Rng rng, MapGenerationSettings map, BattleGenerationSettings battle,
+            MapState state)
         {
-            var weights = new List<float>
-            {
-                map.GetDifficultyWeight(EBattleDifficulty.Easy),
-                map.GetDifficultyWeight(EBattleDifficulty.Normal),
-                map.GetDifficultyWeight(EBattleDifficulty.Hard),
-            };
+            var normalWeight = map.GetDifficultyWeight(EBattleDifficulty.Normal);
+            var eliteWeight = map.GetDifficultyWeight(EBattleDifficulty.Elite);
+            var weights = new List<float>(2);
 
             foreach (var node in state.Nodes)
             {
                 if (node.Type != EMapNodeType.Battle) continue;
 
-                var index = rng.WeightedIndex(weights);
-                node.Difficulty = index < 0 ? EBattleDifficulty.Normal : (EBattleDifficulty)index;
+                weights.Clear();
+                weights.Add(normalWeight);
+                weights.Add(CanBeElite(map, battle, node) ? eliteWeight : 0f);
+                node.Difficulty = rng.WeightedIndex(weights) == 1 ? EBattleDifficulty.Elite : EBattleDifficulty.Normal;
             }
 
             if (map.DiversifyBattleChoices)
-                DiversifyChoices(rng, weights, state);
+                DiversifyChoices(map, battle, state);
         }
+
+        /// <summary>Whether the battle generator can put an elite in the battle of <paramref name="node"/>.</summary>
+        private static bool CanBeElite(MapGenerationSettings map, BattleGenerationSettings battle, MapNodeState node) =>
+            battle.HasEliteAt(Mathf.RoundToInt(map.GetBalanceDepth(node.Depth)));
 
         /// <summary>
         /// Every choice point of the map (the first floor, and each node with two or more next nodes) whose
-        /// battles all share one difficulty gets one of them redrawn among the other difficulties, so the
-        /// player can trade safety for XP (GDD Mechanic 2). Choice points are visited in id order (deterministic).
+        /// battles are all normal or all elite gets one of them turned into the other kind when allowed (an elite
+        /// available at its depth, the kind's weight above 0), so the player can trade safety for XP and a reward
+        /// (GDD Mechanic 2). Choice points are visited in id order (deterministic).
         /// </summary>
-        private static void DiversifyChoices(Rng rng, List<float> weights, MapState state)
+        private static void DiversifyChoices(MapGenerationSettings map, BattleGenerationSettings battle,
+            MapState state)
         {
             var firstFloor = new List<MapNodeState>();
             foreach (var node in state.Nodes)
@@ -253,7 +264,7 @@ namespace GridBattle.Gameplay.Map
                     firstFloor.Add(node);
             }
 
-            Diversify(rng, weights, firstFloor);
+            Diversify(map, battle, firstFloor);
 
             foreach (var node in state.Nodes)
             {
@@ -267,11 +278,12 @@ namespace GridBattle.Gameplay.Map
                         children.Add(child);
                 }
 
-                Diversify(rng, weights, children);
+                Diversify(map, battle, children);
             }
         }
 
-        private static void Diversify(Rng rng, List<float> weights, List<MapNodeState> choices)
+        private static void Diversify(MapGenerationSettings map, BattleGenerationSettings battle,
+            List<MapNodeState> choices)
         {
             MapNodeState last = null;
             var count = 0;
@@ -286,11 +298,11 @@ namespace GridBattle.Gameplay.Map
 
             if (count < 2) return;
 
-            var others = new List<float>(weights);
-            others[(int)last.Difficulty] = 0f;
-            var index = rng.WeightedIndex(others);
-            if (index >= 0)
-                last.Difficulty = (EBattleDifficulty)index;
+            var other = last.Difficulty == EBattleDifficulty.Elite ? EBattleDifficulty.Normal : EBattleDifficulty.Elite;
+            if (map.GetDifficultyWeight(other) <= 0f) return;
+            if (other == EBattleDifficulty.Elite && !CanBeElite(map, battle, last)) return;
+
+            last.Difficulty = other;
         }
 
         // ------------------------------------------------------------------- battles

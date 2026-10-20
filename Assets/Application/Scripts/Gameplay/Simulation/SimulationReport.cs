@@ -20,8 +20,7 @@ namespace GridBattle.Gameplay.Simulation
     public static class SimulationReport
     {
         private static readonly CultureInfo Invariant = CultureInfo.InvariantCulture;
-        private static readonly EBattleDifficulty[] Difficulties =
-            { EBattleDifficulty.Easy, EBattleDifficulty.Normal, EBattleDifficulty.Hard };
+        private static readonly EBattleDifficulty[] Difficulties = { EBattleDifficulty.Normal, EBattleDifficulty.Elite };
 
         /// <summary>Builds the summary, fills <c>SummaryText</c> and <c>OutputFolder</c> and writes the files.</summary>
         public static void Write(SimulationBatchResult batch)
@@ -429,7 +428,7 @@ namespace GridBattle.Gameplay.Simulation
                 "Enemies", "Planned XP", "Killed XP", "Credited XP", "Skill uses",
             }, rows);
 
-            sb.AppendLine($"### {cls}: damage taken as % of max HP by depth and difficulty (average; n)");
+            sb.AppendLine($"### {cls}: damage taken as % of max HP by depth, normal and elite battles (average; n)");
             sb.AppendLine();
             var diffRows = new List<string[]>();
             for (var depth = 1; depth <= maxDepth; depth++)
@@ -453,7 +452,7 @@ namespace GridBattle.Gameplay.Simulation
                     diffRows.Add(row.ToArray());
             }
 
-            Table(sb, new[] { "Depth", "Easy", "Normal", "Hard", "Boss" }, diffRows);
+            Table(sb, new[] { "Depth", "Normal", "Elite", "Boss" }, diffRows);
 
             var turnRows = new List<string[]>();
             for (var depth = 1; depth <= maxDepth; depth++)
@@ -472,9 +471,9 @@ namespace GridBattle.Gameplay.Simulation
                     turnRows.Add(row.ToArray());
             }
 
-            sb.AppendLine($"### {cls}: player actions per battle by depth and difficulty (average)");
+            sb.AppendLine($"### {cls}: player actions per battle by depth, normal and elite battles (average)");
             sb.AppendLine();
-            Table(sb, new[] { "Depth", "Easy", "Normal", "Hard" }, turnRows);
+            Table(sb, new[] { "Depth", "Normal", "Elite" }, turnRows);
         }
 
         private static void AppendXpAnalysis(StringBuilder sb, List<RunRecord> runs, List<BattleRecord> battles)
@@ -488,7 +487,7 @@ namespace GridBattle.Gameplay.Simulation
                 .Where(x => x.Node.Type == EMapNodeType.Battle).ToList();
             var maxDepth = nodes.Count == 0 ? 1 : nodes.Max(x => x.Node.Depth);
 
-            sb.AppendLine($"### Planned XP (generated maps, {maps.Count} maps): min / avg / max by depth and difficulty");
+            sb.AppendLine($"### Planned XP (generated maps, {maps.Count} maps): min / avg / max by depth, normal and elite battles");
             sb.AppendLine();
             var rows = new List<string[]>();
             for (var depth = 1; depth <= maxDepth; depth++)
@@ -507,19 +506,17 @@ namespace GridBattle.Gameplay.Simulation
                     rows.Add(row.ToArray());
             }
 
-            Table(sb, new[] { "Depth", "Easy", "Normal", "Hard" }, rows);
+            Table(sb, new[] { "Depth", "Normal", "Elite" }, rows);
 
-            sb.AppendLine("### Does a lower difficulty give more XP than a higher one on the same floor?");
+            sb.AppendLine("### Does a normal battle give more XP than an elite one on the same floor?");
             sb.AppendLine();
-            sb.AppendLine("Every pair of battle nodes of the same floor of the same map is compared (Easy vs Normal, Normal vs Hard, " +
-                          "Easy vs Hard). \"Inverted\" means the lower difficulty gave MORE XP; \"equal\" the same.");
+            sb.AppendLine("Every pair of a normal and an elite battle node of the same floor of the same map is compared. " +
+                          "\"Inverted\" means the normal battle gave MORE XP; \"equal\" the same.");
             sb.AppendLine();
             var pairRows = new List<string[]>();
             var comparisons = new[]
             {
-                (EBattleDifficulty.Easy, EBattleDifficulty.Normal),
-                (EBattleDifficulty.Normal, EBattleDifficulty.Hard),
-                (EBattleDifficulty.Easy, EBattleDifficulty.Hard),
+                (EBattleDifficulty.Normal, EBattleDifficulty.Elite),
             };
             foreach (var (lower, higher) in comparisons)
             {
@@ -572,7 +569,7 @@ namespace GridBattle.Gameplay.Simulation
 
             Table(sb, new[] { "Comparison", "Pairs", "Inverted pairs", "Equal pairs", "Floors with both", "Floors with an inversion" }, pairRows);
 
-            sb.AppendLine("### XP gained in the battles played: min / avg / max by depth and difficulty");
+            sb.AppendLine("### XP gained in the battles played: min / avg / max by depth, normal and elite battles");
             sb.AppendLine();
             var playedRows = new List<string[]>();
             var played = battles.Where(b => !b.Aborted && b.NodeType == EMapNodeType.Battle).ToList();
@@ -593,7 +590,7 @@ namespace GridBattle.Gameplay.Simulation
                     playedRows.Add(row.ToArray());
             }
 
-            Table(sb, new[] { "Depth", "Easy", "Normal", "Hard" }, playedRows);
+            Table(sb, new[] { "Depth", "Normal", "Elite" }, playedRows);
         }
 
         private static void AppendEnemies(StringBuilder sb, List<BattleRecord> battles, List<RunRecord> runs,
@@ -791,6 +788,8 @@ namespace GridBattle.Gameplay.Simulation
                     PerRun(set.Sum(b => b.CollisionDamageToEnemies), runCount),
                     PerRun(set.Sum(b => b.CollisionDamageToPlayer), runCount),
                     PerRun(set.Sum(b => b.CollisionKills), runCount),
+                    PerRun(set.Sum(b => b.EnemyDamageToEnemies), runCount),
+                    PerRun(set.Sum(b => b.EnemyKillsByEnemies), runCount),
                     PerRun(set.Sum(b => b.ForcedTerrainEnemies), runCount),
                     PerRun(set.Sum(b => b.ForcedTerrainPlayer), runCount),
                 });
@@ -799,7 +798,8 @@ namespace GridBattle.Gameplay.Simulation
             Table(sb, new[]
             {
                 "Class", "Enemies displaced", "Player displaced", "Collisions", "Collision dmg to enemies",
-                "Collision dmg to player", "Collision kills", "Forced terrain (enemies)", "Forced terrain (player)",
+                "Collision dmg to player", "Collision kills", "Enemy hits on enemies (dmg)", "Kills by enemies",
+                "Forced terrain (enemies)", "Forced terrain (player)",
             }, rows);
             sb.AppendLine("(all numbers per run)");
             sb.AppendLine();

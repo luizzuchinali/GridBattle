@@ -81,6 +81,37 @@ namespace GridBattle.Gameplay.Map
         /// <summary>Whether the player already went through the node.</summary>
         public static bool IsVisited(MapState map, int nodeId) => map != null && map.VisitedNodeIds.Contains(nodeId);
 
+        /// <summary>
+        /// Whether the node is a battle with an elite: its icon and title on the map, and its reward when won
+        /// (consumable offers and a skill upgrade, see <see cref="RunSettings"/>).
+        /// </summary>
+        public static bool IsEliteBattle([CanBeNull] MapNodeState node) =>
+            node != null && node.Type == EMapNodeType.Battle && node.Battle != null && node.Battle.IsElite;
+
+        /// <summary>
+        /// Fixes the kinds of battle of a map saved before battles became only normal or elite (2026-10-20): an old
+        /// Easy battle (or any unknown value) becomes Normal, and an old Hard battle without an elite (it now loads as
+        /// Elite) becomes Normal too, so the kind always matches what the battle holds. Returns the nodes changed.
+        /// </summary>
+        public static int NormalizeDifficulties([CanBeNull] MapState map)
+        {
+            if (map == null) return 0;
+
+            var changed = 0;
+            foreach (var node in map.Nodes)
+            {
+                var difficulty = node.Difficulty == EBattleDifficulty.Elite && IsEliteBattle(node)
+                    ? EBattleDifficulty.Elite
+                    : EBattleDifficulty.Normal;
+                if (node.Difficulty == difficulty) continue;
+
+                node.Difficulty = difficulty;
+                changed++;
+            }
+
+            return changed;
+        }
+
         /// <summary>The nodes of a floor, ordered by column.</summary>
         public static List<MapNodeState> GetFloor(MapState map, int floor)
         {
@@ -100,8 +131,8 @@ namespace GridBattle.Gameplay.Map
         // ------------------------------------------------------------------- node preview (mapa_e_nos.md)
 
         /// <summary>
-        /// What the node preview shows of the enemies (type, XP, roles and terrain are visible; the exact enemies
-        /// are not): how many enemies of each role the battle has, roles in the order they first appear.
+        /// What the node preview shows of the enemies (type, roles and terrain are visible; the exact enemies and the
+        /// XP are not): how many enemies of each role the battle has, roles in the order they first appear.
         /// Enemies without a role are not listed.
         /// </summary>
         public static List<(EnemyRoleDefinition Role, int Count)> GetRoleCounts([CanBeNull] BattleSpec spec)

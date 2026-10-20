@@ -2,7 +2,7 @@
 tags:
   - design
   - indice
-updated: 2026-10-18
+updated: 2026-10-19
 ---
 # Perguntas em aberto
 
@@ -11,7 +11,9 @@ updated: 2026-10-18
 > As perguntas continuam em aberto, mas cada uma já tem um valor inicial configurável no jogo: ver [[valores_padrao_em_aberto]].
 
 
-Total: 89 perguntas.
+Total: 89 perguntas (índice de 2026-10-03), mais as perguntas novas de 2026-10-19 no fim.
+
+> **Decisões de 2026-10-19** (ver o quadro "Nova direção do combate" no [[GDD]]): o pilar principal passa a ser "cada ação do jogador importa fortemente"; sem ataque básico; todo golpe de inimigo é anunciado; números pequenos; a dificuldade vem da complexidade do combate, não de números; os níveis continuam dando talentos, mas não curam, e a run tem de 8 a 12 níveis; talentos mudam regras; acampamento no lugar do nó de cura; consumível escolhido entre 3; elite na batalha difícil; sem objetivos extras; 6 espaços de skill. Algumas perguntas abaixo perderam o sentido com isso (a escala dos inimigos, por exemplo, foi decidida: não escala).
 
 > **Decisões de 2026-10-18** (ver [[GDD]] Mecânica 1, 2.6 e 10): o turno passou a ter andar + agir + um consumível, em qualquer ordem, com fim automático só quando nada mais é possível; o balanceamento desse turno está pendente. Companheiros foram descartados por agora. A loja com moedas foi adiada (os nós de cura, consumível e talento continuam como são; ideia guardada: virariam lojas pagas com moedas das batalhas). Os imprevistos de batalha foram adiados. Habilidades de inimigo podem ser **telegrafadas**, como opção de cada habilidade (substitui "sem telegrafia"; só design, ver [[inimigos#Habilidades telegrafadas]]).
 
@@ -245,3 +247,41 @@ Total: 89 perguntas.
 ### [[interface#4.4 Tutorial e primeira experiência|4.4 Tutorial e primeira experiência]]
 
 - [ ] Se haverá um tutorial guiado separado, se a primeira run tem um mapa mais curto ou batalhas mais fáceis, e se as dicas podem ser desativadas nas Opções.
+
+## Perguntas novas de 2026-10-19 (nova direção do combate)
+
+### [[GDD#Mecânica 3: XP, Nível e Escolha de Talentos (build adaptativa)|Mecânica 3]] e [[xp_e_niveis]]
+
+- [ ] Se cada nível dá também +1 de vida máxima, sem curar (sugestão: sim).
+- [ ] Curva de XP e nível máximo para 8 a 12 níveis por run.
+
+### [[classes_e_skills#Nova direção das skills (2026-10-19)|Nova direção das skills]]
+
+- [ ] Lista final das skills iniciais e valores, e se cada classe começa com 2 ou 3.
+- [ ] Quantas melhorias (variantes) cada skill aceita (sugestão: uma).
+
+### [[talentos_e_oferta#Talentos que mudam regras (2026-10-19)|Talentos que mudam regras]]
+
+- [ ] Se os talentos de número saem de vez ou ficam como raros (sugestão: saem).
+- [ ] Lista final de talentos de regra e se há raridade na oferta.
+
+### [[inimigos#Golpes anunciados|Golpes anunciados]]
+
+- [ ] Se curar, fortalecer e invocar também são anunciados (sugestão: sim).
+- [ ] Se a área do golpe fica nas células marcadas ou acompanha o inimigo empurrado (sugestão: acompanha).
+
+### [[mapa_e_nos#Nós e dificuldade (2026-10-19)|Nós e dificuldade]]
+
+- [ ] Qual custo que dura no nó de talento (sugestão: −2 de vida máxima).
+- [ ] Se o jogador vê mais andares do mapa à frente.
+
+### [[balanceamento_e_geracao#Dificuldade por complexidade (2026-10-19)|Dificuldade por complexidade]] e [[balanceamento_e_geracao#Números pequenos (2026-10-19)|Números pequenos]]
+
+- [ ] Como pontuar a complexidade de um inimigo e de um golpe no orçamento da batalha.
+- [ ] Número máximo de inimigos por batalha em cada dificuldade.
+- [ ] Vida do chefe (sugestão: 15 a 20).
+- [ ] O que acontece com crítico, defesa percentual e roubo de vida (sugestão: saem ou viram efeitos inteiros).
+
+### [[consumiveis]]
+
+- [ ] Lista final dos consumíveis de tabuleiro.

@@ -215,7 +215,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 219333849010197
-    m_Localized: "Curaci\xF3n"
+    m_Localized: Campamento
     m_Metadata:
       m_Items: []
   - m_Id: 219333849010198
@@ -904,6 +904,138 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 4946700203450375
     m_Localized: Preparando
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123293585154048
+    m_Localized: Campamento
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123293648068608
+    m_Localized: "\xBFDescansar o entrenar?"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123293648068609
+    m_Localized: Descansar
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123293648068610
+    m_Localized: Recupera {0} PV.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123293648068611
+    m_Localized: "Tu vida est\xE1 completa."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123293648068612
+    m_Localized: Entrenar
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123293648068613
+    m_Localized: Mejora una de tus habilidades.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123293648068614
+    m_Localized: Mejora de habilidad
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123293648068615
+    m_Localized: Elige una habilidad para mejorar.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123293648068616
+    m_Localized: "\xA1\xC9lite derrotada! Elige una habilidad para mejorar."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123293648068617
+    m_Localized: Volver
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123293648068618
+    m_Localized: Omitir
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123293648068619
+    m_Localized: '{0} versiones'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123293648068620
+    m_Localized: "Elige una versi\xF3n. La elecci\xF3n es definitiva."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123293648068621
+    m_Localized: Otras habilidades
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123293648068622
+    m_Localized: '{0}: {1} > {2}'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123293648068623
+    m_Localized: '{0}: {1} (nuevo)'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123293648068624
+    m_Localized: '{0}: eliminado'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123293648068625
+    m_Localized: "{0} - \xC9lite"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123293648068626
+    m_Localized: XP {0} + mejora
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123293648068627
+    m_Localized: Descansa para recuperar {0} PV o entrena para mejorar una habilidad.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123293648068628
+    m_Localized: "Elige un talento. Cuesta {0} de vida m\xE1xima."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123293648068629
+    m_Localized: Cancelar
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123293648068630
+    m_Localized: Confirmar
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123293648068631
+    m_Localized: Orden
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123293648068632
+    m_Localized: '{0} de {1}'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123293648068633
+    m_Localized: '{0} (#{1})'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5570318269227008
+    m_Localized: "Usa el movimiento del turno: solo antes de caminar, y no se camina despu\xE9s."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5570318353113088
+    m_Localized: "Batalla de \xE9lite"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5570318353113089
+    m_Localized: "Recompensa: m\xE1s XP, un consumible y una mejora de habilidad."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5570318353113090
+    m_Localized: "Recompensa: m\xE1s XP y un consumible."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5570318353113091
+    m_Localized: "Recompensa de \xE9lite"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5570318353113092
+    m_Localized: En ti
     m_Metadata:
       m_Items: []
   references:

@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9d8e0f3cd9e4d7f992667aa1f9713fc, type: 3}
+  m_Name: ForecastSettings
+  m_EditorClassIdentifier: Assembly-CSharp::GridBattle.Gameplay.Forecast.ForecastSettings
+  showActingOrder: 1
+  showOrderOnStrikes: 1
+  strikeOrderOffset: {x: -11, y: 16}
+  strikeOrderSpacing: 9
+  orderFontSize: 1.5
+  orderColor: {r: 1, g: 1, b: 1, a: 1}
+  laterStrikeColor: {r: 0.75, g: 0.75, b: 0.75, a: 1}
+  showPredictedDamage: 1
+  blinkPeriod: 0.6
+  damageTextColor: {r: 1, g: 0.85, b: 0.1, a: 1}
+  lethalTextColor: {r: 1, g: 0.25, b: 0.2, a: 1}
+  damageTextOffset: {x: 11, y: -8}
+  arrowColor: {r: 0.4, g: 0.9, b: 1, a: 1}
+  arrowOffset: 10
+  ghostAlpha: 0.45

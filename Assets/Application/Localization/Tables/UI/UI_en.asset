@@ -215,7 +215,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 219333849010197
-    m_Localized: Healing
+    m_Localized: Camp
     m_Metadata:
       m_Items: []
   - m_Id: 219333849010198
@@ -906,6 +906,138 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 4946700203450375
     m_Localized: Preparing
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123293585154048
+    m_Localized: Camp
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123293648068608
+    m_Localized: Rest or train?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123293648068609
+    m_Localized: Rest
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123293648068610
+    m_Localized: Recover {0} HP.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123293648068611
+    m_Localized: Your HP is full.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123293648068612
+    m_Localized: Train
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123293648068613
+    m_Localized: Upgrade one of your skills.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123293648068614
+    m_Localized: Skill upgrade
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123293648068615
+    m_Localized: Choose a skill to upgrade.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123293648068616
+    m_Localized: Elite defeated! Choose a skill to upgrade.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123293648068617
+    m_Localized: Back
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123293648068618
+    m_Localized: Skip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123293648068619
+    m_Localized: '{0} versions'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123293648068620
+    m_Localized: Pick one version. The choice is final.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123293648068621
+    m_Localized: Other skills
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123293648068622
+    m_Localized: '{0}: {1} > {2}'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123293648068623
+    m_Localized: '{0}: {1} (new)'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123293648068624
+    m_Localized: '{0}: removed'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123293648068625
+    m_Localized: '{0} - Elite'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123293648068626
+    m_Localized: XP {0} + skill upgrade
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123293648068627
+    m_Localized: Rest to recover {0} HP, or train to upgrade a skill.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123293648068628
+    m_Localized: Choose a talent. Costs {0} max HP.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123293648068629
+    m_Localized: Cancel
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123293648068630
+    m_Localized: Confirm
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123293648068631
+    m_Localized: Order
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123293648068632
+    m_Localized: '{0} of {1}'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123293648068633
+    m_Localized: '{0} (#{1})'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5570318269227008
+    m_Localized: 'Uses the walk of the turn: only before walking, and no walking after it.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5570318353113088
+    m_Localized: Elite Battle
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5570318353113089
+    m_Localized: 'Reward: more XP, a consumable and a skill upgrade.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5570318353113090
+    m_Localized: 'Reward: more XP and a consumable.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5570318353113091
+    m_Localized: Elite reward
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5570318353113092
+    m_Localized: On you
     m_Metadata:
       m_Items: []
   references:

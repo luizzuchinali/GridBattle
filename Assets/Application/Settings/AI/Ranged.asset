@@ -13,7 +13,5 @@ MonoBehaviour:
   m_Name: Ranged
   m_EditorClassIdentifier: Assembly-CSharp::GridBattle.Gameplay.AI.EnemyBehavior
   actions:
+  - {fileID: 11400000, guid: c7fa97c49a4face4e9b9121e9e032bd6, type: 2}
   - {fileID: 11400000, guid: 3e13a9d097dfc2e4aa0ce7abb923b950, type: 2}
-  - {fileID: 11400000, guid: 72cde86a5cecab44f8284695fd589f50, type: 2}
-  - {fileID: 11400000, guid: 731a0a1959b25f941b34c00a4d8f3b97, type: 2}
-  - {fileID: 11400000, guid: 97ee48450a84d154cb6b05f59c21651c, type: 2}

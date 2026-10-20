@@ -10,9 +10,9 @@ namespace GridBattle.UI.Map
 {
     /// <summary>
     /// The node map inside the scroll view (mapa_e_nos, interface 4.1): floors from the bottom (floor 0) to the
-    /// top (the boss), lanes as columns, one button per node with an icon per type, the connections drawn behind
-    /// them, the path walked marked and the nodes that can be chosen highlighted. The only place that knows the
-    /// map elements in the UXML.
+    /// top (the boss), lanes as columns, one button per node with an icon per type (a battle is normal or elite; no
+    /// XP is shown), the connections drawn behind them, the path walked marked and the nodes that can be chosen
+    /// highlighted. The only place that knows the map elements in the UXML.
     /// </summary>
     public sealed class MapGraphView
     {
@@ -157,7 +157,7 @@ namespace GridBattle.UI.Map
             button.AddToClassList(NodeClass);
             button.AddToClassList("map-node--" + node.Type.ToString().ToLowerInvariant());
             if (node.Type == EMapNodeType.Battle)
-                button.AddToClassList("map-node--" + node.Difficulty.ToString().ToLowerInvariant());
+                button.AddToClassList(MapRules.IsEliteBattle(node) ? "map-node--elite" : "map-node--normal");
             button.EnableInClassList("map-node--visited", visited);
             button.EnableInClassList("map-node--current", current);
             button.EnableInClassList("map-node--available", available);
@@ -171,14 +171,6 @@ namespace GridBattle.UI.Map
             var icon = new Image { sprite = settings.GetNodeIcon(node), pickingMode = PickingMode.Ignore };
             icon.AddToClassList("map-node__icon");
             button.Add(icon);
-
-            if (settings.ShowNodeXp && node.Battle != null)
-            {
-                var xp = new Label(node.Battle.TotalXp.ToString()) { pickingMode = PickingMode.Ignore };
-                xp.AddToClassList("map-node__xp");
-                xp.style.color = settings.GetDifficultyColor(node.Difficulty);
-                button.Add(xp);
-            }
 
             if (available)
             {

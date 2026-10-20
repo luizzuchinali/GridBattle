@@ -37,13 +37,13 @@ MonoBehaviour:
   maxStacks: 1
   showInDetails: 1
   effects:
-  - rid: 8661860360884846684
+  - rid: 8661860679606599797
   references:
     version: 2
     RefIds:
-    - rid: 8661860360884846684
+    - rid: 8661860679606599797
       type: {class: ShieldEffect, ns: GridBattle.Gameplay.States.Effects, asm: Assembly-CSharp}
       data:
-        flatAmount: 15
+        flatAmount: 1
         maxHpFraction: 0
         removeWhenDepleted: 1

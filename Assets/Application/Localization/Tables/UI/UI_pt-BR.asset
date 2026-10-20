@@ -215,7 +215,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 219333849010197
-    m_Localized: Cura
+    m_Localized: Acampamento
     m_Metadata:
       m_Items: []
   - m_Id: 219333849010198
@@ -904,6 +904,138 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 4946700203450375
     m_Localized: Preparando
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123293585154048
+    m_Localized: Acampamento
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123293648068608
+    m_Localized: Descansar ou treinar?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123293648068609
+    m_Localized: Descansar
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123293648068610
+    m_Localized: Recupera {0} PV.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123293648068611
+    m_Localized: "Sua vida est\xE1 cheia."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123293648068612
+    m_Localized: Treinar
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123293648068613
+    m_Localized: Melhore uma das suas skills.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123293648068614
+    m_Localized: Melhoria de skill
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123293648068615
+    m_Localized: Escolha uma skill para melhorar.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123293648068616
+    m_Localized: Elite derrotada! Escolha uma skill para melhorar.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123293648068617
+    m_Localized: Voltar
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123293648068618
+    m_Localized: Pular
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123293648068619
+    m_Localized: "{0} vers\xF5es"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123293648068620
+    m_Localized: "Escolha uma vers\xE3o. A escolha \xE9 definitiva."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123293648068621
+    m_Localized: Outras skills
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123293648068622
+    m_Localized: '{0}: {1} > {2}'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123293648068623
+    m_Localized: '{0}: {1} (novo)'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123293648068624
+    m_Localized: '{0}: removido'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123293648068625
+    m_Localized: '{0} - Elite'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123293648068626
+    m_Localized: XP {0} + melhoria
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123293648068627
+    m_Localized: Descanse para recuperar {0} PV ou treine para melhorar uma skill.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123293648068628
+    m_Localized: "Escolha um talento. Custa {0} de vida m\xE1xima."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123293648068629
+    m_Localized: Cancelar
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123293648068630
+    m_Localized: Confirmar
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123293648068631
+    m_Localized: Ordem
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123293648068632
+    m_Localized: '{0} de {1}'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5123293648068633
+    m_Localized: '{0} (#{1})'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5570318269227008
+    m_Localized: "Usa o andar do turno: s\xF3 antes de andar, e n\xE3o anda depois."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5570318353113088
+    m_Localized: Batalha de elite
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5570318353113089
+    m_Localized: "Recompensa: mais XP, um consum\xEDvel e uma melhoria de skill."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5570318353113090
+    m_Localized: "Recompensa: mais XP e um consum\xEDvel."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5570318353113091
+    m_Localized: Recompensa da elite
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5570318353113092
+    m_Localized: "Em voc\xEA"
     m_Metadata:
       m_Items: []
   references:

@@ -16,8 +16,9 @@ namespace GridBattle.Gameplay.Entities
     /// <para>
     /// Telegraphed skills (<see cref="SkillDefinition.Telegraphed"/>): using one prepares it instead
     /// (<see cref="Telegraph"/>, the cells of its area are fixed and marked), and it fires on a later turn of the
-    /// enemy (<see cref="AdvanceTelegraph"/>, called by the controller at the start of its action). Dying, a state
-    /// that prevents skills or (when the skill says so) a push or pull cancels it.
+    /// enemy (<see cref="AdvanceTelegraph"/>, called by the controller at the start of its turn). Dying, a state
+    /// that prevents skills or (when the skill says so) a push or pull cancels it; otherwise a push, pull or swap
+    /// moves the marked cells with the enemy (<see cref="SkillDefinition.TelegraphFollowsCaster"/>).
     /// </para>
     /// </summary>
     public class Enemy : Character
@@ -56,6 +57,14 @@ namespace GridBattle.Gameplay.Entities
         [CanBeNull]
         public Enemy Summoner { get; private set; }
 
+        /// <summary>
+        /// The enemy's place in the battle, which decides when it acts in the enemy phase (see
+        /// <see cref="Turns.ActingOrder"/>): given by the grid when it is spawned, saved with the battle.
+        /// </summary>
+        public int ActOrder { get; private set; }
+
+        public void SetActOrder(int order) => ActOrder = Mathf.Max(0, order);
+
         public void SetXpReward(int xpReward) => _xpRewardOverride = Mathf.Max(0, xpReward);
 
         /// <summary>
@@ -86,11 +95,13 @@ namespace GridBattle.Gameplay.Entities
             base.Awake();
             States.Changed += OnStatesChangedForTelegraph;
             EventBus.Subscribe<CharacterDisplacedEvent>(OnDisplaced);
+            EventBus.Subscribe<CharactersSwappedEvent>(OnSwapped);
         }
 
         private void OnDestroy()
         {
             EventBus.Unsubscribe<CharacterDisplacedEvent>(OnDisplaced);
+            EventBus.Unsubscribe<CharactersSwappedEvent>(OnSwapped);
         }
 
         /// <summary>
@@ -106,17 +117,21 @@ namespace GridBattle.Gameplay.Entities
             if (States.IsRestricted(EBehaviorRestriction.PreventSkills)) return false;
             if (!skill.CanUse(this, grid, targetPos)) return false;
 
-            var cells = SkillTargeting.GetAreaCells(grid, this, skill, targetPos);
-            _telegraph = new SkillTelegraph(this, skill, targetPos, cells, skill.WindupTurns);
+            var effective = EffectiveSkill.Resolve(this, skill);
+            var cells = SkillTargeting.GetAreaCells(grid, this, effective, targetPos);
+            var player = PlayerCharacter.Active;
+            var aimedAtPlayer = player != null &&
+                                SkillTargeting.GetAffectedCharacters(grid, this, effective, targetPos).Contains(player);
+            _telegraph = new SkillTelegraph(this, skill, targetPos, cells, skill.WindupTurns, aimedAtPlayer);
             EventBus.Raise(new SkillTelegraphChangedEvent(this, _telegraph, ETelegraphChange.Prepared));
             TutorialService.Notify(ETutorialTrigger.FirstTelegraph);
             return true;
         }
 
         /// <summary>
-        /// Start of this enemy's action (called by its controller): a prepared skill waits one turn less and fires
-        /// when the wait is over. Returns whether the enemy is still preparing or just fired (both use the action of
-        /// the turn); false when there is nothing prepared.
+        /// Start of this enemy's turn (called by its controller): a prepared skill waits one turn less and fires
+        /// when the wait is over (<see cref="TelegraphResolvedEvent"/> follows the hit). Returns whether the enemy is
+        /// still preparing or just fired; false when there is nothing prepared.
         /// </summary>
         public bool AdvanceTelegraph(GridController grid)
         {
@@ -139,8 +154,13 @@ namespace GridBattle.Gameplay.Entities
             var telegraph = _telegraph;
             _telegraph = null;
             EventBus.Raise(new SkillTelegraphChangedEvent(this, telegraph, ETelegraphChange.Fired));
+
+            // Who stands on the marked cells now: the same resolution the execution makes, taken before the damage.
+            var hit = SkillTargeting.CreateContext(grid, this, EffectiveSkill.Resolve(this, telegraph.Skill),
+                telegraph.TargetPos, telegraph.Cells).Affected;
             if (telegraph.Skill.ExecuteOnCells(this, grid, telegraph.TargetPos, telegraph.Cells))
                 Cooldowns.Trigger(telegraph.Skill);
+            EventBus.Raise(new TelegraphResolvedEvent(this, telegraph, hit));
             return true;
         }
 
@@ -193,8 +213,35 @@ namespace GridBattle.Gameplay.Entities
         {
             if (e.Target != this || e.CellsMoved <= 0) return;
 
-            if (_telegraph != null && _telegraph.Skill.CancelledByDisplacement)
+            OnForcedMove(e.To - e.From);
+        }
+
+        private void OnSwapped(CharactersSwappedEvent e)
+        {
+            if (e.First == this)
+                OnForcedMove(e.SecondFrom - e.FirstFrom);
+            else if (e.Second == this)
+                OnForcedMove(e.FirstFrom - e.SecondFrom);
+        }
+
+        /// <summary>
+        /// Another character moved this enemy (push, pull, swap): the prepared skill is cancelled when the skill says
+        /// so, or its marked cells follow the enemy, keeping their shape and direction.
+        /// </summary>
+        private void OnForcedMove(Vector2Int delta)
+        {
+            if (_telegraph == null || delta == Vector2Int.zero || IsDead) return;
+
+            if (_telegraph.Skill.CancelledByDisplacement)
+            {
                 CancelTelegraph();
+                return;
+            }
+
+            if (!_telegraph.Skill.TelegraphFollowsCaster) return;
+
+            _telegraph.Shift(delta);
+            EventBus.Raise(new SkillTelegraphChangedEvent(this, _telegraph, ETelegraphChange.Moved));
         }
     }
 }

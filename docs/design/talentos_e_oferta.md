@@ -2,8 +2,8 @@
 tags:
   - design
   - talentos
-status: em definição (implementado, com talentos provisórios e valores iniciais configuráveis)
-updated: 2026-10-06
+status: em definição (implementado, com talentos provisórios e valores iniciais configuráveis; talentos de regra implementados em 2026-10-19)
+updated: 2026-10-19
 ---
 # Talentos e Oferta
 
@@ -20,17 +20,19 @@ updated: 2026-10-06
 
 ## Talentos (3.5)
 - **Definição:** talentos (traits) são o que o jogador escolhe ao alcançar um nível. Cada talento concede estados e pode liberar skills (3.1 e Mecânica 3). O talento é o principal meio de construir a build.
-- **Pool por classe:** cada classe tem a sua pool de talentos, maior que o número de escolhas de uma run (exemplo: cerca de 50 talentos, com nível máximo 30 mais o nó de talento; Mecânica 2). Cada run usa só uma parte da pool.
+- **Pool por classe:** cada classe tem a sua pool de talentos, maior que o número de escolhas de uma run (exemplo: cerca de 50 talentos; Mecânica 2). Cada run usa só uma parte da pool. Implementado (provisório, 2026-10-19): Guerreiro 6, Mago 8 e Ladino 8 talentos próprios, mais 6 compartilhados, para uma run de até 12 níveis mais os nós de talento.
 - **Estrutura (sugestão, não decidida):** a proposta em [[proposta_conteudo_classes_skills_estados_talentos]] organiza cada classe em três ramos de cinco talentos (entrada, reforços, transição e um talento-chave que muda a forma de jogar), cinco talentos avulsos e talentos compartilhados entre as classes. Os ramos propostos reaproveitam as traits do GDD: Guerreiro (Muralha, Berserker, Comandante), Mago (Grimório, Criomancia, Conjurador de Tempestades) e Ladino (Mestre do Veneno, Mestre das Sombras, Arsenal Oculto).
 - **Pré-requisitos:** talentos têm nível requerido e pré-requisitos (2.5.2). Na proposta, o talento-chave só entra na oferta depois de pelo menos três talentos do ramo.
-- **Limite de talentos de skill:** em uma run, o jogador só pode liberar 6 talentos que liberam skills, o número de botões da barra de skills (3.2 e 4.2). ❓ Como a oferta se comporta depois do sexto (sugestão: talentos que liberam skills deixam de ser oferecidos). Valor inicial: deixam de ser oferecidos.
+- **Limite de talentos de skill:** em uma run, o jogador só pode liberar tantos talentos de skill quantos espaços sobram na barra de skills (6 botões, 3.2 e 4.2). Implementado: as 3 skills iniciais ocupam 3 espaços, então são 3 talentos de skill por run (`TalentOfferSettings.maxSkillTalents = 3`). Depois do último, os talentos que liberam skills deixam de ser oferecidos (valor padrão, que era a sugestão).
 - **Oferta:** três talentos sorteados entre os disponíveis, com peso maior para os que combinam com a build (Mecânica 3).
 - **Descrição técnica (sugestão):** cada talento é descrito por uma gramática de gatilho, condição e ação, e por tags de sinergia que alimentam o peso do sorteio (proposta em `docs/propostas`).
 - **Glossário:** os talentos já escolhidos pelo jogador aparecem no glossário, e os demais como "?" (2.7).
 - **Aviso:** a proposta em `docs/propostas` ainda descreve ondas e o modelo de XP antigo. A parte de talentos, estados e inimigos continua válida como ponto de partida; a parte de ondas deve ser refeita para o modelo de nós.
-- ❓ Lista final de talentos e seus valores, a pool compartilhada, se um talento pode ter mais de um nível (o mesmo talento escolhido de novo), e quantos talentos por classe. Valores iniciais, todos provisórios: 8 talentos que liberam as skills da tabela 6.2 (um nível cada) e 15 talentos genéricos compartilhados (2 a 3 níveis cada) (ver [[valores_padrao_em_aberto]] e [[sistema_combate]]).
+- ❓ Lista final de talentos e seus valores, a pool compartilhada, se um talento pode ter mais de um nível (o mesmo talento escolhido de novo), e quantos talentos por classe. Valores iniciais, todos provisórios: os da seção [Talentos que mudam regras](#talentos-que-mudam-regras-2026-10-19); Vitalidade, Mais Opções e Banidor têm 2 níveis, os outros 1 (ver [[valores_padrao_em_aberto]] e [[sistema_combate]]).
 
 ## Identidade de classe nos talentos (balanceamento G3, 2026-10-06)
+> **Histórico.** Esta etapa foi substituída em 2026-10-19 pelos [talentos que mudam regras](#talentos-que-mudam-regras-2026-10-19): os talentos que modificavam skills e os de número saíram. Ficaram como talentos as passivas Estilhaçar, Sede de Sangue, Foco Arcano, Quebradiço, Colheita de Almas, Predador, Assassino, Banquete das Sombras e Lâminas Envenenadas, revistas para números pequenos. A descrição abaixo é a do jogo anterior.
+
 - **Problema:** as classes tinham poucos talentos próprios (2 a 5, quase todos "libera uma skill") e os 15 talentos genéricos, um por atributo, dominavam as ofertas; as classes pareciam iguais e o Ladino era muito mais fraco que as outras.
 - **Decisão do usuário:** "modificadores + passivas exclusivas". Cada classe ganha talentos que **modificam as próprias skills** (dano, área, alcance, cooldown, distância de empurrão, duração dos estados e efeitos extras) e passivas exclusivas que dependem da situação; os genéricos passam a pesar menos.
 - **Estrutura (valores provisórios, tabelas em [[sistema_combate]]):**
@@ -41,3 +43,23 @@ updated: 2026-10-06
 - **Peso dos genéricos:** `TalentOfferSettings.sharedPoolWeightMultiplier` (0,5) multiplica o peso dos talentos que só chegam à classe pelo pool compartilhado; os talentos da classe passam a ser 61% a 83% do peso de uma oferta (nível 12, build vazia).
 - **Tags de sinergia novas:** Brigão (Guerreiro) e Elemental (Mago); o Ladino usa Veneno e Sombra.
 - **Ainda provisório:** nomes, textos, ícones, valores e pré-requisitos; o ajuste fino da dificuldade é do G6.
+
+## Talentos que mudam regras (2026-10-19)
+> Decisões do Luiz em 2026-10-19, **implementadas em 2026-10-19** (conteúdo provisório; falta o Ímã, ver abaixo). O problema: muitos talentos só aumentavam números, então qualquer opção servia e nenhuma mudava o plano. Até as skills liberadas por talento mudavam pouco o jogo, exceto as que mexem no tabuleiro.
+
+- **Menos escolhas, maiores:** de 8 a 12 níveis por run (ver [[xp_e_niveis]]), um talento por nível, mais o nó de talento. Cada talento precisa mudar o que é uma boa jogada. A escolha continua na hora em que a barra cruza o limiar (Mecânica 3), inclusive no meio do turno.
+- **Talentos de número saem da oferta ou viram raros:** os genéricos de atributo (Vitalidade, Lâmina Afiada, Olho Aguçado, Precisão Letal, Perfuração de Armadura, Robustez, Maestria em Habilidades) e os de classe do tipo "+X de dano por nível". Aumentar números passa a ser papel das melhorias de skill (ver [[classes_e_skills#Nova direção das skills (2026-10-19)]]). Com números pequenos, os bônus percentuais também somem no arredondamento. Implementado: saíram de vez (não há raridade), menos a **Vitalidade**, que continua no pool compartilhado (+2 de vida máxima por nível do talento, com até 2 níveis). Também continuam Longo Alcance (+1 de alcance nas skills cujo alcance pode crescer) e os de oferta (Mais Opções e Banidor).
+- **Talentos viram regras,** como as relíquias e os poderes do Slay the Spire. Exemplos provisórios:
+  - **Efeito dominó:** o inimigo lançado contra outro empurra esse outro 1 casa.
+  - **Pegadas de fogo:** quem você empurra deixa Fogo nas casas por onde passou.
+  - **Troca:** uma vez por turno, o seu andar pode ser trocar de lugar com um personagem vizinho.
+  - **Gelo escorregadio:** quem está Congelado desliza até bater em algo quando é empurrado.
+  - **Ímã:** as suas skills que empurram podem puxar (e o contrário), à sua escolha ao usar. **Não implementado.**
+  - **Contragolpe:** se um golpe anunciado contra você errar, o atacante fica Exposto.
+  - **Ímpeto:** matar um inimigo dá um andar extra no turno.
+- **Implementados (2026-10-19, provisórios):** Dominó (Guerreiro: quem é lançado contra outro personagem empurra esse outro 1 casa na mesma direção), Rastro de Chamas (Mago: quem você empurra ou puxa deixa Fogo nas casas por onde sai, por 2 rodadas), Gelo Escorregadio (Mago: inimigos Congelados ou Gelados que você empurra deslizam até bater em algo), Passo Trocado (Ladino: o seu andar também pode trocar de lugar com um personagem vizinho) e, no pool compartilhado, Contragolpe (quando um golpe mirado em você erra, o inimigo que golpeou fica Exposto até o fim do próximo turno dele) e Ímpeto. Diferenças em relação aos exemplos: Pegadas de Fogo virou Rastro de Chamas, só do Mago; a Troca virou Passo Trocado e é feita com o próprio andar do turno; o Gelo Escorregadio vale também para inimigos Gelados, não só Congelados. Pendência: o empurrão em cadeia do Dominó ainda não entra na previsão do resultado (ver [[sistema_combate#Talentos de regra]]).
+- **Talentos que liberam skill** continuam, até os 6 espaços. Implementado: 3 por classe (Guerreiro: Força Bruta libera Abalo Sísmico, Passo Pesado libera Pisão e Muralha libera Arremesso de Escudo; Mago: Conjurador de Tempestades libera Tempestade Elétrica, Criomancia libera Muralha de Gelo e Grimório libera Meteoro; Ladino: Arsenal Oculto libera Adaga de Arremesso, Mestre das Sombras libera Bomba de Fumaça e Mestre do Veneno libera Linha Venenosa).
+- **Talentos ligados ao ataque básico** (Arma Envenenada, Lâmina Afiada) saem com ele. Implementado.
+- **Passivas de classe do G3** que já mudam a jogada (Frenesi Corpo a Corpo, Bate e Corre, Assassino, Estilhaçar) são candidatas a ficar, revistas para números pequenos (+1 de dano em vez de porcentagens). Implementado: ficaram Estilhaçar (colisões causadas dão 1 de dano a mais) e Assassino (+1 de dano em inimigos sem aliados ao lado); Frenesi Corpo a Corpo e Bate e Corre saíram. Ficaram também, com +1 ou 1 PV: Sede de Sangue e Banquete das Sombras (matar cura 1 PV), Foco Arcano (+1 de dano se não andou no turno), Quebradiço (+1 em inimigos Congelados ou Gelados), Colheita de Almas (matar reduz em 1 a recarga das skills), Predador (+1 em inimigos envenenados) e Lâminas Envenenadas (as skills envenenam cada inimigo atingido).
+- **Oferta:** continua igual (3 opções, peso por sinergia, reroll, banir e pular). Pular fica mais natural, porque um talento de regra que não combina com a build pode atrapalhar.
+- ❓ Lista final de talentos de regra por classe e compartilhados, e se há raridade (comum, incomum, raro) na oferta. Valor atual: a lista provisória acima, sem raridade.

@@ -1,0 +1,75 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79aab3d122fc9a54184cb0b84d518416, type: 3}
+  m_Name: LightningTotem
+  m_EditorClassIdentifier: Assembly-CSharp::GridBattle.Gameplay.Entities.EnemyConfig
+  id: 9ab19a4dd46e1a141b951d8098bf2ba3
+  displayName:
+    m_TableReference:
+      m_TableCollectionName: Content
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: enemy.lightning_totem.name
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  description:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  icon: {fileID: 0}
+  sprite: {fileID: 7055374150177255963, guid: dc7d4bc2c5bd42feb6fbb997aaa581ba, type: 3}
+  animatorController: {fileID: 9100000, guid: 6b28fdc48b4a64587b618ebce8bb673f, type: 2}
+  tint: {r: 1, g: 1, b: 1, a: 1}
+  maxHp: 3
+  walkDistance: 0
+  hasBasicAttack: 0
+  attackDistance: 1
+  basicAttackDamage: 10
+  critChance: 0
+  critMultiplier: 2
+  defensePenetration: 0
+  defense: 0
+  skillDamageBonus: 0
+  skillRange: 0
+  cooldownReduction: 0
+  canBeDisplaced: 1
+  immuneStates: []
+  maxHpPercentDamageMultiplier: 1
+  skills:
+  - {fileID: 11400000, guid: d49750e5ff4b850428b5b575c21cbed5, type: 2}
+  - {fileID: 11400000, guid: de5157fc58d2ecc48a34161e2e6527bd, type: 2}
+  initialStates: []
+  prefab: {fileID: 2069839144374370989, guid: 4cf13f1910da4e14296e096a872f8cf2, type: 3}
+  role: {fileID: 11400000, guid: 0e6b14ca26caec74fb7ac7de33caa44e, type: 2}
+  isBoss: 0
+  isUnique: 0
+  threat: 1.5
+  behavior: {fileID: 11400000, guid: 2d73baa653e70f64ba87170ca901ed9f, type: 2}
+  behaviorDescription:
+    m_TableReference:
+      m_TableCollectionName: Content
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: enemy.lightning_totem.behavior
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  xpReward: 10
+  references:
+    version: 2
+    RefIds: []

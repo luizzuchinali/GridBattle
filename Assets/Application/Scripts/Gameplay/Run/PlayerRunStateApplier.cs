@@ -24,6 +24,7 @@ namespace GridBattle.Gameplay.Run
         /// </summary>
         public static void Apply(PlayerCharacter player, PlayerRunState run, bool restoredFromSnapshot)
         {
+            player.SetRunMaxHpBonus(run.MaxHpBonus);
             player.SetProgress(run.Level, run.Xp);
             player.SetSkills(ResolveSkills(run, player));
             player.SetInventory(new ConsumableInventory(run.ConsumableIds));

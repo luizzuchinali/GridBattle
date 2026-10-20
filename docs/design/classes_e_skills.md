@@ -3,7 +3,7 @@ tags:
   - design
   - classes
 status: em definição (classes e skills implementadas, valores provisórios)
-updated: 2026-10-18
+updated: 2026-10-20
 ---
 # Classes e Skills
 
@@ -23,6 +23,49 @@ Valores atuais das três classes, como estão implementados no jogo (um asset de
 
 > **Será revisto no futuro.** As regras abaixo descrevem a direção desejada da progressão; os detalhes finais (valores, parâmetros e formato das skills) serão revisados quando o jogo base estiver funcionando.
 - **Curva de XP e liberação das classes:** a curva de XP implementada está em [[xp_e_niveis]], e as regras de liberação das classes em [[meta_progressao_e_perfil]].
+
+## Nova direção das skills (2026-10-19)
+> Decisões do Luiz em 2026-10-19, **só design, ainda não implementadas**. Quando forem implementadas, substituem o ataque básico e a skill inicial única descritos neste documento e em [[sistema_combate]]. Objetivo: cada ação do jogador importa fortemente (pilar 1 do [[GDD]]).
+
+- **Sem ataque básico:** agir é sempre usar uma skill. O dano básico e o alcance de ataque do jogador deixam de existir. Antes, o ataque básico (15 de dano, sem recarga, contra inimigos de 20 a 40 de vida) era a melhor ação na maior parte do tempo, e o turno virava "andar até o mais perto e bater".
+- **Toda skill faz duas coisas:** causa dano **e** muda o tabuleiro (empurra, puxa, troca de lugar, cria ou tira terreno, ou aplica um estado). Uma skill que só causa dano não entra no jogo. As skills que já moldavam a partida eram as que mexiam no tabuleiro; a regra generaliza isso.
+- **2 ou 3 skills iniciais por classe,** com pelo menos uma sem recarga, para o jogador sempre ter o que fazer. As outras continuam vindo de talentos.
+- **6 espaços de skill** (mantido em 2026-10-19; a ideia de reduzir para 4 foi descartada). Com os 6 cheios, os talentos que liberam skill deixam de ser oferecidos (regra atual).
+- **Números pequenos:** de 1 a 3 de dano por skill e 1 de colisão (ver [[balanceamento_e_geracao#Números pequenos (2026-10-19)]]).
+- **Melhorias de skill viram variantes:** em vez de "+3 de dano", a melhoria dá uma versão nova da skill, e o jogador escolhe uma de duas. Exemplo: Golpe de Escudo **A** empurra 3 casas em linha, ou **B** empurra para os dois lados. As melhorias vêm da elite (recompensa extra) e do acampamento (no lugar de curar); ver [[mapa_e_nos#Nós e dificuldade (2026-10-19)]]. ❓ Quantas melhorias cada skill aceita (sugestão: uma, para a escolha ser definitiva).
+- **Contra golpes anunciados:** as skills são as ferramentas para desarmar os golpes dos inimigos (ver [[inimigos#Golpes anunciados]]): tirar o atacante de posição, empurrar um inimigo para dentro da área de outro, atordoar ou congelar quem prepara.
+
+### Skills iniciais (exemplos provisórios, só para orientar)
+
+| Classe | Skill | Recarga | Dano | Efeito no tabuleiro |
+|---|---|---|---|---|
+| Guerreiro | Golpe | sem | 1 (vizinho) | empurra 1 |
+| Guerreiro | Investida | 2 | 1 | anda em linha até 3 casas e empurra 1 quem estiver na frente |
+| Guerreiro | Golpe de Escudo | 3 | 2 (vizinho) | empurra 2 e atordoa |
+| Mago | Rajada | sem | 1 (até 3 casas, em linha) | empurra 1 para longe do Mago |
+| Mago | Nova de Gelo | 2 | 1 (3×3 em volta) | congela por 1 turno, o que cancela o golpe preparado |
+| Mago | Bola de Fogo | 3 | 2 (uma célula a até 3) | deixa Fogo no chão por 2 turnos |
+| Ladino | Adaga | sem | 1 (até 3 casas, em linha) | aplica Veneno |
+| Ladino | Gancho | 2 | 1 (até 3 casas, em linha) | puxa até 3 casas para perto do Ladino |
+| Ladino | Passo das Sombras | 3 | 1, se trocar com um inimigo | troca de lugar com um personagem a até 3 casas |
+
+Identidade: o Guerreiro empurra e segura a linha, o Mago controla áreas e terreno, e o Ladino puxa, troca de lugar e envenena. ❓ Lista final e valores, e se cada classe começa com 2 ou 3 skills.
+
+## Contras do Mago: magias canalizadas (2026-10-20)
+> Pedido do Luiz em 2026-10-20, **implementado** (valores provisórios): algumas magias do Mago passam a ter um contra. "O Meteoro Ardente custa o ponto de ação e o de movimento; depois de usado, o mago também não pode andar no próximo turno. Alto dano em área, mas tem de ser usado de um lugar seguro."
+
+- **Skill canalizada:** usa o agir **e** o andar do turno (`SkillDefinition.usesWalk`). Só pode ser usada antes de andar (desfazer o andar devolve a chance), e o Mago não anda depois. Depois de andar, o botão dela fica apagado na barra.
+- **Exausto:** estado novo que impede andar. Aplicado no próprio Mago por 2 turnos, ele vale no turno seguinte ao lançamento (ver [[estados_e_atributos]]).
+
+| Skill (e variantes) | Como se obtém | Contra |
+|---|---|---|
+| Meteoro, Meteoro Ardente, Meteoro Veloz | talento Grimório | canalizada **e** Exausto: o Mago não anda neste turno nem no seguinte |
+| Tempestade Elétrica, Tempestade Rápida, Tempestade Ampla | talento Conjurador de Tempestades | canalizada, sem Exausto |
+
+- **Textos:** as descrições das seis skills ganharam o contra ("Canalizada: gasta também o andar do turno (use antes de andar), e você não anda no próximo turno."; a Tempestade, só a primeira parte). A ficha da skill mostra "Em você: Exausto" e a nota "Usa o andar do turno: só antes de andar, e não anda depois.".
+- **Regras finas:** como a regra é "ainda não andou", a Tempestade pode ser usada no turno em que o Mago está Exausto ou enraizado; um abate que devolve o andar (talento Ímpeto) continua devolvendo, mas no Meteoro o Exausto o anula. Se, depois de andar, só restar uma skill canalizada pronta, a vez não acaba sozinha enquanto o andar pode ser desfeito.
+- **Simulador:** o bot só usa uma skill canalizada da casa onde está, sem andar antes nem depois, e ainda não pesa o custo de ficar parado no turno seguinte (pode usar o Meteoro demais).
+- ❓ Se outras classes ganham skills canalizadas, e se o Exausto deve valer também para a Tempestade.
 
 ## Skills
 
@@ -65,7 +108,7 @@ As nove skills da tabela estão implementadas como assets (`Settings/Skills/<Cla
 |---|---|---|---|---|---|---|---|---|
 | Bola de Fogo | OFENSIVA | 10 | CIRCLE | 3 | CÍRCULO | 1-3 | 3 | Grimório |
 | Nova de Gelo | OFENSIVA | 8 | CIRCLE | 3 | CÍRCULO | 0-2 | 2 | Inicial |
-| Tempestade Elétrica | OFENSIVA | 14 | CONE | 3 | CÍRCULO | 1-3 | 4 | Conjurador de Tempestades |
+| Tempestade Elétrica (canalizada desde 2026-10-20) | OFENSIVA | 14 | CONE | 3 | CÍRCULO | 1-3 | 4 | Conjurador de Tempestades |
 | Rajada de Vento (acréscimo de balanceamento) | OFENSIVA | 4 | CIRCLE | 3 | CÍRCULO | 1-3 | 3 | Domínio do Vento |
 
 ### Ladino
@@ -105,3 +148,4 @@ Decisão do usuário: as classes se diferenciam por **talentos que modificam as 
 - **Ladino mais forte:** antes do G3 o Ladino vencia ~8% das runs do simulador contra ~46% e ~58% das outras classes (mesmas seeds). O que o limitava era a sustentação (90 de vida, golpes de 6 a 9) e as passivas que dependem de situação rara; o veneno que cresce com a vida do inimigo e enfraquece o envenenado, a cura ao matar e a redução de dano contra inimigos com estado nocivo foram o que mais o aproximou das outras classes. Resultados do simulador na etapa: [[plano_balanceamento]].
 - **Estados novos** (provisórios): Queimando, Veneno letal, Congelado, Atordoado e Exposto (`Settings/States`), usados pelos talentos e disponíveis para inimigos.
 - A parte de conteúdo (nomes, textos, ícones, valores) é provisória e será revista no G6.
+- **Revisão pendente (2026-10-19):** com a nova direção, os talentos que modificam skills viram melhorias por variante, os que só aumentam números saem ou viram raros, e os que dependem do ataque básico (Arma Envenenada) saem com ele. Ver [[talentos_e_oferta#Talentos que mudam regras (2026-10-19)]].

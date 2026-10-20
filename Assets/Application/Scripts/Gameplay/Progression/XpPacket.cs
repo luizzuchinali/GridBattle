@@ -23,13 +23,15 @@ namespace GridBattle.Gameplay.Progression
         }
 
         /// <summary>
-        /// Splits <paramref name="reward"/> into ceil(reward / xpPerPacket) packets
-        /// (minimum 1). The division remainder goes 1 by 1 to the first packets, so
+        /// Splits <paramref name="reward"/> into ceil(reward / xpPerPacket) packets,
+        /// clamped to 1..<paramref name="maxPackets"/> (above the cap the packets just
+        /// get bigger). The division remainder goes 1 by 1 to the first packets, so
         /// no XP is lost to rounding.
         /// </summary>
-        public static XpPacket[] Split(int reward, int xpPerPacket, int currentXp, int xpToNextLevel)
+        public static XpPacket[] Split(int reward, int xpPerPacket, int maxPackets, int currentXp, int xpToNextLevel)
         {
-            var count = Mathf.Max(1, Mathf.CeilToInt((float)reward / xpPerPacket));
+            var count = Mathf.CeilToInt((float)reward / Mathf.Max(1, xpPerPacket));
+            count = Mathf.Clamp(count, 1, Mathf.Max(1, maxPackets));
             var perPacket = reward / count;
             var remainder = reward % count;
 

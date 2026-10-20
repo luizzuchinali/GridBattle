@@ -157,7 +157,7 @@ namespace GridBattle.Gameplay.Talents
 
                 foreach (var owned in ownedSkills)
                 {
-                    if (owned == talent.UnlockedSkill)
+                    if (owned == talent.UnlockedSkill || (owned != null && owned.IsSameSkillAs(talent.UnlockedSkill)))
                         return false;
                 }
             }

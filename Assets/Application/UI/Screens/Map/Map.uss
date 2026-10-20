@@ -1,6 +1,7 @@
 /*
  * Map screen: HUD (depth, HP, level and XP, consumables), the scrollable node map and the preview panel.
  * Vertical budget at the 216x384 reference: HUD 54 + map (flexible, about 190) + preview 120 + margins.
+ * The preview of an elite battle grows by its reward line (two lines at most) and the map gives up that space.
  */
 .map-screen {
     justify-content: flex-start;
@@ -61,7 +62,7 @@
     bottom: 0;
 }
 
-/* Node button: the slot skin at its native 32x32. Nodes that cannot be chosen are dim. */
+/* Node button: the slot skin at its native 32x32 with the icon in the middle. Nodes that cannot be chosen are dim. */
 #container .map-node {
     position: absolute;
     margin: 0;
@@ -72,7 +73,7 @@
     background-image: var(--skin-slot);
     -unity-background-image-tint-color: var(--color-node-dim);
     align-items: center;
-    justify-content: flex-start;
+    justify-content: center;
 }
 
 #container .map-node:active {
@@ -82,15 +83,7 @@
 .map-node__icon {
     width: 16px;
     height: 16px;
-    margin-top: 4px;
-    opacity: 0.6;
-}
-
-.map-node__xp {
-    margin: 0;
-    padding: 0;
-    font-size: var(--font-size-hud);
-    -unity-text-align: upper-center;
+    flex-shrink: 0;
     opacity: 0.6;
 }
 
@@ -107,9 +100,7 @@
 }
 
 #container .map-node--available .map-node__icon,
-#container .map-node--available .map-node__xp,
-#container .map-node--current .map-node__icon,
-#container .map-node--current .map-node__xp {
+#container .map-node--current .map-node__icon {
     opacity: 1;
 }
 
@@ -132,10 +123,10 @@
     border-color: var(--color-hp);
 }
 
-/* Preview panel */
+/* Preview panel: 120 px, taller only by the reward line of an elite battle. */
 #map-preview {
     width: 202px;
-    height: 120px;
+    min-height: 120px;
     flex-shrink: 0;
     margin-bottom: var(--spacing-sm);
 }
@@ -179,12 +170,14 @@
     -unity-text-align: middle-left;
 }
 
-#preview-xp {
-    margin: 0;
+/* What an elite battle gives, in words (the map shows no XP numbers). */
+#preview-reward {
+    margin: var(--spacing-sm) 0 0 0;
     padding: 0;
-    font-size: var(--font-size-body);
+    font-size: var(--font-size-hud);
     color: var(--color-xp-level);
-    -unity-text-align: middle-right;
+    white-space: normal;
+    -unity-text-align: upper-left;
 }
 
 #preview-text {

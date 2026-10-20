@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using GridBattle.Gameplay.Entities;
 using GridBattle.Gameplay.Events;
 using GridBattle.Gameplay.Rules;
+using GridBattle.Gameplay.States.Effects;
 using GridBattle.Gameplay.Terrain;
 using JetBrains.Annotations;
 using UnityEngine;
@@ -61,24 +62,35 @@ namespace GridBattle.Gameplay.Combat
 
                 var casterPos = caster.CurrentGridPos;
                 var direction = Displacement.GetDirection(mode, casterPos, target.CurrentGridPos, areaCenter);
-                var result = Displacement.Compute(grid, target, direction, distance,
+                var result = Displacement.Compute(grid, target, direction,
+                    Displacement.GetDistance(caster, target, mode, distance),
                     mode == EDisplacementMode.TowardCaster ? casterPos : null);
                 if (result.Immovable) continue;
 
-                ApplyResult(grid, caster, result);
+                ApplyResult(grid, caster, result, true);
                 applied.Add(result);
             }
 
             return applied;
         }
 
-        private static void ApplyResult(GridController grid, Character caster, DisplacementResult result)
+        /// <param name="canChain">
+        /// The rule talent Domino may push the character this one slams into (only from the skill's own targets, so
+        /// a chain stops at the second character).
+        /// </param>
+        private static void ApplyResult(GridController grid, Character caster, DisplacementResult result,
+            bool canChain)
         {
             var settings = CombatResolver.Settings;
             var target = result.Target;
 
             if (result.CellsMoved > 0)
+            {
                 grid.DisplaceEntity(target, result.Final);
+                var trail = caster.States.FindEffect<DisplacementTrailEffect>();
+                if (trail != null)
+                    trail.Leave(grid, result);
+            }
 
             var collisionDamage = 0;
             var hitDamage = 0;
@@ -111,6 +123,16 @@ namespace GridBattle.Gameplay.Combat
 
             EventBus.Raise(new CharacterDisplacedEvent(target, caster, result.Start, result.Final,
                 result.CellsMoved, result.Block, collided, result.BlockedBy, collisionDamage, hitDamage, forced));
+
+            // Domino: the character that was slammed into is pushed on, in the same direction.
+            if (!canChain || hitCharacter == null || hitCharacter.IsDead) return;
+
+            var domino = caster.States.FindEffect<DominoEffect>();
+            if (domino == null) return;
+
+            var chained = Displacement.Compute(grid, hitCharacter, result.Direction, domino.Distance);
+            if (!chained.Immovable)
+                ApplyResult(grid, caster, chained, false);
         }
 
         /// <summary>

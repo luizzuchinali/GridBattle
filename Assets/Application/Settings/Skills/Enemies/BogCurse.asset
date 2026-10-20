@@ -1,0 +1,69 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6eef7bd41a83def4b92a13c21f9f56c7, type: 3}
+  m_Name: BogCurse
+  m_EditorClassIdentifier: Assembly-CSharp::GridBattle.Gameplay.Entities.Skills.SkillDefinition
+  id: 8007eb800822cb84e9f5350cbf539c29
+  displayName:
+    m_TableReference:
+      m_TableCollectionName: Content
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: skill.bog_curse.name
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  description:
+    m_TableReference:
+      m_TableCollectionName: Content
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: skill.bog_curse.desc
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  icon: {fileID: 21300000, guid: 638c47ca4b894ced902c0e1f95549344, type: 3}
+  type: 0
+  damage: 1
+  areaShape: 1
+  areaSize: 3
+  selectionShape: 0
+  minRange: 2
+  range: 4
+  rangeModifiable: 0
+  unlimitedRange: 0
+  targetCell: 0
+  affects: 5
+  requiresAffectedTarget: 0
+  ignoresLineOfSight: 0
+  cooldown: 2
+  telegraphed: 1
+  windupTurns: 1
+  canMoveWhileWindingUp: 0
+  cancelledByDisplacement: 0
+  interruptibleByStates: 1
+  telegraphFollowsCaster: 1
+  visual: {fileID: 11400000, guid: 6009c7493a55972498bca592880ae446, type: 2}
+  upgrades: []
+  upgradeOf: {fileID: 0}
+  effects:
+  - rid: 8661860679606599765
+  references:
+    version: 2
+    RefIds:
+    - rid: 8661860679606599765
+      type: {class: CreateTerrainSkillEffect, ns: GridBattle.Gameplay.Entities.Skills, asm: Assembly-CSharp}
+      data:
+        terrain: {fileID: 11400000, guid: 64165f775a07f244db0d27d7d7f6aeff, type: 2}
+        cells: 1
+        turns: 2
+        replaceTerrain: 0

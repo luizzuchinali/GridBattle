@@ -60,8 +60,8 @@ namespace GridBattle.Gameplay.States.Effects
     /// Basic attacks and skills by default: periodic damage, thorns, terrain and exact damage are only changed when
     /// the mask says so. The hook is pure, so the AI and the simulation bot see the same numbers
     /// (<see cref="CombatResolver.PredictDamage"/>). Damage dealt: the base damage gets <c>+ flat</c>, then the
-    /// attacker's multipliers and <c>x (1 + percent)</c>; damage taken: <c>x (1 + percent)</c> next to the
-    /// target's Damage Taken (negative percent = reduction, flat is ignored).
+    /// attacker's multipliers and <c>x (1 + percent)</c>; damage taken: <c>+ flat</c> after the defense, then
+    /// <c>x (1 + percent)</c> next to the target's Damage Taken (negative values = reduction; Exposed is +1 flat).
     /// </summary>
     [Serializable]
     public sealed class ConditionalDamageEffect : StateEffect
@@ -91,7 +91,7 @@ namespace GridBattle.Gameplay.States.Effects
         private float percent = 0.15f;
 
         [SerializeField]
-        [Tooltip("Damage dealt only: flat damage added to the base damage per count and stack.")]
+        [Tooltip("Flat damage per count and stack: added to the base damage (Dealt) or to the damage taken after defense (Taken; +1 = Exposed, -1 = armor).")]
         private float flat;
 
         public EDamageDirection Direction => direction;
@@ -119,7 +119,7 @@ namespace GridBattle.Gameplay.States.Effects
 
             var amount = Evaluate(holder, context.Attacker) * Mathf.Max(1, state.Stacks);
             if (amount > 0)
-                adjustment.AddIncoming(percent * amount);
+                adjustment.AddIncoming(percent * amount, flat * amount);
         }
 
         /// <summary>

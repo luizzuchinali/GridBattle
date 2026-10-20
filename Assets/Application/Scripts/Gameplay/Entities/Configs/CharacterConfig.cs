@@ -39,6 +39,11 @@ namespace GridBattle.Gameplay.Entities
         private int walkDistance = 1;
 
         [SerializeField]
+        [Tooltip("The character has a basic attack (a tap on an enemy hits it at once). Off (the direction of " +
+                 "2026-10-19): acting is always using a skill, and Attack Distance and Basic Attack Damage are unused.")]
+        private bool hasBasicAttack = true;
+
+        [SerializeField]
         [Min(0)]
         [Tooltip("Maximum basic attack distance (GridRules metric).")]
         private int attackDistance = 1;
@@ -119,6 +124,9 @@ namespace GridBattle.Gameplay.Entities
         public int WalkDistance => walkDistance;
         public int AttackDistance => attackDistance;
         public int BasicAttackDamage => basicAttackDamage;
+
+        /// <summary>Whether the character has a basic attack at all (off: it only acts through skills).</summary>
+        public bool HasBasicAttack => hasBasicAttack;
         public IReadOnlyList<SkillDefinition> Skills => skills;
         public IReadOnlyList<StateGrant> InitialStates => initialStates;
 

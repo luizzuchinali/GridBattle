@@ -24,6 +24,17 @@ namespace GridBattle.Gameplay.Entities
         [Tooltip("Boss of the final node (GDD Mechanic 2).")]
         private bool isBoss;
 
+        [SerializeField]
+        [Tooltip("Unique enemy (elite): never drawn as a regular enemy; an elite battle holds one of the unique " +
+                 "enemies of the pool available at its depth (the map only makes elite nodes where one is available).")]
+        private bool isUnique;
+
+        [SerializeField]
+        [Min(0f)]
+        [Tooltip("Threat the battle generator counts for this enemy: the complexity it brings (its strikes, role and " +
+                 "mobility). 0 = computed from damage x HP (Threat Calculator).")]
+        private float threat;
+
         [Header("Behavior")]
         [SerializeField]
         [Tooltip("Turn AI: actions in priority order. Without a behavior the enemy does not act.")]
@@ -46,6 +57,12 @@ namespace GridBattle.Gameplay.Entities
         public EnemyRoleDefinition Role => role;
 
         public bool IsBoss => isBoss;
+
+        /// <summary>Unique enemy (elite), drawn only as the elite of an elite battle.</summary>
+        public bool IsUnique => isUnique;
+
+        /// <summary>Authored threat (complexity cost) for the battle generator; 0 = computed.</summary>
+        public float Threat => threat;
 
         public LocalizedString BehaviorDescription => behaviorDescription;
 

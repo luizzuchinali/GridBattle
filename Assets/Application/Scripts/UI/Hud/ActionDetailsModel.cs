@@ -26,8 +26,9 @@ namespace GridBattle.UI.Hud
     /// <summary>
     /// What the details window shows for a skill or an item of the player's bars (long press or right click on the
     /// slot): name, icon, description and a sheet with the owner's real numbers (talent modifiers, Skill Range,
-    /// Skill Damage Bonus, Damage Dealt and Cooldown Reduction included; the target's defense is not), plus the
-    /// cooldown left of a skill and a note for items. Pure: reads the game, changes nothing.
+    /// Skill Damage Bonus, Damage Dealt and Cooldown Reduction included; the target's defense is not; the states a skill
+    /// puts on its own caster), plus the cooldown left of a skill and a note for items and for skills that use the walk
+    /// too. Pure: reads the game, changes nothing.
     /// </summary>
     public sealed class ActionDetailsModel
     {
@@ -49,7 +50,7 @@ namespace GridBattle.UI.Hud
 
         public bool Ready { get; private set; }
 
-        /// <summary>A closing remark (items: using one does not take the action).</summary>
+        /// <summary>A closing remark (items: using one does not take the action; skills that also spend the walk).</summary>
         [CanBeNull]
         public string Note { get; private set; }
 
@@ -98,6 +99,16 @@ namespace GridBattle.UI.Hud
                 model.Add(HudText.Get("details.action.displace"), movement);
             }
 
+            // The states the skill puts on its own caster (a drawback such as Exhausted, or a buff) get a line of their
+            // own; the ones on the targets are told by the description.
+            var onCaster = GetCasterStatesText(effective);
+            if (onCaster != null)
+                model.Add(HudText.Get("details.action.on_caster"), onCaster);
+
+            // A channelled skill also spends the walk of the turn.
+            if (skill.UsesWalk)
+                model.Note = HudText.Get("details.uses_walk");
+
             if (owner != null)
             {
                 var remaining = owner.Cooldowns.GetRemaining(skill);
@@ -133,6 +144,29 @@ namespace GridBattle.UI.Hud
         private void Add(string label, string value)
         {
             Facts.Add(new DetailsFact(label, value));
+        }
+
+        /// <summary>The names of the states the skill applies to its caster ("Exhausted, Armored"), or null when none.</summary>
+        [CanBeNull]
+        private static string GetCasterStatesText(in EffectiveSkill skill)
+        {
+            List<string> names = null;
+            foreach (var effect in skill.Effects)
+            {
+                if (effect is not ApplyStatesSkillEffect { Recipient: ESkillEffectRecipient.Caster } apply) continue;
+
+                foreach (var grant in apply.States)
+                {
+                    if (!grant.IsValid) continue;
+
+                    var name = grant.State.GetDisplayName();
+                    names ??= new List<string>();
+                    if (!names.Contains(name))
+                        names.Add(name);
+                }
+            }
+
+            return names != null ? string.Join(", ", names) : null;
         }
 
         /// <summary>The skill's damage before the target's defense: base x (1 + skill bonus) x (1 + damage dealt).</summary>

@@ -1,0 +1,86 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6eef7bd41a83def4b92a13c21f9f56c7, type: 3}
+  m_Name: BurningMeteor
+  m_EditorClassIdentifier: Assembly-CSharp::GridBattle.Gameplay.Entities.Skills.SkillDefinition
+  id: a06e6d07449a4cf4fb6f9fb1d571b435
+  displayName:
+    m_TableReference:
+      m_TableCollectionName: Content
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: skill.burning_meteor.name
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  description:
+    m_TableReference:
+      m_TableCollectionName: Content
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: skill.burning_meteor.desc
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  icon: {fileID: 21300000, guid: 4759e4ce239a4bff8d5862fa6c49eb5a, type: 3}
+  type: 0
+  damage: 2
+  areaShape: 0
+  areaSize: 3
+  selectionShape: 0
+  minRange: 2
+  range: 4
+  rangeModifiable: 1
+  unlimitedRange: 0
+  targetCell: 0
+  affects: 0
+  requiresAffectedTarget: 0
+  ignoresLineOfSight: 1
+  cooldown: 5
+  usesWalk: 1
+  telegraphed: 0
+  windupTurns: 1
+  canMoveWhileWindingUp: 0
+  cancelledByDisplacement: 0
+  interruptibleByStates: 1
+  telegraphFollowsCaster: 1
+  visual: {fileID: 11400000, guid: 86ac907ee200f4a4d840844969aa0bbf, type: 2}
+  upgrades: []
+  upgradeOf: {fileID: 11400000, guid: 30a0d5985ba11da47a6f08b2bf9e7dcf, type: 2}
+  effects:
+  - rid: 8661860679606599822
+  - rid: 8661860679606599823
+  - rid: 8661860704513163338
+  references:
+    version: 2
+    RefIds:
+    - rid: 8661860679606599822
+      type: {class: DisplaceSkillEffect, ns: GridBattle.Gameplay.Entities.Skills, asm: Assembly-CSharp}
+      data:
+        mode: 2
+        distance: 1
+    - rid: 8661860679606599823
+      type: {class: CreateTerrainSkillEffect, ns: GridBattle.Gameplay.Entities.Skills, asm: Assembly-CSharp}
+      data:
+        terrain: {fileID: 11400000, guid: 2a133503e7f961f4aaf6f98d2ad6db38, type: 2}
+        cells: 0
+        turns: 2
+        replaceTerrain: 0
+    - rid: 8661860704513163338
+      type: {class: ApplyStatesSkillEffect, ns: GridBattle.Gameplay.Entities.Skills, asm: Assembly-CSharp}
+      data:
+        recipient: 1
+        states:
+        - state: {fileID: 11400000, guid: 2e645986e5bc3c5439e3824e650c7c4a, type: 2}
+          permanent: 0
+          duration: 2
+          stacks: 1

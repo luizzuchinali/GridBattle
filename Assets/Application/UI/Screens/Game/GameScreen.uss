@@ -165,3 +165,9 @@
     padding: 0 6px;
     font-size: var(--font-size-hud);
 }
+
+/* Confirm of an aimed skill or item: the selected skin and the primary color, so it reads as the next step. */
+#container .turn-button--confirm {
+    background-image: var(--skin-slot-selected);
+    color: var(--color-primary);
+}

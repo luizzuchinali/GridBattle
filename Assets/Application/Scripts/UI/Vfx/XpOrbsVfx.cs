@@ -11,11 +11,14 @@ using ZS.UI.Navigation;
 namespace GridBattle.UI.Vfx
 {
     /// <summary>
-    /// Presents XP dropped by enemies: each packet becomes an orb (UI Toolkit
-    /// element) that flies in an arc from the enemy position to the point on the
-    /// XP bar where the progress will be when it arrives. On arrival, the orb is
-    /// removed and the packet is credited. How much XP and to whom is decided by
-    /// XpRewardSystem; this is only presentation and delivery timing.
+    /// Presents XP dropped by enemies as a burst (Vampire Survivors style): every
+    /// packet becomes an orb (UI Toolkit element); all of a kill's orbs pop out of
+    /// the enemy together, scatter in a small explosion, hold for a moment and fly
+    /// together in an arc to the point on the XP bar where the progress will be when
+    /// each one arrives. On arrival, the orb is removed and its packet is credited.
+    /// The whole delivery takes the same short time whatever the amount of XP. How
+    /// much XP and to whom is decided by XpRewardSystem; this is only presentation
+    /// and delivery timing.
     /// </summary>
     [RequireComponent(typeof(UILayer))]
     public class XpOrbsVfx : MonoBehaviour
@@ -59,25 +62,56 @@ namespace GridBattle.UI.Vfx
             var grid = GridController.Instance;
             var hiddenFor = e.Source != null && grid != null ? grid.GetPendingImpactDelay(e.Source) : 0f;
 
-            var start = RuntimePanelUtils.CameraTransformWorldToPanel(layer.panel, e.Origin, _camera);
-            for (var i = 0; i < e.Packets.Count; i++)
+            var count = e.Packets != null ? e.Packets.Count : 0;
+            if (count == 0) return;
+
+            var start = Snap(RuntimePanelUtils.CameraTransformWorldToPanel(layer.panel, e.Origin, _camera));
+            var angleStep = 2f * Mathf.PI / count;
+            var firstAngle = UnityEngine.Random.Range(0f, 2f * Mathf.PI);
+
+            var bursts = new Action[count];
+            for (var i = 0; i < count; i++)
             {
                 var packet = e.Packets[i];
-                var end = track.GetPoint(packet.ProgressAfter);
-                var control = (start + end) / 2f + new Vector2(0f, -settings.ArcHeight);
 
-                LaunchOrb(layer, start, control, end, hiddenFor, i * settings.StaggerDelay, () => e.Collect(packet));
+                // Evenly spread directions with some jitter, so the orbs never clump on one side.
+                var jitter = UnityEngine.Random.Range(-0.5f, 0.5f) * settings.BurstAngleJitter * angleStep;
+                var angle = firstAngle + i * angleStep + jitter;
+                var radius = Mathf.Max(0f, settings.BurstRadius +
+                                           UnityEngine.Random.Range(-1f, 1f) * settings.BurstRadiusVariance);
+                var scattered = Snap(start + new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * radius);
+
+                var end = track.GetPoint(packet.ProgressAfter);
+                var control = (scattered + end) / 2f + new Vector2(0f, -settings.ArcHeight);
+                var launchDelay = settings.HoldDuration + UnityEngine.Random.Range(0f, settings.LaunchJitter);
+
+                var orb = CreateOrb(layer, start, hiddenFor > 0f);
+                bursts[i] = () => Burst(orb, start, scattered, control, end, launchDelay, () => e.Collect(packet));
             }
 
             e.MarkPresented();
+
+            // All of the kill's orbs burst at the same moment.
+            if (hiddenFor <= 0f)
+            {
+                foreach (var launch in bursts)
+                    launch();
+                return;
+            }
+
+            LMotion.Create(0f, 1f, hiddenFor)
+                .WithOnComplete(() =>
+                {
+                    foreach (var launch in bursts)
+                        launch();
+                })
+                .Bind(_ => { });
         }
 
         /// <summary>
-        /// Adds an orb at <paramref name="start"/>, hidden for <paramref name="hiddenFor"/> seconds; it waits there
-        /// <paramref name="delay"/> more seconds and then flies to <paramref name="end"/>.
+        /// Adds an orb centered on <paramref name="position"/>, hidden while <paramref name="hidden"/>.
         /// </summary>
-        private void LaunchOrb(VisualElement layer, Vector2 start, Vector2 control, Vector2 end, float hiddenFor,
-            float delay, Action onArrived)
+        private VisualElement CreateOrb(VisualElement layer, Vector2 position, bool hidden)
         {
             var orb = new VisualElement();
             orb.pickingMode = PickingMode.Ignore;
@@ -85,32 +119,50 @@ namespace GridBattle.UI.Vfx
             orb.style.width = settings.OrbSize;
             orb.style.height = settings.OrbSize;
             orb.style.backgroundImage = new StyleBackground(settings.OrbSprite);
-            SetPosition(orb, start);
+            orb.visible = !hidden;
+            SetPosition(orb, position);
             layer.Add(orb);
-            if (hiddenFor > 0f)
-            {
-                orb.visible = false;
-                LMotion.Create(0f, 1f, hiddenFor)
-                    .WithOnComplete(() => orb.visible = true)
-                    .Bind(_ => { });
-            }
+            return orb;
+        }
 
-            LMotion.Create(0f, 1f, settings.FlightDuration)
-                .WithDelay(hiddenFor + delay)
-                .WithEase(settings.FlightEase)
+        /// <summary>
+        /// Shows the orb and scatters it from <paramref name="start"/> to <paramref name="scattered"/>; after
+        /// <paramref name="launchDelay"/> more seconds it flies to <paramref name="end"/>. Each stage starts from the
+        /// previous one's completion, so no motion writes the position while another one runs.
+        /// </summary>
+        private void Burst(VisualElement orb, Vector2 start, Vector2 scattered, Vector2 control, Vector2 end,
+            float launchDelay, Action onArrived)
+        {
+            orb.visible = true;
+            LMotion.Create(0f, 1f, settings.BurstDuration)
+                .WithEase(settings.BurstEase)
                 .WithOnComplete(() =>
                 {
-                    orb.RemoveFromHierarchy();
-                    onArrived();
+                    SetPosition(orb, scattered);
+                    LMotion.Create(0f, 1f, settings.FlightDuration)
+                        .WithDelay(launchDelay)
+                        .WithEase(settings.FlightEase)
+                        .WithOnComplete(() =>
+                        {
+                            orb.RemoveFromHierarchy();
+                            onArrived();
+                        })
+                        .Bind(t => SetPosition(orb, EvaluateQuadraticBezier(scattered, control, end, t)));
                 })
-                .Bind(t => SetPosition(orb, EvaluateQuadraticBezier(start, control, end, t)));
+                .Bind(t => SetPosition(orb, Vector2.LerpUnclamped(start, scattered, t)));
         }
 
-        private static void SetPosition(VisualElement element, Vector2 position)
+        /// <summary>
+        /// Places the orb's center on <paramref name="position"/>, snapped to whole panel px (pixel perfect).
+        /// </summary>
+        private void SetPosition(VisualElement element, Vector2 position)
         {
-            element.style.left = position.x;
-            element.style.top = position.y;
+            var half = settings.OrbSize / 2f;
+            element.style.left = Mathf.Round(position.x - half);
+            element.style.top = Mathf.Round(position.y - half);
         }
+
+        private static Vector2 Snap(Vector2 position) => new(Mathf.Round(position.x), Mathf.Round(position.y));
 
         private static Vector2 EvaluateQuadraticBezier(Vector2 start, Vector2 control, Vector2 end, float t)
         {

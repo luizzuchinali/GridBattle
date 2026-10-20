@@ -7,6 +7,7 @@ using GridBattle.Gameplay.Controllers;
 using GridBattle.Gameplay.Entities;
 using GridBattle.Gameplay.Entities.Skills;
 using GridBattle.Gameplay.Events;
+using GridBattle.Gameplay.Forecast;
 using GridBattle.Gameplay.Rules;
 using GridBattle.Gameplay.States;
 using GridBattle.Gameplay.States.Effects;
@@ -35,8 +36,10 @@ namespace GridBattle.Gameplay.Simulation
     /// A turn has a walk and an action, so the bot chooses a pair: every cell it can walk to (and its own) is tried
     /// with <see cref="GridController.ProbePosition"/>, the best action from each one is found with the priorities
     /// above (kills first, then expected damage, minus the terrain cost of the cell; staying wins ties) and the walk is
-    /// made first when the best pair needs it. After acting without walking it steps toward the next
-    /// target when nothing is in reach any more, then ends the turn. One call plays as much of the turn as it can: a
+    /// made first when the best pair needs it. A skill that uses the walk too (<see cref="SkillDefinition.UsesWalk"/>)
+    /// is only an option from the cell the player stands on, before any walk, and leaves no walk to dodge with (the
+    /// controller's <see cref="PlayerCharacterController.CanUseSkillNow"/> decides). After acting without walking it
+    /// steps toward the next target when nothing is in reach any more, then ends the turn. One call plays as much of the turn as it can: a
     /// level up that pauses the game in the middle is answered first and the next call goes on.
     /// </para>
     /// <para>
@@ -52,6 +55,13 @@ namespace GridBattle.Gameplay.Simulation
     /// <see cref="CombatResolver.PredictDamage"/> (conditional bonuses of passives: adjacent enemies, poisoned
     /// targets, moving first...). The damage over time of the states a skill applies to its targets is counted in
     /// its expected damage (weighted by <see cref="BattleBotOptions.StateValueWeight"/>), never in its kills.
+    /// </para>
+    /// <para>
+    /// Enemies' prepared strikes are read through the same forecast the player sees (<see cref="ActionForecast"/> and
+    /// <see cref="ThreatForecast"/>): a skill is worth the damage the strikes would still deal to the player where the
+    /// action leaves it (less when it kills, stuns or pushes the caster away, or dashes or swaps the player out), and
+    /// it earns the damage the strikes would deal to other enemies after it (Into the Breach style, weighted by
+    /// <see cref="BattleBotOptions.RedirectedStrikeWeight"/>).
     /// </para>
     /// </summary>
     public sealed class BattleBot : IDisposable
@@ -180,6 +190,8 @@ namespace GridBattle.Gameplay.Simulation
                 }
             }
 
+            // Acting from where it stands with a walk still possible, the bot can leave the strikes afterwards.
+            var canWalkAfter = controller.CanWalkNow;
             TurnPair kill = null;
             TurnPair attack = null;
             List<ActionOption> here = null;
@@ -187,28 +199,32 @@ namespace GridBattle.Gameplay.Simulation
             {
                 var cost = cell == origin ? 0f : TerrainCost(grid, player, cell) * 3f;
                 if (cost >= LethalCost) continue;
-                cost += TelegraphCost(player, cell);
 
                 var options = new List<ActionOption>();
                 using (cell == origin ? null : grid.ProbePosition(player, cell))
                 {
                     BuildBasicOptions(grid, player, options);
                     if (_options.UseSkills)
-                        BuildSkillOptions(grid, player, options);
+                        BuildSkillOptions(grid, player, controller, cell != origin, options);
                 }
 
                 if (cell == origin)
                     here = options;
 
                 var killOption = PickKill(options);
+                var killDodge = DodgeFactor(cell == origin && canWalkAfter, killOption);
+                if (killOption != null && killDodge >= 1f && killOption.ThreatCost >= LethalCost * 0.5f)
+                    killOption = null;
+                var killCost = killOption != null ? cost + killOption.ThreatCost * killDodge : 0f;
                 if (killOption != null && (kill == null || CompareKills(killOption, kill.Option) > 0 ||
-                                           (CompareKills(killOption, kill.Option) == 0 && cost < kill.Value - Epsilon)))
-                    kill = new TurnPair { Cell = cell, Option = killOption, Value = cost };
+                                           (CompareKills(killOption, kill.Option) == 0 && killCost < kill.Value - Epsilon)))
+                    kill = new TurnPair { Cell = cell, Option = killOption, Value = killCost };
 
                 var attackOption = PickAttack(options);
                 if (attackOption == null) continue;
 
-                var value = attackOption.Expected + attackOption.Bonus - cost;
+                var value = attackOption.Expected + attackOption.Bonus - cost -
+                            attackOption.ThreatCost * DodgeFactor(cell == origin && canWalkAfter, attackOption);
                 if (attack == null || value > attack.Value + Epsilon)
                     attack = new TurnPair { Cell = cell, Option = attackOption, Value = value };
             }
@@ -228,6 +244,19 @@ namespace GridBattle.Gameplay.Simulation
             if (attack != null) return PlayPair(grid, player, controller, attack);
 
             return _options.UseSkills && TryUtilitySkill(grid, player, controller, false);
+        }
+
+        /// <summary>
+        /// How much of the strikes still on the player after an action counts (see
+        /// <see cref="BattleBotOptions.DodgeAfterActingFactor"/>): less when <paramref name="canWalkAfter"/> (the action is
+        /// taken from where the player stands and it can still walk, to leave the strikes); all of it after walking
+        /// first, while a state keeps the player in place or with a skill that uses the walk too
+        /// (<see cref="SkillDefinition.UsesWalk"/>).
+        /// </summary>
+        private float DodgeFactor(bool canWalkAfter, ActionOption option)
+        {
+            var walkLeft = canWalkAfter && (option == null || option.Skill == null || !option.Skill.UsesWalk);
+            return walkLeft ? _options.DodgeAfterActingFactor : 1f;
         }
 
         /// <summary>Walks to the pair's cell (when it is not the current one) and plays the best action from there.</summary>
@@ -259,7 +288,7 @@ namespace GridBattle.Gameplay.Simulation
             var options = new List<ActionOption>();
             BuildBasicOptions(grid, player, options);
             if (_options.UseSkills)
-                BuildSkillOptions(grid, player, options);
+                BuildSkillOptions(grid, player, controller, false, options);
 
             ActionOption chosen = null;
             if (planned != null)
@@ -343,6 +372,12 @@ namespace GridBattle.Gameplay.Simulation
                     damage += Math.Max(1, telegraph.PredictDamage(player));
             }
 
+            return ThreatCostOf(player, damage);
+        }
+
+        /// <summary>The cost of taking <paramref name="damage"/> from prepared strikes (see <see cref="TelegraphCost"/>).</summary>
+        private float ThreatCostOf(PlayerCharacter player, int damage)
+        {
             if (damage <= 0) return 0f;
 
             var cost = damage * _options.TelegraphDamageWeight;
@@ -434,6 +469,15 @@ namespace GridBattle.Gameplay.Simulation
 
             /// <summary>Positional value of a push or pull, in HP-equivalents (0 for every other action).</summary>
             public float Bonus;
+
+            /// <summary>
+            /// Cost of the prepared strikes that would still hit the player after the action, where it leaves the player
+            /// (see <see cref="BattleBot.TelegraphCost"/>).
+            /// </summary>
+            public float ThreatCost;
+
+            /// <summary>Weighted damage the prepared strikes would deal to other enemies after the action (in <see cref="Expected"/>).</summary>
+            public float Redirected;
         }
 
         private void BuildBasicOptions(GridController grid, PlayerCharacter player, List<ActionOption> into)
@@ -459,17 +503,24 @@ namespace GridBattle.Gameplay.Simulation
                     FocusTier = Tier(enemy),
                     LowestHp = enemy.Current,
                     Hit = { enemy },
+                    ThreatCost = TelegraphCost(player, player.CurrentGridPos),
                 });
             }
         }
 
-        private void BuildSkillOptions(GridController grid, PlayerCharacter player, List<ActionOption> into)
+        /// <summary>
+        /// The best use of each skill the player may use now (<see cref="PlayerCharacterController.CanUseSkillNow"/>).
+        /// <paramref name="afterWalk"/>: the options are for a cell the bot would walk to first (probed), so a skill that
+        /// uses the walk too (<see cref="SkillDefinition.UsesWalk"/>) is left out, as the controller would refuse it.
+        /// </summary>
+        private void BuildSkillOptions(GridController grid, PlayerCharacter player, PlayerCharacterController controller,
+            bool afterWalk, List<ActionOption> into)
         {
             var skills = player.Skills;
             for (var i = 0; i < skills.Count; i++)
             {
                 var skill = skills[i];
-                if (skill == null || !SkillTargeting.CanSelect(player, skill)) continue;
+                if (skill == null || !controller.CanUseSkillNow(skill) || (afterWalk && skill.UsesWalk)) continue;
 
                 var effective = EffectiveSkill.Resolve(player, skill);
                 var damaging = skill.Damage > 0;
@@ -536,7 +587,39 @@ namespace GridBattle.Gameplay.Simulation
             if (displace != null && !ValueDisplacement(grid, player, effective, displace, cell, affected, option))
                 return null;
 
+            if (_telegraphs.Count > 0)
+                ValueThreats(grid, player, skill, cell, option);
             return option;
+        }
+
+        /// <summary>
+        /// The enemies' prepared strikes once the skill is used (the forecast the player sees): their cost for the player
+        /// where the action leaves it, and the weighted damage they would deal to other enemies, which is added to the
+        /// expected damage. A strike's damage to an enemy only counts up to the HP the action leaves it.
+        /// </summary>
+        private void ValueThreats(GridController grid, PlayerCharacter player, SkillDefinition skill, Vector2Int cell,
+            ActionOption option)
+        {
+            var action = ActionForecast.ForSkill(grid, player, skill, cell);
+            var threat = ThreatForecast.Compute(grid, action);
+            threat.Damage.TryGetValue(player, out var toPlayer);
+            option.ThreatCost = ThreatCostOf(player, toPlayer);
+
+            if (_options.RedirectedStrikeWeight <= 0f) return;
+
+            var redirected = 0f;
+            foreach (var enemy in _enemies)
+            {
+                if (!threat.Damage.TryGetValue(enemy, out var damage) || damage <= 0) continue;
+
+                action.Damage.TryGetValue(enemy, out var taken);
+                var hpLeft = enemy.Current + enemy.States.TotalShield - taken;
+                if (hpLeft > 0)
+                    redirected += Math.Min(damage, hpLeft);
+            }
+
+            option.Redirected = redirected * _options.RedirectedStrikeWeight;
+            option.Expected += option.Redirected;
         }
 
         /// <summary>
@@ -681,8 +764,8 @@ namespace GridBattle.Gameplay.Simulation
         {
             var kills = a.Kills.CompareTo(b.Kills);
             if (kills != 0) return kills;
-            var effective = (a.Effective + a.Bonus).CompareTo(b.Effective + b.Bonus);
-            if (effective != 0) return effective;
+            var value = a.Effective + a.Bonus + a.Redirected - a.ThreatCost - (b.Effective + b.Bonus + b.Redirected - b.ThreatCost);
+            if (Math.Abs(value) > Epsilon) return value > 0f ? 1 : -1;
             return a.Targets.CompareTo(b.Targets);
         }
 
@@ -749,7 +832,7 @@ namespace GridBattle.Gameplay.Simulation
                 }
                 else if (option.ControlOnly)
                 {
-                    var comparison = control == null ? 1 : option.Targets.CompareTo(control.Targets);
+                    var comparison = control == null ? 1 : CompareControl(option, control);
                     if (comparison > 0)
                     {
                         control = option;
@@ -776,13 +859,27 @@ namespace GridBattle.Gameplay.Simulation
             }
 
             if (skill != null && (basic == null || skill.Targets >= _options.SkillMinTargets ||
-                                  skill.Expected > basic.Expected + Epsilon))
-                return skill;
+                                  Score(skill) > Score(basic) + Epsilon))
+            {
+                // A stun or a push that takes the player out of a strike can be worth more than the damage.
+                return control != null && Score(control) > Score(skill) + Epsilon ? control : skill;
+            }
 
-            if (control != null && control.Targets >= _options.SkillMinTargets)
+            if (control != null && (control.Targets >= _options.SkillMinTargets ||
+                                    (basic != null ? Score(control) > Score(basic) + Epsilon : Score(control) > Epsilon)))
                 return control;
 
-            return basic ?? skill;
+            return basic ?? skill ?? control;
+        }
+
+        /// <summary>What an action is worth to the bot: its expected damage minus the strikes it leaves on the player.</summary>
+        private static float Score(ActionOption option) => option.Expected - option.ThreatCost;
+
+        private static int CompareControl(ActionOption a, ActionOption b)
+        {
+            var score = Score(a) - Score(b);
+            if (Math.Abs(score) > Epsilon) return score > 0f ? 1 : -1;
+            return a.Targets.CompareTo(b.Targets);
         }
 
         private static int CompareBasic(ActionOption a, ActionOption b)
@@ -796,7 +893,8 @@ namespace GridBattle.Gameplay.Simulation
 
         private static int CompareExpected(ActionOption a, ActionOption b)
         {
-            if (Math.Abs(a.Expected - b.Expected) > Epsilon) return a.Expected.CompareTo(b.Expected);
+            var score = Score(a) - Score(b);
+            if (Math.Abs(score) > Epsilon) return score > 0f ? 1 : -1;
             return a.Targets.CompareTo(b.Targets);
         }
 
@@ -1008,7 +1106,7 @@ namespace GridBattle.Gameplay.Simulation
             for (var i = 0; i < skills.Count; i++)
             {
                 var skill = skills[i];
-                if (skill == null || skill.Damage > 0 || !SkillTargeting.CanSelect(player, skill)) continue;
+                if (skill == null || skill.Damage > 0 || !controller.CanUseSkillNow(skill)) continue;
                 if (!HelpsCaster(skill, player, healing)) continue;
 
                 if (!healing && !AnyEnemyWithin(player, 4)) continue;

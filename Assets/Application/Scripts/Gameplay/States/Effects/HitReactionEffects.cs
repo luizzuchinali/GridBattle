@@ -2,14 +2,16 @@ using System;
 using System.Collections.Generic;
 using GridBattle.Gameplay.Combat;
 using GridBattle.Gameplay.Entities;
+using GridBattle.Gameplay.Events;
 using UnityEngine;
 
 namespace GridBattle.Gameplay.States.Effects
 {
     /// <summary>
     /// A reward for killing: when a hit of the holder (of the chosen kinds) kills its target, the holder heals, its
-    /// running skill cooldowns get shorter and/or it gains states. Amounts are per stack (a talent rank). The
-    /// cooldown reduction is applied at the end of the holder's turn, so the skill used for the kill is included.
+    /// running skill cooldowns get shorter, it gains states and/or (the player) gets its walk back. Amounts are per
+    /// stack (a talent rank). The cooldown reduction is applied at the end of the holder's turn, so the skill used
+    /// for the kill is included.
     /// </summary>
     [Serializable]
     public sealed class OnKillEffect : StateEffect
@@ -37,11 +39,16 @@ namespace GridBattle.Gameplay.States.Effects
         [Tooltip("States the holder gains (applied with the grant's duration and stacks).")]
         private List<StateGrant> grantStates = new();
 
+        [SerializeField]
+        [Tooltip("The player gets its walk back for this turn (Momentum): it may walk again after the kill.")]
+        private bool grantExtraWalk;
+
         public EDamageKindMask AppliesToKinds => appliesTo;
         public int CooldownReduction => cooldownReduction;
         public int HealFlat => healFlat;
         public float HealMaxHpFraction => healMaxHpFraction;
         public IReadOnlyList<StateGrant> GrantStates => grantStates;
+        public bool GrantExtraWalk => grantExtraWalk;
 
         public override void OnDamageDealt(Character holder, StateInstance state, in HitResult hit)
         {
@@ -60,6 +67,9 @@ namespace GridBattle.Gameplay.States.Effects
                 if (grant.IsValid)
                     holder.States.Apply(grant);
             }
+
+            if (grantExtraWalk)
+                EventBus.Raise(new ExtraWalkGrantedEvent(holder));
         }
     }
 

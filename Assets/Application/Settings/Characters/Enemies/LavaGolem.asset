@@ -1,0 +1,80 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79aab3d122fc9a54184cb0b84d518416, type: 3}
+  m_Name: LavaGolem
+  m_EditorClassIdentifier: Assembly-CSharp::GridBattle.Gameplay.Entities.EnemyConfig
+  id: ee3f24a60a542684c8cc118f174e0c69
+  displayName:
+    m_TableReference:
+      m_TableCollectionName: Content
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: enemy.lava_golem.name
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  description:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  icon: {fileID: 0}
+  sprite: {fileID: 3045395835862053497, guid: cea891aee5c5ed3eac8785678fa2929a, type: 3}
+  animatorController: {fileID: 9100000, guid: 2f09aef7b93e442af8779a6e28c1193a, type: 2}
+  tint: {r: 1, g: 1, b: 1, a: 1}
+  maxHp: 8
+  walkDistance: 1
+  hasBasicAttack: 0
+  attackDistance: 1
+  basicAttackDamage: 10
+  critChance: 0
+  critMultiplier: 2
+  defensePenetration: 0
+  defense: 0
+  skillDamageBonus: 0
+  skillRange: 0
+  cooldownReduction: 0
+  canBeDisplaced: 1
+  immuneStates:
+  - {fileID: 11400000, guid: a9d3178df6bf70043bddf65c01b5c6b4, type: 2}
+  maxHpPercentDamageMultiplier: 1
+  skills:
+  - {fileID: 11400000, guid: 49cfef2ee1d3ea045bc0ac186ee822bc, type: 2}
+  - {fileID: 11400000, guid: b41535f16400dbd45bc3bd031ee036f2, type: 2}
+  initialStates:
+  - state: {fileID: 11400000, guid: 4fad74310bd7b63449ec01e5cbddbbe8, type: 2}
+    permanent: 1
+    duration: 1
+    stacks: 1
+  prefab: {fileID: 2069839144374370989, guid: 4cf13f1910da4e14296e096a872f8cf2, type: 3}
+  role: {fileID: 11400000, guid: 0e6b14ca26caec74fb7ac7de33caa44e, type: 2}
+  isBoss: 0
+  isUnique: 1
+  threat: 4.5
+  behavior: {fileID: 11400000, guid: c88806a107546e443b998df1cd9bbb84, type: 2}
+  behaviorDescription:
+    m_TableReference:
+      m_TableCollectionName: Content
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: enemy.lava_golem.behavior
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  xpReward: 10
+  references:
+    version: 2
+    RefIds: []

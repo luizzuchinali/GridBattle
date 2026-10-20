@@ -82,7 +82,12 @@ namespace GridBattle.UI.Screens
         public static void AddBaseAttributes(VisualElement parent, CharacterConfig config)
         {
             foreach (var attribute in BasicAttributes)
+            {
+                // Without a basic attack (only skills), its range and damage mean nothing.
+                if (!config.HasBasicAttack && IsBasicAttackAttribute(attribute)) continue;
+
                 AddAttributeRow(parent, config, attribute);
+            }
 
             foreach (var attribute in OptionalAttributes)
             {
@@ -93,6 +98,9 @@ namespace GridBattle.UI.Screens
                     AddAttributeRow(parent, config, EAttribute.CritMultiplier);
             }
         }
+
+        private static bool IsBasicAttackAttribute(EAttribute attribute) =>
+            attribute == EAttribute.AttackRange || attribute == EAttribute.BasicDamage;
 
         /// <summary>One row per skill (icon and name) followed by its description; "none" when there is none.</summary>
         public static void AddSkills(VisualElement parent, System.Collections.Generic.IEnumerable<SkillDefinition> skills)

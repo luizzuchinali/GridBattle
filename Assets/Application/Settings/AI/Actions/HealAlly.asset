@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: HealAlly
   m_EditorClassIdentifier: Assembly-CSharp::GridBattle.Gameplay.AI.Actions.HealAllyAction
   id: b82df412e1e77d744a0130df731507a8
-  cooldownTurns: 1
+  cooldownTurns: 2
   range: 3
-  hpThreshold: 0.75
+  hpThreshold: 0.99
   includeSelf: 0
-  flatHeal: 6
+  flatHeal: 1
   maxHpFraction: 0

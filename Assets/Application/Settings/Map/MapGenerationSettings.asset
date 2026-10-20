@@ -33,7 +33,6 @@ MonoBehaviour:
   avoidSameNonBattleTypeInARow: 1
   guaranteeHealBeforeBoss: 1
   typeRerollAttempts: 6
-  easyWeight: 35
-  normalWeight: 40
-  hardWeight: 25
+  normalWeight: 75
+  eliteWeight: 25
   diversifyBattleChoices: 1
